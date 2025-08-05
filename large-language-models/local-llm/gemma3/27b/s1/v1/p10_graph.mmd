@@ -1,0 +1,68 @@
+graph LR
+    subgraph Software Development Optimization Model
+        %% Entities
+        entityTeam[Team]:::entity
+        entitySprint[Sprint]:::entity
+        entityUserStory[User Story]:::entity
+        entityFeature[Feature]:::entity
+        entityBug[Bug]:::entity
+
+        %% Variables
+        variableTeamSize[Team Size]:::variable
+        variableSprintLength[Sprint Length]:::variable
+        variableStoryPoint[Story Point]:::variable
+        variableAllocation[Allocation]:::variable
+        variableBugAssignment[Bug Assignment]:::variable
+        variableSprintFocus[Sprint Focus]:::variable
+        variableDocumentation[Documentation]:::variable
+
+        %% Goals
+        goalVelocity[Maximize Team Velocity]:::goal
+        goalSatisfaction[Maximize Stakeholder Satisfaction]:::goal
+        goalQuality[Maintain High Code Quality]:::goal
+        goalMinimizeBugs[Minimize Bugs]:::goal
+        goalAvoidOvercommitment[Avoid Overcommitment]:::goal
+
+        %% Constraints
+        constraintCapacity[Sprint Capacity]:::constraint
+        constraintTeamSizeRange[Team Size Range]:::constraint
+        constraintSprintLengthRange[Sprint Length Range]:::constraint
+        constraintQualityThreshold[Quality Threshold]:::constraint
+
+        %% Relationships
+        relTeamSprint[Team manages Sprint]:::relationship
+        relSprintUserStory[Sprint contains User Story]:::relationship
+        relUserStoryFeature[User Story implements Feature]:::relationship
+        relSprintGoal[Sprint pursues Goal]:::relationship
+        relBugTeam[Bug is assigned to Team]:::relationship
+        relFeatureDocumentation[Feature requires Documentation]:::relationship
+        
+
+        %% Connections - Entities to Variables
+        entityTeam -- variableTeamSize
+        entitySprint -- variableSprintLength
+        entityUserStory -- variableStoryPoint
+        entityUserStory -- variableAllocation
+        entityBug -- variableBugAssignment
+        entitySprint -- variableSprintFocus
+        entityFeature -- variableDocumentation
+        
+        %% Connections - Entities to Goals
+        entityTeam -- goalVelocity
+        entityFeature -- goalSatisfaction
+        entityUserStory -- goalQuality
+        entityBug -- goalMinimizeBugs
+        entitySprint -- goalAvoidOvercommitment
+        
+        %% Connections - Variables to Constraints
+        variableStoryPoint -- constraintCapacity
+        variableTeamSize -- constraintTeamSizeRange
+        variableSprintLength -- constraintSprintLengthRange
+        variableDocumentation -- constraintQualityThreshold
+    end
+    
+    style entity fill:#d1b3ff,stroke:#333
+    style variable fill:#99e699,stroke:#333
+    style goal fill:#99ccff,stroke:#333
+    style constraint fill:#ff9999,stroke:#333
+    style relationship fill:#ffe066,stroke:#333

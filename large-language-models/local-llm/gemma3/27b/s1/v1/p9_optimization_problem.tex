@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{Software Development Optimization Model}
+\date{}
+\maketitle
+
+\section{Introduction}
+This document presents a mathematical model for optimizing the software development process, based on the provided entities, relationships, goals, and conditions.
+
+\section{Sets}
+\begin{itemize}
+    \item $T$: Set of Teams
+    \item $S$: Set of Sprints
+    \item $U$: Set of User Stories
+    \item $F$: Set of Features
+    \item $B$: Set of Blockers/Bugs
+\end{itemize}
+
+\section{Parameters}
+\begin{itemize}
+    \item $v_t$: Velocity of Team $t$ (derived from historical data).
+    \item $w_f$: Importance weight of Feature $f$ (based on stakeholder input).
+    \item $c_b$: Severity cost of Bug $b$ (based on impact assessment).
+    \item $max\_capacity\_s$: Maximum Story Point capacity for Sprint $s$.
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $x_t$: Team Size for team $t$ (Numeric, Domain: [3, 10]).
+    \item $y_s$: Sprint Length for sprint $s$ (Numeric, Domain: [14, 28] days).
+    \item $z_u$: Story Point Estimate for user story $u$ (Numeric).
+    \item $a_u$: Binary variable: 1 if user story $u$ is allocated to a sprint, 0 otherwise.
+    \item $b_t$: Binary variable: 1 if team $t$ is assigned to a bug, 0 otherwise.
+    \item $c_s$: Sprint Goal Focus for sprint $s$ (Numeric, Domain [0,1]).
+    \item $d_f$: Documentation Effort for feature $f$ (Numeric).
+\end{itemize}
+
+\section{Objective Function}
+
+Maximize:
+
+\[
+\sum_{f \in F} w_f + \sum_{t \in T} v_t x_t + \sum_{s \in S} c_s - \sum_{b \in B} c_b  - \sum_{f \in F} d_f
+\]
+
+\section{Constraints}
+
+\begin{enumerate}
+    \item Capacity Constraint (per Sprint):
+    \[
+    \sum_{u \in U} z_u a_u \leq max\_capacity\_s \quad \forall s \in S
+    \]
+    \item Team Size Constraint:
+    \[
+    3 \leq x_t \leq 10 \quad \forall t \in T
+    \]
+    \item Sprint Length Constraint:
+    \[
+    14 \leq y_s \leq 28 \quad \forall s \in S
+    \]
+    \item Bug Assignment Constraint:
+    \[
+    \sum_{t \in T} b_t \leq |B|
+    \]
+    \item Documentation Time Constraint:
+    \[
+    d_f \geq 0 \quad \forall f \in F
+    \]
+    \item Allocation Constraint:
+    \[
+    a_u \in \{0, 1\} \quad \forall u \in U
+    \]
+\end{enumerate}
+
+\end{document}
