@@ -1,0 +1,105 @@
+graph LR
+  %% Class Definitions
+  classDef entity fill:#d1b3ff,stroke:#333;
+  classDef goal fill:#99ccff,stroke:#333;
+  classDef constraint fill:#ff9999,stroke:#333;
+  classDef relationship fill:#ffe066,stroke:#333;
+
+  %% Entities
+  Project["Project\n(ID, Name, Start, End, Desc, Budget, Status, Audience, Priority)"]:::entity
+  Team["Team\n(ID, Name, Size, Start, Status, Location, Type)"]:::entity
+  Employee["Employee\n(ID, Name, FirstName, Email, StartDate, Status, Availability)"]:::entity
+  Feature["Feature\n(ID, Title, Desc, Status, Priority, EstEffort)"]:::entity
+  Skill["Skill\n(ID, Label, Desc, Level, Certified, Category)"]:::entity
+  Role["Role\n(ID, RoleName, Desc, Area)"]:::entity
+  ProductOwner["ProductOwner\n(ID, Name, Email, Availability)"]:::entity
+  ScrumMaster["ScrumMaster\n(ID, Name, Email, Experience)"]:::entity
+  ProductBacklog["ProductBacklog\n(ID, CreatedOn, LastUpdated, Entries, Status)"]:::entity
+  Epic["Epic\n(ID, Title, Desc, Priority, Status, EstEffort)"]:::entity
+  UserStory["UserStory\n(ID, Title, Desc, AcceptCriteria, Priority, StoryPoints, Status)"]:::entity
+  Task["Task\n(ID, Title, Desc, Status, Effort, Type)"]:::entity
+  Sprint["Sprint\n(ID, Number, StartDate, EndDate, Status, Goal)"]:::entity
+  SprintBacklog["SprintBacklog\n(ID, TasksCount, LastUpdated, Status, TotalEffort)"]:::entity
+  SprintGoal["SprintGoal\n(ID, Desc, AchStatus, Benefit)"]:::entity
+  Blocker["Blocker\n(ID, Title, Desc, Severity, Status, DetectedOn, ResolvedOn)"]:::entity
+  SprintReview["SprintReview\n(ID, Date, Duration, FeedbackDoc, Attendees)"]:::entity
+  SprintRetrospective["SprintRetrospective\n(ID, Date, Duration, Actions, Sat, Moderation)"]:::entity
+  ScrumBoard["ScrumBoard\n(ID, Type, Columns, Cards, LastUpdated)"]:::entity
+  ReleasePlan["ReleasePlan\n(ID, Version, PlannedDate, Features, Status)"]:::entity
+  Roadmap["Roadmap\n(ID, StartDate, EndDate, Milestones, Objectives, Versions)"]:::entity
+  DevelopmentSnapshot["DevSnapshot\n(ID, VerNumber, CreationDate, TestStatus, DeployTarget, Doc)"]:::entity
+  Stakeholder["Stakeholder\n(ID, Name, Org, Role, Email, Interest, Influence, Relevance)"]:::entity
+  Velocity["Velocity\n(ID, SprintsUsed, AvgPoints, MaxVel, MinVel, Trend)"]:::entity
+
+  %% Relationships
+  Team --|"is_assigned_to_project"| Project
+  Employee --|"belongs_to_team"| Team
+  Employee --|"has_skill"| Skill
+  Employee --|"takes_on_role"| Role
+  ProductOwner --|"manages_backlog"| ProductBacklog
+  Team --|"is_supported_by"| ScrumMaster
+  ProductBacklog --|"contains_feature"| Feature
+  ProductBacklog --|"contains_epic"| Epic
+  Epic --|"contains_user_story"| UserStory
+  UserStory --|"consists_of_tasks"| Task
+  UserStory --|"is_in_sprint_backlog"| SprintBacklog
+  SprintBacklog --|"belongs_to_sprint"| Sprint
+  Sprint --|"pursues_goal"| SprintGoal
+  ScrumBoard --|"contains_tasks"| Task
+  Task --|"is_blocked_by"| Blocker
+  SprintReview --|"participates_in"| Stakeholder
+  ScrumMaster --|"moderates_retrospective"| SprintRetrospective
+  Velocity --|"refers_to_team"| Team
+  ReleasePlan --|"plans_release"| Feature
+  ReleasePlan --|"is_part_of_roadmap"| Roadmap
+  Sprint --|"generates_snapshot"| DevelopmentSnapshot
+
+  class Team,Employee,Project,Feature,Epic,UserStory,Task,Sprint,ReleasePlan,Velocity entity
+
+  %% Goals
+  G1["G1: Maximize Velocity"]:::goal
+  G2["G2: Minimize Sprint Duration"]:::goal
+  G3["G3: Maximize Feature Delivery"]:::goal
+  G4["G4: Minimize Bug Severity"]:::goal
+  G5["G5: Maximize Team Utilization"]:::goal
+  G6["G6: Minimize Budget Overrun"]:::goal
+  G7["G7: Maximize Stakeholder Satisfaction"]:::goal
+  G8["G8: Minimize Task Rework"]:::goal
+  G9["G9: Maximize Release Frequency"]:::goal
+  G10["G10: Minimize Unplanned Work"]:::goal
+
+  %% Goal Relationships
+  G1 --> Sprint
+  G2 --> Sprint
+  G3 --> ReleasePlan
+  G4 --> Blocker
+  G5 --> Sprint
+  G6 --> Project
+  G7 --> SprintReview
+  G8 --> Task
+  G9 --> ReleasePlan
+  G10 --> Task
+
+  %% Conditions (Constraints)
+  C1["C1: Team Size ≤ 10"]:::constraint
+  C2["C2: 7 ≤ Sprint Length ≤ 30"]:::constraint
+  C3["C3: Budget Cap"]:::constraint
+  C4["C4: Skill Coverage"]:::constraint
+  C5["C5: Availability Constraint"]:::constraint
+  C6["C6: Release Date Deadline"]:::constraint
+  C7["C7: Blocked Task Limit ≤5"]:::constraint
+  C8["C8: Daily Scrum Time ≤15min"]:::constraint
+  C9["C9: Backlog Size ≤100"]:::constraint
+  C10["C10: Review Attendance ≥80%"]:::constraint
+
+  %% Constraint Relationships
+  C1 --> Team
+  C2 --> Sprint
+  C3 --> Project
+  C4 --> Feature
+  C5 --> Employee
+  C6 --> ReleasePlan
+  C7 --> Task
+  C8 --> ScrumBoard
+  C9 --> ProductBacklog
+  C10 --> SprintReview

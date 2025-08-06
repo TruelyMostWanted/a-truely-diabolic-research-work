@@ -1,0 +1,266 @@
+classDiagram
+    %% Entities
+    class Project {
+      +ID
+      +Name
+      +ProjectStart
+      +ProjectEnd
+      +Description
+      +Budget
+      +Status
+      +TargetAudience
+      +Priority
+    }
+    class Team {
+      +ID
+      +Name
+      +TeamSize
+      +TeamStart
+      +TeamStatus
+      +Location
+      +TeamType
+    }
+    class Employee {
+      +ID
+      +Name
+      +FirstName
+      +Email
+      +StartDate
+      +Status
+      +Availability
+    }
+    class Feature {
+      +ID
+      +Title
+      +Description
+      +Status
+      +Priority
+      +EstimatedEffort
+    }
+    class Skill {
+      +ID
+      +Label
+      +Description
+      +Level
+      +Certified
+      +Category
+    }
+    class Role {
+      +ID
+      +RoleName
+      +Description
+      +AreaOfResponsibility
+    }
+    class ProductBacklog {
+      +ID
+      +CreatedOn
+      +LastUpdated
+      +NumberOfEntries
+      +Status
+    }
+    class Sprint {
+      +ID
+      +SprintNumber
+      +StartDate
+      +EndDate
+      +Status
+      +AchievementOfGoal
+    }
+    class UserStory {
+      +ID
+      +Title
+      +Description
+      +AcceptanceCriteria
+      +Priority
+      +StoryPoints
+      +Status
+    }
+    class Task {
+      +ID
+      +Title
+      +Description
+      +Status
+      +Effort
+      +Type
+    }
+    class ReleasePlan {
+      +ID
+      +Version
+      +PlannedDate
+      +IncludedFeatures
+      +Status
+    }
+    class Roadmap {
+      +ID
+      +StartDate
+      +EndDate
+      +Milestones
+      +Objectives
+      +Versions
+    }
+    class DevelopmentSnapshot {
+      +ID
+      +VersionNumber
+      +CreationDate
+      +TestStatus
+      +DeploymentTarget
+      +Documentation
+    }
+    class Blocker {
+      +ID
+      +Title
+      +Description
+      +Severity
+      +Status
+      +DetectedOn
+      +ResolvedOn
+    }
+    class Stakeholder {
+      +ID
+      +Name
+      +Organization
+      +Role
+      +Email
+      +AreaOfInterest
+      +InfluenceLevel
+      +RelevanceToFeature
+    }
+    class Velocity {
+      +ID
+      +NumberOfSprintsUsed
+      +AvgStoryPoints
+      +MaxVelocity
+      +MinVelocity
+      +Trend
+    }
+
+    %% Decision Variables
+    class x1 {
+      TeamAlloc: Integer [3,9]
+    }
+    class x2 {
+      SprintLength: Integer [10,30]
+    }
+    class x3 {
+      StoriesSprint: Integer [1,20]
+    }
+    class x4 {
+      BudgetFeature: Real [1000,50000]
+    }
+    class x5 {
+      SPUEstimate: Integer [1,13]
+    }
+    class x6 {
+      TasksPerStory: Integer [1,10]
+    }
+    class x7 {
+      NumReleases: Integer [1,12]
+    }
+    class x8 {
+      DocsPerFeature: Integer [1,10]
+    }
+    class x9 {
+      ParallelSprints: Integer [1,3]
+    }
+    class x10 {
+      FeatureIncluded: Binary
+    }
+    class x11 {
+      RoadmapMilestones: Integer [1,20]
+    }
+    class x12 {
+      TestCoverage: Real [50,100]
+    }
+
+    %% Goals
+    class G01 {Minimize Defect Rate}
+    class G02 {Maximize Velocity}
+    class G03 {Maximize Customer Satisfaction}
+    class G04 {Minimize Budget Overrun}
+    class G05 {Maximize On‐Time Delivery}
+    class G06 {Maximize Feature Throughput}
+    class G07 {Minimize Cycle Time}
+    class G08 {Maximize Team Utilization}
+    class G09 {Minimize Technical Debt}
+    class G10 {Maximize Roadmap Alignment}
+    class G11 {Minimize Sprint Scope Changes}
+    class G12 {Maximize Documentation Coverage}
+
+    %% Conditions
+    class C01 {Budget Limit}
+    class C02 {Team Size Bound}
+    class C03 {Sprint Duration Fixed}
+    class C04 {Skill Match}
+    class C05 {Release Window}
+    class C06 {Story Point Cap}
+    class C07 {Dependency Order}
+    class C08 {Availability Constraint}
+    class C09 {Regulatory Compliance}
+    class C10 {Technology Stack}
+    class C11 {Stakeholder Engagement}
+    class C12 {Documentation Standard}
+    class C13 {Time Zone Overlap}
+
+    %% Relationships
+    Project --> Team        : is_assigned_to_project
+    Employee --> Team       : belongs_to_team
+    Employee --> Skill      : has_skill
+    Employee --> Role       : takes_on_role
+    ProductBacklog --> Feature : contains_feature
+    ProductBacklog --> UserStory : contains_user_story
+    UserStory --> Task      : consists_of_tasks
+    UserStory --> Sprint    : is_in_sprint_backlog
+    Sprint --> SprintBacklog: belongs_to_sprint
+    Sprint --> SprintGoal   : pursues_goal
+    ScrumBoard --> Task     : contains_tasks
+    FeatureDocumentation --> Feature : documents_feature
+    Task --> Blocker        : is_blocked_by
+    Stakeholder --> SprintReview : participates_in
+    ScrumMaster --> SprintRetrospective : moderates_retrospective
+    Velocity --> Team       : refers_to_team
+    ReleasePlan --> Feature : plans_release
+    ReleasePlan --> Roadmap : is_part_of_roadmap
+    Sprint --> DevelopmentSnapshot : generates_snapshot
+
+    %% Objectives linkage
+    G01 --|> DevelopmentSnapshot
+    G02 --|> Velocity
+    G03 --|> Stakeholder
+    G04 --|> Project
+    G05 --|> Sprint
+    G06 --|> ReleasePlan
+    G07 --|> UserStory
+    G08 --|> Team
+    G09 --|> Blocker
+    G10 --|> Roadmap
+    G11 --|> SprintBacklog
+    G12 --|> FeatureDocumentation
+
+    %% Constraints linkage
+    C01 --|> Project
+    C02 --|> Team
+    C03 --|> Sprint
+    C04 --|> Employee
+    C05 --|> ReleasePlan
+    C06 --|> UserStory
+    C07 --|> Epic
+    C08 --|> Employee
+    C09 --|> Feature
+    C10 --|> Feature
+    C11 --|> Stakeholder
+    C12 --|> FeatureDocumentation
+    C13 --|> Team
+
+    %% Class Definitions
+    classDef entity       fill:#d1b3ff,stroke:#333;
+    classDef variable     fill:#99e699,stroke:#333;
+    classDef goal         fill:#99ccff,stroke:#333;
+    classDef constraint   fill:#ff9999,stroke:#333;
+    classDef relationship  fill:#ffe066,stroke:#333;
+
+    %% Apply classes
+    class Project,Team,Employee,Feature,Skill,Role,ProductBacklog,Sprint,UserStory,Task,ReleasePlan,Roadmap,DevelopmentSnapshot,Blocker,Stakeholder,Velocity entity
+    class x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12 variable
+    class G01,G02,G03,G04,G05,G06,G07,G08,G09,G10,G11,G12 goal
+    class C01,C02,C03,C04,C05,C06,C07,C08,C09,C10,C11,C12,C13 constraint
+    class is_assigned_to_project,belongs_to_team,has_skill,takes_on_role,contains_feature,contains_user_story,consists_of_tasks,is_in_sprint_backlog,belongs_to_sprint,pursues_goal,contains_tasks,documents_feature,is_blocked_by,participates_in,moderates_retrospective,refers_to_team,plans_release,is_part_of_roadmap,generates_snapshot relationship

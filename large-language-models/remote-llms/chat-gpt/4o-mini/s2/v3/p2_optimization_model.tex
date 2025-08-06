@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+\section*{Optimization Model for SCRUM-Based Development}
+
+\subsection*{Decision Variables}
+Let the decision vector be \( x = (x_1, x_2, \dots, x_{11}) \) where:
+\begin{align*}
+x_1 &= \text{sprint length (days)}, \\
+x_2 &= \text{team size (members)}, \\
+x_3 &= \text{budget allocation (\%)}, \\
+x_4 &= \text{features per sprint}, \\
+x_5 &= \text{story point cap}, \\
+x_6 &= \text{test cases per feature}, \\
+x_7 &= \text{documentation hours}, \\
+x_8 &= \text{training hours}, \\
+x_9 &= \text{daily scrum duration (min)}, \\
+x_{10} &= \text{buffer time (\%)}, \\
+x_{11} &= \text{release frequency (per quarter)}.
+\end{align*}
+
+\subsection*{Objective Functions}
+\[
+\begin{aligned}
+& \text{Maximize:} & f_1(x) &= \text{Velocity}(x), \\
+& & f_2(x) &= \text{CustomerSatisfaction}(x), \\
+& & f_3(x) &= \text{FeatureThroughput}(x), \\
+& & f_4(x) &= \text{TeamUtilization}(x), \\
+& & f_5(x) &= \text{BacklogHealth}(x), \\
+& & f_6(x) &= \text{RoadmapAdherence}(x), \\
+& \text{Minimize:} & f_7(x) &= \text{Bugs}(x), \\
+& & f_8(x) &= \text{SprintOverrun}(x), \\
+& & f_9(x) &= \text{CycleTime}(x), \\
+& & f_{10}(x) &= \text{ContextSwitches}(x), \\
+& & f_{11}(x) &= \text{ReleaseDefects}(x).
+\end{aligned}
+\]
+
+\subsection*{Constraints}
+\[
+\begin{aligned}
+& g_1(x): \text{TotalCost}(x) \le \text{Budget}, \\
+& g_2(x): \sum \text{StoryPointsAssigned}(x) \le \text{TeamCapacity}, \\
+& g_3(x): \text{SkillMatch}(x) = 1, \\
+& g_4(x): \text{Availability}(x) = 1, \\
+& g_5(x): x_1 = 14, \\
+& g_6(x): \text{CriticalFeaturesDone}(x) = 1, \\
+& g_7(x): \text{ComplianceViolations}(x) = 0, \\
+& g_8(x): x_2 \le \text{MaxTeamSize}, \\
+& g_9(x): \text{BacklogEntries}(x) \le \text{MaxBacklogSize}, \\
+& g_{10}(x): \text{WIP}(x) \le \text{WIPLimit}, \\
+& g_{11}(x): \text{ActiveSprints}(x) \le 3.
+\end{aligned}
+\]
+
+\subsection*{Variable Bounds}
+\[
+\begin{aligned}
+x_1 &\in [7, 28], &
+x_2 &\in [3, 12], &
+x_3 &\in [0, 100], \\
+x_4 &\in [1, 10], &
+x_5 &\in [10, 100], &
+x_6 &\in [0, 500], \\
+x_7 &\in [0, 40], &
+x_8 &\in [0, 16], &
+x_9 &\in [10, 30], \\
+x_{10} &\in [0, 20], &
+x_{11} &\in [1, 4].
+\end{aligned}
+\]
+
+\end{document}

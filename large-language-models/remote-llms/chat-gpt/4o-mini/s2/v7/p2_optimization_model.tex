@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+
+\section*{Optimization Model}
+
+\subsection*{Decision Variables}
+\begin{align*}
+D_1 &= \text{Sprint duration in days (}\mathrm{Integer}\text{)} \\
+D_2 &= \text{Team size (}\mathrm{Integer}\text{)} \\
+D_3 &= \text{Budget allocation (}\mathrm{Float}\text{)} \\
+D_4 &= \text{Story point cap per sprint (}\mathrm{Integer}\text{)} \\
+D_5 &= \text{Estimated effort for a feature (}\mathrm{Float}\text{)} \\
+D_6 &= \text{Max tasks per developer (}\mathrm{Integer}\text{)} \\
+D_7 &= \text{Releases per year (}\mathrm{Integer}\text{)} \\
+D_8 &= \text{Documentation pages per feature (}\mathrm{Integer}\text{)} \\
+D_9 &= \text{Number of test environments (}\mathrm{Integer}\text{)} \\
+D_{10} &= \text{Meeting duration in minutes (}\mathrm{Integer}\text{)} \\
+D_{11} &= \text{Backlog items reviewed per review (}\mathrm{Integer}\text{)}
+\end{align*}
+
+\subsection*{Objective Functions}
+\begin{align}
+\text{Maximize } & z_1 = \text{Velocity} \quad (G1) \\
+\text{Minimize } & z_2 = \text{Bug Count} \quad (G2) \\
+\text{Maximize } & z_3 = \text{Customer Satisfaction} \quad (G3) \\
+\text{Minimize } & z_4 = \text{Sprint Overrun} \quad (G4) \\
+\text{Maximize } & z_5 = \text{Team Utilization} \quad (G5) \\
+\text{Minimize } & z_6 = \text{Cost Variance} \quad (G6) \\
+\text{Maximize } & z_7 = \text{Features Delivered} \quad (G7) \\
+\text{Minimize } & z_8 = \text{Time to Market} \quad (G8) \\
+\text{Maximize } & z_9 = \text{Code Coverage} \quad (G9) \\
+\text{Minimize } & z_{10} = \text{Technical Debt} \quad (G10) \\
+\text{Maximize } & z_{11} = \text{Stakeholder Engagement} \quad (G11)
+\end{align}
+
+\subsection*{Constraints (Conditions)}
+\begin{align}
+5 \;\le\; & D_2 \;\le\; 9 && \text{(C1: Team Size Limit)} \\
+D_1 &= 14 && \text{(C2: Sprint Length = 2 weeks)} \\
+D_3 &\le \text{Budget} && \text{(C3: Budget Ceiling)} \\
+\sum_{\text{skill } s \in \text{ReqSkills}} & x_{\text{team},s} \ge 1 && \text{(C4: Skill Coverage)} \\
+\text{Availability}(e) &= 1 && \forall e \in \text{Team} \quad \text{(C5)} \\
+\text{ReleaseDate} &\le \text{PlannedDate} && \text{(C6: Release Date Target)} \\
+\#\{\text{backlog entries}\} &\ge \text{Approved} && \text{(C7: Backlog Completeness)} \\
+D_5 &\le 50 && \text{(C8: Epic Size Cap)} \\
+G \ge 1 && \forall \text{Sprint Goals} \quad \text{(C9)} \\
+\text{Doc}(f) &\ge 1 && \forall f \in \text{Features} \quad \text{(C10)} \\
+D_{11} &\le 1 && \text{(C11: Max Daily Meetings)} \\
+\text{ResolveTime}(b) &\le 48h && \forall b \in \text{Blockers} \quad \text{(C12)} \\
+\text{ResponseTime} &\le 24h && \forall \text{PO} \quad \text{(C13)}
+\end{align}
+
+\end{document}

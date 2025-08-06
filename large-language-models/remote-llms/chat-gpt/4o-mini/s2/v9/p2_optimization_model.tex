@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\begin{document}
+
+\title{Optimization Model for Scrum-Based Software Development}
+\author{}
+\date{}
+\maketitle
+
+\section*{Sets and Indices}
+\begin{itemize}
+  \item $t \in \mathcal{T}$: Teams
+  \item $k \in \{1,\dots,S\}$: Sprints
+  \item $p \in \mathcal{P}$: Projects
+  \item $f \in \mathcal{F}$: Features
+  \item $u \in \mathcal{U}$: User Stories
+  \item $e \in \mathcal{E}$: Employees
+\end{itemize}
+
+\section*{Decision Variables}
+\begin{align*}
+  S &:\;\text{Number of Sprints (DV1)}\\
+  Tsize_t &:\;\text{Team Size for team }t\;(DV2)\\
+  d_k &:\;\text{Length of sprint }k\;(DV3)\\
+  F_k &:\;\text{Features in sprint }k\;(DV4)\\
+  h_u &:\;\text{Hours for task }u\;(DV5)\\
+  y_{\text{phase}} &:\;\text{Budget percentage for each phase}\;(DV6)\\
+  DevCount_t &:\;\text{Developers in team }t\;(DV7)\\
+  QACount_t &:\;\text{QA personnel in team }t\;(DV8)\\
+  U_k &:\;\text{User Stories in sprint }k\;(DV9)\\
+  SMCount_t &:\;\text{Scrum Masters in team }t\;(DV10)
+\end{align*}
+
+\section*{Objectives}
+\begin{align}
+  \min\;\sum_{k=1}^S d_k
+  &\quad \text{(Minimize total project duration)} \\
+  \max\;V
+  &\quad \text{(Maximize sprint velocity)} \\
+  \min\;\text{Var}_{\text{budget}}
+  &\quad \text{(Minimize budget variance)} \\
+  \max\;\sum_{r\in \mathcal{R}} \lvert \{ f: f \text{ released in }r \}\rvert
+  &\quad \text{(Maximize features per release)} \\
+  \min\;\sum_{k=1}^S \#\{\text{open bugs in }k\}
+  &\quad \text{(Minimize open bugs)} \\
+  \max\;\sum_{rev}\text{StakeholderScore}_{rev}
+  &\quad \text{(Maximize stakeholder satisfaction)}
+\end{align}
+
+\section*{Constraints}
+\begin{align}
+  Tsize_t &\ge 3 &&\forall t\in\mathcal{T} &&\text{(C1)}\\
+  Tsize_t &\le 9 &&\forall t\in\mathcal{T} &&\text{(C2)}\\
+  d_k &= 14 &&\forall k=1,\dots,S &&\text{(C3)}\\
+  \text{Budget}_p &\ge \sum_{\text{phase}} y_{\text{phase}}\cdot \text{Budget}_p &&\forall p\in\mathcal{P} &&\text{(C4)}\\
+  \sum_{e\in t} \mathbf{hasSkill}(e,s) 
+    &\ge \mathbf{reqSkill}(f,s)
+    &&\forall f\in\mathcal{F},\,\forall s &&\text{(C5)}\\
+  \text{Availability}_{e,k} &= 1 &&\forall e\in\mathcal{E},\,k &&\text{(C6)}\\
+  |\mathcal{B}| &\le 200 &&&&\text{(C7)}\\
+  \text{TimeZone}(t) &= \text{const} &&\forall t &&\text{(C8)}\\
+  \text{StartDate}_k &\notin \text{PublicHolidays} &&\forall k &&\text{(C9)}\\
+  F_k &\ge \sum_{f\in \mathcal{F}_{HP}} x_{k,f}
+    &&\forall k\le 2 &&\text{(C10)}
+\end{align}
+
+\end{document}

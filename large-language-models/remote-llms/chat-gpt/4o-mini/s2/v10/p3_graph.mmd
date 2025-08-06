@@ -1,0 +1,120 @@
+classDiagram
+    %% Entities
+    class Project {
+      +ID  
+      +Name  
+      +ProjectStart  
+      +ProjectEnd  
+      +Description  
+      +Budget  
+      +Status  
+      +TargetAudience  
+      +Priority  
+    }
+    class Team {
+      +ID  
+      +Name  
+      +TeamSize  
+      +TeamStart  
+      +TeamStatus  
+      +Location  
+      +TeamType  
+    }
+    class Employee {
+      +ID  
+      +Name  
+      +FirstName  
+      +Email  
+      +StartDate  
+      +Status  
+      +Availability  
+    }
+    class Feature {
+      +ID  
+      +Title  
+      +Description  
+      +Status  
+      +Priority  
+      +EstimatedEffort  
+    }
+    %% (you could add other Entities similarly…)
+
+    %% Decision Variables
+    class DV1_TeamSize        { +x1 } 
+    class DV2_SprintLength    { +x2 } 
+    class DV3_FeaturesPerSprint{ +x3 }
+    class DV4_BudgetAllocation{ +x4 } 
+    class DV5_DevHoursPerWeek { +x5 }
+    class DV6_QAHoursPerSprint{ +x6 }
+    class DV7_CodeCoverage    { +x7 }
+    class DV8_DefectThreshold { +x8 }
+    class DV9_StoryPoints     { +x9 }
+    class DV10_FeedbackSessions{ +x10 }
+
+    %% Goals
+    class G1_MaxVelocity          { Maximize Velocity } 
+    class G2_MinDefectRate        { Minimize Defect Rate } 
+    class G4_MaxCustomerFeedback  { Maximize Feedback Sessions } 
+    class G9_MaxCodeCoverage      { Maximize Code Coverage } 
+    class G6_MinTimeToMarket      { Minimize Time-to-Market } 
+
+    %% Conditions (Constraints)
+    class C1_BudgetUtilization    { Budget ≤ BudgetMax } 
+    class C2_SprintDuration       { 7 ≤ SprintLength ≤ 30 } 
+    class C6_OvertimeCap          { DevHoursPerWeek ≤ 40 } 
+    class C10_DefectDensity       { DefectThreshold ≤ 10 } 
+
+    %% Relationships (Entities)
+    Team "1" --> "N" Project : is_assigned_to_project
+    Employee "N" --> "1" Team : belongs_to_team
+    Employee "N" --> "M" Skill : has_skill
+    Employee "N" --> "M" Role : takes_on_role
+    ProductOwner "1" --> "1" ProductBacklog : manages_backlog
+    Team "1" --> "1" ScrumMaster : is_supported_by
+    ProductBacklog "1" --> "N" Feature : contains_feature
+    Epic "1" --> "N" UserStory : contains_user_story
+    UserStory "1" --> "N" Task : consists_of_tasks
+    UserStory "N" --> "M" SprintBacklog : is_in_sprint_backlog
+    SprintBacklog "1" --> "1" Sprint : belongs_to_sprint
+    Sprint "1" --> "1" SprintGoal : pursues_goal
+    ScrumBoard "1" --> "N" Task : contains_tasks
+    FeatureDocumentation "1" --> "1" Feature : documents_feature
+    Task "N" --> "M" Blocker : is_blocked_by
+    Stakeholder "N" --> "M" SprintReview : participates_in
+    ScrumMaster "1" --> "N" SprintRetrospective : moderates_retrospective
+    Velocity "1" --> "1" Team : refers_to_team
+    ReleasePlan "1" --> "N" Feature : plans_release
+    ReleasePlan "N" --> "1" Roadmap : is_part_of_roadmap
+    Sprint "1" --> "1" DevelopmentSnapshot : generates_snapshot
+
+    %% Link Decision Variables to Entities
+    Project                ..> DV4_BudgetAllocation         : allocates
+    Team                   ..> DV1_TeamSize                 : determines
+    Sprint                 ..> DV2_SprintLength             : sets
+    SprintBacklog          ..> DV3_FeaturesPerSprint        : plans
+    Employee               ..> DV5_DevHoursPerWeek          : constrained_by
+    Sprint                 ..> DV6_QAHoursPerSprint         : allocates
+    DevelopmentSnapshot    ..> DV7_CodeCoverage             : measures
+    DevelopmentSnapshot    ..> DV8_DefectThreshold          : measures
+    SprintBacklog          ..> DV9_StoryPoints              : commits
+    SprintReview           ..> DV10_FeedbackSessions        : schedules
+
+    %% Link Goals to Entities/Variables
+    Team                   ..> G1_MaxVelocity               : influences
+    DevelopmentSnapshot    ..> G2_MinDefectRate             : improves
+    SprintReview           ..> G4_MaxCustomerFeedback       : increases
+    DevelopmentSnapshot    ..> G9_MaxCodeCoverage           : maximizes
+    Project                ..> G6_MinTimeToMarket           : shortens
+
+    %% Link Conditions to Entities/Variables
+    Project                ..> C1_BudgetUtilization         : must_satisfy
+    Sprint                 ..> C2_SprintDuration            : must_satisfy
+    Employee               ..> C6_OvertimeCap               : must_avoid
+    DevelopmentSnapshot    ..> C10_DefectDensity            : must_satisfy
+
+    %% Class styling
+    class Project,Team,Employee,Feature,Epic,UserStory,Task,Sprint,SprintBacklog,SprintGoal,SprintReview,ScrumBoard,SprintRetrospective,ReleasePlan,Roadmap,DevelopmentSnapshot,ProductBacklog,ProductOwner,ScrumMaster,Skill,Role,Blocker,Stakeholder,FeatureDocumentation entity
+    class DV1_TeamSize,DV2_SprintLength,DV3_FeaturesPerSprint,DV4_BudgetAllocation,DV5_DevHoursPerWeek,DV6_QAHoursPerSprint,DV7_CodeCoverage,DV8_DefectThreshold,DV9_StoryPoints,DV10_FeedbackSessions variable
+    class G1_MaxVelocity,G2_MinDefectRate,G4_MaxCustomerFeedback,G9_MaxCodeCoverage,G6_MinTimeToMarket goal
+    class C1_BudgetUtilization,C2_SprintDuration,C6_OvertimeCap,C10_DefectDensity constraint
+    classDef relationship stroke-dasharray: 5 5,fill:#ffe066,stroke:#333

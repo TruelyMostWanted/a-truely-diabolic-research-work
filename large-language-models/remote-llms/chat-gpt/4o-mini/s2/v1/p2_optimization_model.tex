@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+\section*{Decision Variables}
+\[
+\begin{aligned}
+x_1 &\equiv \text{SprintCount: integer, }1 \le x_1 \le 50\\
+x_2 &\equiv \text{TeamSize: integer, }3 \le x_2 \le 10\\
+x_3 &\equiv \text{SprintDuration: integer (days), }7 \le x_3 \le 30\\
+x_4 &\equiv \text{BudgetAllocation: continuous, }0 \le x_4 \le 10^7\\
+x_5 &\equiv \text{WorkHours: integer (per day), }4 \le x_5 \le 10\\
+x_6 &\equiv \text{MaxBlockers: integer, }0 \le x_6 \le 5\\
+x_7 &\equiv \text{Capacity: integer (story points), }10 \le x_7 \le 200\\
+x_8 &\equiv \text{ReleaseFreq: integer (per year), }1 \le x_8 \le 12\\
+x_9 &\equiv \text{BacklogItems: integer, }1 \le x_9 \le 50\\
+x_{10} &\equiv \text{DocLeadTime: integer (days), }0 \le x_{10} \le 14
+\end{aligned}
+\]
+
+\section*{Objectives}
+Multi-objective optimization with:
+\[
+\begin{aligned}
+&\max f_1(x) = \text{Velocity}(x) &&(\text{maximize average story points per sprint})\\
+&\min f_2(x) = \text{DefectCount}(x) &&(\text{minimize bugs in snapshots})\\
+&\max f_3(x) = \text{StakeholderScore}(x) &&(\text{maximize feedback score})\\
+&\min f_4(x) = \text{CycleTime}(x) &&(\text{minimize story cycle time})\\
+&\max f_5(x) = \text{FeatureThroughput}(x) &&(\text{maximize features per release})\\
+&\min f_6(x) = \text{BudgetVariance}(x) &&(\text{minimize budget deviation})\\
+&\max f_7(x) = \text{TeamUtilization}(x) &&(\text{maximize utilization})\\
+&\min f_8(x) = \text{BlockerCount}(x) &&(\text{minimize blockers})\\
+&\max f_9(x) = \text{OnTimeRate}(x) &&(\text{maximize on-time sprint completion})\\
+&\max f_{10}(x) = \text{BacklogHealth}(x) &&(\text{maximize backlog health})
+\end{aligned}
+\]
+
+\section*{Constraints}
+\[
+\begin{aligned}
+&x_2 \le 10 &&(\text{C1: TeamSizeLimit})\\
+&x_3 = 14 &&(\text{C2: SprintLength fixed at 2 weeks})\\
+&x_4 \le B_{\text{max}} &&(\text{C3: BudgetCeiling})\\
+&\sum_{s \in S_{\text{req}}} \sum_{e \in E} \delta_{e,s} \ge |S_{\text{req}}| &&(\text{C4: SkillCoverage})\\
+&\text{cert}_{\text{SM}} = 1,\;\text{cert}_{\text{PO}} = 1 &&(\text{C5: Certification Requirement})\\
+&\forall e\in E:\; \text{avail}_e = 1 &&(\text{C6: Resource Availability})\\
+&x_9 \le Q_{\text{max}} &&(\text{C7: SprintBacklogSize})\\
+&d_{\text{release}} \in [d_{\text{window,start}},d_{\text{window,end}}] &&(\text{C8: MarketWindow})\\
+&\forall t\in T:\; \sum_{m \in \text{meetings}} \mathbf{1}_{\text{attend}_t(m)} = | \text{meetings}| &&(\text{C9: Daily Scrum Attendance})\\
+&\forall f\in F:\; \text{doc\_complete}_f = 1 &&(\text{C10: Documentation Status})
+\end{aligned}
+\]
+
+\end{document}

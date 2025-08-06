@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+\section*{Optimization Model for Scrum-Based Software Development}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_1 &: \text{Sprint length in days (DV1)}, \\
+x_2 &: \text{Team size (DV2)}, \\
+x_3 &: \text{Budget allocation for project (DV3)}, \\
+x_4 &: \text{Maximum story points per sprint (DV4)}, \\
+x_5 &: \text{Features per release (DV5)}, \\
+x_6 &: \text{Concurrent sprints (DV6)}, \\
+x_7 &: \text{Tasks per sprint backlog (DV7)}, \\
+x_8 &: \text{Number of QA engineers (DV8)}, \\
+x_9 &: \text{Buffer time percentage (DV9)}, \\
+x_{10} &: \text{Backlog items per sprint (DV10)}.
+\end{align*}
+
+\subsection*{Objective Function (Multi-Objective)}
+\begin{align*}
+\max \; &\bigl(f_1(x) \;=\; \text{Increase Team Velocity}\bigr),\\
+\max \; &\bigl(f_2(x) \;=\; -\,\text{Minimize Defects}\bigr),\\
+\max \; &\bigl(f_3(x) \;=\; \text{Maximize Customer Satisfaction}\bigr),\\
+\max \; &\bigl(f_4(x) \;=\; -\,\text{Minimize Time to Market}\bigr),\\
+&\ldots
+\end{align*}
+
+\subsection*{Constraints}
+\begin{alignat*}{2}
+\text{C1:}&\quad x_1 \ge 7, &\quad &x_1 \le 30, \\
+\text{C2:}&\quad x_2 \ge 3, &\quad &x_2 \le 10, \\
+\text{C3:}&\quad 0 \le x_3 \le 10000000, \\
+\text{C4:}&\quad 20 \le x_4 \le 60, \\
+\text{C5:}&\quad 1 \le x_5 \le 10, \\
+\text{C6:}&\quad 1 \le x_6 \le 3, \\
+\text{C7:}&\quad 10 \le x_7 \le 100, \\
+\text{C8:}&\quad 1 \le x_8 \le 3, \\
+\text{C9:}&\quad 0 \le x_9 \le 20, \\
+\text{C10:}&\quad 5 \le x_{10} \le 30.
+\end{alignat*}
+
+\end{document}

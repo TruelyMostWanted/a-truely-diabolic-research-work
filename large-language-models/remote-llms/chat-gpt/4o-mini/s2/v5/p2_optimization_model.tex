@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+
+\section*{Optimization Model for Scrum-based Software Development}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_1 &= \text{Sprint Length (days)} \quad [7,28], \; x_1 \in \mathbb{Z}\\
+x_2 &= \text{Number of Developers per Team} \quad [3,9], \; x_2 \in \mathbb{Z}\\
+x_3 &= \text{Budget Allocation (EUR)} \quad [10\,000,1\,000\,000], \; x_3 \in \mathbb{R}\\
+x_4 &= \text{Story Points Capacity per Sprint} \quad [20,100], \; x_4 \in \mathbb{Z}\\
+x_5 &= \text{Max Concurrent Tasks per Developer} \quad [1,5], \; x_5 \in \mathbb{Z}\\
+x_6 &= \text{Number of Test Environments} \quad [1,5], \; x_6 \in \mathbb{Z}\\
+x_7 &= \text{Standard Meeting Duration (min)} \quad [15,60], \; x_7 \in \mathbb{Z}\\
+x_8 &= \text{Backlog Refinement Sessions per Sprint} \quad [1,4], \; x_8 \in \mathbb{Z}\\
+x_9 &= \text{Releases per Year} \quad [1,12], \; x_9 \in \mathbb{Z}\\
+x_{10} &= \text{Documentation Review Interval (days)} \quad [7,90], \; x_{10} \in \mathbb{Z}
+\end{align*}
+
+\subsection*{Objectives (Goals)}
+\begin{enumerate}
+    \item Maximize average story points per sprint:
+    \[ \max Z_1 = x_4. \]
+    \item Minimize number of unresolved bugs per sprint (modeled abstractly as $B(x)$):
+    \[ \min Z_2 = B(x). \]
+    \item Maximize stakeholder satisfaction (abstract $S(x)$):
+    \[ \max Z_3 = S(x). \]
+    \item Minimize average task completion time (abstract $T(x)$):
+    \[ \min Z_4 = T(x). \]
+\end{enumerate}
+
+\subsection*{Constraints (Conditions)}
+\begin{align*}
+% Budget cap
+& x_3 \leq B_{\max} && (\text{Budget Cap}) \\
+% Team size constraint
+& 3 \leq x_2 \leq 9 && (\text{Team Size Range}) \\
+% Sprint length constraint
+& 7 \leq x_1 \leq 28 && (\text{Sprint Duration}) \\
+% Resource availability, skill coverage, etc., represented abstractly
+& \text{Availability}(x) \leq 1 && (\text{Resource Availability}) \\
+& \text{SkillMatch}(x) = 1 && (\text{Skill Coverage}) \\
+% Meeting cadence: daily scrum occurs every workday
+& \text{Cadence}(x) = 5 && (\text{Daily Scrum Cadence}) \\
+% Review attendance: at least 70\% attendance
+& \text{AttendanceRate}(x) \geq 0.7 && (\text{Review Attendance}) \\
+\end{align*}
+
+\subsection*{Variable Domains}
+\begin{align*}
+x_i \in \mathbb{Z} \quad &\text{for } i = 1,2,4,5,6,7,8,9,10, \\
+x_3 \in \mathbb{R} \quad &\text{for } \text{Budget Allocation}.
+\end{align*}
+
+\end{document}

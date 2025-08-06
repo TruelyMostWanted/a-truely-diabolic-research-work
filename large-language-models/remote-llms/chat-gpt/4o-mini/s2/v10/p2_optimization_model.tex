@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+\section*{Optimization Model for Scrum-based Software Development}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_1 &\;=\; \text{Team Size (DV1)} \\
+x_2 &\;=\; \text{Sprint Length in days (DV2)} \\
+x_3 &\;=\; \text{Features per Sprint (DV3)} \\
+x_4 &\;=\; \text{Budget Allocation (DV4)} \\
+x_5 &\;=\; \text{Developer Hours per Week (DV5)} \\
+x_6 &\;=\; \text{QA Hours per Sprint (DV6)} \\
+x_7 &\;=\; \text{Code Coverage Target \% (DV7)} \\
+x_8 &\;=\; \text{Defect Density Threshold (DV8)} \\
+x_9 &\;=\; \text{Story Points Committed (DV9)} \\
+x_{10} &\;=\; \text{Feedback Sessions per Sprint (DV10)}
+\end{align*}
+
+\subsection*{Objective Functions (Goals)}
+\begin{alignat*}{2}
+\max\; & f_1(x) \;=\; \text{Velocity}               &&\quad (\text{G1: Maximize Velocity}) \\
+\min\; & f_2(x) \;=\; \text{Defect Rate}            &&\quad (\text{G2: Minimize Defect Rate}) \\
+\max\; & f_3(x) \;=\; \text{Customer Feedback Sessions} &&\quad (\text{G4: Maximize Customer Feedback}) \\
+\max\; & f_4(x) \;=\; x_7                            &&\quad (\text{G9: Maximize Code Coverage}) \\
+\min\; & f_5(x) \;=\; \text{Time-to-Market}         &&\quad (\text{G6: Minimize Time-to-Market})
+\end{alignat*}
+
+\subsection*{Constraints (Conditions)}
+\begin{alignat*}{2}
+\text{C1: Budget Cap:}     &\quad x_4 \;\le\; B_{\max}             &&\quad (\text{Must match}) \\
+\text{C2: Sprint Duration:}&\quad 7 \;\le\; x_2 \;\le\; 30        &&\quad (\text{Must match}) \\
+\text{C6: Overtime Cap:}    &\quad x_5 \;\le\; 40                 &&\quad (\text{Cannot match}) \\
+\text{C10: Defect Density:}&\quad x_8 \;\le\; 10                  &&\quad (\text{Must match}) \\
+\text{DV Bounds:}           &\quad 3 \;\le\; x_1 \;\le\; 9         &&\quad (\text{per DV1}) \\
+                           &\quad 1 \;\le\; x_3 \;\le\; 20        &&\quad (\text{per DV3}) \\
+                           &\quad 20 \;\le\; x_5 \;\le\; 40       &&\quad (\text{per DV5}) \\
+                           &\quad 10 \;\le\; x_6 \;\le\; 80       &&\quad (\text{per DV6}) \\
+                           &\quad 0  \;\le\; x_7 \;\le\; 100      &&\quad (\text{per DV7}) \\
+                           &\quad 0  \;\le\; x_8 \;\le\; 10       &&\quad (\text{per DV8}) \\
+                           &\quad 5  \;\le\; x_9 \;\le\; 50       &&\quad (\text{per DV9}) \\
+                           &\quad 1  \;\le\; x_{10} \;\le\; 5     &&\quad (\text{per DV10})
+\end{alignat*}
+
+\end{document}

@@ -1,0 +1,114 @@
+%% Mermaid Optimization Model Graph
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
+
+classDiagram
+    %% Entities
+    class Project            {ID\nName\nStart\nEnd\nBudget\nStatus\nPriority}:::entity
+    class Team               {ID\nName\nSize\nStart\nStatus\nLocation\nType}:::entity
+    class Employee           {ID\nName\nEmail\nStartDate\nStatus\nAvailability}:::entity
+    class Feature            {ID\nTitle\nStatus\nPriority\nEstEffort}:::entity
+    class Skill              {ID\nLabel\nLevel\nCertified\nCategory}:::entity
+    class Role               {ID\nName\nAreaOfResponsibility}:::entity
+    class ProductBacklog     {ID\nCreatedOn\nLastUpdated\nEntries\nStatus}:::entity
+    class Sprint             {ID\nNumber\nStartDate\nEndDate\nStatus}:::entity
+    class SprintBacklog      {ID\nTasks\nLastUpdated\nStatus\nTotalEffort}:::entity
+    class SprintGoal         {ID\nObjective\nAchStatus\nBenefit}:::entity
+    class Epic               {ID\nTitle\nPriority\nStatus\nEstEffort}:::entity
+    class UserStory          {ID\nTitle\nACriteria\nPriority\nPoints\nStatus}:::entity
+    class Task               {ID\nTitle\nStatus\nEffort\nType}:::entity
+    class DevSnapshot        {ID\nVersion\nDate\nTestStatus\nDeployTarget}:::entity
+    class Blocker            {ID\nTitle\nSeverity\nStatus\nDetectedOn\nResolvedOn}:::entity
+    class Stakeholder        {ID\nName\nOrg\nRole\nEmail\nInfluence}:::entity
+    class Velocity           {ID\nSprintsUsed\nAvgPoints\nMaxV\nMinV\nTrend}:::entity
+    class ReleasePlan        {ID\nVersion\nPlannedDate\nStatus}:::entity
+    class Roadmap            {ID\nStartDate\nEndDate\nMilestones\nVersions}:::entity
+    class ScrumBoard         {ID\nType\nColumns\nCards}:::entity
+    class FeatureDoc         {ID\nTitle\nChangeLog\nLinkedReqs}:::entity
+
+    %% Decision Variables
+    class x1  {SprintCount\n1≤x1≤50}:::variable
+    class x2  {TeamSize\n3≤x2≤10}:::variable
+    class x3  {SprintDuration\n7≤x3≤30}:::variable
+    class x4  {BudgetAllocation\n0≤x4≤1e7}:::variable
+    class x5  {WorkHours\n4≤x5≤10}:::variable
+    class x6  {MaxBlockers\n0≤x6≤5}:::variable
+    class x7  {Capacity\n10≤x7≤200}:::variable
+    class x8  {ReleaseFreq\n1≤x8≤12}:::variable
+    class x9  {BacklogItems\n1≤x9≤50}:::variable
+    class x10 {DocLeadTime\n0≤x10≤14}:::variable
+
+    %% Goals
+    class G1  {"Maximize Velocity"}:::goal
+    class G2  {"Minimize Defects"}:::goal
+    class G3  {"Maximize Stakeholder Satisfaction"}:::goal
+    class G4  {"Minimize Cycle Time"}:::goal
+    class G5  {"Maximize Feature Throughput"}:::goal
+    class G6  {"Minimize Budget Variance"}:::goal
+    class G7  {"Maximize Team Utilization"}:::goal
+    class G8  {"Minimize Blockers"}:::goal
+    class G9  {"Maximize On-Time Delivery"}:::goal
+    class G10 {"Maximize Backlog Health"}:::goal
+
+    %% Constraints / Conditions
+    class C1  {"Team Size Limit"}:::constraint
+    class C2  {"Sprint Duration Fixed"}:::constraint
+    class C3  {"Budget Ceiling"}:::constraint
+    class C4  {"Skill Coverage"}:::constraint
+    class C5  {"Certification Requirement"}:::constraint
+    class C6  {"Resource Availability"}:::constraint
+    class C7  {"Backlog Size Limit"}:::constraint
+    class C8  {"Market Readiness Window"}:::constraint
+    class C9  {"Daily Scrum Attendance"}:::constraint
+    class C10 {"Documentation Status"}:::constraint
+
+    %% Relationships between Entities
+    Team            --> Project          : is_assigned_to_project:::relationship
+    Employee        --> Team             : belongs_to_team:::relationship
+    Employee        --> Skill            : has_skill:::relationship
+    Employee        --> Role             : takes_on_role:::relationship
+    ProductBacklog  --> Feature          : contains_feature:::relationship
+    ProductBacklog  --> Epic             : contains_epic:::relationship
+    Epic            --> UserStory        : contains_user_story:::relationship
+    UserStory       --> Task             : consists_of_tasks:::relationship
+    UserStory       --> SprintBacklog    : is_in_sprint_backlog:::relationship
+    SprintBacklog   --> Sprint           : belongs_to_sprint:::relationship
+    Sprint          --> SprintGoal       : pursues_goal:::relationship
+    ScrumBoard      --> Task             : contains_tasks:::relationship
+    FeatureDoc      --> Feature          : documents_feature:::relationship
+    Task            --> Blocker          : is_blocked_by:::relationship
+    Stakeholder     --> SprintReview     : participates_in:::relationship
+    ScrumMaster     --> SprintRetrospective: moderates_retrospective:::relationship
+    Velocity        --> Team             : refers_to_team:::relationship
+    ReleasePlan     --> Feature          : plans_release:::relationship
+    ReleasePlan     --> Roadmap          : is_part_of_roadmap:::relationship
+    Sprint          --> DevSnapshot      : generates_snapshot:::relationship
+
+    %% Links from Goals to Entities/Variables
+    G1  ..> x7  : uses
+    G2  ..> DevSnapshot : monitors
+    G3  ..> Stakeholder : evaluates
+    G4  ..> UserStory    : measures
+    G5  ..> Feature      : counts
+    G6  ..> x4           : tracks
+    G7  ..> x5           : relates
+    G8  ..> x6           : limits
+    G9  ..> Sprint       : assesses
+    G10 ..> ProductBacklog: assesses
+
+    %% Links from Constraints to Variables/Entities
+    C1  ..> x2           : enforces
+    C2  ..> x3           : fixes
+    C3  ..> x4           : caps
+    C4  ..> Skill        : requires
+    C5  ..> ScrumMaster  : certifies
+    C5  ..> ProductOwner : certifies
+    C6  ..> Employee     : requires
+    C7  ..> x9           : limits
+    C8  ..> ReleasePlan  : bounds
+    C9  ..> DailyScrum   : enforces
+    C10 ..> FeatureDoc   : ensures

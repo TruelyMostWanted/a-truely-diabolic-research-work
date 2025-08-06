@@ -1,0 +1,276 @@
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
+
+classDiagram
+    %% Entities and Attributes
+    class Project           {  
+        + ID  
+        + Name  
+        + ProjectStart  
+        + ProjectEnd  
+        + Description  
+        + Budget  
+        + Status  
+        + TargetAudience  
+        + Priority  
+    }
+    class Team              {  
+        + ID  
+        + Name  
+        + TeamSize  
+        + TeamStart  
+        + TeamStatus  
+        + Location  
+        + TeamType  
+    }
+    class Employee          {  
+        + ID  
+        + Name  
+        + FirstName  
+        + Email  
+        + StartDate  
+        + Status  
+        + Availability  
+    }
+    class Feature           {  
+        + ID  
+        + Title  
+        + Description  
+        + Status  
+        + Priority  
+        + EstimatedEffort  
+    }
+    class Skill             {  
+        + ID  
+        + Label  
+        + Description  
+        + Level  
+        + Certified  
+        + Category  
+    }
+    class Role              {  
+        + ID  
+        + RoleName  
+        + Description  
+        + AreaOfResponsibility  
+    }
+    class ProductOwner      {  
+        + ID  
+        + Name  
+        + Email  
+        + Availability  
+    }
+    class ScrumMaster       {  
+        + ID  
+        + Name  
+        + Email  
+        + Experience  
+    }
+    class ProductBacklog    {  
+        + ID  
+        + CreatedOn  
+        + LastUpdated  
+        + NumberOfEntries  
+        + Status  
+    }
+    class Sprint            {  
+        + ID  
+        + SprintNumber  
+        + StartDate  
+        + EndDate  
+        + Status  
+        + AchievementOfGoal  
+    }
+    class SprintPlanning    {  
+        + ID  
+        + Date  
+        + Duration  
+        + Moderation  
+        + OutcomeDocumentation  
+    }
+    class DailyScrum        {  
+        + ID  
+        + Date  
+        + Time  
+        + Duration  
+        + Moderation  
+    }
+    class SprintReview      {  
+        + ID  
+        + Date  
+        + Duration  
+        + FeedbackDocumentation  
+        + AttendeesCount  
+    }
+    class SprintRetrospective{  
+        + ID  
+        + Date  
+        + Duration  
+        + ImprovementActions  
+        + TeamSatisfaction  
+        + Moderation  
+    }
+    class SprintBacklog     {  
+        + ID  
+        + NumberOfTasks  
+        + LastUpdated  
+        + Status  
+        + TotalEffort  
+    }
+    class SprintGoal        {  
+        + ID  
+        + ObjectiveDescription  
+        + AchievementStatus  
+        + Benefit  
+    }
+    class Epic              {  
+        + ID  
+        + Title  
+        + Description  
+        + Priority  
+        + Status  
+        + EstimatedEffort  
+    }
+    class UserStory         {  
+        + ID  
+        + Title  
+        + Description  
+        + AcceptanceCriteria  
+        + Priority  
+        + StoryPoints  
+        + Status  
+    }
+    class Task              {  
+        + ID  
+        + Title  
+        + Description  
+        + Status  
+        + Effort  
+        + Type  
+    }
+    class Snapshot          {  
+        + ID  
+        + VersionNumber  
+        + CreationDate  
+        + TestStatus  
+        + DeploymentTarget  
+        + Documentation  
+    }
+    class Bug               {  
+        + ID  
+        + Title  
+        + Description  
+        + Severity  
+        + Status  
+        + DetectedOn  
+        + ResolvedOn  
+    }
+    class Stakeholder       {  
+        + ID  
+        + Name  
+        + Organization  
+        + Role  
+        + Email  
+        + AreaOfInterest  
+        + InfluenceLevel  
+        + RelevanceToFeature  
+    }
+    class Velocity          {  
+        + ID  
+        + NumberOfSprintsUsed  
+        + AvgStoryPoints  
+        + MaxVelocity  
+        + MinVelocity  
+        + Trend  
+    }
+    class ReleasePlan       {  
+        + ID  
+        + Version  
+        + PlannedDate  
+        + IncludedFeatures  
+        + Status  
+    }
+    class Roadmap           {  
+        + ID  
+        + StartDate  
+        + EndDate  
+        + Milestones  
+        + Objectives  
+        + Versions  
+    }
+    class ScrumBoard        {  
+        + ID  
+        + BoardType  
+        + Columns  
+        + NumberOfCards  
+        + LastUpdated  
+    }
+    class FeatureDoc        {  
+        + ID  
+        + Title  
+        + Description  
+        + CreationDate  
+        + ChangeLog  
+        + LinkedRequirements  
+        + Author  
+    }
+
+    %% Relationships
+    Team              --> Project          : is_assigned_to_project
+    Employee          --> Team             : belongs_to_team
+    Employee          --> Skill            : has_skill
+    Employee          --> Role             : takes_on_role
+    ProductOwner      --> ProductBacklog   : manages_backlog
+    Team              --> ScrumMaster      : is_supported_by
+    ProductBacklog    --> Feature          : contains_feature
+    ProductBacklog    --> Epic             : contains_epic
+    Epic              --> UserStory        : contains_user_story
+    UserStory         --> Task             : consists_of_tasks
+    UserStory         --> SprintBacklog    : is_in_sprint_backlog
+    SprintBacklog     --> Sprint           : belongs_to_sprint
+    Sprint            --> SprintGoal       : pursues_goal
+    ScrumBoard        --> Task             : contains_tasks
+    FeatureDoc        --> Feature          : documents_feature
+    Task              --> Bug              : is_blocked_by
+    Stakeholder       --> SprintReview     : participates_in
+    ScrumMaster       --> SprintRetrospective : moderates_retrospective
+    Velocity          --> Team             : refers_to_team
+    ReleasePlan       --> Feature          : plans_release
+    ReleasePlan       --> Roadmap          : is_part_of_roadmap
+    Sprint            --> Snapshot         : generates_snapshot
+
+    class Project,Team,Employee,Feature,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Sprint,SprintPlanning,DailyScrum,SprintReview,SprintRetrospective,SprintBacklog,SprintGoal,Epic,UserStory,Task,Snapshot,Bug,Stakeholder,Velocity,ReleasePlan,Roadmap,ScrumBoard,FeatureDoc entity
+
+    %% Goals
+    class G1_MaximizeTeamVelocity        { <<Goal>>\nIncrease Team Velocity\nTarget: Velocity\nGoal: Max\nType: 🟢 } 
+    class G2_MinimizeDefects             { <<Goal>>\nMinimize Defects\nTarget: Bug\nGoal: Min\nType: 🟢 } 
+    class G3_MaximizeCustomerSatisfaction{ <<Goal>>\nMaximize Customer Satisfaction\nTarget: Stakeholder\nGoal: Max\nType: 🟢 } 
+    class G4_MinimizeTimeToMarket        { <<Goal>>\nMinimize Time to Market\nTarget: ReleasePlan\nGoal: Min\nType: 🟢 } 
+    class G5_MaximizeFeatureThroughput   { <<Goal>>\nMaximize Feature Throughput\nTarget: Feature\nGoal: Max\nType: 🟡 } 
+    class G6_MinimizeBudgetVariance       { <<Goal>>\nMinimize Budget Variance\nTarget: Project\nGoal: Min\nType: 🟢 } 
+    class G7_MaximizeTeamUtilization     { <<Goal>>\nMaximize Team Utilization\nTarget: Employee\nGoal: Max\nType: 🟡 } 
+    class G8_MinimizeTechnicalDebt       { <<Goal>>\nMinimize Technical Debt\nTarget: ProductBacklog\nGoal: Min\nType: 🟡 } 
+    class G9_MaximizeReleaseFrequency    { <<Goal>>\nMaximize Release Frequency\nTarget: ReleasePlan\nGoal: Max\nType: 🟡 } 
+    class G10_MinimizeSprintSpillover    { <<Goal>>\nMinimize Sprint Spillover\nTarget: Sprint\nGoal: Min\nType: 🟢 } 
+
+    class G1_MaximizeTeamVelocity,G2_MinimizeDefects,G3_MaximizeCustomerSatisfaction,G4_MinimizeTimeToMarket,G5_MaximizeFeatureThroughput,G6_MinimizeBudgetVariance,G7_MaximizeTeamUtilization,G8_MinimizeTechnicalDebt,G9_MaximizeReleaseFrequency,G10_MinimizeSprintSpillover goal
+
+    %% Conditions (Constraints)
+    class C1_ProjectDeadline         { <<Constraint>>\nProjectDeadline\nProject End <= Roadmap End\nType: 🟢 }
+    class C2_BudgetCap               { <<Constraint>>\nBudgetCap\nBudget <= AllocatedBudget\nType: 🟢 }
+    class C3_SkillCoverage           { <<Constraint>>\nSkillCoverage\nSkillCoverage >= 80\%\nType: 🟢 }
+    class C4_SprintDurationDeviation { <<Constraint>>\nSprintDurationDeviation\n|SprintLength−14|≤Tolerance\nType: 🟢 }
+    class C5_MinTeamSize             { <<Constraint>>\nMinTeamSize ≥ 5\nType: 🟢 }
+    class C6_MaxTeamSize             { <<Constraint>>\nMaxTeamSize ≤ 9\nType: 🟢 }
+    class C7_MaxTasksPerSprint       { <<Constraint>>\nTasksPerSprint ≤ MaxTasks\nType: 🟢 }
+    class C8_MinStoryPoints          { <<Constraint>>\nStoryPoints ≥ 20\nType: 🟢 }
+    class C9_MaxStoryPoints          { <<Constraint>>\nStoryPoints ≤ 60\nType: 🟢 }
+    class C10_TestCoverage           { <<Constraint>>\nTestCoverage ≥ 90\%\nType: 🟢 }
+    class C11_DefectSeverityCap      { <<Constraint>>\nSeverity ≤ 2\nType: 🟢 }
+    class C12_DocumentationCompleteness{ <<Constraint>>\nDocsComplete = 100\%\nType: 🟢 }
+
+    class C1_ProjectDeadline,C2_BudgetCap,C3_SkillCoverage,C4_SprintDurationDeviation,C5_MinTeamSize,C6_MaxTeamSize,C7_MaxTasksPerSprint,C8_MinStoryPoints,C9_MaxStoryPoints,C10_TestCoverage,C11_DefectSeverityCap,C12_DocumentationCompleteness constraint

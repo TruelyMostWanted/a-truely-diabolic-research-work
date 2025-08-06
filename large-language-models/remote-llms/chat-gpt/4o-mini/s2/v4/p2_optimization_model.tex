@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+\section*{Optimization Model for Scrum-Based Software Development}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_1 &= \text{NumSprints (Total sprints planned)} \\
+x_2 &= \text{SprintLength (weeks per sprint)} \\
+x_3 &= \text{TeamSize (members per team)} \\
+x_4 &= \text{DevCount (number of developers)} \\
+x_5 &= \text{QACount (number of QA engineers)} \\
+x_6 &= \text{SprintBudget (\euro{} allocated per sprint)} \\
+x_7 &= \text{SPCapacity (planned story points per sprint)} \\
+x_8 &= \text{FeaturesPerRelease (features per release)} \\
+x_9 &= \text{RetroDuration (minutes per retrospective)} \\
+x_{10} &= \text{DailyScrumTime (minutes per daily scrum)}
+\end{align*}
+
+\subsection*{Objectives (Multi-objective)}
+\[
+\begin{aligned}
+&\max\; \bigl(v(x) = \text{Velocity} \bigr), \quad
+\min\; \bigl(b(x) = \text{BugCount} \bigr), \quad
+\max\; \bigl(s(x) = \text{StakeholderSatisfaction} \bigr),\\
+&\min\; \bigl(t(x) = \text{TimeToMarket} \bigr), \quad
+\max\; \bigl(f(x) = \text{FeaturesDelivered} \bigr), \quad
+\min\; \bigl(c(x) = \text{CostVariance} \bigr),\\
+&\max\; \bigl(u(x) = \text{TeamUtilization} \bigr), \quad
+\min\; \bigl(o(x) = \text{SprintOverrunRate} \bigr), \quad
+\max\; \bigl(d(x) = \text{DocCoverage} \bigr), \quad
+\min\; \bigl(co(x) = \text{CarryOverStories} \bigr).
+\end{aligned}
+\]
+
+\subsection*{Constraints}
+\begin{align}
+1 \;\le\;& x_1 \;\le\; 20, \\
+1 \;\le\;& x_2 \;\le\; 4, \\
+3 \;\le\;& x_3 \;\le\; 9, \\
+1 \;\le\;& x_4 \;\le\; 8, \\
+1 \;\le\;& x_5 \;\le\; 4, \\
+10{,}000 \;\le\;& x_6 \;\le\; 200{,}000, \\
+20 \;\le\;& x_7 \;\le\; 100, \\
+1 \;\le\;& x_8 \;\le\; 10, \\
+30 \;\le\;& x_9 \;\le\; 90, \\
+15 \;\le\;& x_{10} \;\le\; 30.
+\end{align}
+
+\end{document}

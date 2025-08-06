@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+\section*{Optimization Model for Scrum-based Software Development}
+
+\subsection*{Sets}
+\begin{align*}
+S &\quad \text{Set of Sprints}\\
+P &\quad \text{Set of Projects}\\
+R &\quad \text{Set of Release Plans}\\
+F &\quad \text{Set of Features}\\
+T &\quad \text{Set of Teams}\\
+E &\quad \text{Set of Employees}\\
+B &\quad \text{Set of Blockers}\\
+U &\quad \text{Set of User Stories}\\
+K &\quad \text{Set of Tasks}
+\end{align*}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_{s}^{\text{sp}} &\;\; \text{Allocated story points in sprint } s, \quad s \in S \\
+x_{e,s}^{h} &\;\; \text{Hours employee } e \text{ works in sprint } s,\quad e\in E,\;s\in S\\
+x^{n_s} &\;\; \text{Number of sprints planned for the project}\\
+x_{r}^{f} &\;\; \text{Number of features in release plan } r,\quad r \in R\\
+x_{s}^{k} &\;\; \text{Number of tasks in sprint } s,\quad s \in S\\
+x_{s}^{b} &\;\; \text{Budget allocated in sprint } s,\quad s \in S\\
+x_{t}^{d} &\;\; \text{Number of developers in team } t,\quad t \in T\\
+x_{s}^{q} &\;\; \text{Number of testers in sprint } s,\quad s \in S\\
+x_{f}^{d} &\;\; \text{Documentation hours for feature } f,\quad f \in F\\
+x_{s}^{a} &\;\; \text{Retrospective actions in sprint } s,\quad s \in S
+\end{align*}
+
+\subsection*{Objectives (Multi-objective)}
+\begin{align*}
+\max &\; Z_{1} = \frac{1}{|S|}\sum_{s \in S} x_{s}^{\text{sp}}
+&&(\text{Maximize average velocity})\\
+\min &\; Z_{2} = \frac{1}{|S|}\sum_{s \in S} \text{Duration}(s)
+&&(\text{Minimize sprint duration})\\
+\max &\; Z_{3} = \sum_{r \in R} x_{r}^{f}
+&&(\text{Maximize features delivered})\\
+\min &\; Z_{4} = \frac{1}{|B|}\sum_{b\in B} \text{Severity}(b)
+&&(\text{Minimize average bug severity})\\
+\max &\; Z_{5} = \frac{1}{|S|}\sum_{s \in S} \frac{\sum_{e\in E} x_{e,s}^{h}}{|E|\cdot H_{\max}}
+&&(\text{Maximize team utilization})\\
+\min &\; Z_{6} = \max_{p\in P} \left(\text{Spent}(p) - \text{Budget}(p)\right)
+&&(\text{Minimize budget overrun})\\
+\max &\; Z_{7} = \frac{1}{|S|}\sum_{s \in S} \text{StakeholderScore}(s)
+&&(\text{Maximize stakeholder satisfaction})\\
+\min &\; Z_{8} = \#\{k\in K : \text{rework}(k)\}
+&&(\text{Minimize task rework})\\
+\max &\; Z_{9} = |\{r\in R\}|
+&&(\text{Maximize release frequency})\\
+\min &\; Z_{10} = \#\{\text{unplanned tasks in } s\}
+&&(\text{Minimize unplanned work})
+\end{align*}
+
+\subsection*{Constraints}
+\begin{align}
+&\text{Team Size: } && x_{t}^{d} \le 10 \quad \forall t\in T \\
+&\text{Sprint Length: } && 7 \le \text{Duration}(s) \le 30 \quad \forall s\in S \\
+&\text{Budget Cap: } && \sum_{s\in S} x_{s}^{b} \le \text{Budget}(p)\quad \forall p\in P\\
+&\text{Skill Coverage: } && \forall f\in F,\; \exists e\in E:\; \text{skill}(e,f)=1 \\
+&\text{Availability: } && \sum_{s\in S} x_{e,s}^{h} \le \text{Availability}(e)\quad \forall e\in E\\
+&\text{Release Deadline: } && \text{Date}(r) \le \text{MilestoneDate}(m)\quad \forall r\in R\\
+&\text{Blocked Task Limit: } && \sum_{k\in K} \mathbf{1}_{\text{blocked}(k,s)} \le 5\quad \forall s\in S\\
+&\text{Daily Scrum Time: } && \text{ScrumDuration}(d) \le 15 \quad \forall d\in \text{DailyScrums}\\
+&\text{Backlog Size: } && \text{Size}(\mathrm{PB}) \le 100 \\
+&\text{Review Attendance: } && \text{Attended}(s) \ge 0.8\times \text{TotalStakeholders}(s)\quad \forall s\in S
+\end{align}
+
+\end{document}

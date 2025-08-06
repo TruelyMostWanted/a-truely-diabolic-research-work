@@ -1,0 +1,155 @@
+classDiagram
+%% Class Definitions
+classDef entity    fill:#d1b3ff,stroke:#333;
+classDef goal      fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
+
+%% Entities & Attributes
+class Project {
+  +ID
+  +Name
+  +ProjectStart
+  +ProjectEnd
+  +Description
+  +Budget
+  +Status
+  +TargetAudience
+  +Priority
+}
+class Team {
+  +ID
+  +Name
+  +TeamSize
+  +TeamStart
+  +TeamStatus
+  +Location
+  +TeamType
+}
+class Employee {
+  +ID
+  +Name
+  +FirstName
+  +Email
+  +StartDate
+  +Status
+  +Availability
+}
+class Feature {
+  +ID
+  +Title
+  +Description
+  +Status
+  +Priority
+  +EstimatedEffort
+}
+class Skill {
+  +ID
+  +Label
+  +Description
+  +Level
+  +Certified
+  +Category
+}
+class Role {
+  +ID
+  +RoleName
+  +Description
+  +AreaOfResponsibility
+}
+class ProductOwner {
+  +ID
+  +Name
+  +Email
+  +Availability
+}
+class ScrumMaster {
+  +ID
+  +Name
+  +Email
+  +Experience
+}
+class ProductBacklog {
+  +ID
+  +CreatedOn
+  +LastUpdated
+  +NumberOfEntries
+  +Status
+}
+class Sprint {
+  +ID
+  +SprintNumber
+  +StartDate
+  +EndDate
+  +Status
+  +AchievementOfGoal
+}
+%% Relationships
+Project "1" o-- "N" Team      : is_assigned_to_project
+Employee "N" -- "1" Team     : belongs_to_team
+Employee "N" o-- "M" Skill   : has_skill
+Employee "N" o-- "M" Role    : takes_on_role
+ProductOwner "1" -- "1" ProductBacklog : manages_backlog
+Team "1" -- "1" ScrumMaster : is_supported_by
+ProductBacklog "1" o-- "N" Feature : contains_feature
+ProductBacklog "1" o-- "N" Epic    : contains_epic
+Epic "1" o-- "N" UserStory        : contains_user_story
+UserStory "1" o-- "N" Task        : consists_of_tasks
+SprintBacklog "N" o-- "M" UserStory : is_in_sprint_backlog
+SprintBacklog "1" -- "1" Sprint    : belongs_to_sprint
+Sprint "1" -- "1" SprintGoal       : pursues_goal
+ScrumBoard "1" o-- "N" Task        : contains_tasks
+FeatureDocumentation "1" -- "1" Feature : documents_feature
+Task "N" o-- "M" Bug               : is_blocked_by
+Stakeholder "N" o-- "M" SprintReview : participates_in
+ScrumMaster "1" o-- "N" SprintRetrospective : moderates_retrospective
+Velocity "1" -- "1" Team           : refers_to_team
+ReleasePlan "1" o-- "N" Feature    : plans_release
+ReleasePlan "N" -- "1" Roadmap     : is_part_of_roadmap
+Sprint "1" -- "1" DevSnapshot      : generates_snapshot
+
+%% Goals
+class G1  { Minimize Project Duration }      <<goal>>
+class G2  { Maximize Sprint Velocity }       <<goal>>
+class G3  { Minimize Budget Variance }       <<goal>>
+class G4  { Maximize Feature Throughput }    <<goal>>
+class G5  { Minimize Bug Count }             <<goal>>
+class G6  { Maximize Stakeholder Satisfaction } <<goal>>
+class G7  { Minimize Idle Time }             <<goal>>
+class G8  { Maximize Skill Utilization }     <<goal>>
+class G9  { Minimize Planning Overrun }      <<goal>>
+class G10 { Maximize Release Predictability }<<goal>>
+
+G1  --> Project
+G2  --> Velocity
+G3  --> Project
+G4  --> ReleasePlan
+G5  --> Bug
+G6  --> Stakeholder
+G7  --> Employee
+G8  --> Task
+G9  --> SprintPlanning
+G10 --> ReleasePlan
+
+%% Conditions (Constraints)
+class C1  { Team Size ≥ 3 }                 <<constraint>>
+class C2  { Team Size ≤ 9 }                 <<constraint>>
+class C3  { Sprint Length = 14 days }       <<constraint>>
+class C4  { Budget ≥ allocated Feature cost } <<constraint>>
+class C5  { Required Skills Covered }       <<constraint>>
+class C6  { Employee Availability }         <<constraint>>
+class C7  { Backlog Entries ≤ 200 }         <<constraint>>
+class C8  { Same Time Zone Teams }          <<constraint>>
+class C9  { No Sprint Start on Holidays }   <<constraint>>
+class C10 { High-Priority First 2 Sprints } <<constraint>>
+
+C1  --> Team
+C2  --> Team
+C3  --> Sprint
+C4  --> Project
+C5  --> Feature
+C6  --> Employee
+C7  --> ProductBacklog
+C8  --> Team
+C9  --> Sprint
+C10 --> SprintBacklog

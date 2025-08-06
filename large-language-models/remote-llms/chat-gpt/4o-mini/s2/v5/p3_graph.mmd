@@ -1,0 +1,137 @@
+%% Optimization Model Graph
+graph LR
+  %% Class Definitions
+  classDef entity fill:#d1b3ff,stroke:#333;
+  classDef variable fill:#99e699,stroke:#333;
+  classDef goal fill:#99ccff,stroke:#333;
+  classDef constraint fill:#ff9999,stroke:#333;
+  classDef relationship fill:#ffe066,stroke:#333;
+
+  %% Entities with key attributes
+  subgraph Entities
+    Project["Project\n(ID, Name, Start, End, Budget, Status)"]:::entity
+    Team["Team\n(ID, Name, Size, Start, Status, Location)"]:::entity
+    Employee["Employee\n(ID, Name, Email, Start Date, Status)"]:::entity
+    Feature["Feature\n(ID, Title, Status, Effort)"]:::entity
+    Skill["Skill\n(ID, Label, Level, Certified)"]:::entity
+    Role["Role\n(ID, Name, Area)"]:::entity
+    ProductOwner["ProductOwner\n(ID, Name, Email)"]:::entity
+    ScrumMaster["ScrumMaster\n(ID, Name, Email, Exp)"]:::entity
+    ProductBacklog["ProductBacklog\n(ID, Created On, #Entries)"]:::entity
+    Sprint["Sprint\n(ID, Number, Start, End, Status)"]:::entity
+    SprintGoal["SprintGoal\n(ID, Description, Status)"]:::entity
+    Epic["Epic\n(ID, Title, Priority, Effort)"]:::entity
+    UserStory["UserStory\n(ID, Title, Points, Status)"]:::entity
+    Task["Task\n(ID, Title, Effort, Status)"]:::entity
+    DevSnapshot["DevSnapshot\n(ID, Version, Test Status)"]:::entity
+    Bug["Bug\n(ID, Title, Severity, Status)"]:::entity
+    Stakeholder["Stakeholder\n(ID, Name, Org, Role)"]:::entity
+    Velocity["Velocity\n(ID, Sprints, Avg, Trend)"]:::entity
+    ReleasePlan["ReleasePlan\n(ID, Version, Date, Status)"]:::entity
+    Roadmap["Roadmap\n(ID, Start, End, Milestones)"]:::entity
+  end
+
+  %% Decision Variables
+  subgraph Decision_Variables
+    DV1["Sprint Length\n[7,28] days"]:::variable
+    DV2["# Developers\n[3,9]"]:::variable
+    DV3["Budget Allocation\n[10k–1M] EUR"]:::variable
+    DV4["Story Points/Sprint\n[20,100]"]:::variable
+    DV5["Max Concurrent Tasks\n[1,5]"]:::variable
+    DV6["Test Environments\n[1,5]"]:::variable
+    DV7["Meeting Duration\n[15,60] min"]:::variable
+    DV8["Refinement Sessions\n[1,4]/sprint"]:::variable
+    DV9["Releases/Year\n[1,12]"]:::variable
+    DV10["Doc Review Interval\n[7,90] days"]:::variable
+  end
+
+  %% Goals
+  subgraph Goals
+    G1["Maximize Velocity"]:::goal
+    G2["Minimize Defects"]:::goal
+    G3["Maximize Cust. Sat."]:::goal
+    G4["Minimize Cycle Time"]:::goal
+    G5["Maximize Throughput"]:::goal
+    G6["Minimize Overrun"]:::goal
+    G7["Maximize Utilization"]:::goal
+    G8["Minimize Planning Time"]:::goal
+    G9["Maximize Test Coverage"]:::goal
+    G10["Minimize Tech Debt"]:::goal
+  end
+
+  %% Conditions (Constraints)
+  subgraph Conditions
+    C1["Budget Cap"]:::constraint
+    C2["Team Size Range"]:::constraint
+    C3["Sprint Duration"]:::constraint
+    C4["Skill Coverage"]:::constraint
+    C5["Resource Availability"]:::constraint
+    C6["Backlog Order"]:::constraint
+    C7["Deployment Window"]:::constraint
+    C8["Meeting Cadence"]:::constraint
+    C9["Review Attendance"]:::constraint
+    C10["Retro Action Closure"]:::constraint
+  end
+
+  %% Entity–Entity Relationships
+  Team -- "is_assigned_to_project":::relationship --> Project
+  Employee -- "belongs_to_team":::relationship --> Team
+  Employee -- "has_skill":::relationship --> Skill
+  Employee -- "takes_on_role":::relationship --> Role
+  ProductOwner -- "manages_backlog":::relationship --> ProductBacklog
+  Team -- "is_supported_by":::relationship --> ScrumMaster
+  ProductBacklog -- "contains_feature":::relationship --> Feature
+  ProductBacklog -- "contains_epic":::relationship --> Epic
+  Epic -- "contains_user_story":::relationship --> UserStory
+  UserStory -- "consists_of_tasks":::relationship --> Task
+  UserStory -- "is_in_sprint_backlog":::relationship --> Sprint
+  Sprint -- "pursues_goal":::relationship --> SprintGoal
+  Sprint -- "generates_snapshot":::relationship --> DevSnapshot
+  Task -- "is_blocked_by":::relationship --> Bug
+  Stakeholder -- "participates_in":::relationship --> Sprint
+  ReleasePlan -- "plans_release":::relationship --> Feature
+  ReleasePlan -- "is_part_of_roadmap":::relationship --> Roadmap
+  Velocity -- "refers_to_team":::relationship --> Team
+
+  %% Decision Variables → Entities
+  DV1 --> Sprint
+  DV2 --> Team
+  DV3 --> Project
+  DV4 --> Sprint
+  DV5 --> Employee
+  DV6 --> DevSnapshot
+  DV7 --> Employee
+  DV8 --> ProductBacklog
+  DV9 --> ReleasePlan
+  DV10 --> Feature
+
+  %% Goals → Targeted Entities
+  G1 --> Velocity
+  G2 --> Bug
+  G3 --> Stakeholder
+  G4 --> Task
+  G5 --> Feature
+  G6 --> Project
+  G7 --> Employee
+  G8 --> Sprint
+  G9 --> DevSnapshot
+  G10 --> DevSnapshot
+
+  %% Conditions → Targeted Entities
+  C1 --> Project
+  C2 --> Team
+  C3 --> Sprint
+  C4 --> UserStory
+  C5 --> Employee
+  C6 --> ProductBacklog
+  C7 --> DevSnapshot
+  C8 --> Employee
+  C9 --> Stakeholder
+  C10 --> Sprint
+
+  %% Apply classes
+  class Project,Team,Employee,Feature,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Sprint,SprintGoal,Epic,UserStory,Task,DevSnapshot,Bug,Stakeholder,Velocity,ReleasePlan,Roadmap entity;
+  class DV1,DV2,DV3,DV4,DV5,DV6,DV7,DV8,DV9,DV10 variable;
+  class G1,G2,G3,G4,G5,G6,G7,G8,G9,G10 goal;
+  class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10 constraint;
+  class is_assigned_to_project,belongs_to_team,has_skill,takes_on_role,manages_backlog,is_supported_by,contains_feature,contains_epic,contains_user_story,consists_of_tasks,is_in_sprint_backlog,pursues_goal,generates_snapshot,is_blocked_by,participates_in,plans_release,is_part_of_roadmap,refers_to_team relationship;

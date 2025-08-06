@@ -1,0 +1,150 @@
+classDiagram
+    %% Class Definitions
+    classDef entity fill:#d1b3ff,stroke:#333;
+    classDef goal fill:#99ccff,stroke:#333;
+    classDef constraint fill:#ff9999,stroke:#333;
+    classDef relationship fill:#ffe066,stroke:#333;
+
+    %% Entities
+    class Project        <<entity>> {  
+        +ID  
+        +Name  
+        +ProjectStart  
+        +ProjectEnd  
+        +Budget  
+        +Status  
+    }
+    class Team           <<entity>> {  
+        +ID  
+        +Name  
+        +TeamSize  
+        +Location  
+        +TeamType  
+    }
+    class Employee       <<entity>> {  
+        +ID  
+        +Name  
+        +Email  
+        +StartDate  
+        +Status  
+    }
+    class Feature        <<entity>> {  
+        +ID  
+        +Title  
+        +Status  
+        +Priority  
+        +EstimatedEffort  
+    }
+    class Epic           <<entity>> {  
+        +ID  
+        +Title  
+        +Priority  
+        +Status  
+    }
+    class UserStory      <<entity>> {  
+        +ID  
+        +Title  
+        +Priority  
+        +StoryPoints  
+        +Status  
+    }
+    class Task           <<entity>> {  
+        +ID  
+        +Title  
+        +Status  
+        +Effort  
+    }
+    class ProductBacklog <<entity>> {  
+        +ID  
+        +CreatedOn  
+        +Status  
+    }
+    class Sprint         <<entity>> {  
+        +ID  
+        +SprintNumber  
+        +StartDate  
+        +EndDate  
+        +Status  
+    }
+    class ScrumBoard     <<entity>> {  
+        +ID  
+        +BoardType  
+        +Columns  
+        +NumberOfCards  
+    }
+    %% (other entities omitted for brevity)
+
+    %% Relationships
+    Team "1" -- "N" Project            : is_assigned_to_project
+    Employee "N" -- "1" Team          : belongs_to_team
+    Employee "N" -- "M" Skill         : has_skill
+    Employee "N" -- "M" Roles         : takes_on_role
+    ProductOwner "1" -- "1" ProductBacklog : manages_backlog
+    Team "1" -- "1" ScrumMaster       : is_supported_by
+    ProductBacklog "1" -- "N" Feature : contains_feature
+    ProductBacklog "1" -- "N" Epic    : contains_epic
+    Epic "1" -- "N" UserStory         : contains_user_story
+    UserStory "1" -- "N" Task         : consists_of_tasks
+    UserStory "N" -- "M" SprintBacklog: is_in_sprint_backlog
+    SprintBacklog "1" -- "1" Sprint    : belongs_to_sprint
+    Sprint "1" -- "1" SprintGoal      : pursues_goal
+    ScrumBoard "1" -- "N" Task        : contains_tasks
+    FeatureDocumentation "1" -- "1" Feature : documents_feature
+    Task "N" -- "M" Blocker           : is_blocked_by
+    Stakeholder "N" -- "M" SprintReview : participates_in
+    ScrumMaster "1" -- "N" SprintRetrospective : moderates_retrospective
+    Velocity "1" -- "1" Team          : refers_to_team
+    ReleasePlan "1" -- "N" Feature    : plans_release
+    ReleasePlan "N" -- "1" Roadmap    : is_part_of_roadmap
+    Sprint "1" -- "1" DevelopmentSnapshot : generates_snapshot
+
+    %% Goals
+    class G1  <<goal>> { Maximize Sprint Velocity }
+    class G2  <<goal>> { Minimize Bug Count }
+    class G3  <<goal>> { Maximize Customer Satisfaction }
+    class G4  <<goal>> { Minimize Sprint Overrun }
+    class G5  <<goal>> { Maximize Feature Throughput }
+    class G6  <<goal>> { Minimize Cycle Time }
+    class G7  <<goal>> { Maximize Team Utilization }
+    class G8  <<goal>> { Minimize Context Switches }
+    class G9  <<goal>> { Maximize Backlog Health }
+    class G10 <<goal>> { Minimize Release Defects }
+    class G11 <<goal>> { Maximize Roadmap Adherence }
+
+    %% Conditions (Constraints)
+    class C1  <<constraint>> { Budget Ceiling (cannot exceed) }
+    class C2  <<constraint>> { Team Capacity (must match) }
+    class C3  <<constraint>> { Skill Match (must match) }
+    class C4  <<constraint>> { Resource Availability (must match) }
+    class C5  <<constraint>> { Sprint Length = 14 days }
+    class C6  <<constraint>> { Deadline Compliance (must match) }
+    class C7  <<constraint>> { Regulatory Constraints (cannot match) }
+    class C8  <<constraint>> { Maximum Team Size (must match) }
+    class C9  <<constraint>> { Backlog Size (can match) }
+    class C10 <<constraint>> { WIP Limit (must match) }
+    class C11 <<constraint>> { Max Concurrent Sprints (must match) }
+
+    %% Link Goals and Conditions to Entities (example edges)
+    G1  --> Sprint
+    G2  --> Bug
+    G3  --> SprintReview
+    G4  --> Sprint
+    G5  --> ReleasePlan
+    G6  --> UserStory
+    G7  --> Team
+    G8  --> Task
+    G9  --> ProductBacklog
+    G10 --> DevelopmentSnapshot
+    G11 --> Roadmap
+
+    C1  --> Project
+    C2  --> Team
+    C3  --> Task
+    C4  --> Employee
+    C5  --> Sprint
+    C6  --> Feature
+    C7  --> FeatureDocumentation
+    C8  --> Team
+    C9  --> ProductBacklog
+    C10 --> ScrumBoard
+    C11 --> Sprint

@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+
+\section*{Optimization Model for Scrum-Based Software Development}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_1 &= \text{TeamAlloc},\quad \text{integer},\;3 \le x_1 \le 9\\
+x_2 &= \text{SprintLength},\quad \text{integer},\;10 \le x_2 \le 30\\
+x_3 &= \text{StoriesSprint},\quad \text{integer},\;1 \le x_3 \le 20\\
+x_4 &= \text{BudgetFeature},\quad \text{continuous},\;1000 \le x_4 \le 50000\\
+x_5 &= \text{SPUEstimate},\quad \text{integer},\;1 \le x_5 \le 13\\
+x_6 &= \text{TasksPerStory},\quad \text{integer},\;1 \le x_6 \le 10\\
+x_7 &= \text{NumReleases},\quad \text{integer},\;1 \le x_7 \le 12\\
+x_8 &= \text{DocsPerFeature},\quad \text{integer},\;1 \le x_8 \le 10\\
+x_9 &= \text{ParallelSprints},\quad \text{integer},\;1 \le x_9 \le 3\\
+x_{10} &= \text{FeatureIncluded},\quad \text{binary},\;0 \le x_{10} \le 1\\
+x_{11} &= \text{RoadmapMilestones},\quad \text{integer},\;1 \le x_{11} \le 20\\
+x_{12} &= \text{TestCoverage},\quad \text{continuous},\;50 \le x_{12} \le 100
+\end{align*}
+
+\subsection*{Objectives}
+\begin{align*}
+\min\; &f_1(x) = \text{DefectRate}(x) \\
+\max\; &f_2(x) = \text{Velocity}(x) \\
+\max\; &f_3(x) = \text{CustomerSatisfaction}(x) \\
+\min\; &f_4(x) = \text{BudgetOverrun}(x) \\
+\max\; &f_5(x) = \text{OnTimeDelivery}(x) \\
+\max\; &f_6(x) = \text{FeatureThroughput}(x) \\
+\min\; &f_7(x) = \text{CycleTime}(x) \\
+\max\; &f_8(x) = \text{TeamUtilization}(x) \\
+\min\; &f_9(x) = \text{TechnicalDebt}(x) \\
+\max\; &f_{10}(x) = \text{RoadmapAlignment}(x) \\
+\min\; &f_{11}(x) = \text{SprintScopeChanges}(x) \\
+\max\; &f_{12}(x) = \text{DocCoverage}(x)
+\end{align*}
+
+\subsection*{Constraints}
+\begin{align*}
+g_1(x):\;& \text{Budget}(x) \le \text{BudgetLimit}\\
+g_2(x):\;& 3 \le x_1 \le 9\\
+g_3(x):\;& x_2 = 14\\
+g_4(x):\;& \text{SkillMatch}(x) = 1\\
+g_5(x):\;& \text{ReleaseQuarter}(x) \in \{\text{PlannedQuarters}\}\\
+g_6(x):\;& x_3 \le \text{StoryPointCap}\\
+g_7(x):\;& \text{DependencyOrder}(x) = 1\\
+g_8(x):\;& \text{Availability}(x) \ge x_3 * \text{AvgEffortPerStory}\\
+g_9(x):\;& \text{Compliance}(x) = 1\\
+g_{10}(x):\;& \text{TechStack}(x) \subseteq \text{ApprovedStack}\\
+g_{11}(x):\;& \text{StakeholderAttendance}(x) = 1\\
+g_{12}(x):\;& \text{DocStandardCompliance}(x) = 1\\
+g_{13}(x):\;& \text{TimeZoneOverlap}(x) \ge 4
+\end{align*}
+
+\end{document}

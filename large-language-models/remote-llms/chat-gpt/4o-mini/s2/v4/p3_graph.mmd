@@ -1,0 +1,147 @@
+%% Optimization Model Graph
+classDiagram
+  %% Class Definitions
+  classDef entity    fill:#d1b3ff,stroke:#333;
+  classDef variable  fill:#99e699,stroke:#333;
+  classDef goal      fill:#99ccff,stroke:#333;
+  classDef constraint fill:#ff9999,stroke:#333;
+  classDef relationship fill:#ffe066,stroke:#333;
+
+  %% Entities
+  class Project {
+    +ID
+    +Name
+    +Start
+    +End
+    +Budget
+  }
+  class Team {
+    +ID
+    +Name
+    +Size
+    +Status
+  }
+  class "Worker/Employee" as Employee {
+    +ID
+    +Name
+    +Email
+    +StartDate
+  }
+  class Feature {
+    +ID
+    +Title
+    +Effort
+  }
+  class Epic {
+    +ID
+    +Title
+    +Effort
+  }
+  class "User Story" as UserStory {
+    +ID
+    +Title
+    +Points
+  }
+  class "Task/Sub-Task" as Task {
+    +ID
+    +Title
+    +Effort
+  }
+  class Backlog {
+    +ID
+    +Entries
+  }
+  class Sprint {
+    +ID
+    +Number
+    +Start
+    +End
+  }
+  class Velocity {
+    +AvgPoints
+  }
+  class ReleasePlan {
+    +Version
+    +PlannedDate
+  }
+
+  %% Decision Variables
+  class DV1_DV10 {
+    x1 … x10
+  }
+
+  %% Goals
+  class G1_MaxVelocity                { +Maximize Velocity }
+  class G2_MinBugCount                { +Minimize BugCount }
+  class G3_StakeholderSatisfaction    { +Maximize Satisfaction }
+  class G4_MinTimeToMarket            { +Minimize TimeToMarket }
+  class G5_MaxFeaturesPerRelease      { +Maximize Features }
+  class G6_MinCostVariance            { +Minimize CostVariance }
+  class G7_MaxTeamUtilization         { +Maximize Utilization }
+  class G8_MinSprintOverrun           { +Minimize Overrun }
+  class G9_MaxDocCoverage             { +Maximize DocCoverage }
+  class G10_MinCarryOverStories       { +Minimize CarryOver }
+
+  %% Conditions (Constraints)
+  class C1_MinTeamSize           { TeamSize ≥ 3 }
+  class C2_MaxTeamSize           { TeamSize ≤ 9 }
+  class C3_MaxBudget             { Budget ≤ Allocated }
+  class C4_MinSprintLength       { SprintLength ≥ 1wk }
+  class C5_MaxSprintLength       { SprintLength ≤ 4wk }
+  class C6_MinAvailability       { Availability ≥ 50% }
+  class C7_MinPOCount            { PO ≥ 1/project }
+  class C8_MaxConcurrentSprints  { ConcurrentSprints ≤ 3 }
+  class C9_MaxEpicEffort         { EpicEffort ≤ Capacity }
+  class C10_MaxBacklogEntries    { BacklogEntries ≤ 200 }
+
+  %% Assign classes
+  class Project,Team,Employee,Feature,Epic,UserStory,Task,Backlog,Sprint,Velocity,ReleasePlan entity
+  class DV1_DV10 variable
+  class G1_MaxVelocity,G2_MinBugCount,G3_StakeholderSatisfaction,G4_MinTimeToMarket,
+        G5_MaxFeaturesPerRelease,G6_MinCostVariance,G7_MaxTeamUtilization,
+        G8_MinSprintOverrun,G9_MaxDocCoverage,G10_MinCarryOverStories goal
+  class C1_MinTeamSize,C2_MaxTeamSize,C3_MaxBudget,C4_MinSprintLength,C5_MaxSprintLength,
+        C6_MinAvailability,C7_MinPOCount,C8_MaxConcurrentSprints,C9_MaxEpicEffort,
+        C10_MaxBacklogEntries constraint
+
+  %% Relationships among Entities
+  Team                "1" -- "N" Project       : is_assigned_to_project
+  Employee            "N" -- "1" Team          : belongs_to_team
+  Employee            "N" -- "M" Skill         : has_skill
+  Employee            "N" -- "M" Role          : takes_on_role
+  Backlog             "1" -- "N" Feature       : contains_feature
+  Backlog             "1" -- "N" Epic          : contains_epic
+  Epic                "1" -- "N" UserStory    : contains_user_story
+  UserStory           "1" -- "N" Task         : consists_of_tasks
+  UserStory           "N" -- "M" Backlog      : is_in_sprint_backlog
+  SprintBacklog       "1" -- "1" Sprint       : belongs_to_sprint
+  Sprint              "1" -- "1" SprintGoal   : pursues_goal
+  ScrumBoard          "1" -- "N" Task         : contains_tasks
+  FeatureDocumentation "1" -- "1" Feature     : documents_feature
+  Task                "M" -- "N" Blocker      : is_blocked_by
+  Stakeholder         "N" -- "M" SprintReview : participates_in
+  ScrumMaster         "1" -- "N" SprintRetrospective : moderates_retrospective
+  Velocity            "1" -- "1" Team         : refers_to_team
+  ReleasePlan         "1" -- "N" Feature       : plans_release
+  ReleasePlan         "N" -- "1" Roadmap       : is_part_of_roadmap
+  Sprint              "1" -- "1" DevelopmentSnapshot : generates_snapshot
+
+  %% Link Goals/Constraints to Entities/Variables
+  Velocity  <-- G1_MaxVelocity
+  Velocity  <-- G2_MinBugCount
+  Team      <-- C1_MinTeamSize
+  Team      <-- C2_MaxTeamSize
+  Project   <-- C3_MaxBudget
+  Sprint    <-- C4_MinSprintLength
+  Sprint    <-- C5_MaxSprintLength
+  Employee  <-- C6_MinAvailability
+  ProductOwner <-- C7_MinPOCount
+  Sprint    <-- C8_MaxConcurrentSprints
+  Epic      <-- C9_MaxEpicEffort
+  Backlog   <-- C10_MaxBacklogEntries
+
+  DV1_DV10 --> Sprint
+  DV1_DV10 --> Team
+  DV1_DV10 --> Employee
+  DV1_DV10 --> Feature
+  DV1_DV10 --> ReleasePlan
