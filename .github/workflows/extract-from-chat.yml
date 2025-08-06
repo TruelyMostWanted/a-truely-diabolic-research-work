@@ -1,0 +1,26 @@
+name: Extract files from chat.json
+
+on:
+  push:
+    paths:
+      - 'large-language-models/**/chat.json'  # Reagiere auf neue chat.json
+
+jobs:
+  extract-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Find and extract files from chat.json
+        run: |
+          find ./large-language-models/local-llm -type f -name "chat.json" | while read chatfile; do
+            targetdir=$(dirname "$chatfile")
+            echo "📂 Verarbeite: $chatfile"
+            python3 tools/json_to_files.py "$chatfile" "$targetdir"
+          done
