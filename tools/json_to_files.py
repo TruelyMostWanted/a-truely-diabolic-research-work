@@ -2,10 +2,7 @@ import json
 import re
 import os
 
-# === Konfiguration ===
-INPUT_FILE = "chat.json"
-
-# Deine fixen Prompt-Zuordnungen per Stichwort
+# === Prompt-Zuordnungen per Stichwort ===
 PROMPT_KEYWORDS = {
     "p1_optimization_problem.csv": ["optimization problem", "Rank, Type/Name", "Linear Programming"],
     "p2_development_scrum.csv": ["scrum", "Step, Description, Interval", "Sprint"],
@@ -17,17 +14,39 @@ PROMPT_KEYWORDS = {
     "p10_graph.mmd": ["mermaid", "graph LR", "classDef entity"]
 }
 
-# === Hilfsfunktion: Extrahiere alle Codeblöcke (CSV, Mermaid, LaTeX usw.) ===
 def extract_code_blocks(text):
     return re.findall(r"```(?:[a-zA-Z]*\n)?(.*?)```", text, re.DOTALL)
 
-# === Hauptfunktion ===
-def extract_outputs():
-    if not os.path.exists(INPUT_FILE):
-        print(f"[!] Datei '{INPUT_FILE}' nicht gefunden.")
+def process_folder(folder_path):
+    input_file = os.path.join(folder_path, "chat.json")
+    if not os.path.exists(input_file):
         return
 
-    with open(INPUT_FILE, "r", encoding="utf-8") as f:
+    model_path_parts = folder_path.split(os.sep)
+    try:
+        model_name = f"{model_path_parts[-4]}_{model_path_parts[-3]}"
+        strategy = model_path_parts[-2]
+        version = model_path_parts[-1]
+    except IndexError:
+        print(f"[!] Ungültiger Pfadaufbau: {folder_path}")
+        return
+
+    print(f"\n🔍 Modell: {model_name} | Strategie: {strategy} | Version: {version}")
+
+    expected_files = list(PROMPT_KEYWORDS.keys())
+    existing_files = [f for f in expected_files if os.path.exists(os.path.join(folder_path, f))]
+    missing_files = [f for f in expected_files if f not in existing_files]
+
+    for f in expected_files:
+        if f in existing_files:
+            print(f"[✓] {f}")
+        else:
+            print(f"[X] {f} – Generiere...")
+
+    if not missing_files:
+        return
+
+    with open(input_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     messages = data[0]["chat"]["history"]["messages"]
@@ -44,15 +63,27 @@ def extract_outputs():
             continue
 
         for filename, keywords in PROMPT_KEYWORDS.items():
-            if filename in used_files:
+            if filename in used_files or filename not in missing_files:
                 continue
             match_count = sum(1 for keyword in keywords if keyword.lower() in content)
             if match_count >= 2:
-                with open(filename, "w", encoding="utf-8") as out:
+                file_path = os.path.join(folder_path, filename)
+                with open(file_path, "w", encoding="utf-8") as out:
                     out.write(code_blocks[0].strip())
-                    print(f"[✓] Gespeichert in: {filename}")
                 used_files.add(filename)
                 break
 
+def walk_llm_folders():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    base_path = os.path.abspath(os.path.join(script_dir, "..", "large-language-models", "local-llm"))
+
+    if not os.path.exists(base_path):
+        print(f"[!] Basisordner nicht gefunden: {base_path}")
+        return
+
+    for root, dirs, files in os.walk(base_path):
+        if "chat.json" in files:
+            process_folder(root)
+
 if __name__ == "__main__":
-    extract_outputs()
+    walk_llm_folders()
