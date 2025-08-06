@@ -1,0 +1,116 @@
+graph TD
+
+%% ENTITIES
+Project["Project\n(ID, Name, Budget, Status, Priority)"]:::entity
+Team["Team\n(ID, Name, Team Size, Status, Location)"]:::entity
+Employee["Employee\n(ID, Name, Email, Availability)"]:::entity
+Feature["Feature\n(ID, Title, Status, Estimated Effort)"]:::entity
+Skill["Skill\n(ID, Label, Level, Certified)"]:::entity
+Role["Role(s)\n(ID, Role Name, Responsibility)"]:::entity
+ProductOwner["Product Owner\n(ID, Name, Availability)"]:::entity
+ScrumMaster["Scrum Master\n(ID, Name, Experience)"]:::entity
+ProductBacklog["Product Backlog\n(ID, Status, Number of Entries)"]:::entity
+Sprint["Sprint\n(ID, Number, Start Date, Status)"]:::entity
+SprintGoal["Sprint Goal\n(ID, Objective, Benefit)"]:::entity
+UserStory["User Story\n(ID, Title, Story Points, Priority)"]:::entity
+Task["Task / Sub-Task\n(ID, Title, Status, Effort)"]:::entity
+Blocker["Blocker\n(ID, Title, Severity, Detected On)"]:::entity
+Velocity["Velocity\n(ID, Avg. Story Points, Trend)"]:::entity
+FeatureDoc["Feature Documentation\n(ID, Title, Author)"]:::entity
+Stakeholder["Stakeholder\n(ID, Name, Influence Level)"]:::entity
+
+%% RELATIONSHIPS
+Team -->|is_assigned_to_project| Project:::relationship
+Employee -->|belongs_to_team| Team:::relationship
+Employee -->|has_skill| Skill:::relationship
+Employee -->|takes_on_role| Role:::relationship
+ProductOwner -->|manages_backlog| ProductBacklog:::relationship
+ScrumMaster -->|is_supported_by| Team:::relationship
+ProductBacklog -->|contains_feature| Feature:::relationship
+ProductBacklog -->|contains_epic| Feature:::relationship
+Feature -->|contains_user_story| UserStory:::relationship
+UserStory -->|consists_of_tasks| Task:::relationship
+UserStory -->|is_in_sprint_backlog| Sprint:::relationship
+Sprint -->|pursues_goal| SprintGoal:::relationship
+Task -->|is_blocked_by| Blocker:::relationship
+ScrumMaster -->|moderates_retrospective| Sprint:::relationship
+Velocity -->|refers_to_team| Team:::relationship
+FeatureDoc -->|documents_feature| Feature:::relationship
+Stakeholder -->|participates_in| Sprint:::relationship
+
+%% DECISION VARIABLES
+DV1["Sprint Duration"]:::variable
+DV2["Team Size"]:::variable
+DV3["Feature Assignment"]:::variable
+DV4["Task Assignment"]:::variable
+DV5["Budget Allocation"]:::variable
+DV6["Story Points per Sprint"]:::variable
+DV7["Velocity Trend"]:::variable
+DV8["Backlog Size"]:::variable
+DV9["Skill Assignment Ratio"]:::variable
+DV10["Blocker Resolution Time"]:::variable
+
+%% GOALS
+G1["Minimize Project Duration"]:::goal
+G2["Maximize Team Velocity"]:::goal
+G3["Minimize Feature Effort"]:::goal
+G4["Maximize Team Utilization"]:::goal
+G5["Minimize Unresolved Blockers"]:::goal
+G6["Maximize Stakeholder Satisfaction"]:::goal
+G7["Minimize Budget Usage"]:::goal
+G8["Maximize Skill Match"]:::goal
+G9["Minimize Task Switching"]:::goal
+G10["Maximize Goal Achievement"]:::goal
+
+%% CONDITIONS / CONSTRAINTS
+C1["Team Availability"]:::constraint
+C2["Skill Certification Match"]:::constraint
+C3["Moderation Role Match"]:::constraint
+C4["One Product Owner per Backlog"]:::constraint
+C5["Effort Limits per Sprint"]:::constraint
+C6["Single Team per Project"]:::constraint
+C7["Blocked Tasks Resolution"]:::constraint
+C8["Minimum Epic Coverage"]:::constraint
+C9["Retrospective Participation"]:::constraint
+C10["Feature Documentation Required"]:::constraint
+
+%% OBJECTIVE and LINKAGES
+G1 --> Project
+G2 --> Velocity
+G3 --> Feature
+G4 --> Team
+G5 --> Blocker
+G6 --> Stakeholder
+G7 --> Project
+G8 --> Employee
+G9 --> Task
+G10 --> SprintGoal
+
+C1 --> Employee
+C2 --> Employee
+C3 --> ScrumMaster
+C4 --> ProductBacklog
+C5 --> Sprint
+C6 --> Project
+C7 --> Task
+C8 --> Feature
+C9 --> ScrumMaster
+C10 --> FeatureDoc
+
+DV1 --> Sprint
+DV2 --> Team
+DV3 --> Feature
+DV4 --> Task
+DV5 --> Project
+DV6 --> Sprint
+DV7 --> Velocity
+DV8 --> ProductBacklog
+DV9 --> Employee
+DV10 --> Blocker
+
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;

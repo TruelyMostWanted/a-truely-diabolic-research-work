@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Sets}
+\begin{align*}
+& P: \text{Projects} \\
+& T: \text{Teams} \\
+& E: \text{Employees (Workers)} \\
+& F: \text{Features} \\
+& S: \text{Skills} \\
+& R: \text{Roles} \\
+& B: \text{Sprints} \\
+& K: \text{Tasks} \\
+& G: \text{Sprint Goals} \\
+& D: \text{Product Backlogs} \\
+& SM: \text{Scrum Masters} \\
+& PO: \text{Product Owners} \\
+& STK: \text{Stakeholders} \\
+\end{align*}
+
+\section*{Parameters}
+\begin{align*}
+& \text{effort}_{k}: \text{Estimated effort required for task } k \in K \\
+& \text{avail}_{e}: \text{Availability (0-1) of employee } e \in E \\
+& \text{priority}_{f}: \text{Priority of feature } f \in F \\
+& \text{certified}_{e,s}: \text{1 if employee } e \text{ is certified in skill } s, \text{ 0 otherwise} \\
+& \text{required\_skills}_{k,s}: \text{1 if skill } s \text{ is required for task } k, \text{ 0 otherwise} \\
+& \text{team\_capacity}_{t}: \text{Max capacity of team } t \\
+& \text{sprint\_effort\_limit}_{b}: \text{Effort limit for sprint } b \\
+\end{align*}
+
+\section*{Decision Variables}
+\begin{align*}
+& x_{e,k} \in \{0,1\}: \text{1 if employee } e \text{ is assigned to task } k \\
+& y_{t,p} \in \{0,1\}: \text{1 if team } t \text{ is allocated to project } p \\
+& z_{s,k,e} \in \{0,1\}: \text{1 if employee } e \text{ applies skill } s \text{ on task } k \\
+& g_{b,g} \in \{0,1\}: \text{1 if sprint } b \text{ focuses on goal } g \\
+& d_{f} \in \{0,1\}: \text{1 if documentation is complete for feature } f \\
+& sm_{t,sm} \in \{0,1\}: \text{1 if Scrum Master } sm \text{ is assigned to team } t \\
+& v_{stk,b} \in \{0,1\}: \text{1 if stakeholder } stk \text{ participates in sprint review } b \\
+\end{align*}
+
+\section*{Objective Functions}
+\begin{align*}
+\text{Maximize } & \sum_{f \in F} priority_f \cdot d_f \quad \text{(Maximize delivery of high-priority features)} \\
++ & \sum_{e \in E, k \in K} x_{e,k} \quad \text{(Maximize employee-task utilization)} \\
+- & \sum_{b \in B} \left(\sum_{k \in K} effort_k \cdot x_{e,k} - sprint\_effort\_limit_b\right)^2 \quad \text{(Minimize sprint effort overrun)} \\
+- & \sum_{e \in E} \text{ContextSwitchPenalty}_e \quad \text{(Minimize context switching)} \\
+\end{align*}
+
+\section*{Constraints}
+\begin{align*}
+& \sum_{k \in K} x_{e,k} \cdot effort_k \leq avail_e, \quad \forall e \in E \\
+& \sum_{e \in E} x_{e,k} = 1, \quad \forall k \in K \quad \text{(Every task is assigned)} \\
+& \sum_{s \in S} required\_skills_{k,s} \cdot \sum_{e \in E} z_{s,k,e} \geq 1, \quad \forall k \in K \quad \text{(Skills match)} \\
+& z_{s,k,e} \leq certified_{e,s}, \quad \forall e \in E, s \in S, k \in K \\
+& \sum_{k \in K} x_{e,k} \cdot \text{overlap}(k) \leq 1, \quad \forall e \in E \quad \text{(No overlapping tasks)} \\
+& \sum_{sm \in SM} sm_{t,sm} = 1, \quad \forall t \in T \quad \text{(One Scrum Master per team)} \\
+& \sum_{e \in E} \text{role}_{e,t} \leq 1, \quad \forall t \in T \quad \text{(Single role per employee)} \\
+& d_f = 1 \rightarrow \text{Feature } f \text{ is completed and documented}, \quad \forall f \in F \\
+\end{align*}
+
+\section*{Notes}
+\begin{itemize}
+    \item All variables are binary unless otherwise specified.
+    \item Penalties for context switching and effort overruns can be tuned using weight parameters.
+    \item The overlap function identifies time conflicts among task assignments.
+\end{itemize}
+
+\end{document}

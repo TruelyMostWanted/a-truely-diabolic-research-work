@@ -1,0 +1,139 @@
+graph TD
+
+%% === ENTITIES ===
+Project["Project"]
+Team["Team"]
+Employee["Worker / Employee"]
+Feature["Feature"]
+Skill["Skill / Competence"]
+Role["Role(s)"]
+ProductOwner["Product Owner"]
+ScrumMaster["Scrum Master"]
+ProductBacklog["Product Backlog"]
+Sprint["Sprint"]
+SprintBacklog["Sprint Backlog"]
+SprintGoal["Sprint Goal"]
+Epic["Epic"]
+UserStory["User Story"]
+Task["Task / Sub-Task"]
+DevSnapshot["Development Snapshot"]
+Blocker["Blocker / Problem / Bug"]
+Stakeholder["Stakeholder"]
+Velocity["Velocity"]
+ReleasePlan["Release Plan"]
+Roadmap["Roadmap"]
+ScrumBoard["Scrum Board"]
+FeatureDoc["Feature Documentation"]
+
+%% === RELATIONSHIPS ===
+R1["Team → Project"]:::relationship
+R2["Employee → Team"]:::relationship
+R3["Employee → Skill"]:::relationship
+R4["Employee → Role"]:::relationship
+R5["Product Owner → Product Backlog"]:::relationship
+R6["Team → Scrum Master"]:::relationship
+R7["Backlog → Feature"]:::relationship
+R8["Epic → User Story"]:::relationship
+R9["User Story → Task"]:::relationship
+R10["User Story ↔ Sprint Backlog"]:::relationship
+R11["Sprint Backlog → Sprint"]:::relationship
+R12["Sprint → Sprint Goal"]:::relationship
+R13["Scrum Board → Task"]:::relationship
+R14["FeatureDoc → Feature"]:::relationship
+R15["Task ↔ Blocker"]:::relationship
+R16["Stakeholder ↔ Sprint Review"]:::relationship
+R17["Scrum Master → Sprint Retrospective"]:::relationship
+R18["Velocity → Team"]:::relationship
+R19["Release Plan → Feature"]:::relationship
+R20["Release Plan → Roadmap"]:::relationship
+R21["Sprint → DevSnapshot"]:::relationship
+
+%% === DECISION VARIABLES ===
+x1["x1: Team Size"]:::variable
+x2["x2: Sprint Length"]:::variable
+x3["x3: Task Effort"]:::variable
+x4["x4: Team Availability"]:::variable
+x5["x5: Max Blockers"]:::variable
+x6["x6: Stakeholder Count"]:::variable
+x7["x7: Certified Skills Ratio"]:::variable
+x8["x8: Story Points"]:::variable
+x9["x9: Satisfaction Score"]:::variable
+x10["x10: Test Pass Rate"]:::variable
+
+%% === GOALS ===
+G1["G1: Minimize Sprint Duration"]:::goal
+G2["G2: Maximize Team Availability"]:::goal
+G3["G3: Minimize Blockers"]:::goal
+G4["G4: Maximize Feature Completion"]:::goal
+G5["G5: Maximize Team Satisfaction"]:::goal
+G6["G6: Minimize Task Effort"]:::goal
+G7["G7: Maximize Skill Coverage"]:::goal
+G8["G8: Maximize Stakeholder Engagement"]:::goal
+G9["G9: Maximize Backlog Clarity"]:::goal
+G10["G10: Maximize Deployment Readiness"]:::goal
+
+%% === CONDITIONS ===
+C1["C1: Feature Must Have Estimate"]:::constraint
+C2["C2: Story Points Must Be Defined"]:::constraint
+C3["C3: Tasks Cannot Be Without Type"]:::constraint
+C4["C4: Sprint Must Have Goal"]:::constraint
+C5["C5: Team Size Can Vary"]:::constraint
+C6["C6: Stakeholder Influence Must Be Considered"]:::constraint
+C7["C7: One Scrum Master Per Team"]:::constraint
+C8["C8: Certified Skills Preferred"]:::constraint
+C9["C9: Daily Scrums Must Happen"]:::constraint
+C10["C10: Tasks Cannot Exceed Effort Limit"]:::constraint
+
+%% === LINKS ===
+Team --> R1 --> Project
+Employee --> R2 --> Team
+Employee --> R3 --> Skill
+Employee --> R4 --> Role
+ProductOwner --> R5 --> ProductBacklog
+Team --> R6 --> ScrumMaster
+ProductBacklog --> R7 --> Feature
+Epic --> R8 --> UserStory
+UserStory --> R9 --> Task
+UserStory --> R10 --> SprintBacklog
+SprintBacklog --> R11 --> Sprint
+Sprint --> R12 --> SprintGoal
+ScrumBoard --> R13 --> Task
+FeatureDoc --> R14 --> Feature
+Task --> R15 --> Blocker
+Stakeholder --> R16
+ScrumMaster --> R17
+Velocity --> R18 --> Team
+ReleasePlan --> R19 --> Feature
+ReleasePlan --> R20 --> Roadmap
+Sprint --> R21 --> DevSnapshot
+
+%% Connect goals to variables
+G1 --> x2
+G2 --> x4
+G3 --> x5
+G4 --> x8
+G5 --> x9
+G6 --> x3
+G7 --> x7
+G8 --> x6
+G9 --> ProductBacklog
+G10 --> x10
+
+%% Connect conditions to entities or variables
+C1 --> Feature
+C2 --> UserStory
+C3 --> Task
+C4 --> SprintGoal
+C5 --> x1
+C6 --> Stakeholder
+C7 --> ScrumMaster
+C8 --> x7
+C9 --> Sprint
+C10 --> x3
+
+%% Class Definitions
+class Project,Team,Employee,Feature,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Sprint,SprintBacklog,SprintGoal,Epic,UserStory,Task,DevSnapshot,Blocker,Stakeholder,Velocity,ReleasePlan,Roadmap,ScrumBoard,FeatureDoc entity;
+class x1,x2,x3,x4,x5,x6,x7,x8,x9,x10 variable;
+class G1,G2,G3,G4,G5,G6,G7,G8,G9,G10 goal;
+class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10 constraint;
+class R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14,R15,R16,R17,R18,R19,R20,R21 relationship;

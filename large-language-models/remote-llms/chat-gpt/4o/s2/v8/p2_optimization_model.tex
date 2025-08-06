@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\title{SCRUM-Based Software Development Optimization Model}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Sets and Indices}
+\begin{itemize}
+    \item $P$: Set of projects
+    \item $T$: Set of teams
+    \item $E$: Set of employees
+    \item $F$: Set of features
+    \item $S$: Set of skills
+    \item $R$: Set of roles
+    \item $B$: Set of backlogs
+    \item $Sp$: Set of sprints
+    \item $Ts$: Set of tasks
+\end{itemize}
+
+\section*{2. Parameters}
+\begin{itemize}
+    \item $avail_e$: Availability score of employee $e \in E$
+    \item $effort_t$: Estimated effort for task $t \in Ts$
+    \item $budget_p$: Budget allocated to project $p \in P$
+    \item $priority_f$: Priority level of feature $f \in F$
+    \item $skill_{es}$: Binary parameter, 1 if employee $e$ has skill $s$, 0 otherwise
+    \item $certified_{es}$: Binary parameter, 1 if skill $s$ of employee $e$ is certified
+    \item $max\_team\_size$: Maximum allowed team size
+    \item $max\_sprint\_duration$: Maximum allowed sprint duration (28 days)
+    \item $velocity_t$: Team velocity
+\end{itemize}
+
+\section*{3. Decision Variables}
+\begin{itemize}
+    \item $x_{et} \in \{0,1\}$: 1 if employee $e$ is assigned to team $t$
+    \item $y_{etask} \in \{0,1\}$: 1 if employee $e$ is assigned to task $task$
+    \item $z_{f} \in \mathbb{N}$: Budget assigned to feature $f$
+    \item $w_{sp} \in \mathbb{N}$: Length of sprint $sp$ in days
+\end{itemize}
+
+\section*{4. Objective Function}
+Minimize the total project effort and maximize team utilization and sprint goal achievement:
+
+\[
+\min \sum_{t \in Ts} effort_t - \alpha \sum_{e \in E, t \in Ts} y_{et} \cdot avail_e + \beta \sum_{sp \in Sp} goal\_achieved_{sp}
+\]
+
+where $\alpha, \beta$ are weighting coefficients.
+
+\section*{5. Constraints}
+
+\begin{align}
+&\text{(C1) Team size limit: } \sum_{e \in E} x_{et} \leq max\_team\_size & \forall t \in T \\
+&\text{(C2) Sprint duration: } w_{sp} \leq max\_sprint\_duration & \forall sp \in Sp \\
+&\text{(C3) Employee availability: } y_{etask} \leq avail_e & \forall e \in E, task \in Ts \\
+&\text{(C4) Certified skills required: } skill_{es} \cdot certified_{es} \geq required_s & \forall e,s \\
+&\text{(C5) One role per employee: } \sum_{r \in R} role_{er} \leq 1 & \forall e \in E \\
+&\text{(C6) Feature budget: } z_{f} \leq budget_p & \forall f \in F, p \in P \\
+&\text{(C7) Task effort capacity: } \sum_{t \in Ts} effort_t \cdot y_{et} \leq velocity_t & \forall t \in T \\
+&\text{(C8) Role-based moderation: } moderator_{retrospective} = scrum\_master & \\
+&\text{(C9) Scrum timing: } scrum\_time \in working\_hours & \\
+&\text{(C10) User Story Task Ratio: } \frac{\text{Tasks}_s}{\text{UserStories}_s} \leq \theta & \forall s \in Sp
+\end{align}
+
+\section*{6. Goals Summary}
+
+\begin{longtable}{|l|l|l|}
+\hline
+\textbf{ID} & \textbf{Name} & \textbf{Goal Type} \\
+\hline
+G01 & Minimize Project Duration & Min \\
+G02 & Maximize Team Utilization & Max \\
+G03 & Minimize Task Effort & Min \\
+G04 & Maximize Feature Completion Rate & Max \\
+G05 & Minimize Number of Blockers & Min \\
+G06 & Maximize Stakeholder Satisfaction & Max \\
+G07 & Maximize Skill Matching & Max \\
+G08 & Minimize Task Switching & Min \\
+G09 & Maximize Sprint Goal Achievement & Max \\
+G10 & Minimize Budget Usage & Min \\
+\hline
+\end{longtable}
+
+\end{document}

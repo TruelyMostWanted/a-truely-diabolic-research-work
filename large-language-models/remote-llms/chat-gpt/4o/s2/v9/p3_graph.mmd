@@ -1,0 +1,93 @@
+graph TD
+
+%% Entities
+Project["Project\nAttributes: ID, Name, Start, End, Description, Budget, Status, Audience, Priority"]:::entity
+Team["Team\nAttributes: ID, Name, Size, Start, Status, Location, Type"]:::entity
+Employee["Employee\nAttributes: ID, Name, First Name, Email, Start Date, Status, Availability"]:::entity
+Skill["Skill\nAttributes: ID, Label, Description, Level, Certified, Category"]:::entity
+Role["Role\nAttributes: ID, Role Name, Description, Responsibility Area"]:::entity
+ProductOwner["Product Owner\nAttributes: ID, Name, Email, Availability"]:::entity
+ScrumMaster["Scrum Master\nAttributes: ID, Name, Email, Experience"]:::entity
+ProductBacklog["Product Backlog\nAttributes: ID, Created On, Last Updated, Entries, Status"]:::entity
+Feature["Feature\nAttributes: ID, Title, Description, Status, Priority, Estimated Effort"]:::entity
+Epic["Epic\nAttributes: ID, Title, Description, Priority, Status, Effort"]:::entity
+UserStory["User Story\nAttributes: ID, Title, Description, Acceptance, Priority, Story Points, Status"]:::entity
+Task["Task\nAttributes: ID, Title, Description, Status, Effort, Type"]:::entity
+Sprint["Sprint\nAttributes: ID, Number, Start, End, Status, Goal Achievement"]:::entity
+SprintGoal["Sprint Goal\nAttributes: ID, Objective, Status, Benefit"]:::entity
+Blocker["Blocker\nAttributes: ID, Title, Description, Severity, Status, Detected, Resolved"]:::entity
+Stakeholder["Stakeholder\nAttributes: ID, Name, Org, Role, Email, Interest, Influence, Feature Relevance"]:::entity
+Velocity["Velocity\nAttributes: ID, Sprints Used, Avg. Points, Max, Min, Trend"]:::entity
+
+%% Relationships
+Team -->|is_assigned_to_project| Project:::relationship
+Employee -->|belongs_to_team| Team:::relationship
+Employee -->|has_skill| Skill:::relationship
+Employee -->|takes_on_role| Role:::relationship
+ProductOwner -->|manages_backlog| ProductBacklog:::relationship
+Team -->|is_supported_by| ScrumMaster:::relationship
+ProductBacklog -->|contains_feature| Feature:::relationship
+ProductBacklog -->|contains_epic| Epic:::relationship
+Epic -->|contains_user_story| UserStory:::relationship
+UserStory -->|consists_of_tasks| Task:::relationship
+UserStory -->|is_in_sprint_backlog| Task:::relationship
+Sprint -->|pursues_goal| SprintGoal:::relationship
+Task -->|is_blocked_by| Blocker:::relationship
+Stakeholder -->|participates_in| Sprint:::relationship
+ScrumMaster -->|moderates_retrospective| Sprint:::relationship
+Velocity -->|refers_to_team| Team:::relationship
+
+%% Goals
+G1["G1: Maximize Velocity"]:::goal
+G2["G2: Minimize Sprint Duration"]:::goal
+G3["G3: Maximize Feature Delivery"]:::goal
+G4["G4: Minimize Blockers"]:::goal
+G5["G5: Maximize Employee Utilization"]:::goal
+G6["G6: Minimize Budget Usage"]:::goal
+G7["G7: Maximize Stakeholder Satisfaction"]:::goal
+G8["G8: Maximize Role Coverage"]:::goal
+G9["G9: Maximize Certified Skills"]:::goal
+G10["G10: Minimize Task Overlap"]:::goal
+
+%% Link Goals
+Velocity --> G1
+Sprint --> G2
+Feature --> G3
+Blocker --> G4
+Employee --> G5
+Project --> G6
+Stakeholder --> G7
+Role --> G8
+Skill --> G9
+Task --> G10
+
+%% Constraints / Conditions
+C1["C1: Team Size Limit"]:::constraint
+C2["C2: Skill Matching"]:::constraint
+C3["C3: Max Sprints per Project"]:::constraint
+C4["C4: Sprint Goal Alignment"]:::constraint
+C5["C5: Daily Scrum ≤ 15 min"]:::constraint
+C6["C6: Task Effort ≤ 8"]:::constraint
+C7["C7: Employee Availability"]:::constraint
+C8["C8: Retrospective Moderation"]:::constraint
+C9["C9: Feature Documentation"]:::constraint
+C10["C10: Blocker Resolved ≤ 3 days"]:::constraint
+
+%% Link Constraints
+Team --> C1
+Task --> C2
+Project --> C3
+Sprint --> C4
+Sprint --> C5
+Task --> C6
+Employee --> C7
+Sprint --> C8
+Feature --> C9
+Blocker --> C10
+
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;

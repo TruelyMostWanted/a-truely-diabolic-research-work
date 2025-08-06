@@ -1,0 +1,116 @@
+graph TD
+
+%% ENTITY NODES
+Project["Project\n(ID, Name, Budget, Status, Priority)"]
+Team["Team\n(ID, Name, Team Size, Location, Type)"]
+Employee["Employee\n(ID, Name, Email, Status, Availability)"]
+Feature["Feature\n(ID, Title, Description, Status, Priority, Effort)"]
+Task["Task / Sub-Task\n(ID, Title, Description, Effort, Status)"]
+Sprint["Sprint\n(ID, Number, Start Date, End Date, Status)"]
+SprintBacklog["Sprint Backlog\n(ID, #Tasks, Status, Total Effort)"]
+ProductBacklog["Product Backlog\n(ID, Created On, Status)"]
+Skill["Skill\n(ID, Label, Level, Certified)"]
+Role["Role(s)\n(ID, Name, Description)"]
+ScrumMaster["Scrum Master\n(ID, Name, Experience)"]
+ProductOwner["Product Owner\n(ID, Name, Availability)"]
+
+%% DECISION VARIABLES
+x_et["x_et: Employee-Team Assignment"]
+y_etask["y_etask: Employee-Task Assignment"]
+z_f["z_f: Budget per Feature"]
+w_sp["w_sp: Sprint Length (days)"]
+
+%% GOALS
+G01["G01: Minimize Project Duration"]
+G02["G02: Maximize Team Utilization"]
+G03["G03: Minimize Task Effort"]
+G04["G04: Maximize Feature Completion"]
+G05["G05: Minimize Blockers"]
+G06["G06: Maximize Stakeholder Satisfaction"]
+G07["G07: Maximize Skill Matching"]
+G08["G08: Minimize Task Switching"]
+G09["G09: Maximize Sprint Goal Achievement"]
+G10["G10: Minimize Budget Usage"]
+
+%% CONDITIONS / CONSTRAINTS
+C01["C01: Team Size Limit"]
+C02["C02: Sprint Duration Limit"]
+C03["C03: Availability Match"]
+C04["C04: Certified Skills Required"]
+C05["C05: One Role per Employee"]
+C06["C06: Feature Budget Cap"]
+C07["C07: Sprint Effort Limit"]
+C08["C08: Scrum Master Moderation"]
+C09["C09: Scrum Timing Validity"]
+C10["C10: Story to Task Ratio"]
+
+%% RELATIONSHIPS
+R1["Team → Project"]
+R2["Employee → Team"]
+R3["Employee → Skill"]
+R4["Employee → Role"]
+R5["Product Owner → Backlog"]
+R6["Team → Scrum Master"]
+R7["Backlog → Feature"]
+R8["Feature → Epic → Story → Task"]
+R9["Task → Blocker"]
+R10["Sprint → Goal"]
+R11["Sprint → Snapshot"]
+
+%% LINK RELATIONSHIPS
+Employee -->|has| Skill
+Employee -->|takes| Role
+Employee --> x_et
+Employee --> y_etask
+Task --> y_etask
+Feature --> z_f
+Sprint --> w_sp
+Team --> x_et
+Team -->|supported by| ScrumMaster
+ProductOwner -->|manages| ProductBacklog
+Sprint --> SprintBacklog
+SprintBacklog --> Task
+
+%% GOAL LINKS
+G01 --> Project
+G02 --> Team
+G03 --> Task
+G04 --> Feature
+G05 --> Task
+G06 --> Project
+G07 --> Employee
+G08 --> Employee
+G09 --> Sprint
+G10 --> Project
+
+%% CONSTRAINT LINKS
+C01 --> Team
+C02 --> Sprint
+C03 --> Employee
+C04 --> Skill
+C05 --> Role
+C06 --> Feature
+C07 --> SprintBacklog
+C08 --> ScrumMaster
+C09 --> Sprint
+C10 --> Task
+
+%% RELATIONSHIP LINKS
+Team --> R1 --> Project
+Employee --> R2 --> Team
+Employee --> R3 --> Skill
+Employee --> R4 --> Role
+ProductOwner --> R5 --> ProductBacklog
+Team --> R6 --> ScrumMaster
+ProductBacklog --> R7 --> Feature
+Feature --> R8 --> Task
+Task --> R9 --> Blocker
+Sprint --> R10 --> SprintGoal
+Sprint --> R11 --> DevelopmentSnapshot
+
+%% CLASS DEFINITIONS
+class Project,Team,Employee,Feature,Task,Sprint,SprintBacklog,ProductBacklog,Skill,Role,ScrumMaster,ProductOwner entity;
+class x_et,y_etask,z_f,w_sp variable;
+class G01,G02,G03,G04,G05,G06,G07,G08,G09,G10 goal;
+class C01,C02,C03,C04,C05,C06,C07,C08,C09,C10 constraint;
+class R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11 relationship;

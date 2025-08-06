@@ -1,0 +1,114 @@
+graph TD
+%% ENTITY NODES
+Project[Project\n(ID, Name, Start, End, Budget)]:::entity
+Team[Team\n(ID, Name, Size, Location)]:::entity
+Employee[Employee\n(ID, Name, Email, Status, Availability)]:::entity
+Feature[Feature\n(ID, Title, Priority, Est. Effort)]:::entity
+Skill[Skill\n(ID, Label, Level, Certified)]:::entity
+Task[Task / Sub-Task\n(ID, Title, Effort)]:::entity
+Sprint[Sprint\n(ID, Number, Start, End)]:::entity
+ProductBacklog[Product Backlog\n(ID, Created On, Entries)]:::entity
+SprintGoal[Sprint Goal\n(ID, Objective, Status)]:::entity
+Velocity[Velocity\n(ID, Avg Points, Trend)]:::entity
+ScrumMaster[Scrum Master\n(ID, Name, Experience)]:::entity
+Stakeholder[Stakeholder\n(ID, Name, Role)]:::entity
+
+%% DECISION VARIABLES
+DV1[x_e_k\n(TaskAssignment)]:::variable
+DV2[z_s_k_e\n(SkillAssignment)]:::variable
+DV3[y_t_p\n(TeamAllocation)]:::variable
+DV4[g_b_g\n(SprintGoalFocus)]:::variable
+DV5[d_f\n(DocumentationStatus)]:::variable
+DV6[sm_t_sm\n(ScrumMasterAssigned)]:::variable
+DV7[v_stk_b\n(StakeholderInvolvement)]:::variable
+
+%% GOALS
+G1[MaxFeatureDelivery]:::goal
+G2[MinEffortOverrun]:::goal
+G3[MaxTeamUtilization]:::goal
+G4[MinContextSwitch]:::goal
+G5[MaxVelocityStability]:::goal
+G6[MinBlockers]:::goal
+G7[MaxGoalAchievement]:::goal
+G8[MaxStakeholderSatisfaction]:::goal
+G9[MinTimeToRelease]:::goal
+G10[MaxSkillCoverage]:::goal
+
+%% CONDITIONS
+C1[TeamCapacityLimit]:::constraint
+C2[SkillTaskMatch]:::constraint
+C3[SingleRolePerSprint]:::constraint
+C4[TaskInSprint]:::constraint
+C5[FeatureDocumentationComplete]:::constraint
+C6[NoTaskOverlap]:::constraint
+C7[CertifiedScrumMaster]:::constraint
+C8[AvailabilityThreshold]:::constraint
+C9[FullRetroParticipation]:::constraint
+C10[PriorityDrivenWork]:::constraint
+
+%% RELATIONSHIPS
+R1[is_assigned_to_project]:::relationship
+R2[belongs_to_team]:::relationship
+R3[has_skill]:::relationship
+R4[takes_on_role]:::relationship
+R5[manages_backlog]:::relationship
+R6[contains_feature]:::relationship
+R7[contains_tasks]:::relationship
+R8[is_in_sprint_backlog]:::relationship
+R9[moderates_retrospective]:::relationship
+R10[participates_in]:::relationship
+R11[refers_to_team]:::relationship
+
+%% RELATIONSHIP CONNECTIONS
+Team --> R1 --> Project
+Employee --> R2 --> Team
+Employee --> R3 --> Skill
+Employee --> R4 --> Role
+ProductBacklog --> R6 --> Feature
+Sprint --> R8 --> Task
+ScrumMaster --> R9 --> Sprint
+Stakeholder --> R10 --> Sprint
+Velocity --> R11 --> Team
+
+%% ENTITY - VARIABLE LINKS
+Task --> DV1
+Skill --> DV2
+Employee --> DV2
+Team --> DV3
+Project --> DV3
+SprintGoal --> DV4
+Feature --> DV5
+Team --> DV6
+ScrumMaster --> DV6
+Stakeholder --> DV7
+
+%% GOALS LINKED TO ENTITIES / VARIABLES
+Feature --> G1
+Sprint --> G2
+Team --> G3
+Employee --> G4
+Velocity --> G5
+Task --> G6
+SprintGoal --> G7
+Stakeholder --> G8
+Feature --> G9
+Skill --> G10
+
+%% CONDITIONS LINKED TO ENTITIES / VARIABLES
+Team --> C1
+Task --> C2
+Employee --> C3
+Task --> C4
+Feature --> C5
+Employee --> C6
+Team --> C7
+Employee --> C8
+Sprint --> C9
+Feature --> C10
+
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;

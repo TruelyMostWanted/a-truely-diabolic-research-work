@@ -1,0 +1,94 @@
+graph TD
+
+%% ENTITY NODES
+Project[Project\nAttributes: ID, Name, Start, End, Budget, Status]:::entity
+Team[Team\nAttributes: ID, Name, Size, Start, Status]:::entity
+Employee[Employee\nAttributes: ID, Name, Email, Status, Availability]:::entity
+Skill[Skill\nAttributes: ID, Label, Level, Certified]:::entity
+Role[Role\nAttributes: ID, Role Name, Responsibility]:::entity
+Feature[Feature\nAttributes: ID, Title, Status, Effort]:::entity
+ProductBacklog[Product Backlog\nAttributes: ID, Status, Entries]:::entity
+Sprint[Sprint\nAttributes: ID, Start, End, Goal]:::entity
+SprintBacklog[Sprint Backlog\nAttributes: ID, Tasks, Effort]:::entity
+UserStory[User Story\nAttributes: ID, Title, Points, Status]:::entity
+Task[Task / Sub-Task\nAttributes: ID, Title, Status, Effort]:::entity
+Blocker[Blocker\nAttributes: ID, Title, Severity, Status]:::entity
+ScrumMaster[Scrum Master\nAttributes: ID, Name, Experience]:::entity
+ProductOwner[Product Owner\nAttributes: ID, Name, Email]:::entity
+Stakeholder[Stakeholder\nAttributes: ID, Name, Interest Level]:::entity
+
+%% RELATIONSHIP NODES
+Rel1[is_assigned_to_project]:::relationship
+Rel2[belongs_to_team]:::relationship
+Rel3[has_skill]:::relationship
+Rel4[takes_on_role]:::relationship
+Rel5[manages_backlog]:::relationship
+Rel6[is_supported_by]:::relationship
+Rel7[contains_feature]:::relationship
+Rel8[contains_user_story]:::relationship
+Rel9[consists_of_tasks]:::relationship
+Rel10[is_blocked_by]:::relationship
+
+%% GOALS
+G1[G01\nMinimize Project Duration]:::goal
+G2[G02\nMaximize Team Utilization]:::goal
+G3[G04\nMinimize Employee Idle Time]:::goal
+G4[G05\nMaximize Skill Utilization]:::goal
+G5[G07\nMinimize Blockers]:::goal
+
+%% CONDITIONS
+C1[C01\nTeam Size Limit]:::constraint
+C2[C02\nSkill Match Requirement]:::constraint
+C3[C06\nWorkload Balance]:::constraint
+C4[C08\nNo Overlapping Tasks]:::constraint
+C5[C10\nPriority Alignment]:::constraint
+
+%% DECISION VARIABLES
+DV1[DV01\nTeam Assignment]:::variable
+DV2[DV02\nEmployee Task Allocation]:::variable
+DV3[DV03\nSprint Length]:::variable
+DV4[DV04\nMax Team Size]:::variable
+DV5[DV05\nFeature Priority]:::variable
+DV6[DV07\nTask Effort]:::variable
+
+%% RELATIONSHIPS
+Team -->|Rel1| Project
+Employee -->|Rel2| Team
+Employee -->|Rel3| Skill
+Employee -->|Rel4| Role
+ProductOwner -->|Rel5| ProductBacklog
+Team -->|Rel6| ScrumMaster
+ProductBacklog -->|Rel7| Feature
+Feature -->|Rel8| UserStory
+UserStory -->|Rel9| Task
+Task -->|Rel10| Blocker
+
+%% DECISION VARIABLE LINKS
+DV1 --> Team
+DV1 --> Project
+DV2 --> Employee
+DV2 --> Task
+DV3 --> Sprint
+DV4 --> Team
+DV5 --> Feature
+DV6 --> Task
+
+%% GOALS AND CONSTRAINT LINKS
+G1 --> Project
+G2 --> Team
+G3 --> Employee
+G4 --> Skill
+G5 --> Blocker
+
+C1 --> Team
+C2 --> Employee
+C3 --> Team
+C4 --> Task
+C5 --> Task
+
+%% CLASS DEFINITIONS
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;

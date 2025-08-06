@@ -1,0 +1,113 @@
+graph TD
+
+%% Entity Nodes
+Project["Project\n(ID, Name, Start, End, Budget, Status)"]:::entity
+Team["Team\n(ID, Name, Size, Status, Location)"]:::entity
+Employee["Employee\n(ID, Name, Email, Status, Availability)"]:::entity
+Feature["Feature\n(ID, Title, Status, Priority, Effort)"]:::entity
+Skill["Skill\n(ID, Label, Level, Certified)"]:::entity
+Role["Role\n(ID, Name, Responsibility)"]:::entity
+ProductOwner["Product Owner\n(ID, Name, Email)"]:::entity
+ScrumMaster["Scrum Master\n(ID, Name, Experience)"]:::entity
+ProductBacklog["Product Backlog\n(ID, Status, #Entries)"]:::entity
+Sprint["Sprint\n(ID, Number, Start, End, Status)"]:::entity
+Task["Task / Sub-Task\n(ID, Title, Effort, Type, Status)"]:::entity
+UserStory["User Story\n(ID, Title, Points, Status)"]:::entity
+Epic["Epic\n(ID, Title, Status, Effort)"]:::entity
+Retrospective["Sprint Retrospective\n(ID, Duration, Satisfaction)"]:::entity
+Stakeholder["Stakeholder\n(ID, Name, Influence, Interest)"]:::entity
+
+%% Relationships
+Team-- "assigned to" -->Project:::relationship
+Employee-- "belongs to" -->Team:::relationship
+Employee-- "has" -->Skill:::relationship
+Employee-- "takes on" -->Role:::relationship
+ProductOwner-- "manages" -->ProductBacklog:::relationship
+Team-- "supported by" -->ScrumMaster:::relationship
+ProductBacklog-- "contains" -->Feature:::relationship
+ProductBacklog-- "contains" -->Epic:::relationship
+Epic-- "contains" -->UserStory:::relationship
+UserStory-- "consists of" -->Task:::relationship
+UserStory-- "in" -->Sprint:::relationship
+Sprint-- "pursues" -->Retrospective:::relationship
+Task-- "blocked by" -->Retrospective:::relationship
+Stakeholder-- "participates in" -->Retrospective:::relationship
+
+%% Goals
+G1["G1: Minimize Sprint Duration"]:::goal
+G2["G2: Maximize Team Utilization"]:::goal
+G3["G3: Minimize Blockers"]:::goal
+G4["G4: Maximize Feature Completion"]:::goal
+G5["G5: Minimize Task Overlap"]:::goal
+G6["G6: Maximize Skill Coverage"]:::goal
+G7["G7: Maximize Stakeholder Satisfaction"]:::goal
+G8["G8: Minimize Unused Story Points"]:::goal
+G9["G9: Maximize Retrospective Improvement"]:::goal
+G10["G10: Maximize Budget Efficiency"]:::goal
+
+%% Connect Goals
+G1-- targets -->Sprint
+G2-- targets -->Team
+G3-- targets -->Task
+G4-- targets -->Feature
+G5-- targets -->Task
+G6-- targets -->Employee
+G7-- targets -->Stakeholder
+G8-- targets -->UserStory
+G9-- targets -->Retrospective
+G10-- targets -->Project
+
+%% Conditions
+C1["C1: Team Size Limit"]:::constraint
+C2["C2: Skill Match Tasks"]:::constraint
+C3["C3: Role Completeness"]:::constraint
+C4["C4: Max Sprint Count"]:::constraint
+C5["C5: Workload Limit"]:::constraint
+C6["C6: One Scrum Master per Team"]:::constraint
+C7["C7: PO-Backlog Assignment"]:::constraint
+C8["C8: Team Availability"]:::constraint
+C9["C9: Task Type Balance"]:::constraint
+C10["C10: Feature-Epic Linking"]:::constraint
+
+%% Connect Conditions
+C1-- constrains -->Team
+C2-- constrains -->Employee
+C3-- constrains -->Team
+C4-- constrains -->Project
+C5-- constrains -->Employee
+C6-- constrains -->Team
+C7-- constrains -->ProductBacklog
+C8-- constrains -->Team
+C9-- constrains -->Task
+C10-- constrains -->Feature
+
+%% Decision Variables
+DV1["DV1: Team Size"]:::variable
+DV2["DV2: Sprint Duration"]:::variable
+DV3["DV3: Task Assignment"]:::variable
+DV4["DV4: Sprint Count"]:::variable
+DV5["DV5: Effort Allocation"]:::variable
+DV6["DV6: Skill Matching"]:::variable
+DV7["DV7: Budget Allocation"]:::variable
+DV8["DV8: Story Point Allocation"]:::variable
+DV9["DV9: Sprint Goal Selection"]:::variable
+DV10["DV10: Retrospective Improvements"]:::variable
+
+%% Link Decision Variables
+DV1-- affects -->Team
+DV2-- affects -->Sprint
+DV3-- affects -->Task
+DV4-- affects -->Project
+DV5-- affects -->Task
+DV6-- affects -->Employee
+DV7-- affects -->Feature
+DV8-- affects -->UserStory
+DV9-- affects -->Sprint
+DV10-- affects -->Retrospective
+
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;

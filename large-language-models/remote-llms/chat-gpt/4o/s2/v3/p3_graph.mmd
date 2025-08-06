@@ -1,0 +1,104 @@
+graph TD
+
+%% Entities
+Project["Project"]:::entity
+Team["Team"]:::entity
+Employee["Employee"]:::entity
+Skill["Skill / Competence"]:::entity
+Role["Role(s)"]:::entity
+PO["Product Owner"]:::entity
+SM["Scrum Master"]:::entity
+Backlog["Product Backlog"]:::entity
+Feature["Feature"]:::entity
+Epic["Epic"]:::entity
+UserStory["User Story"]:::entity
+Task["Task / Sub-Task"]:::entity
+Sprint["Sprint"]:::entity
+SprintGoal["Sprint Goal"]:::entity
+Stakeholder["Stakeholder"]:::entity
+Velocity["Velocity"]:::entity
+
+%% Relationships
+Team -->|is_assigned_to_project| Project:::relationship
+Employee -->|belongs_to_team| Team:::relationship
+Employee -->|has_skill| Skill:::relationship
+Employee -->|takes_on_role| Role:::relationship
+PO -->|manages_backlog| Backlog:::relationship
+SM -->|is_supported_by| Team:::relationship
+Backlog -->|contains_feature| Feature:::relationship
+Backlog -->|contains_epic| Epic:::relationship
+Epic -->|contains_user_story| UserStory:::relationship
+UserStory -->|consists_of_tasks| Task:::relationship
+UserStory -->|is_in_sprint_backlog| Sprint:::relationship
+Sprint -->|pursues_goal| SprintGoal:::relationship
+Stakeholder -->|participates_in| Sprint:::relationship
+SM -->|moderates_retrospective| Sprint:::relationship
+Velocity -->|refers_to_team| Team:::relationship
+Sprint -->|generates_snapshot| Task:::relationship
+
+%% Goals
+G01["G01: Maximize Team Availability"]:::goal
+G02["G02: Minimize Project Duration"]:::goal
+G03["G03: Maximize Velocity"]:::goal
+G04["G04: Maximize Skill Match"]:::goal
+G05["G05: Maximize Sprint Goal Achievement"]:::goal
+G06["G06: Maximize Stakeholder Satisfaction"]:::goal
+G07["G07: Minimize Task Blockers"]:::goal
+G08["G08: Maximize Certified Skills"]:::goal
+G09["G09: Maximize Budget Efficiency"]:::goal
+G10["G10: Maximize Task Completion Rate"]:::goal
+
+%% Conditions
+C01["C01: Project Must Have Budget"]:::constraint
+C02["C02: Team Must Have Scrum Master"]:::constraint
+C03["C03: PO Must Manage Backlog"]:::constraint
+C04["C04: Features Must Be in Backlog"]:::constraint
+C05["C05: User Stories Should Belong to Epics"]:::constraint
+C06["C06: Task Must Belong to User Story"]:::constraint
+C07["C07: Developers Must Have Skills"]:::constraint
+C08["C08: Stakeholders Should Attend Review"]:::constraint
+C09["C09: Sprints Must Pursue Goals"]:::constraint
+C10["C10: Task Cannot Be Blocked"]:::constraint
+
+%% Decision Variables
+DV01["DV01: Team Size"]:::variable
+DV02["DV02: Project Budget"]:::variable
+DV03["DV03: Task Effort"]:::variable
+DV04["DV04: Sprint Duration"]:::variable
+DV05["DV05: Story Points per Sprint"]:::variable
+DV06["DV06: Velocity Trend"]:::variable
+DV07["DV07: Developer Availability"]:::variable
+DV08["DV08: Stakeholder Influence"]:::variable
+DV09["DV09: Tasks per Sprint"]:::variable
+DV10["DV10: Skill Level"]:::variable
+
+%% Linking Goals and Variables
+G01 --> DV07
+G02 --> DV04
+G03 --> Velocity
+G04 --> Skill
+G05 --> SprintGoal
+G06 --> DV08
+G07 --> Task
+G08 --> Skill
+G09 --> DV02
+G10 --> DV09
+
+%% Linking Conditions and Entities
+C01 --> Project
+C02 --> Team
+C03 --> PO
+C04 --> Feature
+C05 --> UserStory
+C06 --> Task
+C07 --> Employee
+C08 --> Stakeholder
+C09 --> Sprint
+C10 --> Task
+
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;

@@ -1,0 +1,116 @@
+graph TD
+
+%% ENTITIES
+Project["Project\n(ID, Name, Start, End, Budget)"]:::entity
+Team["Team\n(ID, Name, Size, Location)"]:::entity
+Employee["Employee\n(ID, Name, Email, Availability)"]:::entity
+Feature["Feature\n(ID, Title, Effort, Priority)"]:::entity
+Skill["Skill\n(ID, Label, Level)"]:::entity
+Role["Role\n(ID, Name, Responsibility)"]:::entity
+ProductOwner["Product Owner\n(ID, Name, Availability)"]:::entity
+ScrumMaster["Scrum Master\n(ID, Name, Experience)"]:::entity
+ProductBacklog["Product Backlog\n(ID, Status)"]:::entity
+Sprint["Sprint\n(ID, Number, Start, End, Status)"]:::entity
+SprintGoal["Sprint Goal\n(ID, Objective, Benefit)"]:::entity
+SprintBacklog["Sprint Backlog\n(ID, Tasks, Total Effort)"]:::entity
+UserStory["User Story\n(ID, Title, Story Points, Status)"]:::entity
+Task["Task\n(ID, Title, Effort, Status)"]:::entity
+Blocker["Blocker\n(ID, Severity, Status)"]:::entity
+Stakeholder["Stakeholder\n(ID, Name, Role, Relevance)"]:::entity
+Velocity["Velocity\n(ID, Avg. Story Points)"]:::entity
+
+%% RELATIONSHIPS
+Team -->|is_assigned_to_project| Project:::relationship
+Employee -->|belongs_to_team| Team:::relationship
+Employee -->|has_skill| Skill:::relationship
+Employee -->|takes_on_role| Role:::relationship
+ProductOwner -->|manages_backlog| ProductBacklog:::relationship
+Team -->|is_supported_by| ScrumMaster:::relationship
+ProductBacklog -->|contains_feature| Feature:::relationship
+ProductBacklog -->|contains_epic| Feature:::relationship
+Feature -->|contains_user_story| UserStory:::relationship
+UserStory -->|consists_of_tasks| Task:::relationship
+UserStory -->|is_in_sprint_backlog| SprintBacklog:::relationship
+SprintBacklog -->|belongs_to_sprint| Sprint:::relationship
+Sprint -->|pursues_goal| SprintGoal:::relationship
+ScrumMaster -->|moderates_retrospective| SprintGoal:::relationship
+Task -->|is_blocked_by| Blocker:::relationship
+Stakeholder -->|participates_in| Sprint:::relationship
+Velocity -->|refers_to_team| Team:::relationship
+
+%% VARIABLES
+TeamSize["DV001: Team Size"]:::variable
+StoryPointsPerSprint["DV002: Story Points/Sprint"]:::variable
+SprintDuration["DV003: Sprint Duration"]:::variable
+Budget["DV004: Project Budget"]:::variable
+WorkHours["DV005: Developer Work Hours"]:::variable
+TaskAssignments["DV006: Task Assignment/Worker"]:::variable
+StakeholderInfluence["DV007: Stakeholder Influence"]:::variable
+SkillLevel["DV008: Skill Proficiency"]:::variable
+FeaturePriority["DV009: Feature Priority"]:::variable
+VelocityTrend["DV010: Velocity Trend Weight"]:::variable
+
+%% GOALS
+Goal1["G001: Minimize Project Duration"]:::goal
+Goal2["G002: Maximize Feature Coverage"]:::goal
+Goal3["G003: Minimize Sprint Goal Failures"]:::goal
+Goal4["G004: Maximize Team Satisfaction"]:::goal
+Goal5["G005: Maximize Velocity"]:::goal
+Goal6["G006: Minimize Task Blockers"]:::goal
+Goal7["G007: Maximize Competency Match"]:::goal
+Goal8["G008: Minimize Budget Overruns"]:::goal
+Goal9["G009: Maximize Stakeholder Participation"]:::goal
+Goal10["G010: Maximize Delivery Predictability"]:::goal
+
+%% CONDITIONS
+Cond1["C001: Respect Team Capacity"]:::constraint
+Cond2["C002: Skill-Task Alignment"]:::constraint
+Cond3["C003: No Overallocation"]:::constraint
+Cond4["C004: PO Availability"]:::constraint
+Cond5["C005: SM Moderates Retrospective"]:::constraint
+Cond6["C006: Review Attendees ≥ 3"]:::constraint
+Cond7["C007: Feature Must Have Documentation"]:::constraint
+Cond8["C008: Daily Scrum ≤ 15 min"]:::constraint
+Cond9["C009: Certified Roles Required"]:::constraint
+Cond10["C010: Sprint ≤ 4 Weeks"]:::constraint
+
+%% CONNECT GOALS AND VARIABLES TO ENTITIES
+Goal1 --> Project
+Goal2 --> Feature
+Goal3 --> SprintGoal
+Goal4 --> SprintGoal
+Goal5 --> Velocity
+Goal6 --> Task
+Goal7 --> Employee
+Goal8 --> Project
+Goal9 --> Stakeholder
+Goal10 --> Sprint
+
+Cond1 --> Team
+Cond2 --> Task
+Cond3 --> Employee
+Cond4 --> ProductOwner
+Cond5 --> ScrumMaster
+Cond6 --> Sprint
+Cond7 --> Feature
+Cond8 --> Sprint
+Cond9 --> ProductOwner
+Cond10 --> Sprint
+
+TeamSize --> Team
+StoryPointsPerSprint --> Sprint
+SprintDuration --> Sprint
+Budget --> Project
+WorkHours --> Employee
+TaskAssignments --> Task
+StakeholderInfluence --> Stakeholder
+SkillLevel --> Skill
+FeaturePriority --> Feature
+VelocityTrend --> Velocity
+
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;

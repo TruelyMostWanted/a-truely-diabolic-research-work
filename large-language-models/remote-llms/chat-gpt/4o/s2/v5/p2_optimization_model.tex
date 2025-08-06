@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage[margin=1in]{geometry}
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{FoPra\_2025}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Sets and Indices}
+\begin{itemize}
+    \item $P$ : Set of Projects
+    \item $T$ : Set of Teams
+    \item $E$ : Set of Employees
+    \item $F$ : Set of Features
+    \item $S$ : Set of Skills
+    \item $R$ : Set of Roles
+    \item $SP$ : Set of Sprints
+    \item $TSK$ : Set of Tasks
+    \item $US$ : Set of User Stories
+    \item $EP$ : Set of Epics
+    \item $PO$ : Set of Product Owners
+    \item $SM$ : Set of Scrum Masters
+    \item $STK$ : Set of Stakeholders
+\end{itemize}
+
+\section*{Decision Variables}
+\begin{itemize}
+    \item $x_{et} \in \{0,1\}$ : 1 if employee $e$ is assigned to team $t$
+    \item $y_{tsk,e} \in \{0,1\}$ : 1 if task $tsk$ is assigned to employee $e$
+    \item $z_{f,p} \in \{0,1\}$ : 1 if feature $f$ is part of project $p$
+    \item $dur_{sp} \in \mathbb{Z}^+$ : duration (in days) of sprint $sp$
+    \item $eff_{tsk} \in \mathbb{R}^+$ : effort allocated to task $tsk$
+    \item $sp_{us} \in \mathbb{Z}^+$ : story points assigned to user story $us$
+    \item $bud_{f} \in \mathbb{R}^+$ : budget allocated to feature $f$
+    \item $imp_{sr} \in \mathbb{Z}^+$ : improvement actions from retrospective $sr$
+\end{itemize}
+
+\section*{Objective Function}
+\begin{align*}
+\text{Maximize } Z = & - \sum_{sp \in SP} dur_{sp} \quad \text{(G1: Minimize Sprint Duration)} \\
+& + \sum_{t \in T} \text{Utilization}(t) \quad \text{(G2: Maximize Team Utilization)} \\
+& - \sum_{tsk \in TSK} \text{Blocked}(tsk) \quad \text{(G3: Minimize Blockers)} \\
+& + \sum_{f \in F} \text{Completed}(f) \quad \text{(G4: Maximize Feature Completion)} \\
+& - \sum_{e \in E} \sum_{tsk \in TSK} \text{Overlap}(tsk,e) \quad \text{(G5: Minimize Task Overlap)} \\
+& + \sum_{e \in E} \text{SkillCoverage}(e) \quad \text{(G6: Maximize Skill Coverage)} \\
+& + \sum_{stk \in STK} \text{Satisfaction}(stk) \quad \text{(G7: Maximize Stakeholder Satisfaction)} \\
+& - \sum_{us \in US} \text{UnallocatedPoints}(us) \quad \text{(G8: Minimize Unused Story Points)} \\
+& + \sum_{sr} imp_{sr} \quad \text{(G9: Maximize Retrospective Improvement)} \\
+& + \sum_{p \in P} \text{ValuePerBudget}(p) \quad \text{(G10: Maximize Budget Efficiency)}
+\end{align*}
+
+\section*{Constraints}
+\begin{align*}
+& 3 \leq \sum_{e \in E} x_{et} \leq 9 && \forall t \in T \quad \text{(C1: Team Size Limit)} \\
+& y_{tsk,e} \Rightarrow \text{HasSkill}(e,tsk) && \forall e \in E, tsk \in TSK \quad \text{(C2: Skill Match)} \\
+& \text{RolesAssigned}(t) = \text{AllCoreRoles} && \forall t \in T \quad \text{(C3: Role Completeness)} \\
+& \sum_{sp \in SP_p} 1 \leq 10 && \forall p \in P \quad \text{(C4: Max Sprint Count)} \\
+& \sum_{tsk \in TSK_e} eff_{tsk} \leq \text{Availability}(e) && \forall e \in E \quad \text{(C5: Workload Limit)} \\
+& \sum_{sm \in SM} \text{Supports}(sm,t) = 1 && \forall t \in T \quad \text{(C6: One Scrum Master per Team)} \\
+& \sum_{po \in PO} \text{Manages}(po,b) = 1 && \forall b \in \text{Backlogs} \quad \text{(C7: PO-Backlog Assignment)} \\
+& \text{ActivePeriod}(t) \supseteq \text{SprintPeriod}(sp) && \forall t \in T, sp \in SP \quad \text{(C8: Team Availability)} \\
+& \text{BalanceTypes}(TSK) \text{ within tolerance} && \text{(C9: Task Type Distribution)} \\
+& z_{f,p} \Rightarrow \exists ep \in EP : \text{Contains}(ep,f) && \forall f \in F \quad \text{(C10: Feature-Epic Linking)} \\
+\end{align*}
+
+\end{document}

@@ -1,0 +1,119 @@
+graph TD
+
+%% === ENTITIES ===
+Project[Project]:::entity
+Team[Team]:::entity
+Employee[Employee]:::entity
+Skill[Skill / Competence]:::entity
+Role[Role(s)]:::entity
+ProductOwner[Product Owner]:::entity
+ScrumMaster[Scrum Master]:::entity
+ProductBacklog[Product Backlog]:::entity
+Feature[Feature]:::entity
+Epic[Epic]:::entity
+UserStory[User Story]:::entity
+Task[Task / Sub-Task]:::entity
+Sprint[Sprint]:::entity
+SprintGoal[Sprint Goal]:::entity
+Velocity[Velocity]:::entity
+Blocker[Blocker / Problem / Bug]:::entity
+Stakeholder[Stakeholder]:::entity
+
+%% === DECISION VARIABLES ===
+DV1[Sprint Duration (d_sp)]:::variable
+DV2[Task Effort (x_ts)]:::variable
+DV3[Employee Availability (a_e)]:::variable
+DV4[Certified Skill Ratio (c_e)]:::variable
+DV5[Velocity Threshold (v_t)]:::variable
+DV6[Max Blocker Age (b_bl)]:::variable
+DV7[Story Points per Sprint (sp_sp)]:::variable
+DV8[Tasks per Sprint (tsps_sp)]:::variable
+DV9[Feedback Score (fs_sh)]:::variable
+
+%% === GOALS ===
+G1[Maximize Team Velocity]:::goal
+G2[Minimize Task Effort]:::goal
+G3[Minimize Blockers]:::goal
+G4[Maximize Certified Skills]:::goal
+G5[Maximize Stakeholder Satisfaction]:::goal
+G6[Maximize Sprint Goal Achievement]:::goal
+
+%% === CONDITIONS / CONSTRAINTS ===
+C1[Team Must Have Scrum Master]:::constraint
+C2[Employee Must Have Role]:::constraint
+C3[Blocker Resolution Time Limit]:::constraint
+C4[Task Effort Max Limit]:::constraint
+C5[Sprint Has Goal]:::constraint
+C6[Employee Availability Constraint]:::constraint
+C7[Velocity Sample Size ≥ 3]:::constraint
+C8[Daily Scrum Held]:::constraint
+
+%% === RELATIONSHIPS ===
+R1[is_assigned_to_project]:::relationship
+R2[belongs_to_team]:::relationship
+R3[has_skill]:::relationship
+R4[takes_on_role]:::relationship
+R5[manages_backlog]:::relationship
+R6[is_supported_by]:::relationship
+R7[contains_feature]:::relationship
+R8[contains_epic]:::relationship
+R9[contains_user_story]:::relationship
+R10[consists_of_tasks]:::relationship
+R11[is_in_sprint_backlog]:::relationship
+R12[belongs_to_sprint]:::relationship
+R13[pursues_goal]:::relationship
+R14[is_blocked_by]:::relationship
+
+%% === LINKING ENTITIES WITH RELATIONSHIPS ===
+Team -->|assigned to| Project
+Employee -->|belongs to| Team
+Employee -->|has| Skill
+Employee -->|takes| Role
+ProductOwner -->|manages| ProductBacklog
+Team -->|supported by| ScrumMaster
+ProductBacklog -->|contains| Feature
+ProductBacklog -->|contains| Epic
+Epic -->|contains| UserStory
+UserStory -->|consists of| Task
+UserStory -->|in| Sprint
+Sprint -->|pursues| SprintGoal
+Task -->|blocked by| Blocker
+
+%% === LINKING VARIABLES TO ENTITIES ===
+Sprint --> DV1
+Task --> DV2
+Employee --> DV3
+Employee --> DV4
+Velocity --> DV5
+Blocker --> DV6
+Sprint --> DV7
+Sprint --> DV8
+Stakeholder --> DV9
+
+%% === LINKING GOALS TO VARIABLES ===
+DV5 --> G1
+DV2 --> G2
+DV6 --> G3
+DV4 --> G4
+DV9 --> G5
+SprintGoal --> G6
+
+%% === LINKING CONDITIONS TO STRUCTURE ===
+C1 --> Team
+C1 --> ScrumMaster
+C2 --> Employee
+C2 --> Role
+C3 --> Blocker
+C4 --> Task
+C5 --> SprintGoal
+C6 --> Employee
+C6 --> Task
+C7 --> Velocity
+C8 --> Sprint
+
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
