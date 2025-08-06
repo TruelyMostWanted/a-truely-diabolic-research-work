@@ -1,0 +1,70 @@
+graph LR
+    subgraph Entities
+        Employee{{Employee}}
+        Skill{{Skill}}
+        Feature{{Feature}}
+        UserStory{{UserStory}}
+        Task{{Task}}
+        Sprint{{Sprint}}
+    end
+
+    subgraph Variables
+        Assignment[Assignment (x<sub>et</sub>)]
+        Selection[Selection (y<sub>us</sub>)]
+        SkillEffort[Skill Effort (z<sub>es</sub>)]
+        StoryAdjustment[Story Adjustment (p<sub>us</sub>)]
+    end
+
+    subgraph Goals
+        MaximizeValue[Maximize Value Delivery]
+        MinimizeBlockers[Minimize Unresolved Blockers]
+        Traceability[Requirement Traceability]
+    end
+
+    subgraph Constraints
+        CapacityLimit[Sprint Capacity Limit]
+        ResourceAllocation[Resource Allocation]
+        SkillAvailability[Skill Availability]
+        EmployeeCapacity[Employee Capacity]
+    end
+
+    %% Entities & Attributes (Simplified)
+    Employee -- "has" --> Skill
+    Feature -- "requires" --> UserStory
+    UserStory -- "broken down into" --> Task
+    Task -- "assigned to" --> Employee
+    Sprint -- "contains" --> UserStory
+
+    %% Variables linking to Entities
+    Assignment -- "connects" --> Employee & Task
+    Selection -- "connects" --> UserStory & Sprint
+    SkillEffort -- "connects" --> Employee & Skill
+    StoryAdjustment -- "modifies" --> UserStory
+
+    %% Goals influencing Optimization
+    MaximizeValue -- "drives" --> Selection & StoryAdjustment
+    MinimizeBlockers -- "impacts" --> Selection
+    Traceability -- "enforces" --> Selection
+
+    %% Constraints enforcing limits
+    CapacityLimit -- "limits" --> Selection
+    ResourceAllocation -- "limits" --> Assignment
+    SkillAvailability -- "limits" --> SkillEffort
+    EmployeeCapacity -- "limits" --> Assignment
+
+    %% Relationships and Influences
+    Selection -- "influences" --> MaximizeValue & MinimizeBlockers
+    Assignment -- "impacts" --> ResourceAllocation
+    SkillEffort -- "affects" --> SkillAvailability
+
+    %% Class Definitions
+    classDef entity fill:#d1b3ff,stroke:#333;
+    classDef variable fill:#99e699,stroke:#333;
+    classDef goal fill:#99ccff,stroke:#333;
+    classDef constraint fill:#ff9999,stroke:#333;
+    classDef relationship fill:#ffe066,stroke:#333;
+
+    class Employee,Skill,Feature,UserStory,Task,Sprint entity;
+    class Assignment,Selection,SkillEffort,StoryAdjustment variable;
+    class MaximizeValue,MinimizeBlockers goal;
+    class CapacityLimit,ResourceAllocation,SkillAvailability,EmployeeCapacity constraint;

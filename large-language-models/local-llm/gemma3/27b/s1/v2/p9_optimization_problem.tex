@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{Software Development Optimization Model}
+\date{}
+\maketitle
+
+\section{Introduction}
+
+This document presents a mathematical model for optimizing software development processes, incorporating elements from Scrum and focusing on maximizing value delivery while respecting constraints.
+
+\section{Sets}
+
+\begin{itemize}
+    \item $E$: Set of Employees
+    \item $S$: Set of Skills
+    \item $F$: Set of Features
+    \item $U$: Set of User Stories
+    \item $T$: Set of Tasks
+    \item $Sp$: Set of Sprints
+\end{itemize}
+
+\section{Parameters}
+
+\begin{itemize}
+    \item $c_f$: Cost of a Feature
+    \item $v_e$: Velocity of a team
+    \item $w_fp$: Priority weight for Features
+    \item $a_s$: Skill availability
+    \item $est_u$: Estimated effort for User Stories (Story Points)
+    \item $cap_s$: Sprint Capacity
+    \item $req_u$: Requirement linkage (Boolean, 1 if User Story linked to Feature and Project)
+\end{itemize}
+
+\section{Decision Variables}
+
+\begin{itemize}
+    \item $x_{et}$: Binary variable. 1 if Employee $e$ is assigned to Task $t$, 0 otherwise.
+    \item $y_{us}$: Binary variable. 1 if User Story $u$ is selected for a Sprint, 0 otherwise.
+    \item $z_{es}$:  Numeric variable. Effort level assigned to Employee $e$ to utilize Skill $s$.
+    \item $p_{us}$: Numeric variable. Adjustment factor applied to User Story $u$'s effort estimate.
+\end{itemize}
+
+\section{Objective Function}
+
+Maximize Total Value delivered (based on Feature priority and User Story effort)
+
+\begin{equation}
+\text{Maximize } \sum_{f \in F} w_{fp} \sum_{u \in U} y_{us} (est_{u} + p_{us})
+\end{equation}
+
+\section{Constraints}
+
+\subsection{Resource Constraints}
+
+\begin{enumerate}
+    \item Each Task can be assigned to only one Employee.
+    \begin{equation}
+    \sum_{e \in E} x_{et} = 1 \quad \forall t \in T
+    \end{equation}
+    \item Employee capacity constraint.
+    \begin{equation}
+    \sum_{t \in T} x_{et} \leq 1 \quad \forall e \in E
+    \end{equation}
+    \item Skill utilization constraint.
+    \begin{equation}
+    \sum_{s \in S} z_{es} \leq 1 \quad \forall e \in E
+    \end{equation}
+\end{enumerate}
+
+\subsection{Sprint Planning Constraints}
+
+\begin{enumerate}
+    \item Sprint capacity limit.
+    \begin{equation}
+    \sum_{u \in U} y_{us} (est_{u} + p_{us}) \leq cap_{s} \quad \forall Sp \in Sp
+    \end{equation}
+\end{enumerate}
+
+\subsection{Requirement Traceability}
+
+\begin{equation}
+y_{us} = req_{u} \quad \forall u \in U
+\end{equation}
+
+\subsection{Employee Capacity}
+
+\begin{equation}
+\sum_{t \in T} x_{et} +  \sum_{u \in U} x_{et} \leq 1 \quad \forall e \in E
+\end{equation}
+
+\section{Variable Bounds}
+
+\begin{itemize}
+    \item $x_{et} \in \{0, 1\}$
+    \item $y_{us} \in \{0, 1\}$
+    \item $z_{es} \geq 0$
+    \item $p_{us} \geq 0$
+\end{itemize}
+
+\end{document}
