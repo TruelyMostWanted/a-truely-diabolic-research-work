@@ -9,7 +9,7 @@ PROMPT_KEYWORDS = {
     "p3_nlp_pequirements.csv": ["natural language processing", "Keyword, Category", "RelevantScrumEntities"],
     "p4_stress_pressure.csv": ["cognitive pressure", "Influence", "AffectedEntities"],
     "p6_goals_and_conditions.csv": ["main goals", "CriteriaType", "Must-Match"],
-    "p7_decision_vairables.csv": ["decision variables", "Type, Domain", "Related Entities"],
+    "p7_decision_variables.csv": ["decision variables", "Type, Domain", "Related Entities"],
     "p9_optimization_problem.tex": ["optimization model", "\\documentclass", "\\section{Sets}"],
     "p10_graph.mmd": ["mermaid", "graph LR", "classDef entity"]
 }
