@@ -29,3 +29,14 @@ jobs:
     - name: Run chat-to-files extractor
       run: |
         python tools/json_to_files.py
+
+    - name: Commit and push generated files
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add large-language-models/local-llm/**/*.csv
+        git add large-language-models/local-llm/**/*.tex
+        git add large-language-models/local-llm/**/*.mmd
+        git commit -m "Auto-generate files from chat.json"
+        git push
+
