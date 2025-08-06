@@ -36,33 +36,33 @@ graph LR
         relSprintGoal[Sprint pursues Goal]:::relationship
         relBugTeam[Bug is assigned to Team]:::relationship
         relFeatureDocumentation[Feature requires Documentation]:::relationship
-        
 
         %% Connections - Entities to Variables
-        entityTeam -- variableTeamSize
-        entitySprint -- variableSprintLength
-        entityUserStory -- variableStoryPoint
-        entityUserStory -- variableAllocation
-        entityBug -- variableBugAssignment
-        entitySprint -- variableSprintFocus
-        entityFeature -- variableDocumentation
-        
+        entityTeam --> variableTeamSize
+        entitySprint --> variableSprintLength
+        entityUserStory --> variableStoryPoint
+        entityUserStory --> variableAllocation
+        entityBug --> variableBugAssignment
+        entitySprint --> variableSprintFocus
+        entityFeature --> variableDocumentation
+
         %% Connections - Entities to Goals
-        entityTeam -- goalVelocity
-        entityFeature -- goalSatisfaction
-        entityUserStory -- goalQuality
-        entityBug -- goalMinimizeBugs
-        entitySprint -- goalAvoidOvercommitment
-        
+        entityTeam --> goalVelocity
+        entityFeature --> goalSatisfaction
+        entityUserStory --> goalQuality
+        entityBug --> goalMinimizeBugs
+        entitySprint --> goalAvoidOvercommitment
+
         %% Connections - Variables to Constraints
-        variableStoryPoint -- constraintCapacity
-        variableTeamSize -- constraintTeamSizeRange
-        variableSprintLength -- constraintSprintLengthRange
-        variableDocumentation -- constraintQualityThreshold
+        variableStoryPoint --> constraintCapacity
+        variableTeamSize --> constraintTeamSizeRange
+        variableSprintLength --> constraintSprintLengthRange
+        variableDocumentation --> constraintQualityThreshold
     end
-    
-    style entity fill:#d1b3ff,stroke:#333
-    style variable fill:#99e699,stroke:#333
-    style goal fill:#99ccff,stroke:#333
-    style constraint fill:#ff9999,stroke:#333
-    style relationship fill:#ffe066,stroke:#333
+
+    %% Class Definitions
+    classDef entity fill:#d1b3ff,stroke:#333
+    classDef variable fill:#99e699,stroke:#333
+    classDef goal fill:#99ccff,stroke:#333
+    classDef constraint fill:#ff9999,stroke:#333
+    classDef relationship fill:#ffe066,stroke:#333
