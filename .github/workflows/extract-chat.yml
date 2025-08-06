@@ -1,0 +1,31 @@
+name: Extract Chat Files
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  extract-files:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies (if any)
+      run: |
+        python -m pip install --upgrade pip
+
+    - name: Run chat-to-files extractor
+      run: |
+        python tools/json_to_files.py
