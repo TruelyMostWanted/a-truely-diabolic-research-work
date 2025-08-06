@@ -1,0 +1,148 @@
+graph TD
+  %% Entities
+  Project["Project<br/>ID, Name, Start, End, Budget, Status"]:::entity
+  Team["Team<br/>ID, Name, Size, Start, Status, Location, Type"]:::entity
+  Employee["Employee<br/>ID, Name, Email, Start Date, Status, Availability"]:::entity
+  Skill["Skill<br/>ID, Label, Level, Certified, Category"]:::entity
+  Role["Role<br/>ID, Role Name, Description, Area of Responsibility"]:::entity
+  ProductOwner["Product Owner<br/>ID, Name, Email, Availability"]:::entity
+  ScrumMaster["Scrum Master<br/>ID, Name, Email, Experience"]:::entity
+  ProductBacklog["Product Backlog<br/>ID, Created On, Entries, Status"]:::entity
+  Feature["Feature<br/>ID, Title, Status, Priority, Estimated Effort"]:::entity
+  Epic["Epic<br/>ID, Title, Priority, Status, Estimated Effort"]:::entity
+  UserStory["User Story<br/>ID, Title, Priority, Story Points, Status"]:::entity
+  Task["Task / Sub-Task<br/>ID, Title, Status, Effort, Type"]:::entity
+  Blocker["Blocker / Bug<br/>ID, Title, Severity, Status"]:::entity
+  Sprint["Sprint<br/>ID, Number, Start, End, Status"]:::entity
+  SprintGoal["Sprint Goal<br/>ID, Objective Description, Achievement Status"]:::entity
+  Velocity["Velocity<br/>ID, Avg. Story Points, Max, Min, Trend"]:::entity
+  ReleasePlan["Release Plan<br/>ID, Version, Planned Date, Status"]:::entity
+  Roadmap["Roadmap<br/>ID, Start, End, Milestones, Objectives"]:::entity
+  ScrumBoard["Scrum Board<br/>ID, Board Type, Columns, Cards"]:::entity
+  FeatureDoc["Feature Documentation<br/>ID, Title, Creation Date, Author"]:::entity
+  Stakeholder["Stakeholder<br/>ID, Name, Organization, Role, Email"]:::entity
+
+  %% Relationships
+  Project -->|1:N| Team["assigned to"]:::relationship
+  Employee -->|N:1| Team["belongs to"]:::relationship
+  Employee -->|N:M| Skill["has skill"]:::relationship
+  Employee -->|N:M| Role["takes on role"]:::relationship
+  ProductOwner -->|1:1| ProductBacklog["manages"]:::relationship
+  Team -->|1:1| ScrumMaster["is supported by"]:::relationship
+  ProductBacklog -->|1:N| Feature["contains"]:::relationship
+  ProductBacklog -->|1:N| Epic["contains"]:::relationship
+  Epic -->|1:N| UserStory["contains"]:::relationship
+  UserStory -->|1:N| Task["consists of"]:::relationship
+  UserStory -->|N:M| SprintBacklog["is in sprint backlog"]:::relationship
+  SprintBacklog -->|1:1| Sprint["belongs to"]:::relationship
+  Sprint -->|1:1| SprintGoal["pursues"]:::relationship
+  ScrumBoard -->|1:N| Task["contains tasks"]:::relationship
+  FeatureDoc -->|1:1| Feature["documents feature"]:::relationship
+  Task -->|N:M| Blocker["is blocked by"]:::relationship
+  Stakeholder -->|N:M| SprintReview["participates in"]:::relationship
+  ScrumMaster -->|1:N| SprintRetrospective["moderates"]:::relationship
+  Velocity -->|1:1| Team["refers to"]:::relationship
+  ReleasePlan -->|1:N| Feature["plans release"]:::relationship
+  ReleasePlan -->|N:1| Roadmap["is part of"]:::relationship
+  Sprint -->|1:1| DevelopmentSnapshot["generates"]:::relationship
+
+  %% Goals
+  G1["Maximize Project Completion Rate"]:::goal
+  G2["Minimize Budget Overrun"]:::goal
+  G3["Maximize Team Velocity"]:::goal
+  G4["Maximize Sprint Goal Achievement"]:::goal
+  G5["Maximize Skill Coverage"]:::goal
+  G6["Minimize Blocker Incidents"]:::goal
+  G7["Maximize Stakeholder Satisfaction"]:::goal
+  G8["Minimize Task Effort Variation"]:::goal
+  G9["Maximize Team Stability"]:::goal
+  G10["Maximize Documentation Quality"]:::goal
+
+  %% Conditions (Constraints)
+  C1["Project Deadline Must Be Met"]:::constraint
+  C2["Team Size Limit"]:::constraint
+  C3["Employee Availability"]:::constraint
+  C4["Skill Matching"]:::constraint
+  C5["Sprint Duration Fixed"]:::constraint
+  C6["No Overlapping Sprint Assignments"]:::constraint
+  C7["Task Effort Bound"]:::constraint
+  C8["Blockers Must Be Resolved"]:::constraint
+  C9["Product Owner Manages One Backlog"]:::constraint
+  C10["Scrum Master Assigned"]:::constraint
+
+  %% Decision Variables
+  DV1["Assigned Team Size (x_t)"]:::variable
+  DV2["Employee Sprint Allocation (y_{e,s})"]:::variable
+  DV3["Task Assignment (z_{k,e})"]:::variable
+  DV4["Story Points per Sprint (sp_s)"]:::variable
+  DV5["Sprint Duration (d_s)"]:::variable
+  DV6["Blocker Resolution Time (r_b)"]:::variable
+  DV7["Team Skill Level Avg (skl_t)"]:::variable
+  DV8["Budget Used (bu_p)"]:::variable
+  DV9["Number of Features Planned (fp_rp)"]:::variable
+  DV10["Product Backlog Size (bl_pb)"]:::variable
+
+  %% Linking Goals to Entities and Variables
+  G1 --> Project
+  G1 --> DV8
+  G2 --> Project
+  G2 --> DV8
+  G3 --> Velocity
+  G3 --> Team
+  G4 --> Sprint
+  G4 --> SprintGoal
+  G5 --> Employee
+  G5 --> Skill
+  G6 --> Task
+  G6 --> Blocker
+  G7 --> Stakeholder
+  G7 --> SprintReview
+  G8 --> Task
+  G9 --> Team
+  G9 --> Employee
+  G10 --> FeatureDoc
+  G10 --> Feature
+
+  %% Linking Conditions to Entities and Variables
+  C1 --> Project
+  C1 --> DV8
+  C2 --> Team
+  C2 --> DV1
+  C3 --> Employee
+  C3 --> DV2
+  C4 --> Employee
+  C4 --> Skill
+  C4 --> DV3
+  C5 --> Sprint
+  C5 --> DV5
+  C6 --> UserStory
+  C6 --> DV2
+  C7 --> Task
+  C7 --> DV3
+  C8 --> Blocker
+  C8 --> DV6
+  C9 --> ProductOwner
+  C9 --> ProductBacklog
+  C10 --> Team
+  C10 --> ScrumMaster
+
+  %% Linking Decision Variables to Entities
+  DV1 --> Team
+  DV2 --> Employee
+  DV2 --> Sprint
+  DV3 --> Task
+  DV3 --> Employee
+  DV4 --> Sprint
+  DV5 --> Sprint
+  DV6 --> Blocker
+  DV7 --> Team
+  DV8 --> Project
+  DV9 --> ReleasePlan
+  DV10 --> ProductBacklog
+
+  %% Relationships colored
+  class Project,Team,Employee,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Feature,Epic,UserStory,Task,Blocker,Sprint,SprintGoal,Velocity,ReleasePlan,Roadmap,ScrumBoard,FeatureDoc,Stakeholder entity;
+  class DV1,DV2,DV3,DV4,DV5,DV6,DV7,DV8,DV9,DV10 variable;
+  class G1,G2,G3,G4,G5,G6,G7,G8,G9,G10 goal;
+  class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10 constraint;
+  class is_assigned_to_project,belongs_to_team,has_skill,takes_on_role,manages_backlog,is_supported_by,contains_feature,contains_epic,contains_user_story,consists_of_tasks,is_in_sprint_backlog,belongs_to_sprint_backlog,pursues_goal,contains_tasks,documents_feature,is_blocked_by,participates_in,moderates_retrospective,refers_to_team,plans_release,is_part_of_roadmap,generates_snapshot relationship;

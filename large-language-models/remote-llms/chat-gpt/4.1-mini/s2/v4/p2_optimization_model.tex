@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\title{Optimization Model for SCRUM-based Software Development}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Sets and Indices}
+\begin{itemize}
+    \item \( T \): Teams, indexed by \( t \)
+    \item \( E \): Employees, indexed by \( e \)
+    \item \( S \): Sprints, indexed by \( s \)
+    \item \( U \): User Stories / Tasks, indexed by \( u \)
+    \item \( F \): Features, indexed by \( f \)
+    \item \( B \): Blockers, indexed by \( b \)
+\end{itemize}
+
+\section*{Decision Variables}
+\[
+x_{e,s,u} \in \{0,1\} \quad \text{Employee } e \text{ assigned to task } u \text{ in sprint } s
+\]
+\[
+v_s \geq 0 \quad \text{Velocity (story points completed) in sprint } s
+\]
+\[
+b_u \geq 0 \quad \text{Number of blockers on task } u
+\]
+\[
+a_e \in [0,100] \quad \text{Availability of employee } e \text{ (percentage)}
+\]
+\[
+w_e \geq 0 \quad \text{Workload (effort points) assigned to employee } e
+\]
+
+\section*{Parameters}
+\begin{itemize}
+    \item \( \text{Effort}_{u} \): Estimated effort for task \(u\)
+    \item \( \text{SkillMatch}_{e,u} \in \{0,1\} \): 1 if employee \(e\) has skills for task \(u\), else 0
+    \item \( \text{Status}_{u} \in \{\text{Ready}, \text{InProgress}, \ldots\} \): Current status of task \(u\)
+    \item \( \text{MaxWorkload} = 40 \): Max effort points per employee per sprint
+    \item \( \text{TeamSizeMin} = 3, \quad \text{TeamSizeMax} = 9 \)
+    \item \( \text{SprintDurationMin} = 7, \quad \text{SprintDurationMax} = 28 \) (days)
+    \item \( \text{MaxBlockersPerTask} = 10 \)
+\end{itemize}
+
+\section*{Objective Functions}
+\[
+\max \quad \sum_{s \in S} v_s \quad \text{(maximize total sprint velocity)}
+\]
+
+Additional goals can be added as weighted sums or constraints.
+
+\section*{Constraints}
+
+% Team size constraints
+\[
+\text{TeamSizeMin} \leq |E_t| \leq \text{TeamSizeMax} \quad \forall t \in T
+\]
+where \(E_t = \{ e \in E \mid \text{employee } e \text{ belongs to team } t \}\).
+
+% Employee availability constraints
+\[
+\sum_{s \in S} \sum_{u \in U} \text{Effort}_u \cdot x_{e,s,u} \leq a_e \cdot \text{SprintDurationMax} \quad \forall e \in E
+\]
+
+% Skill matching constraints
+\[
+x_{e,s,u} \leq \text{SkillMatch}_{e,u} \quad \forall e \in E, s \in S, u \in U
+\]
+
+% Task status constraints
+\[
+x_{e,s,u} = 0 \quad \text{if } \text{Status}_u \notin \{\text{Ready}, \text{InProgress}\}
+\]
+
+% Workload per employee limits
+\[
+w_e = \sum_{s \in S} \sum_{u \in U} \text{Effort}_u \cdot x_{e,s,u} \leq \text{MaxWorkload} \quad \forall e \in E
+\]
+
+% Blockers per task limit
+\[
+b_u \leq \text{MaxBlockersPerTask} \quad \forall u \in U
+\]
+
+% Velocity calculation (example)
+\[
+v_s = \sum_{u \in U} \text{StoryPoints}_u \cdot \left( \max_{e \in E} x_{e,s,u} \right) \quad \forall s \in S
+\]
+
+% Sprint duration constraints (if modeled explicitly)
+\[
+\text{SprintDurationMin} \leq \text{Duration}_s \leq \text{SprintDurationMax} \quad \forall s \in S
+\]
+
+\section*{Notes}
+This model can be extended by including more variables and constraints related to features, user stories, backlog management, and other SCRUM events.
+
+\end{document}

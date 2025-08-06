@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Optimization Model for Scrum-based Software Development}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Decision Variables}
+\begin{align*}
+d_s & : \text{Sprint duration in days} && 7 \leq d_s \leq 30, \quad d_s \in \mathbb{Z} \\
+e_t & : \text{Effort estimate for task } t && 0.5 \leq e_t \leq 40 \\
+n_{\text{team}} & : \text{Team size} && 3 \leq n_{\text{team}} \leq 15, \quad n_{\text{team}} \in \mathbb{Z} \\
+sp_s & : \text{Story points planned in sprint } s && 5 \leq sp_s \leq 50, \quad sp_s \in \mathbb{Z} \\
+l_{sk} & : \text{Skill level of skill } k && 1 \leq l_{sk} \leq 5, \quad l_{sk} \in \mathbb{Z} \\
+sev_b & : \text{Severity of blocker } b && 1 \leq sev_b \leq 10, \quad sev_b \in \mathbb{Z} \\
+av_e & : \text{Availability of employee } e && 0 \leq av_e \leq 100 \\
+f_r & : \text{Number of features in release } r && 1 \leq f_r \leq 20, \quad f_r \in \mathbb{Z} \\
+n_{sprint} & : \text{Number of sprints for velocity calculation} && 1 \leq n_{sprint} \leq 10, \quad n_{sprint} \in \mathbb{Z} \\
+c_t & : \text{Task } t \text{ completion status} && c_t \in \{0,1\}
+\end{align*}
+
+\section*{Objectives}
+\begin{align*}
+& \max \sum_{s} v_s && \text{(Maximize sprint velocity)} \\
+& \min \sum_b \text{bugs}_b && \text{(Minimize bugs)} \\
+& \max \sum_r f_r && \text{(Maximize features delivered)} \\
+& \min \sum_t e_t && \text{(Minimize total task effort)} \\
+& \max \sum_e av_e && \text{(Maximize team availability)} \\
+\end{align*}
+
+\section*{Constraints}
+\begin{align}
+& \forall T, \quad \exists P : \text{assigned}(T,P) \tag{Team assigned to at least one project} \\
+& \forall e, \quad \sum_{k} \text{hasSkill}(e,k) \geq 1 \tag{Employee has at least one skill} \\
+& \forall e, \quad \sum_{r} \text{hasRole}(e,r) \geq 1 \tag{Employee has at least one role} \\
+& \forall T, \quad \sum_{sm} \text{supports}(sm,T) = 1 \tag{One Scrum Master per team} \\
+& \forall sb, \quad \exists s : \text{belongs}(sb,s) \tag{Sprint backlog belongs to sprint} \\
+& \forall f, \quad \text{status}(f) \neq \text{Cancelled} \tag{Feature status restriction} \\
+& \forall s, \quad \sum_{t \in sb_s} e_t \leq C_s \tag{Task effort within sprint capacity} \\
+& \forall b, \quad sev_b \leq S_{max} \tag{Blocker severity limit} \\
+& \forall pb, \quad \text{status}(pb) = \text{Active} \tag{Active product backlog} \\
+& \forall t, \quad \text{status}(t) \in \{\text{ToDo}, \text{In Progress}, \text{Done}\} \tag{Allowed task statuses}
+\end{align}
+
+\end{document}

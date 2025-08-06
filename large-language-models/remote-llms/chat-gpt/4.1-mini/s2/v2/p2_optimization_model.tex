@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\begin{document}
+
+\title{Optimization Model for Scrum-Based Software Development}
+\author{}
+\date{}
+\maketitle
+
+\section*{Sets and Indices}
+\begin{align*}
+& t \in T && \text{Teams} \\
+& p \in P && \text{Projects} \\
+& e \in E && \text{Employees} \\
+& s \in S && \text{Sprints} \\
+& f \in F && \text{Features} \\
+& u \in U && \text{User Stories} \\
+& k \in K && \text{Tasks (Sub-Tasks)} \\
+& b \in B && \text{Blockers} \\
+& r \in R && \text{Roles} \\
+& sk \in SK && \text{Skills}
+\end{align*}
+
+\section*{Decision Variables}
+\begin{align*}
+& x_{k,s} \in \mathbb{Z}_{\geq 0} && \text{Number of tasks } k \text{ assigned in sprint } s \\
+& y_{e,k} \in \{0,1\} && \text{Employee } e \text{ assigned to task } k \\
+& d_s \in \mathbb{Z} && \text{Duration (days) of sprint } s \\
+& B_p \in \mathbb{R}_{\geq 0} && \text{Budget allocation to project } p \\
+& sp_s \in \mathbb{Z}_{\geq 0} && \text{Story points planned in sprint } s \\
+& l_{e,sk} \in \mathbb{Z} && \text{Skill level of employee } e \text{ for skill } sk \\
+& m_s \in \mathbb{Z}_{\geq 0} && \text{Max blockers allowed in sprint } s \\
+& ts_t \in \mathbb{Z}_{\geq 0} && \text{Team size of team } t \\
+& mt \in \mathbb{Z}_{\geq 0} && \text{Meeting duration in minutes} \\
+& fc_s \in [0,100] && \text{Feature completion rate (\%) in sprint } s
+\end{align*}
+
+\section*{Objective Function}
+\[
+\max Z = w_1 \sum_{s \in S} sp_s - w_2 \sum_{s \in S} m_s + w_3 \sum_{e \in E} \sum_{k \in K} y_{e,k} \cdot \text{skillMatch}_{e,k} - w_4 \sum_{p \in P} \max(0, \text{Cost}_p - B_p)
+\]
+
+where \( w_1, w_2, w_3, w_4 \) are weights prioritizing goals.
+
+\section*{Constraints}
+
+\begin{enumerate}
+\item \textbf{Team assignment to projects:} \\
+\[
+\forall t \in T, \quad \sum_{p \in P} \text{assigned}(t,p) \geq 1
+\]
+
+\item \textbf{Employee availability:} \\
+\[
+\forall e \in E, \quad \sum_{k \in K} y_{e,k} \leq \text{availability}_e
+\]
+
+\item \textbf{Role coverage in teams:} \\
+\[
+\forall t \in T, \forall r \in R, \quad \sum_{e \in E} \text{belongs}(e,t) \cdot \text{takesRole}(e,r) \geq 1
+\]
+
+\item \textbf{Sprint duration limits:} \\
+\[
+7 \leq d_s \leq 30 \quad \forall s \in S
+\]
+
+\item \textbf{Budget constraints:} \\
+\[
+\text{Cost}_p \leq B_p \quad \forall p \in P
+\]
+
+\item \textbf{Feature priority scheduling:} \\
+\[
+\text{If } \text{priority}(f_i) > \text{priority}(f_j), \text{ then } \text{scheduledSprint}(f_i) \leq \text{scheduledSprint}(f_j)
+\]
+
+\item \textbf{Skill matching:} \\
+\[
+y_{e,k} = 0 \quad \text{if } l_{e,sk} < \text{skillRequirement}_{k,sk} \quad \forall e,k,sk
+\]
+
+\item \textbf{Maximum team size:} \\
+\[
+ts_t \leq \text{MaxTeamSize} \quad \forall t \in T
+\]
+
+\item \textbf{Blocker resolution time:} \\
+\[
+\text{resolveTime}_b \leq d_s \quad \forall b \in B, \text{ if blocker } b \text{ occurs in sprint } s
+\]
+
+\item \textbf{Sprint goal presence:} \\
+\[
+\forall s \in S, \quad \exists \text{SprintGoal}_s \neq \emptyset
+\]
+
+\end{enumerate}
+
+\end{document}

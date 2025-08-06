@@ -1,0 +1,155 @@
+graph TD
+
+%% Entities %%
+Project["Project<br>ID, Name, Start, End, Budget, Status"]:::entity
+Team["Team<br>ID, Name, Size, Status, Location"]:::entity
+Employee["Employee<br>ID, Name, Email, Start Date, Status, Availability"]:::entity
+Skill["Skill<br>ID, Label, Level, Certified"]:::entity
+Role["Role<br>ID, Role Name, Description"]:::entity
+ProductOwner["Product Owner<br>ID, Name, Email, Availability"]:::entity
+ScrumMaster["Scrum Master<br>ID, Name, Email, Experience"]:::entity
+ProductBacklog["Product Backlog<br>ID, Created On, Status"]:::entity
+Feature["Feature<br>ID, Title, Status, Priority, Effort"]:::entity
+Epic["Epic<br>ID, Title, Priority, Status"]:::entity
+UserStory["User Story<br>ID, Title, Priority, Story Points"]:::entity
+Task["Task / Sub-Task<br>ID, Title, Status, Effort"]:::entity
+Blocker["Blocker / Bug<br>ID, Title, Severity, Status"]:::entity
+Sprint["Sprint<br>ID, Number, Start Date, End Date, Status"]:::entity
+SprintBacklog["Sprint Backlog<br>ID, Number of Tasks, Status"]:::entity
+Stakeholder["Stakeholder<br>ID, Name, Organization, Role"]:::entity
+Velocity["Velocity<br>ID, Avg Story Points, Max, Min"]:::entity
+ReleasePlan["Release Plan<br>ID, Version, Planned Date, Status"]:::entity
+Roadmap["Roadmap<br>ID, Start Date, End Date"]:::entity
+
+%% Decision Variables %%
+DV_sprintDuration["Sprint Duration (d_s)"]:::variable
+DV_taskEffort["Task Effort (e_t)"]:::variable
+DV_teamSize["Team Size (n_team)"]:::variable
+DV_storyPoints["Story Points per Sprint (sp_s)"]:::variable
+DV_skillLevel["Skill Level (l_sk)"]:::variable
+DV_blockerSeverity["Blocker Severity (sev_b)"]:::variable
+DV_availability["Employee Availability (av_e)"]:::variable
+DV_featuresPerRelease["Features per Release (f_r)"]:::variable
+DV_sprintsUsed["Sprints Used (n_sprint)"]:::variable
+DV_taskCompletion["Task Completion (c_t)"]:::variable
+
+%% Goals %%
+Goal_velocity["Maximize Sprint Velocity"]:::goal
+Goal_bugCount["Minimize Bug Count"]:::goal
+Goal_featureDelivery["Maximize Feature Delivery"]:::goal
+Goal_taskEffort["Minimize Total Task Effort"]:::goal
+Goal_teamAvailability["Maximize Team Availability"]:::goal
+Goal_sprintDuration["Minimize Sprint Duration"]:::goal
+Goal_POAvailability["Maximize Product Owner Availability"]:::goal
+Goal_stakeholderEngagement["Maximize Stakeholder Engagement"]:::goal
+Goal_blockerResolution["Minimize Blocker Resolution Time"]:::goal
+Goal_teamSkillLevel["Maximize Team Skill Level"]:::goal
+
+%% Constraints %%
+Constraint_teamAssigned["Each Team assigned to ≥1 Project"]:::constraint
+Constraint_employeeSkill["Each Employee has ≥1 Skill"]:::constraint
+Constraint_employeeRole["Each Employee has ≥1 Role"]:::constraint
+Constraint_scrumMaster["1 Scrum Master per Team"]:::constraint
+Constraint_sprintBacklog["Sprint Backlog belongs to 1 Sprint"]:::constraint
+Constraint_featureStatus["Feature status ≠ Cancelled"]:::constraint
+Constraint_taskEffortLimit["Total Task Effort ≤ Sprint Capacity"]:::constraint
+Constraint_blockerSeverity["Blocker Severity ≤ Threshold"]:::constraint
+Constraint_backlogStatus["Product Backlog status = Active"]:::constraint
+Constraint_taskStatus["Task status ∈ {ToDo, In Progress, Done}"]:::constraint
+
+%% Relationships %%
+Project_Team["is_assigned_to_project"]:::relationship
+Employee_Team["belongs_to_team"]:::relationship
+Employee_Skill["has_skill"]:::relationship
+Employee_Role["takes_on_role"]:::relationship
+PO_Backlog["manages_backlog"]:::relationship
+Team_ScrumMaster["is_supported_by"]:::relationship
+Backlog_Feature["contains_feature"]:::relationship
+Backlog_Epic["contains_epic"]:::relationship
+Epic_UserStory["contains_user_story"]:::relationship
+UserStory_Task["consists_of_tasks"]:::relationship
+UserStory_SprintBacklog["is_in_sprint_backlog"]:::relationship
+SprintBacklog_Sprint["belongs_to_sprint"]:::relationship
+Sprint_SprintGoal["pursues_goal"]:::relationship
+ScrumBoard_Task["contains_tasks"]:::relationship
+FeatureDoc_Feature["documents_feature"]:::relationship
+Task_Blocker["is_blocked_by"]:::relationship
+Stakeholder_SprintReview["participates_in"]:::relationship
+ScrumMaster_Retrospective["moderates_retrospective"]:::relationship
+Velocity_Team["refers_to_team"]:::relationship
+ReleasePlan_Feature["plans_release"]:::relationship
+ReleasePlan_Roadmap["is_part_of_roadmap"]:::relationship
+Sprint_DevSnapshot["generates_snapshot"]:::relationship
+
+%% Entity Relationships %%
+Team -->|is_assigned_to_project| Project_Team --> Project
+Employee -->|belongs_to_team| Employee_Team --> Team
+Employee -->|has_skill| Employee_Skill --> Skill
+Employee -->|takes_on_role| Employee_Role --> Role
+ProductOwner -->|manages_backlog| PO_Backlog --> ProductBacklog
+Team -->|is_supported_by| Team_ScrumMaster --> ScrumMaster
+ProductBacklog -->|contains_feature| Backlog_Feature --> Feature
+ProductBacklog -->|contains_epic| Backlog_Epic --> Epic
+Epic -->|contains_user_story| Epic_UserStory --> UserStory
+UserStory -->|consists_of_tasks| UserStory_Task --> Task
+UserStory -->|is_in_sprint_backlog| UserStory_SprintBacklog --> SprintBacklog
+SprintBacklog -->|belongs_to_sprint| SprintBacklog_Sprint --> Sprint
+Sprint -->|pursues_goal| Sprint_SprintGoal --> SprintGoal["Sprint Goal"]:::entity
+ScrumBoard -->|contains_tasks| ScrumBoard_Task --> Task
+FeatureDocumentation -->|documents_feature| FeatureDoc_Feature --> Feature
+Task -->|is_blocked_by| Task_Blocker --> Blocker
+Stakeholder -->|participates_in| Stakeholder_SprintReview --> SprintReview["Sprint Review"]:::entity
+ScrumMaster -->|moderates_retrospective| ScrumMaster_Retrospective --> SprintRetrospective["Sprint Retrospective"]:::entity
+Velocity -->|refers_to_team| Velocity_Team --> Team
+ReleasePlan -->|plans_release| ReleasePlan_Feature --> Feature
+ReleasePlan -->|is_part_of_roadmap| ReleasePlan_Roadmap --> Roadmap
+Sprint -->|generates_snapshot| Sprint_DevSnapshot --> DevelopmentSnapshot["Development Snapshot"]:::entity
+
+%% Goals connections %%
+Goal_velocity --> Velocity
+Goal_bugCount --> Blocker
+Goal_featureDelivery --> Feature
+Goal_taskEffort --> Task
+Goal_teamAvailability --> Employee
+Goal_sprintDuration --> Sprint
+Goal_POAvailability --> ProductOwner
+Goal_stakeholderEngagement --> Stakeholder
+Goal_blockerResolution --> Blocker
+Goal_teamSkillLevel --> Skill
+
+%% Constraints connections %%
+Constraint_teamAssigned --> Team
+Constraint_teamAssigned --> Project
+Constraint_employeeSkill --> Employee
+Constraint_employeeSkill --> Skill
+Constraint_employeeRole --> Employee
+Constraint_employeeRole --> Role
+Constraint_scrumMaster --> Team
+Constraint_scrumMaster --> ScrumMaster
+Constraint_sprintBacklog --> SprintBacklog
+Constraint_sprintBacklog --> Sprint
+Constraint_featureStatus --> Feature
+Constraint_taskEffortLimit --> Task
+Constraint_taskEffortLimit --> Sprint
+Constraint_blockerSeverity --> Blocker
+Constraint_backlogStatus --> ProductBacklog
+Constraint_taskStatus --> Task
+
+%% Decision Variables connections %%
+DV_sprintDuration --> Sprint
+DV_taskEffort --> Task
+DV_teamSize --> Team
+DV_storyPoints --> Sprint
+DV_skillLevel --> Skill
+DV_blockerSeverity --> Blocker
+DV_availability --> Employee
+DV_featuresPerRelease --> ReleasePlan
+DV_sprintsUsed --> Velocity
+DV_taskCompletion --> Task
+
+%% Class Definitions %%
+class Project,Team,Employee,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Feature,Epic,UserStory,Task,Blocker,Sprint,SprintBacklog,Stakeholder,Velocity,ReleasePlan,Roadmap,SprintGoal,ScrumBoard,FeatureDocumentation,SprintReview,SprintRetrospective,DevelopmentSnapshot entity
+class DV_sprintDuration,DV_taskEffort,DV_teamSize,DV_storyPoints,DV_skillLevel,DV_blockerSeverity,DV_availability,DV_featuresPerRelease,DV_sprintsUsed,DV_taskCompletion variable
+class Goal_velocity,Goal_bugCount,Goal_featureDelivery,Goal_taskEffort,Goal_teamAvailability,Goal_sprintDuration,Goal_POAvailability,Goal_stakeholderEngagement,Goal_blockerResolution,Goal_teamSkillLevel goal
+class Constraint_teamAssigned,Constraint_employeeSkill,Constraint_employeeRole,Constraint_scrumMaster,Constraint_sprintBacklog,Constraint_featureStatus,Constraint_taskEffortLimit,Constraint_blockerSeverity,Constraint_backlogStatus,Constraint_taskStatus constraint
+class Project_Team,Employee_Team,Employee_Skill,Employee_Role,PO_Backlog,Team_ScrumMaster,Backlog_Feature,Backlog_Epic,Epic_UserStory,UserStory_Task,UserStory_SprintBacklog,SprintBacklog_Sprint,Sprint_SprintGoal,ScrumBoard_Task,FeatureDoc_Feature,Task_Blocker,Stakeholder_SprintReview,ScrumMaster_Retrospective,Velocity_Team,ReleasePlan_Feature,ReleasePlan_Roadmap,Sprint_DevSnapshot relationship

@@ -1,0 +1,128 @@
+graph TD
+
+%% Entities
+Project["Project\n(ID, Name, Start, End, Budget, Status, Priority)"]:::entity
+Team["Team\n(ID, Name, Size, Status, Location, Type)"]:::entity
+Employee["Employee\n(ID, Name, Email, Start Date, Status, Availability)"]:::entity
+Feature["Feature\n(ID, Title, Description, Status, Priority, Estimated Effort)"]:::entity
+Skill["Skill\n(ID, Label, Description, Level, Certified)"]:::entity
+Role["Role\n(ID, Name, Description, Area)"]:::entity
+ProductOwner["Product Owner\n(ID, Name, Email, Availability)"]:::entity
+ScrumMaster["Scrum Master\n(ID, Name, Email, Experience)"]:::entity
+ProductBacklog["Product Backlog\n(ID, Created On, Status)"]:::entity
+Sprint["Sprint\n(ID, Number, Start, End, Status)"]:::entity
+UserStory["User Story\n(ID, Title, Description, Priority, Story Points, Status)"]:::entity
+Task["Task / Sub-Task\n(ID, Title, Status, Effort)"]:::entity
+Blocker["Blocker\n(ID, Title, Severity, Status)"]:::entity
+Velocity["Velocity\n(ID, Avg Story Points, Max, Min)"]:::entity
+ReleasePlan["Release Plan\n(ID, Version, Planned Date, Status)"]:::entity
+SprintRetrospective["Sprint Retrospective\n(ID, Date, Duration, Satisfaction)"]:::entity
+
+%% Relationships
+ProjectTeam["is_assigned_to_project"]:::relationship
+EmployeeTeam["belongs_to_team"]:::relationship
+EmployeeSkill["has_skill"]:::relationship
+EmployeeRole["takes_on_role"]:::relationship
+ProductOwnerBacklog["manages_backlog"]:::relationship
+TeamScrumMaster["is_supported_by"]:::relationship
+BacklogFeature["contains_feature"]:::relationship
+EpicUserStory["contains_user_story"]:::relationship
+UserStoryTask["consists_of_tasks"]:::relationship
+UserStorySprintBacklog["is_in_sprint_backlog"]:::relationship
+SprintSprintGoal["pursues_goal"]:::relationship
+SprintVelocityRel["refers_to_team"]:::relationship
+SprintBlocker["is_blocked_by"]:::relationship
+
+%% Decision Variables
+DV_SprintVelocity["Sprint Velocity (v_s)"]:::variable
+DV_BlockerResolutionTime["Blocker Resolution Time (b_u)"]:::variable
+DV_TeamSize["Team Size (|E_t|)"]:::variable
+DV_TaskEffortEstimate["Task Effort Estimate"]:::variable
+DV_EmployeeAvailability["Employee Availability (a_e)"]:::variable
+DV_FeaturePriority["Feature Priority"]:::variable
+DV_SprintDuration["Sprint Duration"]:::variable
+DV_TaskBlockerCount["Task Blocker Count"]:::variable
+DV_BacklogItemCount["Backlog Item Count"]:::variable
+DV_TeamSatisfactionScore["Team Satisfaction Score"]:::variable
+
+%% Goals
+Goal_MaxVelocity["Maximize Sprint Velocity"]:::goal
+Goal_MinBlockerTime["Minimize Blocker Resolution Time"]:::goal
+Goal_MaxTeamUtilization["Maximize Team Utilization"]:::goal
+Goal_MinEffortOverruns["Minimize Task Effort Overruns"]:::goal
+Goal_MaxFeatureCompletion["Maximize Feature Completion"]:::goal
+Goal_MinPlanningDuration["Minimize Sprint Planning Duration"]:::goal
+Goal_MaxTeamSatisfaction["Maximize Team Satisfaction"]:::goal
+Goal_MinReleaseDelays["Minimize Release Delays"]:::goal
+Goal_MaxBacklogRefinement["Maximize Backlog Refinement"]:::goal
+Goal_MinTaskBlockers["Minimize Task Blockers"]:::goal
+
+%% Conditions (Constraints)
+Cond_TeamSizeLimit["Team Size Limit (3 ≤ size ≤ 9)"]:::constraint
+Cond_EmployeeAvailability["Employee Availability"]:::constraint
+Cond_SkillMatch["Skill Match for Tasks"]:::constraint
+Cond_SprintDuration["Sprint Duration (7-28 days)"]:::constraint
+Cond_BacklogStatus["Product Backlog Status Active"]:::constraint
+Cond_TaskStatusSprintBacklog["Task Status for Sprint Backlog"]:::constraint
+Cond_MaxWorkload["Max Workload per Employee ≤ 40 Effort Points"]:::constraint
+Cond_FeaturePriorityOrder["Feature Priority Order"]:::constraint
+Cond_ScrumMasterSupport["One Scrum Master per Team"]:::constraint
+Cond_UserStoryCriteria["User Story Acceptance Criteria Defined"]:::constraint
+
+%% Entity Relationships
+Team -->|is assigned to| ProjectTeam --> Project
+Employee -->|belongs to| EmployeeTeam --> Team
+Employee -->|has skill| EmployeeSkill --> Skill
+Employee -->|takes on role| EmployeeRole --> Role
+ProductOwner -->|manages| ProductOwnerBacklog --> ProductBacklog
+Team -->|supported by| TeamScrumMaster --> ScrumMaster
+ProductBacklog -->|contains| BacklogFeature --> Feature
+Feature -->|contains user stories| EpicUserStory --> UserStory
+UserStory -->|consists of| UserStoryTask --> Task
+UserStory -->|assigned to| UserStorySprintBacklog --> Sprint
+Sprint -->|pursues| SprintSprintGoal
+Velocity -->|refers to| SprintVelocityRel --> Team
+Task -->|blocked by| SprintBlocker --> Blocker
+
+%% Variables connected to entities
+DV_SprintVelocity --> Velocity
+DV_BlockerResolutionTime --> Blocker
+DV_TeamSize --> Team
+DV_TaskEffortEstimate --> Task
+DV_EmployeeAvailability --> Employee
+DV_FeaturePriority --> Feature
+DV_SprintDuration --> Sprint
+DV_TaskBlockerCount --> Task
+DV_BacklogItemCount --> ProductBacklog
+DV_TeamSatisfactionScore --> SprintRetrospective
+
+%% Goals linked to variables/entities
+Goal_MaxVelocity --> DV_SprintVelocity
+Goal_MinBlockerTime --> DV_BlockerResolutionTime
+Goal_MaxTeamUtilization --> DV_EmployeeAvailability
+Goal_MinEffortOverruns --> DV_TaskEffortEstimate
+Goal_MaxFeatureCompletion --> Feature
+Goal_MinPlanningDuration --> Sprint
+Goal_MaxTeamSatisfaction --> DV_TeamSatisfactionScore
+Goal_MinReleaseDelays --> ReleasePlan
+Goal_MaxBacklogRefinement --> ProductBacklog
+Goal_MinTaskBlockers --> DV_TaskBlockerCount
+
+%% Conditions linked to variables/entities
+Cond_TeamSizeLimit --> DV_TeamSize
+Cond_EmployeeAvailability --> DV_EmployeeAvailability
+Cond_SkillMatch --> EmployeeSkill
+Cond_SprintDuration --> DV_SprintDuration
+Cond_BacklogStatus --> ProductBacklog
+Cond_TaskStatusSprintBacklog --> Task
+Cond_MaxWorkload --> DV_TaskEffortEstimate
+Cond_FeaturePriorityOrder --> DV_FeaturePriority
+Cond_ScrumMasterSupport --> ScrumMaster
+Cond_UserStoryCriteria --> UserStory
+
+%% Class definitions
+class Project,Team,Employee,Feature,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Sprint,UserStory,Task,Blocker,Velocity,ReleasePlan,SprintRetrospective entity;
+class DV_SprintVelocity,DV_BlockerResolutionTime,DV_TeamSize,DV_TaskEffortEstimate,DV_EmployeeAvailability,DV_FeaturePriority,DV_SprintDuration,DV_TaskBlockerCount,DV_BacklogItemCount,DV_TeamSatisfactionScore variable;
+class Goal_MaxVelocity,Goal_MinBlockerTime,Goal_MaxTeamUtilization,Goal_MinEffortOverruns,Goal_MaxFeatureCompletion,Goal_MinPlanningDuration,Goal_MaxTeamSatisfaction,Goal_MinReleaseDelays,Goal_MaxBacklogRefinement,Goal_MinTaskBlockers goal;
+class Cond_TeamSizeLimit,Cond_EmployeeAvailability,Cond_SkillMatch,Cond_SprintDuration,Cond_BacklogStatus,Cond_TaskStatusSprintBacklog,Cond_MaxWorkload,Cond_FeaturePriorityOrder,Cond_ScrumMasterSupport,Cond_UserStoryCriteria constraint;
+class ProjectTeam,EmployeeTeam,EmployeeSkill,EmployeeRole,ProductOwnerBacklog,TeamScrumMaster,BacklogFeature,EpicUserStory,UserStoryTask,UserStorySprintBacklog,SprintSprintGoal,SprintVelocityRel,SprintBlocker relationship;

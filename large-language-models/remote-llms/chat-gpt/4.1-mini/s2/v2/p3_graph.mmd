@@ -1,0 +1,232 @@
+classDiagram
+    %% Entities %%
+    class Project {
+      +ID
+      +Name
+      +Project_Start
+      +Project_End
+      +Description
+      +Budget
+      +Status
+      +Target_Audience
+      +Priority
+    }
+    class Team {
+      +ID
+      +Name
+      +Team_Size
+      +Team_Start
+      +Team_Status
+      +Location
+      +Team_Type
+    }
+    class Employee {
+      +ID
+      +Name
+      +First_Name
+      +Email
+      +Start_Date
+      +Status
+      +Availability
+    }
+    class Feature {
+      +ID
+      +Title
+      +Description
+      +Status
+      +Priority
+      +Estimated_Effort
+    }
+    class Skill {
+      +ID
+      +Label
+      +Description
+      +Level
+      +Certified
+      +Category
+    }
+    class Role {
+      +ID
+      +Role_Name
+      +Description
+      +Area_of_Responsibility
+    }
+    class Sprint {
+      +ID
+      +Sprint_Number
+      +Start_Date
+      +End_Date
+      +Status
+      +Achievement_of_Goal
+    }
+    class Task {
+      +ID
+      +Title
+      +Description
+      +Status
+      +Effort
+      +Type
+    }
+    class Blocker {
+      +ID
+      +Title
+      +Description
+      +Severity
+      +Status
+      +Detected_On
+      +Resolved_On
+    }
+
+    %% Decision Variables %%
+    class DV_numTasksPerSprint {
+      Number_of_Tasks_per_Sprint: Integer
+    }
+    class DV_empTaskAllocation {
+      Employee_Task_Allocation: Integer
+    }
+    class DV_sprintDurationDays {
+      Sprint_Duration_Days: Integer
+    }
+    class DV_budgetAllocation {
+      Budget_Allocation: Float
+    }
+    class DV_storyPointsPerSprint {
+      Story_Points_per_Sprint: Integer
+    }
+    class DV_skillLevelThreshold {
+      Skill_Level_Threshold: Integer
+    }
+    class DV_maxBlockersAllowed {
+      Number_of_Blockers_Allowed: Integer
+    }
+    class DV_teamSize {
+      Team_Size: Integer
+    }
+    class DV_meetingDuration {
+      Meeting_Duration: Integer
+    }
+    class DV_featureCompletionRate {
+      Feature_Completion_Rate: Float
+    }
+
+    %% Goals %%
+    class Goal_MaxSprintVelocity {
+      Maximize_Sprint_Velocity
+    }
+    class Goal_MinBlockers {
+      Minimize_Blockers
+    }
+    class Goal_MaxTeamUtilization {
+      Maximize_Team_Utilization
+    }
+    class Goal_MinBudgetOverrun {
+      Minimize_Budget_Overrun
+    }
+    class Goal_MaxFeatureCompletion {
+      Maximize_Feature_Completion
+    }
+    class Goal_MaxStakeholderSatisfaction {
+      Maximize_Stakeholder_Satisfaction
+    }
+    class Goal_MinTaskRework {
+      Minimize_Task_Rework
+    }
+    class Goal_MaxSkillMatch {
+      Maximize_Skill_Match
+    }
+    class Goal_MaxSprintGoalAchievement {
+      Maximize_Sprint_Goal_Achievement
+    }
+    class Goal_MinSprintPlanningTime {
+      Minimize_Sprint_Planning_Time
+    }
+
+    %% Constraints %%
+    class Cond_TeamAssignedProject {
+      Must_Assign_Teams_to_Projects
+    }
+    class Cond_EmployeeAvailability {
+      Employee_Availability
+    }
+    class Cond_RoleCoverage {
+      Role_Coverage
+    }
+    class Cond_SprintDurationLimits {
+      Sprint_Duration_Limits
+    }
+    class Cond_BudgetConstraints {
+      Budget_Constraints
+    }
+    class Cond_FeaturePriority {
+      Feature_Priority
+    }
+    class Cond_SkillMatching {
+      Skill_Matching
+    }
+    class Cond_MaxTeamSize {
+      Max_Team_Size
+    }
+    class Cond_BlockerResolution {
+      Blocker_Resolution
+    }
+    class Cond_SprintGoalPresence {
+      Sprint_Goal_Presence
+    }
+
+    %% Relationships %%
+    Project <|-- Team : is_assigned_to_project
+    Team <|-- Employee : belongs_to_team
+    Employee <|-- Skill : has_skill
+    Employee <|-- Role : takes_on_role
+    Team <|-- Sprint : belongs_to_team
+    Sprint <|-- Task : consists_of_tasks
+    Task <|-- Blocker : is_blocked_by
+    Sprint <|-- Feature : contains_feature
+
+    %% Link Goals to Entities %%
+    Goal_MaxSprintVelocity --> Sprint
+    Goal_MinBlockers --> Blocker
+    Goal_MaxTeamUtilization --> Team
+    Goal_MinBudgetOverrun --> Project
+    Goal_MaxFeatureCompletion --> Feature
+    Goal_MaxStakeholderSatisfaction --> Sprint
+    Goal_MinTaskRework --> Task
+    Goal_MaxSkillMatch --> Employee
+    Goal_MaxSprintGoalAchievement --> Sprint
+    Goal_MinSprintPlanningTime --> Sprint
+
+    %% Link Conditions to Entities %%
+    Cond_TeamAssignedProject --> Team
+    Cond_TeamAssignedProject --> Project
+    Cond_EmployeeAvailability --> Employee
+    Cond_RoleCoverage --> Role
+    Cond_SprintDurationLimits --> Sprint
+    Cond_BudgetConstraints --> Project
+    Cond_FeaturePriority --> Feature
+    Cond_SkillMatching --> Skill
+    Cond_MaxTeamSize --> Team
+    Cond_BlockerResolution --> Blocker
+    Cond_SprintGoalPresence --> Sprint
+
+    %% Link Decision Variables %%
+    DV_numTasksPerSprint --> Task
+    DV_empTaskAllocation --> Employee
+    DV_empTaskAllocation --> Task
+    DV_sprintDurationDays --> Sprint
+    DV_budgetAllocation --> Project
+    DV_storyPointsPerSprint --> Sprint
+    DV_skillLevelThreshold --> Skill
+    DV_skillLevelThreshold --> Employee
+    DV_maxBlockersAllowed --> Blocker
+    DV_maxBlockersAllowed --> Sprint
+    DV_teamSize --> Team
+    DV_meetingDuration --> Sprint
+    DV_featureCompletionRate --> Feature
+    DV_featureCompletionRate --> Sprint
+
+    %% Style %%
+    class Project,Team,Employee,Feature,Skill,Role,Sprint,Task,Blocker entity
+    class DV_numTasksPerSprint,DV_empTaskAllocation,DV_sprintDurationDays,DV_budgetAllocation,DV_storyPointsPerSprint,DV_skillLevelThreshold,DV_maxBlockersAllowed,DV_teamSize,DV_meetingDuration,DV_featureCompletionRate variable
+    class Goal_MaxSprintVelocity,Goal_MinBlockers,Goal_MaxTeamUtilization,Goal_MinBudgetOverrun,Goal_MaxFeatureCompletion,Goal_MaxStakeholderSatisfaction,Goal_MinTaskRework,Goal_MaxSkillMatch,Goal_MaxSprintGoalAchievement,Goal_MinSprintPlanningTime goal
+    class Cond_TeamAssignedProject,Cond_EmployeeAvailability,Cond_RoleCoverage,Cond_SprintDurationLimits,Cond_BudgetConstraints,Cond_FeaturePriority,Cond_SkillMatching,Cond_MaxTeamSize,Cond_BlockerResolution,Cond_SprintGoalPresence constraint
+    class Project--Team,Team--Employee,Employee--Skill,Employee--Role,Team--Sprint,Sprint--Task,Task--Blocker,Sprint--Feature relationship

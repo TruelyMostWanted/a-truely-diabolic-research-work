@@ -1,0 +1,121 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\begin{document}
+
+\title{Optimization Model for Scrum-based Software Development}
+\author{}
+\date{}
+\maketitle
+
+\section*{Sets and Indices}
+\begin{align*}
+    & t \in \mathcal{T} && \text{Teams} \\
+    & e \in \mathcal{E} && \text{Employees} \\
+    & k \in \mathcal{K} && \text{Tasks / Sub-Tasks} \\
+    & s \in \mathcal{S} && \text{Sprints} \\
+    & p \in \mathcal{P} && \text{Projects} \\
+    & f \in \mathcal{F} && \text{Features} \\
+\end{align*}
+
+\section*{Decision Variables}
+\begin{align*}
+    & x_{t} \in \mathbb{Z}_{\geq 1}, && \text{Assigned team size} \\
+    & y_{e,s} \in \{0,1\}, && \text{Employee } e \text{ assigned to sprint } s \\
+    & z_{k,e} \in \{0,1\}, && \text{Task } k \text{ assigned to employee } e \\
+    & sp_{s} \in \mathbb{Z}_{\geq 0}, && \text{Story points assigned to sprint } s \\
+    & d_{s} \in \mathbb{Z}_{\geq 7}^{\leq 30}, && \text{Duration of sprint } s \text{ in days} \\
+    & r_{b} \in \mathbb{Z}_{\geq 0}^{\leq 14}, && \text{Resolution time for blocker } b \\
+    & skl_{t} \in \mathbb{R}_{\geq 0}^{\leq 5}, && \text{Average skill level in team } t \\
+    & bu_{p} \in \mathbb{R}_{\geq 0}^{\leq B_p}, && \text{Budget used for project } p \\
+    & fp_{rp} \in \mathbb{Z}_{\geq 0}, && \text{Number of features planned in release plan } rp \\
+    & bl_{pb} \in \mathbb{Z}_{\geq 0}, && \text{Number of backlog entries in product backlog } pb \\
+\end{align*}
+
+\section*{Objective Functions}
+
+\subsection*{Multi-objective form (weights $w_i$)}
+
+\begin{align*}
+    \max \quad & w_1 \sum_{p \in \mathcal{P}} \text{CompletionRate}_p 
+    - w_2 \sum_{p \in \mathcal{P}} \frac{\text{BudgetOverrun}_p}{B_p}
+    + w_3 \sum_{t \in \mathcal{T}} skl_t 
+    + w_4 \sum_{s \in \mathcal{S}} \text{SprintGoalAchieved}_s \\
+    & - w_5 \sum_{k \in \mathcal{K}} \text{Blockers}_k
+    + w_6 \sum_{st \in \mathcal{ST}} \text{StakeholderSatisfaction}_{st} \\
+    & - w_7 \text{TaskEffortVariance} 
+    + w_8 \sum_{t \in \mathcal{T}} \text{TeamStability}_t
+    + w_9 \sum_{f \in \mathcal{F}} \text{DocumentationQuality}_f
+\end{align*}
+
+(Where $w_i \geq 0$ are scalar weights reflecting importance.)
+
+\section*{Constraints}
+
+\begin{itemize}
+    \item \textbf{Project deadlines:} 
+    \[
+    \text{FinishDate}_p \leq \text{ProjectEnd}_p, \quad \forall p \in \mathcal{P}
+    \]
+
+    \item \textbf{Team size limit:}
+    \[
+    x_t \leq \text{MaxTeamSize}, \quad \forall t \in \mathcal{T}
+    \]
+
+    \item \textbf{Employee availability:}
+    \[
+    y_{e,s} = 0 \quad \text{if employee } e \text{ unavailable during sprint } s
+    \]
+
+    \item \textbf{Skill matching:}
+    \[
+    z_{k,e} = 0 \quad \text{if employee } e \text{ lacks required skills for task } k
+    \]
+
+    \item \textbf{Sprint duration fixed:}
+    \[
+    d_s = \text{FixedSprintDuration}, \quad \forall s \in \mathcal{S}
+    \]
+
+    \item \textbf{No overlapping sprint assignments for user stories:}
+    \[
+    \sum_{s \in \mathcal{S}} y_{e,s} \leq 1, \quad \forall e \text{ assigned to a user story}
+    \]
+
+    \item \textbf{Task effort bounds:}
+    \[
+    \text{Effort}_{k}^{min} \leq \text{Effort}_k \leq \text{Effort}_{k}^{max}, \quad \forall k \in \mathcal{K}
+    \]
+
+    \item \textbf{Blocker resolution time:}
+    \[
+    r_b \leq \text{MaxResolutionTime}, \quad \forall b \in \mathcal{B}
+    \]
+
+    \item \textbf{Product Owner single backlog:}
+    \[
+    \sum_{pb} \text{manages}(po, pb) = 1, \quad \forall po \in \mathcal{PO}
+    \]
+
+    \item \textbf{Scrum Master assigned:}
+    \[
+    \sum_{sm} \text{supports}(t, sm) = 1, \quad \forall t \in \mathcal{T}
+    \]
+\end{itemize}
+
+\section*{Additional Definitions}
+
+\begin{align*}
+    & \text{CompletionRate}_p = \frac{\text{FeaturesCompleted}_p}{\text{TotalFeatures}_p} \\
+    & \text{BudgetOverrun}_p = \max(0, bu_p - B_p) \\
+    & \text{SprintGoalAchieved}_s \in \{0,1\} \text{ indicator variable for sprint goal success} \\
+    & \text{Blockers}_k = \text{number of blockers associated with task } k \\
+    & \text{TaskEffortVariance} = \text{variance of efforts across tasks} \\
+    & \text{TeamStability}_t = \text{measure of team member retention during project} \\
+    & \text{DocumentationQuality}_f = \text{score based on feature documentation completeness} \\
+\end{align*}
+
+\end{document}

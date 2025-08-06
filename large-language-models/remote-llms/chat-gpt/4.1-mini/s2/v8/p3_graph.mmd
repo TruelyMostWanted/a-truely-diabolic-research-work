@@ -1,0 +1,104 @@
+graph TD
+  %% Entities (purple)
+  Project["Project\n(ID, Name, Start, End, Budget, Status)"]
+  Team["Team\n(ID, Name, Size, Start, Status, Location, Type)"]
+  Employee["Employee\n(ID, Name, Email, Start Date, Status, Availability)"]
+  Skill["Skill\n(ID, Label, Description, Level, Certified)"]
+  Role["Role\n(ID, Role Name, Description, Area of Responsibility)"]
+  Feature["Feature\n(ID, Title, Description, Status, Priority, Est. Effort)"]
+  UserStory["User Story\n(ID, Title, Description, Acceptance Criteria, Priority, Story Points)"]
+  Task["Task\n(ID, Title, Description, Status, Effort, Type)"]
+  Blocker["Blocker\n(ID, Title, Description, Severity, Status)"]
+  Sprint["Sprint\n(ID, Number, Start, End, Status)"]
+
+  %% Decision Variables (green)
+  DV_NumTasks["Decision Variable\nNumber of Tasks per Sprint"]
+  DV_StoryPoints["Decision Variable\nStory Points per Sprint"]
+  DV_TaskEffort["Decision Variable\nEffort Estimate per Task"]
+  DV_EmpAvailability["Decision Variable\nEmployee Availability"]
+  DV_SkillLevel["Decision Variable\nSkill Level"]
+  DV_SprintDuration["Decision Variable\nSprint Duration"]
+  DV_FeaturesRelease["Decision Variable\nFeatures per Release"]
+  DV_BlockerSeverity["Decision Variable\nBlocker Severity"]
+  DV_TeamSize["Decision Variable\nTeam Size"]
+  DV_SprintPlanningTime["Decision Variable\nSprint Planning Meeting Time"]
+
+  %% Goals (blue)
+  Goal_SprintVelocity["Goal\nMaximize Sprint Velocity"]
+  Goal_BlockerResolve["Goal\nMinimize Blocker Resolution Time"]
+  Goal_TeamUtilization["Goal\nMaximize Team Utilization"]
+  Goal_EffortOverrun["Goal\nMinimize Task Effort Overrun"]
+  Goal_BacklogCoverage["Goal\nMaximize Backlog Coverage"]
+  Goal_StakeholderSat["Goal\nMaximize Stakeholder Satisfaction"]
+  Goal_SprintPlanDuration["Goal\nMinimize Sprint Planning Duration"]
+  Goal_TeamSatisfaction["Goal\nMaximize Team Satisfaction"]
+  Goal_FeatureDelivery["Goal\nMinimize Feature Delivery Time"]
+  Goal_CertifiedSkillUse["Goal\nMaximize Certified Skill Usage"]
+
+  %% Conditions / Constraints (red)
+  Cond_TaskEffortLimit["Condition\nTask Effort Within Limits"]
+  Cond_TeamSizeLimit["Condition\nTeam Size Limits"]
+  Cond_RoleCoverage["Condition\nRole Coverage"]
+  Cond_AvailabilityThreshold["Condition\nAvailability Threshold"]
+  Cond_BlockerSeverity["Condition\nBlocker Severity Threshold"]
+  Cond_SprintGoalAchieved["Condition\nSprint Goal Achievement"]
+  Cond_MinSkillLevel["Condition\nSkill Level Minimum"]
+  Cond_POAvailability["Condition\nProduct Owner Availability"]
+  Cond_DocCompleteness["Condition\nDocumentation Completeness"]
+  Cond_SprintPlanningFreq["Condition\nSprint Planning Frequency"]
+
+  %% Relationships (yellow)
+  Project -->|contains| Feature
+  Feature -->|contains| UserStory
+  UserStory -->|consists_of| Task
+  Task -->|is_blocked_by| Blocker
+  Team -->|assigned_to| Project
+  Employee -->|belongs_to| Team
+  Employee -->|has_skill| Skill
+  Employee -->|takes_on| Role
+  Sprint -->|contains| Task
+  Sprint -->|pursues| Goal_SprintVelocity
+  Sprint -->|generates| DV_StoryPoints
+
+  %% Decision Variables linkages
+  DV_NumTasks -.-> Task
+  DV_StoryPoints -.-> UserStory
+  DV_TaskEffort -.-> Task
+  DV_EmpAvailability -.-> Employee
+  DV_SkillLevel -.-> Skill
+  DV_SprintDuration -.-> Sprint
+  DV_FeaturesRelease -.-> Feature
+  DV_BlockerSeverity -.-> Blocker
+  DV_TeamSize -.-> Team
+  DV_SprintPlanningTime -.-> Sprint
+
+  %% Goals linked to entities and variables
+  Goal_SprintVelocity --> DV_StoryPoints
+  Goal_BlockerResolve --> DV_BlockerSeverity
+  Goal_TeamUtilization --> DV_EmpAvailability
+  Goal_EffortOverrun --> DV_TaskEffort
+  Goal_BacklogCoverage --> Feature
+  Goal_StakeholderSat --> Sprint
+  Goal_SprintPlanDuration --> DV_SprintPlanningTime
+  Goal_TeamSatisfaction --> Team
+  Goal_FeatureDelivery --> Feature
+  Goal_CertifiedSkillUse --> Skill
+
+  %% Conditions linked to entities and variables
+  Cond_TaskEffortLimit --> DV_TaskEffort
+  Cond_TeamSizeLimit --> DV_TeamSize
+  Cond_RoleCoverage --> Role
+  Cond_AvailabilityThreshold --> DV_EmpAvailability
+  Cond_BlockerSeverity --> DV_BlockerSeverity
+  Cond_SprintGoalAchieved --> Goal_SprintVelocity
+  Cond_MinSkillLevel --> DV_SkillLevel
+  Cond_POAvailability --> Employee
+  Cond_DocCompleteness --> Feature
+  Cond_SprintPlanningFreq --> Sprint
+
+  %% Class definitions
+  class Project,Team,Employee,Skill,Role,Feature,UserStory,Task,Blocker,Sprint entity;
+  class DV_NumTasks,DV_StoryPoints,DV_TaskEffort,DV_EmpAvailability,DV_SkillLevel,DV_SprintDuration,DV_FeaturesRelease,DV_BlockerSeverity,DV_TeamSize,DV_SprintPlanningTime variable;
+  class Goal_SprintVelocity,Goal_BlockerResolve,Goal_TeamUtilization,Goal_EffortOverrun,Goal_BacklogCoverage,Goal_StakeholderSat,Goal_SprintPlanDuration,Goal_TeamSatisfaction,Goal_FeatureDelivery,Goal_CertifiedSkillUse goal;
+  class Cond_TaskEffortLimit,Cond_TeamSizeLimit,Cond_RoleCoverage,Cond_AvailabilityThreshold,Cond_BlockerSeverity,Cond_SprintGoalAchieved,Cond_MinSkillLevel,Cond_POAvailability,Cond_DocCompleteness,Cond_SprintPlanningFreq constraint;
+  class Project-->Feature,Feature-->UserStory,UserStory-->Task,Task-->Blocker,Team-->Project,Employee-->Team,Employee-->Skill,Employee-->Role,Sprint-->Task,Sprint-->Goal_SprintVelocity,Sprint-->DV_StoryPoints relationship;

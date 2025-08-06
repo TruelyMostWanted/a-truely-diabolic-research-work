@@ -1,0 +1,142 @@
+graph TD
+
+%% Entities
+Project["Project<br/><i>ID, Name, Start, End, Budget, Status, Priority</i>"]
+Team["Team<br/><i>ID, Name, Size, Status, Location, Type</i>"]
+Employee["Employee<br/><i>ID, Name, Email, Start Date, Status, Availability</i>"]
+Feature["Feature<br/><i>ID, Title, Description, Status, Priority, Est. Effort</i>"]
+Skill["Skill<br/><i>ID, Label, Level, Certified</i>"]
+Role["Role<br/><i>ID, Name, Description, Responsibility</i>"]
+ProductOwner["Product Owner<br/><i>ID, Name, Email, Availability</i>"]
+ScrumMaster["Scrum Master<br/><i>ID, Name, Email, Experience</i>"]
+ProductBacklog["Product Backlog<br/><i>ID, Created On, Entries, Status</i>"]
+Sprint["Sprint<br/><i>ID, Number, Start, End, Status</i>"]
+SprintBacklog["Sprint Backlog<br/><i>ID, Tasks, Last Updated, Status, Total Effort</i>"]
+UserStory["User Story<br/><i>ID, Title, Description, Acceptance Criteria, Priority, Story Points, Status</i>"]
+Task["Task<br/><i>ID, Title, Description, Status, Effort, Type</i>"]
+Blocker["Blocker<br/><i>ID, Title, Severity, Status</i>"]
+Stakeholder["Stakeholder<br/><i>ID, Name, Organization, Role, Email</i>"]
+Velocity["Velocity<br/><i>ID, Sprints Used, Avg Story Points, Max, Min, Trend</i>"]
+ReleasePlan["Release Plan<br/><i>ID, Version, Planned Date, Status</i>"]
+SprintGoal["Sprint Goal<br/><i>ID, Description, Achievement Status, Benefit</i>"]
+
+class Project,Team,Employee,Feature,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Sprint,SprintBacklog,UserStory,Task,Blocker,Stakeholder,Velocity,ReleasePlan,SprintGoal entity
+
+%% Decision Variables
+DV_TaskEffort["Task Effort ($x_t$)"]
+DV_SprintDuration["Sprint Duration ($y_s$)"]
+DV_TeamSize["Team Size ($z_e$)"]
+DV_EmployeeAvailability["Employee Availability ($a_e$)"]
+DV_StoryPoints["Story Points ($sp_u$)"]
+DV_NumTasks["Number of Tasks ($nTasks_s$)"]
+DV_TaskPriority["Task Priority ($p_t$)"]
+DV_BudgetUsage["Budget Usage ($bUsage$)"]
+DV_NumBlockers["Number of Blockers ($nBlockers_t$)"]
+DV_SprintGoalAchievement["Sprint Goal Achievement ($g_s$)"]
+
+class DV_TaskEffort,DV_SprintDuration,DV_TeamSize,DV_EmployeeAvailability,DV_StoryPoints,DV_NumTasks,DV_TaskPriority,DV_BudgetUsage,DV_NumBlockers,DV_SprintGoalAchievement variable
+
+%% Goals
+G1["Maximize Project Delivery Speed"]
+G2["Minimize Task Blockers"]
+G3["Maximize Team Velocity"]
+G4["Minimize Sprint Overrun"]
+G5["Maximize Feature Completion"]
+G6["Maximize Skill Utilization"]
+G7["Minimize Budget Overrun"]
+G8["Maximize Stakeholder Satisfaction"]
+G9["Minimize Task Rework"]
+G10["Maximize Team Satisfaction"]
+
+class G1,G2,G3,G4,G5,G6,G7,G8,G9,G10 goal
+
+%% Conditions
+C1["Must Assign Each User Story"]
+C2["Must Have Product Owner"]
+C3["Cannot Exceed Team Capacity"]
+C4["Must Respect Task Priorities"]
+C5["Can Match Skill Requirements"]
+C6["Cannot Assign Blocked Tasks"]
+C7["Must Have Scrum Master Support"]
+C8["Can Optimize Sprint Goal"]
+C9["Cannot Change Past Sprint Dates"]
+C10["Must Complete High Priority Features"]
+
+class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10 constraint
+
+%% Relationships (yellow)
+Project -->|1:N| Team
+Team -->|N:1| Employee
+Employee -->|N:M| Skill
+Employee -->|N:M| Role
+ProductOwner -->|1:1| ProductBacklog
+Team -->|1:1| ScrumMaster
+ProductBacklog -->|1:N| Feature
+ProductBacklog -->|1:N| Epic[("Epic")]
+Epic -->|1:N| UserStory
+UserStory -->|1:N| Task
+UserStory -->|N:M| SprintBacklog
+SprintBacklog -->|1:1| Sprint
+Sprint -->|1:1| SprintGoal
+ScrumBoard["Scrum Board"] -->|1:N| Task
+Task -->|N:M| Blocker
+Stakeholder -->|N:M| SprintReview[("Sprint Review")]
+ScrumMaster -->|1:N| SprintRetrospective[("Sprint Retrospective")]
+Velocity -->|1:1| Team
+ReleasePlan -->|1:N| Feature
+ReleasePlan -->|N:1| Roadmap[("Roadmap")]
+Sprint -->|1:1| DevelopmentSnapshot[("Development Snapshot")]
+
+class Project-Team,Team-Employee,Employee-Skill,Employee-Role,ProductOwner-ProductBacklog,Team-ScrumMaster,ProductBacklog-Feature,ProductBacklog-Epic,Epic-UserStory,UserStory-Task,UserStory-SprintBacklog,SprintBacklog-Sprint,Sprint-SprintGoal,ScrumBoard-Task,Task-Blocker,Stakeholder-SprintReview,ScrumMaster-SprintRetrospective,Velocity-Team,ReleasePlan-Feature,ReleasePlan-Roadmap,Sprint-DevelopmentSnapshot relationship
+
+%% Link Decision Variables to Entities
+DV_TaskEffort --- Task
+DV_SprintDuration --- Sprint
+DV_TeamSize --- Team
+DV_EmployeeAvailability --- Employee
+DV_StoryPoints --- UserStory
+DV_NumTasks --- SprintBacklog
+DV_TaskPriority --- Task
+DV_BudgetUsage --- Project
+DV_NumBlockers --- Task
+DV_SprintGoalAchievement --- SprintGoal
+
+%% Link Goals to Entities
+G1 --- Project
+G1 --- Sprint
+G2 --- Task
+G2 --- Blocker
+G3 --- Velocity
+G3 --- Team
+G4 --- Sprint
+G5 --- Feature
+G5 --- SprintBacklog
+G6 --- Employee
+G6 --- Skill
+G7 --- Project
+G8 --- Stakeholder
+G8 --- SprintReview
+G9 --- Task
+G10 --- SprintRetrospective
+G10 --- Team
+
+%% Link Conditions to Entities
+C1 --- UserStory
+C1 --- SprintBacklog
+C2 --- ProductBacklog
+C2 --- ProductOwner
+C3 --- Team
+C3 --- Task
+C4 --- Task
+C5 --- Employee
+C5 --- Skill
+C5 --- Task
+C6 --- Task
+C6 --- Blocker
+C7 --- Team
+C7 --- ScrumMaster
+C8 --- Sprint
+C8 --- SprintGoal
+C9 --- Sprint
+C10 --- Feature
+C10 --- ReleasePlan

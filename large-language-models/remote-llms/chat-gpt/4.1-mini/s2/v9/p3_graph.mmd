@@ -1,0 +1,147 @@
+graph TD
+
+    %% Entities %%
+    Project["Project\n(ID, Name, Start, End, Budget, Status, Priority)"]
+    Team["Team\n(ID, Name, Size, Start, Status, Location, Type)"]
+    Employee["Employee\n(ID, Name, Email, Start Date, Status, Availability)"]
+    Feature["Feature\n(ID, Title, Status, Priority, Estimated Effort)"]
+    Skill["Skill\n(ID, Label, Level, Certified)"]
+    Role["Role\n(ID, Name, Description)"]
+    ProductOwner["Product Owner\n(ID, Name, Email, Availability)"]
+    ScrumMaster["Scrum Master\n(ID, Name, Email, Experience)"]
+    ProductBacklog["Product Backlog\n(ID, Created On, Status)"]
+    Sprint["Sprint\n(ID, Number, Start, End, Status)"]
+    SprintBacklog["Sprint Backlog\n(ID, Number of Tasks, Status, Total Effort)"]
+    UserStory["User Story\n(ID, Title, Priority, Story Points, Status)"]
+    Task["Task\n(ID, Title, Status, Effort, Type)"]
+    Blocker["Blocker\n(ID, Title, Severity, Status)"]
+    Stakeholder["Stakeholder\n(ID, Name, Organization, Role)"]
+    Velocity["Velocity\n(ID, Avg. Story Points, Max Velocity)"]
+
+    class Project,Team,Employee,Feature,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Sprint,SprintBacklog,UserStory,Task,Blocker,Stakeholder,Velocity entity;
+
+    %% Relationships %%
+    ProjectTeam["assigned to project"]
+    EmployeeTeam["belongs to team"]
+    EmployeeSkill["has skill"]
+    EmployeeRole["takes on role"]
+    ProductOwnerBacklog["manages backlog"]
+    TeamScrumMaster["supported by scrum master"]
+    BacklogFeature["contains feature"]
+    EpicUserStory["contains user story"]
+    UserStoryTask["consists of tasks"]
+    UserStorySprintBacklog["assigned to sprint backlog"]
+    SprintBacklogSprint["belongs to sprint"]
+    SprintGoal["pursues goal"]
+    ScrumBoardTask["contains tasks"]
+    FeatureDocFeature["documents feature"]
+    TaskBlocker["blocked by"]
+    StakeholderSprintReview["participates in sprint review"]
+    ScrumMasterRetrospective["moderates retrospective"]
+    VelocityTeam["refers to team"]
+    ReleasePlanFeature["plans release"]
+    ReleasePlanRoadmap["part of roadmap"]
+    SprintSnapshot["generates snapshot"]
+
+    %% Relations connections %%
+    Team -- ProjectTeam --> Project
+    Employee -- EmployeeTeam --> Team
+    Employee -- EmployeeSkill --> Skill
+    Employee -- EmployeeRole --> Role
+    ProductOwner -- ProductOwnerBacklog --> ProductBacklog
+    Team -- TeamScrumMaster --> ScrumMaster
+    ProductBacklog -- BacklogFeature --> Feature
+    Feature -- EpicUserStory --> UserStory
+    UserStory -- UserStoryTask --> Task
+    UserStory -- UserStorySprintBacklog --> SprintBacklog
+    SprintBacklog -- SprintBacklogSprint --> Sprint
+    Sprint -- SprintGoal --> Sprint
+    Sprint -- ScrumBoardTask --> Task
+    Feature -- FeatureDocFeature --> Feature
+    Task -- TaskBlocker --> Blocker
+    Stakeholder -- StakeholderSprintReview --> Sprint
+    ScrumMaster -- ScrumMasterRetrospective --> Sprint
+    Velocity -- VelocityTeam --> Team
+    ReleasePlanFeature -- ReleasePlanFeature --> Feature
+    ReleasePlanRoadmap -- ReleasePlanRoadmap --> ReleasePlanFeature
+    Sprint -- SprintSnapshot --> Feature
+
+    class ProjectTeam,EmployeeTeam,EmployeeSkill,EmployeeRole,ProductOwnerBacklog,TeamScrumMaster,BacklogFeature,EpicUserStory,UserStoryTask,UserStorySprintBacklog,SprintBacklogSprint,SprintGoal,ScrumBoardTask,FeatureDocFeature,TaskBlocker,StakeholderSprintReview,ScrumMasterRetrospective,VelocityTeam,ReleasePlanFeature,ReleasePlanRoadmap,SprintSnapshot relationship;
+
+    %% Goals %%
+    G1["Maximize Project Delivery"]
+    G2["Minimize Blockers Impact"]
+    G3["Maximize Team Velocity"]
+    G4["Maximize Feature Completion"]
+    G5["Minimize Sprint Overrun"]
+    G6["Maximize Employee Utilization"]
+    G7["Minimize Budget Overrun"]
+    G8["Maximize Stakeholder Satisfaction"]
+    G9["Minimize Defects in Release"]
+    G10["Maximize Agile Process Compliance"]
+
+    class G1,G2,G3,G4,G5,G6,G7,G8,G9,G10 goal;
+
+    %% Conditions %%
+    C1["Team Size Constraint"]
+    C2["Required Skills Match"]
+    C3["Sprint Goal Achievement"]
+    C4["Feature Priority Order"]
+    C5["Task Effort Limits"]
+    C6["Availability Constraint"]
+    C7["Budget Compliance"]
+    C8["Blocker Resolution Time"]
+    C9["Scrum Roles Assigned"]
+    C10["Stakeholder Engagement"]
+
+    class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10 constraint;
+
+    %% Decision Variables %%
+    DV1["Number of Sprints"]
+    DV2["Team Size"]
+    DV3["Task Effort"]
+    DV4["Story Points"]
+    DV5["Budget Amount"]
+    DV6["Employee Availability"]
+    DV7["Sprint Duration"]
+    DV8["Blocker Severity"]
+    DV9["Number of Features"]
+    DV10["Employee Skill Level"]
+
+    class DV1,DV2,DV3,DV4,DV5,DV6,DV7,DV8,DV9,DV10 variable;
+
+    %% Connect Goals to Entities %%
+    Project --> G1
+    Task --> G2
+    Velocity --> G3
+    Feature --> G4
+    Sprint --> G5
+    Employee --> G6
+    Project --> G7
+    Stakeholder --> G8
+    DevelopmentSnapshot["Development Snapshot"]:::entity --> G9
+    Sprint --> G10
+
+    %% Connect Conditions to Entities %%
+    Team --> C1
+    Employee --> C2
+    SprintGoal["Sprint Goal"]:::entity --> C3
+    Feature --> C4
+    Task --> C5
+    Employee --> C6
+    Project --> C7
+    Blocker --> C8
+    Team --> C9
+    Stakeholder --> C10
+
+    %% Connect Decision Variables to Entities %%
+    Sprint --> DV1
+    Team --> DV2
+    Task --> DV3
+    UserStory --> DV4
+    Project --> DV5
+    Employee --> DV6
+    Sprint --> DV7
+    Blocker --> DV8
+    Feature --> DV9
+    Skill --> DV10

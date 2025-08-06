@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\begin{document}
+
+\title{Optimization Model for SCRUM-based Software Development}
+\author{}
+\date{}
+\maketitle
+
+\section*{Sets and Indices}
+
+\begin{itemize}
+    \item $T$: set of Tasks / Sub-Tasks, indexed by $t$
+    \item $S$: set of Sprints, indexed by $s$
+    \item $U$: set of User Stories, indexed by $u$
+    \item $E$: set of Employees, indexed by $e$
+    \item $F$: set of Features, indexed by $f$
+    \item $B$: set of Blockers, indexed by $b$
+    \item $R$: set of Roles, indexed by $r$
+\end{itemize}
+
+\section*{Decision Variables}
+
+\begin{align*}
+    & x_t \in \mathbb{Z}_+ && \text{Effort (hours) for task } t, \quad 1 \leq x_t \leq 100 \\
+    & y_s \in \mathbb{Z}_+ && \text{Duration (days) of sprint } s, \quad 7 \leq y_s \leq 30 \\
+    & z_e \in \mathbb{Z}_+ && \text{Team size for team with employee } e, \quad 3 \leq z_e \leq 15 \\
+    & a_e \in \mathbb{Z}_+ && \text{Hours available for employee } e, \quad 0 \leq a_e \leq 160 \\
+    & sp_u \in \mathbb{Z}_+ && \text{Story points for user story } u, \quad 1 \leq sp_u \leq 50 \\
+    & nTasks_s \in \mathbb{Z}_+ && \text{Number of tasks in sprint backlog } s, \quad 0 \leq nTasks_s \leq 200 \\
+    & p_t \in \mathbb{Z}_+ && \text{Priority of task } t, \quad 1 \leq p_t \leq 5 \\
+    & bUsage \in \mathbb{R}_+ && \text{Budget usage}, \quad 0 \leq bUsage \leq 10^7 \\
+    & nBlockers_t \in \mathbb{Z}_+ && \text{Number of blockers for task } t, \quad 0 \leq nBlockers_t \leq 50 \\
+    & g_s \in [0, 100] && \text{Sprint goal achievement percentage for sprint } s
+\end{align*}
+
+\section*{Parameters}
+
+\begin{itemize}
+    \item $Cap_{team}$: maximum capacity (effort hours) of a team
+    \item $SkillMatch_{e,t}$: binary parameter if employee $e$ has skills for task $t$
+    \item $Assigned_{u,s}$: binary if user story $u$ assigned to sprint $s$
+    \item $Blocked_t$: binary if task $t$ is currently blocked
+    \item $PO$: binary if product owner assigned to product backlog (must be 1)
+    \item $SM$: binary if scrum master assigned to team (must be 1)
+    \item $Priority_f$: priority level of feature $f$
+    \item $Included_f$: binary if feature $f$ included in release plan
+\end{itemize}
+
+\section*{Objective Functions}
+
+We consider a multi-objective function:
+
+\[
+\max \quad w_1 \sum_{s \in S} \text{Velocity}_s + w_2 \sum_{f \in F} \text{CompletedFeatures}_f - w_3 \sum_{t \in T} nBlockers_t - w_4 bUsage + w_5 \text{StakeholderSatisfaction} + w_6 \text{TeamSatisfaction}
+\]
+
+Where weights $w_i$ balance importance of objectives.
+
+\section*{Constraints}
+
+\begin{align}
+    & \text{(C1) Each user story must be assigned to at least one sprint:} \\
+    & \sum_{s \in S} Assigned_{u,s} \geq 1, \quad \forall u \in U \\
+    \\
+    & \text{(C2) Product backlog managed by exactly one product owner:} \\
+    & PO = 1 \\
+    \\
+    & \text{(C3) Team capacity not exceeded:} \\
+    & \sum_{t \in T_{team}} x_t \leq Cap_{team} \\
+    \\
+    & \text{(C4) Task priority order respected:} \\
+    & p_t \leq p_{t'} \implies x_t \text{ scheduled before } x_{t'}, \quad \forall t,t' \in T \\
+    \\
+    & \text{(C5) Prefer skill match for task assignment:} \\
+    & \text{If task } t \text{ assigned to employee } e, \quad SkillMatch_{e,t} = 1 \quad \text{preferred} \\
+    \\
+    & \text{(C6) Blocked tasks cannot be started:} \\
+    & x_t = 0, \quad \text{if } Blocked_t = 1 \\
+    \\
+    & \text{(C7) Scrum master assigned per team:} \\
+    & SM = 1 \\
+    \\
+    & \text{(C8) Sprint goal achievement percentage } g_s \in [0, 100] \\
+    \\
+    & \text{(C9) Sprint dates immutable after start (modeled by parameters)} \\
+    \\
+    & \text{(C10) High priority features must be included in release plans:} \\
+    & \text{If } Priority_f \text{ is high}, \quad Included_f = 1
+\end{align}
+
+\section*{Additional Notes}
+
+\begin{itemize}
+    \item Effort and availability variables ensure workload balance.
+    \item Blockers reduce achievable velocity.
+    \item Team and stakeholder satisfaction could be modeled as auxiliary variables derived from retrospective data.
+\end{itemize}
+
+\end{document}

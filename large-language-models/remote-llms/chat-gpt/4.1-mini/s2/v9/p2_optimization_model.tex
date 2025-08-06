@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{Optimization Model for Scrum-based Software Development}
+\author{}
+\date{}
+\maketitle
+
+\section*{Sets and Indices}
+
+\begin{itemize}
+    \item $P$: Set of projects
+    \item $T$: Set of teams
+    \item $E$: Set of employees
+    \item $F$: Set of features
+    \item $S$: Set of sprints
+    \item $U$: Set of user stories
+    \item $K$: Set of tasks
+    \item $B$: Set of blockers
+    \item $R$: Set of roles
+    \item $L$: Set of skills
+\end{itemize}
+
+\section*{Parameters}
+
+\begin{align*}
+    & \text{budget}_p && \text{Budget for project } p \in P \\
+    & \text{effort}_k && \text{Estimated effort for task } k \in K \\
+    & \text{storyPoints}_u && \text{Story points for user story } u \in U \\
+    & \text{availability}_e && \text{Availability percentage of employee } e \in E \\
+    & \text{priority}_f && \text{Priority of feature } f \in F \\
+    & \text{velocity}_t && \text{Average velocity of team } t \in T \\
+    & \text{severity}_b && \text{Severity of blocker } b \in B \\
+    & \text{skillLevel}_{e,l} && \text{Skill level of employee } e \text{ in skill } l \\
+    & \text{role}_{e,r} && \text{1 if employee } e \text{ has role } r, \text{ else } 0 \\
+\end{align*}
+
+\section*{Decision Variables}
+
+\begin{align*}
+    & x_{e,k} \in \{0,1\} && \text{Employee } e \text{ assigned to task } k \\
+    & y_{f,s} \in \{0,1\} && \text{Feature } f \text{ assigned to sprint } s \\
+    & z_{k,s} \in \{0,1\} && \text{Task } k \text{ assigned to sprint } s \\
+    & v_t \geq 0 && \text{Velocity of team } t \\
+    & u_b \geq 0 && \text{Resolution time for blocker } b \\
+\end{align*}
+
+\section*{Objective Function}
+
+\[
+\max Z = w_1 \sum_{p \in P} \text{DeliveredOnTime}_p - w_2 \sum_{b \in B} u_b + w_3 \sum_{t \in T} v_t + w_4 \sum_{f \in F, s \in S} y_{f,s} - w_5 \sum_{s \in S} \max(0, \text{actualDuration}_s - \text{plannedDuration}_s)
+\]
+
+where \(w_i\) are weights representing importance of each goal.
+
+\section*{Constraints}
+
+\begin{align}
+    & \text{Team size limits:} \nonumber \\
+    & \underline{\text{teamSize}} \leq \sum_{e \in E} \text{belongsToTeam}(e,t) \leq \overline{\text{teamSize}}, \quad \forall t \in T \\
+    & \text{Skill match for tasks:} \nonumber \\
+    & x_{e,k} \leq \text{skillMatch}(e,k), \quad \forall e \in E, k \in K \\
+    & \text{Effort vs. availability:} \nonumber \\
+    & \sum_{k \in K} \text{effort}_k \cdot x_{e,k} \leq \text{availability}_e \times \text{maxHours}, \quad \forall e \in E \\
+    & \text{Task assigned to exactly one sprint:} \nonumber \\
+    & \sum_{s \in S} z_{k,s} = 1, \quad \forall k \in K \\
+    & \text{Feature priority order:} \nonumber \\
+    & \text{if } \text{priority}_{f_1} > \text{priority}_{f_2} \Rightarrow \sum_{s} s \cdot y_{f_1,s} \leq \sum_{s} s \cdot y_{f_2,s} \\
+    & \text{Budget constraint:} \nonumber \\
+    & \sum_{k \in K_p} \text{cost}_k \leq \text{budget}_p, \quad \forall p \in P \\
+    & \text{Blocker resolution time limits:} \nonumber \\
+    & u_b \leq \text{maxResolutionTime}_b, \quad \forall b \in B \\
+    & \text{Roles assigned to team:} \nonumber \\
+    & \exists e \in E : \text{role}_{e,\text{Product Owner}}=1 \wedge \text{belongsToTeam}(e,t), \quad \forall t \in T \\
+    & \exists e \in E : \text{role}_{e,\text{Scrum Master}}=1 \wedge \text{belongsToTeam}(e,t), \quad \forall t \in T
+\end{align}
+
+\end{document}

@@ -1,0 +1,116 @@
+graph TD
+
+%% Entities with attributes
+Project["Project<br/>ID, Name, Start, End, Budget, Status, Priority"]
+Team["Team<br/>ID, Name, Size, Start, Status, Location, Type"]
+Employee["Employee<br/>ID, Name, Email, Start Date, Status, Availability"]
+Feature["Feature<br/>ID, Title, Description, Status, Priority, Estimated Effort"]
+Skill["Skill<br/>ID, Label, Description, Level, Certified, Category"]
+Role["Role<br/>ID, Role Name, Description, Area of Responsibility"]
+ProductOwner["Product Owner<br/>ID, Name, Email, Availability"]
+ScrumMaster["Scrum Master<br/>ID, Name, Email, Experience"]
+ProductBacklog["Product Backlog<br/>ID, Created On, Last Updated, Entries, Status"]
+Sprint["Sprint<br/>ID, Number, Start, End, Status"]
+SprintBacklog["Sprint Backlog<br/>ID, Tasks, Last Updated, Status, Total Effort"]
+UserStory["User Story<br/>ID, Title, Description, Acceptance Criteria, Priority, Story Points, Status"]
+Task["Task / Sub-Task<br/>ID, Title, Description, Status, Effort, Type"]
+Blocker["Blocker / Problem / Bug<br/>ID, Title, Severity, Status, Detected On, Resolved On"]
+ReleasePlan["Release Plan<br/>ID, Version, Planned Date, Status"]
+Roadmap["Roadmap<br/>ID, Start, End, Milestones, Objectives, Versions"]
+
+%% Decision Variables
+DV_SprintDuration["Sprint Duration<br/>Integer, 7-30 days"]
+DV_FeatureCount["Number of Features<br/>Integer, 0-50"]
+DV_EmployeeAvailability["Employee Availability<br/>Float 0-1"]
+DV_TaskEffort["Task Effort Estimate<br/>Float 0.1-100"]
+DV_TeamSize["Team Size<br/>Integer 3-15"]
+DV_BlockerCount["Blocker Count<br/>Integer 0-20"]
+DV_Velocity["Velocity<br/>Float 0-200"]
+DV_SprintGoalAchievement["Sprint Goal Achievement<br/>Float 0-1"]
+DV_SkillLevel["Skill Level<br/>Integer 1-5"]
+DV_POAvailability["Product Owner Availability<br/>Float 0-1"]
+
+%% Goals
+Goal1["Maximize Project Completion"]
+Goal2["Maximize Team Velocity"]
+Goal3["Minimize Blocker Resolution Time"]
+Goal4["Maximize Feature Delivery"]
+Goal5["Maximize Employee Availability"]
+Goal6["Minimize Sprint Overruns"]
+Goal7["Maximize Product Owner Involvement"]
+Goal8["Maximize Team Satisfaction"]
+Goal9["Maximize Skill Coverage"]
+Goal10["Minimize Unplanned Work"]
+
+%% Conditions / Constraints
+Cond1["Project Budget Constraint"]
+Cond2["Team Size Constraint"]
+Cond3["Employee Availability Constraint"]
+Cond4["Skill Match for Task"]
+Cond5["Sprint Duration Constraint"]
+Cond6["Sprint Goal Achievement"]
+Cond7["Blocker Limit"]
+Cond8["Release Plan Feature Coverage"]
+Cond9["Task Effort Limits"]
+Cond10["Product Backlog Status Active"]
+
+%% Relationships (just the main ones for clarity)
+Project-->|"assigned to"|Team
+Employee-->|"belongs to"|Team
+Employee-->|"has"|Skill
+Employee-->|"takes on"|Role
+ProductOwner-->|"manages"|ProductBacklog
+Team-->|"supported by"|ScrumMaster
+ProductBacklog-->|"contains"|Feature
+ProductBacklog-->|"contains"|UserStory
+UserStory-->|"consists of"|Task
+UserStory-->|"assigned to"|SprintBacklog
+SprintBacklog-->|"belongs to"|Sprint
+Sprint-->|"pursues"|SprintGoal[("Sprint Goal")]
+Sprint-->|"generates"|DevelopmentSnapshot[("Development Snapshot")]
+Task-->|"blocked by"|Blocker
+ReleasePlan-->|"includes"|Feature
+ReleasePlan-->|"part of"|Roadmap
+
+%% Link decision variables to entities
+DV_SprintDuration --> Sprint
+DV_FeatureCount --> Feature
+DV_EmployeeAvailability --> Employee
+DV_TaskEffort --> Task
+DV_TeamSize --> Team
+DV_BlockerCount --> Blocker
+DV_Velocity --> Team
+DV_SprintGoalAchievement --> Sprint
+DV_SkillLevel --> Skill
+DV_POAvailability --> ProductOwner
+
+%% Link goals to entities/variables
+Goal1 --> Project
+Goal2 --> DV_Velocity
+Goal3 --> Blocker
+Goal4 --> Feature
+Goal5 --> DV_EmployeeAvailability
+Goal6 --> Sprint
+Goal7 --> DV_POAvailability
+Goal8 --> Team
+Goal9 --> Skill
+Goal10 --> Task
+
+%% Link conditions to entities/variables
+Cond1 --> Project
+Cond2 --> DV_TeamSize
+Cond3 --> DV_EmployeeAvailability
+Cond4 --> Skill
+Cond5 --> DV_SprintDuration
+Cond6 --> DV_SprintGoalAchievement
+Cond7 --> DV_BlockerCount
+Cond8 --> ReleasePlan
+Cond9 --> DV_TaskEffort
+Cond10 --> ProductBacklog
+
+%% Class assignments
+class Project,Team,Employee,Feature,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Sprint,SprintBacklog,UserStory,Task,Blocker,ReleasePlan,Roadmap entity;
+class DV_SprintDuration,DV_FeatureCount,DV_EmployeeAvailability,DV_TaskEffort,DV_TeamSize,DV_BlockerCount,DV_Velocity,DV_SprintGoalAchievement,DV_SkillLevel,DV_POAvailability variable;
+class Goal1,Goal2,Goal3,Goal4,Goal5,Goal6,Goal7,Goal8,Goal9,Goal10 goal;
+class Cond1,Cond2,Cond3,Cond4,Cond5,Cond6,Cond7,Cond8,Cond9,Cond10 constraint;
+class Project--Team,Employee--Team,Employee--Skill,Employee--Role,ProductOwner--ProductBacklog,Team--ScrumMaster,ProductBacklog--Feature,ProductBacklog--UserStory,UserStory--Task,UserStory--SprintBacklog,SprintBacklog--Sprint,Sprint--SprintGoal,Sprint--DevelopmentSnapshot,Task--Blocker,ReleasePlan--Feature,ReleasePlan--Roadmap relationship;

@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\begin{document}
+
+\section*{Optimization Model for SCRUM Software Development}
+
+\subsection*{Decision Variables}
+
+\begin{align*}
+& v_s \in [0, 100] \quad && \text{Sprint velocity (story points completed)} \\
+& t_s \in \{3, \ldots, 10\} \quad && \text{Team size} \\
+& e_f \in [0.1, 40] \quad && \text{Effort per task} \\
+& a_e \in [0, 40] \quad && \text{Employee availability (hours per sprint)} \\
+& p_f \in \{1, \ldots, 5\} \quad && \text{Feature priority} \\
+& b_c \in \{1, \ldots, 10\} \quad && \text{Blocker severity} \\
+& s_p \in \{1, \ldots, 20\} \quad && \text{Story points per user story} \\
+& B \in [0, 1{,}000{,}000] \quad && \text{Project budget} \\
+& d_s \in \{7, \ldots, 30\} \quad && \text{Sprint duration in days} \\
+& d_c \in [0, 100] \quad && \text{Documentation completeness (\%)} \\
+& x_{et} \in \{0,1\} \quad && \text{Assignment of employee $e$ to task $t$}
+\end{align*}
+
+\subsection*{Objective Functions}
+
+\begin{align*}
+\max \quad & v_s \quad && \text{(Maximize sprint velocity)} \\
+\min \quad & b_r \quad && \text{(Minimize number of unresolved blockers)} \\
+\max \quad & u_t \quad && \text{(Maximize team utilization)} \\
+\max \quad & c_f \quad && \text{(Maximize feature completion)} \\
+\min \quad & o_s \quad && \text{(Minimize sprint overruns)} \\
+\max \quad & m_s \quad && \text{(Maximize skill match in assignments)} \\
+\min \quad & r_w \quad && \text{(Minimize rework due to bugs)} \\
+\max \quad & a_{po} \quad && \text{(Maximize product owner availability)} \\
+\max \quad & s_c \quad && \text{(Maximize customer satisfaction)} \\
+\max \quad & g_s \quad && \text{(Maximize sprint goal achievement)} \\
+\end{align*}
+
+\subsection*{Constraints}
+
+\begin{align}
+& 3 \leq t_s \leq 10 \quad && \text{(Team size bounds)} \\
+& \sum_{t} \sum_{e} x_{et} \cdot e_f \leq B \quad && \text{(Total effort cost within budget)} \\
+& x_{et} = 0 \quad \text{if employee $e$ lacks skill for task $t$} \\
+& x_{et} = 0 \quad \text{if task $t$ is blocked} \\
+& \sum_{t \in \text{sprint backlog}} \text{completion}(t) = |\text{sprint backlog}| \quad && \text{(Complete all sprint backlog tasks)} \\
+& \sum_{e} x_{et} \leq 1 \quad && \text{(Task assigned to at most one employee)} \\
+& \sum_{t} x_{et} \cdot e_f \leq a_e \quad && \text{(Employee workload within availability)} \\
+& d_c \geq 90 \quad && \text{(Documentation completeness at least 90\%)} \\
+& \text{Other company specific constraints as required} \nonumber
+\end{align}
+
+\end{document}

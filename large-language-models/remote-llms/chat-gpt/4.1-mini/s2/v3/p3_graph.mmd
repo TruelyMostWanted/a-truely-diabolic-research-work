@@ -1,0 +1,118 @@
+graph TD
+
+%% Entities with attributes
+Project["Project\nID, Name, Start, End, Budget, Status, Priority"]:::entity
+Team["Team\nID, Name, Size, Start, Status, Location, Type"]:::entity
+Employee["Worker / Employee\nID, Name, Email, Start Date, Status, Availability"]:::entity
+Skill["Skill / Competence\nID, Label, Level, Certified"]:::entity
+Role["Role(s)\nID, Role Name, Description"]:::entity
+ProductOwner["Product Owner\nID, Name, Email, Availability"]:::entity
+ScrumMaster["Scrum Master\nID, Name, Email, Experience"]:::entity
+ProductBacklog["Product Backlog\nID, Created On, Last Updated, Entries"]:::entity
+Feature["Feature\nID, Title, Status, Priority, Effort"]:::entity
+Epic["Epic\nID, Title, Priority, Status, Effort"]:::entity
+UserStory["User Story\nID, Title, Acceptance Criteria, Priority, Story Points"]:::entity
+Task["Task / Sub-Task\nID, Title, Status, Effort, Type"]:::entity
+Blocker["Blocker / Problem / Bug\nID, Title, Severity, Status"]:::entity
+Sprint["Sprint\nID, Number, Start Date, End Date, Status"]:::entity
+SprintBacklog["Sprint Backlog\nID, Number of Tasks, Status, Total Effort"]:::entity
+SprintGoal["Sprint Goal\nID, Description, Achievement Status"]:::entity
+
+%% Decision Variables
+v_s["Sprint Velocity (v_s)"]:::variable
+t_s["Team Size (t_s)"]:::variable
+e_f["Task Effort (e_f)"]:::variable
+a_e["Employee Availability (a_e)"]:::variable
+p_f["Feature Priority (p_f)"]:::variable
+b_c["Blocker Severity (b_c)"]:::variable
+s_p["Story Points (s_p)"]:::variable
+B["Project Budget (B)"]:::variable
+d_s["Sprint Duration (d_s)"]:::variable
+d_c["Doc Completeness (d_c)"]:::variable
+x_et["Task Assignment (x_{et})"]:::variable
+
+%% Goals
+G1["Maximize Sprint Velocity"]:::goal
+G2["Minimize Blockers"]:::goal
+G3["Maximize Team Utilization"]:::goal
+G4["Maximize Feature Completion"]:::goal
+G5["Minimize Sprint Overruns"]:::goal
+G6["Maximize Skill Match"]:::goal
+G7["Minimize Rework"]:::goal
+G8["Maximize PO Availability"]:::goal
+G9["Maximize Customer Satisfaction"]:::goal
+G10["Maximize Sprint Goal Achievement"]:::goal
+
+%% Conditions / Constraints
+C1["Team Size Bounds: 3 ≤ t_s ≤ 10"]:::constraint
+C2["Assign Roles: Employees have roles"]:::constraint
+C3["Budget Constraint: Effort cost ≤ B"]:::constraint
+C4["Certified Skills Required"]:::constraint
+C5["No Assignment of Blocked Tasks"]:::constraint
+C6["Prefer Location Match"]:::constraint
+C7["Complete Sprint Backlog Tasks"]:::constraint
+C8["Max Employee Workload ≤ Availability"]:::constraint
+C9["Documentation Completeness ≥ 90%"]:::constraint
+C10["Prioritize High Priority Features"]:::constraint
+
+%% Relationships between entities (yellow)
+Project -->|is_assigned_to_project| Team:::relationship
+Employee -->|belongs_to_team| Team:::relationship
+Employee -->|has_skill| Skill:::relationship
+Employee -->|takes_on_role| Role:::relationship
+ProductOwner -->|manages_backlog| ProductBacklog:::relationship
+Team -->|is_supported_by| ScrumMaster:::relationship
+ProductBacklog -->|contains_feature| Feature:::relationship
+ProductBacklog -->|contains_epic| Epic:::relationship
+Epic -->|contains_user_story| UserStory:::relationship
+UserStory -->|consists_of_tasks| Task:::relationship
+UserStory -->|is_in_sprint_backlog| SprintBacklog:::relationship
+SprintBacklog -->|belongs_to_sprint| Sprint:::relationship
+Sprint -->|pursues_goal| SprintGoal:::relationship
+Sprint -->|generates_snapshot| DevelopmentSnapshot:::relationship
+Task -->|is_blocked_by| Blocker:::relationship
+
+%% Link variables to related entities and constraints
+v_s --> Sprint
+t_s --> Team
+e_f --> Task
+a_e --> Employee
+p_f --> Feature
+b_c --> Blocker
+s_p --> UserStory
+B --> Project
+d_s --> Sprint
+d_c --> FeatureDocumentation
+
+x_et --> Task
+x_et --> Employee
+
+%% Goals linked to variables and entities
+G1 --> v_s
+G2 --> b_c
+G3 --> t_s
+G4 --> Feature
+G5 --> Sprint
+G6 --> Skill
+G7 --> Blocker
+G8 --> ProductOwner
+G9 --> Stakeholder
+G10 --> SprintGoal
+
+%% Constraints linked to variables/entities
+C1 --> t_s
+C2 --> Role
+C3 --> B
+C4 --> Skill
+C5 --> Blocker
+C6 --> Team
+C7 --> SprintBacklog
+C8 --> a_e
+C9 --> d_c
+C10 --> p_f
+
+class Project,Team,Employee,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Feature,Epic,UserStory,Task,Blocker,Sprint,SprintBacklog,SprintGoal entity
+class v_s,t_s,e_f,a_e,p_f,b_c,s_p,B,d_s,d_c,x_et variable
+class G1,G2,G3,G4,G5,G6,G7,G8,G9,G10 goal
+class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10 constraint
+class Project-->Team,Employee-->Team,Employee-->Skill,Employee-->Role,ProductOwner-->ProductBacklog,Team-->ScrumMaster,ProductBacklog-->Feature,ProductBacklog-->Epic,Epic-->UserStory,UserStory-->Task,UserStory-->SprintBacklog,SprintBacklog-->Sprint,Sprint-->SprintGoal,Sprint-->DevelopmentSnapshot,Task-->Blocker relationship

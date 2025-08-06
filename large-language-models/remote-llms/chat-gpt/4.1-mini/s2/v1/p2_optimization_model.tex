@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\begin{document}
+
+\title{Optimization Model for Scrum-Based Software Development}
+\author{}
+\date{}
+\maketitle
+
+\section*{Sets}
+\begin{align*}
+& P = \text{Projects} \\
+& T = \text{Teams} \\
+& E = \text{Employees} \\
+& S = \text{Sprints} \\
+& F = \text{Features} \\
+& U = \text{User Stories} \\
+& K = \text{Skills} \\
+& R = \text{Roles} \\
+& B = \text{Blockers}
+\end{align*}
+
+\section*{Parameters}
+\begin{align*}
+& \text{effort}_j = \text{estimated effort for task } j \\
+& \text{skillLevel}_{e,k} = \text{skill level of employee } e \text{ in skill } k \\
+& \text{certified}_{e,k} \in \{0,1\} = \text{certification status} \\
+& \text{availability}_e \in \{0,1\} = \text{availability of employee } e \\
+& \text{priority}_f = \text{priority of feature } f \\
+& \text{severity}_b = \text{severity of blocker } b \\
+& \text{budget}_p = \text{budget for project } p \\
+& \text{capacity}_t = \text{max team size of team } t
+\end{align*}
+
+\section*{Decision Variables}
+\begin{align*}
+& x_{j,e} \in \{0,1\} && \text{Task assignment: task } j \text{ to employee } e \\
+& y_s \in \mathbb{Z}^+ && \text{Sprint duration in days} \\
+& w_e \geq 0 && \text{Workload (hours) of employee } e \\
+& z_f \in \{0,1\} && \text{Feature completion status} \\
+& r_b \geq 0 && \text{Blocker resolution time (hours)} \\
+& u_t \in \mathbb{Z}^+ && \text{Team size} \\
+& c_p \geq 0 && \text{Budget used for project } p
+\end{align*}
+
+\section*{Objectives}
+\begin{align*}
+\max \quad & \sum_{s \in S} \text{velocity}_s \quad && \text{(Maximize team velocity)} \\
+\min \quad & \sum_{b \in B} r_b \quad && \text{(Minimize blocker resolution time)} \\
+\max \quad & \sum_{f \in F} z_f \quad && \text{(Maximize feature completion)} \\
+\min \quad & \sum_{s \in S} \max(0, y_s - y_s^{\text{planned}}) \quad && \text{(Minimize sprint overruns)} \\
+\max \quad & \sum_{e \in E} w_e \quad && \text{(Maximize employee utilization)}
+\end{align*}
+
+\section*{Constraints}
+\begin{align*}
+& u_t = \sum_{e \in E} \text{belongs\_to\_team}(e,t), \quad u_t \leq \text{capacity}_t && \forall t \in T \\
+& x_{j,e} \leq \text{certified}_{e,k} && \forall j,k,e \text{ (skill requirement)} \\
+& \sum_j x_{j,e} \cdot \text{effort}_j \leq w_e \leq \text{availability}_e \times \text{maxHours} && \forall e \in E \\
+& \sum_j \text{effort}_j \cdot x_{j,e} \leq y_s \times \text{workHoursPerDay} && \forall s \in S, e \in E \\
+& \text{startDate}_s \geq \text{plannedStartDate}_s, \quad \text{endDate}_s \leq \text{plannedEndDate}_s && \forall s \in S \\
+& \sum_{e \in E} \text{takes\_on\_role}(e, \text{ScrumMaster}) \cdot \text{belongs\_to\_team}(e,t) = 1 && \forall t \in T \\
+& \text{status}_{\text{productBacklog}} = \text{Active} && \\
+& r_b \leq \text{maxAllowedTime} && \forall b \in B: \text{severity}_b \geq \text{threshold} \\
+& z_f = 1 && \forall f \in F: \text{priority}_f \geq \text{highPriorityThreshold} \\
+& \text{locationDifference}(e_1, e_2) \leq \text{maxAllowedDifference} && \forall e_1, e_2 \in E \text{ on team } t
+\end{align*}
+
+\end{document}

@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\begin{document}
+
+\title{Optimization Model for Software Development Company Using SCRUM}
+\author{}
+\date{}
+\maketitle
+
+\section*{Sets and Indices}
+\begin{align*}
+&P: \text{set of projects} \\
+&T: \text{set of teams} \\
+&E: \text{set of employees} \\
+&F: \text{set of features} \\
+&S: \text{set of sprints} \\
+&U: \text{set of user stories} \\
+&K: \text{set of tasks/sub-tasks} \\
+&B: \text{set of blockers/problems/bugs} \\
+&R: \text{set of release plans} \\
+&Po: \text{set of product owners} \\
+&V: \text{set of velocity records}
+\end{align*}
+
+\section*{Decision Variables}
+\begin{align*}
+&x^{feat}_{s,f} \in \{0,1\}: \text{Feature } f \text{ assigned to sprint } s \\
+&y^{emp}_{e,k} \in \{0,1\}: \text{Employee } e \text{ assigned to task } k \\
+&a^{emp}_e \in [0,1]: \text{Availability of employee } e \\
+&d^{task}_k \in \mathbb{R}^+: \text{Effort estimate for task } k \\
+&sz_t \in \mathbb{Z}^+: \text{Team size of team } t \\
+&b_{s} \in \mathbb{Z}^+: \text{Number of blockers in sprint } s \\
+&v_t \in \mathbb{R}^+: \text{Velocity of team } t \\
+&g_s \in [0,1]: \text{Achievement percentage of sprint goal } s \\
+&l_{e,sk} \in \{1,...,5\}: \text{Skill level of employee } e \text{ for skill } sk \\
+&po_a_{po} \in [0,1]: \text{Availability of Product Owner } po
+\end{align*}
+
+\section*{Objective Functions}
+\begin{align}
+\max \quad & \sum_{p \in P} \text{on\_time}_p && \text{(Maximize on-time project completion)} \\
+\max \quad & \sum_{t \in T} v_t && \text{(Maximize team velocity)} \\
+\min \quad & \sum_{b \in B} \text{resolution\_time}_b && \text{(Minimize blocker resolution time)} \\
+\max \quad & \sum_{s \in S} \sum_{f \in F} x^{feat}_{s,f} && \text{(Maximize features delivered)} \\
+\max \quad & \sum_{e \in E} a^{emp}_e && \text{(Maximize employee availability)} \\
+\min \quad & \sum_{s \in S} (\text{actual\_effort}_s - \text{planned\_effort}_s) && \text{(Minimize sprint overruns)} \\
+\max \quad & \sum_{po \in Po} po_a_{po} && \text{(Maximize Product Owner involvement)} \\
+\max \quad & \sum_{s \in S} sat_s && \text{(Maximize team satisfaction)} \\
+\max \quad & \sum_{e \in E} \sum_{sk} \mathbf{1}_{l_{e,sk} \geq l_{req,sk}} && \text{(Maximize skill coverage)} \\
+\min \quad & \sum_{s \in S} \text{unplanned\_tasks}_s && \text{(Minimize unplanned work)}
+\end{align}
+
+\section*{Constraints}
+
+\begin{itemize}
+\item \textbf{Project Budget:}
+\[
+\forall p \in P: \quad \text{cost}_p \leq \text{budget}_p
+\]
+
+\item \textbf{Team Size Limits:}
+\[
+\forall t \in T: \quad \text{min\_team\_size} \leq sz_t \leq \text{max\_team\_size}
+\]
+
+\item \textbf{Employee Availability:}
+\[
+\forall e \in E, k \in K: \quad y^{emp}_{e,k} \leq a^{emp}_e
+\]
+
+\item \textbf{Skill Match:}
+\[
+\forall e \in E, k \in K: \quad y^{emp}_{e,k} = 1 \implies l_{e,sk_k} \geq l_{req,sk_k}
+\]
+
+\item \textbf{Sprint Duration:}
+\[
+\forall s \in S: \quad \text{start}_s + \text{duration}_s \leq \text{max\_end}_s
+\]
+
+\item \textbf{Sprint Goal Achievement:}
+\[
+\forall s \in S: \quad g_s \geq g_{min}
+\]
+
+\item \textbf{Blocker Limit:}
+\[
+\forall s \in S: \quad b_s \leq b_{max}
+\]
+
+\item \textbf{Release Plan Feature Coverage:}
+\[
+\forall r \in R, f \in F_{critical}: \quad \sum_{s \in S} x^{feat}_{s,f} \geq 1
+\]
+
+\item \textbf{Task Effort Limits:}
+\[
+\forall k \in K: \quad d^{task}_{min} \leq d^{task}_k \leq d^{task}_{max}
+\]
+
+\item \textbf{Product Backlog Status Active:}
+\[
+\text{status}_{backlog} = \text{active}
+\]
+
+\end{itemize}
+
+\end{document}

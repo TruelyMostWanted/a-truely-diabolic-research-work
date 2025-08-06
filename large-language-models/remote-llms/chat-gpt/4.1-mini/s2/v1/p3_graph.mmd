@@ -1,0 +1,116 @@
+graph TD
+
+%% Entities
+Project["Project\n(ID, Name, Start, End, Budget, Status, Priority)"]:::entity
+Team["Team\n(ID, Name, Size, Start, Status, Location, Type)"]:::entity
+Employee["Employee\n(ID, Name, Email, Start Date, Status, Availability)"]:::entity
+Skill["Skill\n(ID, Label, Description, Level, Certified, Category)"]:::entity
+Role["Role\n(ID, Name, Description, Responsibility)"]:::entity
+Feature["Feature\n(ID, Title, Description, Status, Priority, Effort)"]:::entity
+Sprint["Sprint\n(ID, Number, Start, End, Status)"]:::entity
+Task["Task\n(ID, Title, Description, Status, Effort, Type)"]:::entity
+Blocker["Blocker\n(ID, Title, Severity, Status, Detected, Resolved)"]:::entity
+ProductBacklog["Product Backlog\n(ID, Created On, Status)"]:::entity
+Velocity["Velocity\n(ID, Avg Story Points, Max, Min, Trend)"]:::entity
+SprintGoal["Sprint Goal\n(ID, Description, Status, Benefit)"]:::entity
+
+%% Relationships
+ProjectTeam["is_assigned_to_project"]:::relationship
+EmployeeTeam["belongs_to_team"]:::relationship
+EmployeeSkill["has_skill"]:::relationship
+EmployeeRole["takes_on_role"]:::relationship
+ProductOwnerBacklog["manages_backlog"]:::relationship
+TeamScrumMaster["is_supported_by"]:::relationship
+BacklogFeature["contains_feature"]:::relationship
+BacklogEpic["contains_epic"]:::relationship
+EpicUserStory["contains_user_story"]:::relationship
+UserStoryTask["consists_of_tasks"]:::relationship
+SprintBacklog["belongs_to_sprint"]:::relationship
+SprintGoalRel["pursues_goal"]:::relationship
+ScrumBoardTask["contains_tasks"]:::relationship
+TaskBlocker["is_blocked_by"]:::relationship
+VelocityTeam["refers_to_team"]:::relationship
+
+%% Link Entities by relationships
+Team -- "1:N" --> Project
+Employee -- "N:1" --> Team
+Employee -- "N:M" --> Skill
+Employee -- "N:M" --> Role
+ProductBacklog -- "1:1" --> ProductOwnerBacklog
+Team -- "1:1" --> TeamScrumMaster
+ProductBacklog -- "1:N" --> Feature
+ProductBacklog -- "1:N" --> BacklogEpic
+BacklogEpic -- "1:N" --> EpicUserStory
+UserStoryTask -- "1:N" --> Task
+SprintBacklog -- "1:1" --> Sprint
+Sprint -- "1:1" --> SprintGoalRel
+ScrumBoardTask -- "1:N" --> Task
+TaskBlocker -- "N:M" --> Blocker
+VelocityTeam -- "1:1" --> Team
+
+%% Goals (Objectives)
+MaxVelocity["Maximize Team Velocity"]:::goal
+MinBlockerTime["Minimize Blocker Resolution Time"]:::goal
+MaxFeatureCompletion["Maximize Feature Completion"]:::goal
+MinSprintOverrun["Minimize Sprint Overrun"]:::goal
+MaxEmployeeUtilization["Maximize Employee Utilization"]:::goal
+MaxSkillMatch["Maximize Skill Match"]:::goal
+MinUnplannedWork["Minimize Unplanned Work"]:::goal
+MaxStakeholderSatisfaction["Maximize Stakeholder Satisfaction"]:::goal
+MinCostOverrun["Minimize Cost Overrun"]:::goal
+MaxSprintGoalAchievement["Maximize Sprint Goal Achievement"]:::goal
+
+%% Connect goals to entities they target
+MaxVelocity --> Velocity
+MinBlockerTime --> Blocker
+MaxFeatureCompletion --> Feature
+MinSprintOverrun --> Sprint
+MaxEmployeeUtilization --> Employee
+MaxSkillMatch --> Skill
+MinUnplannedWork --> Task
+MaxStakeholderSatisfaction --> SprintGoal
+MinCostOverrun --> Project
+MaxSprintGoalAchievement --> SprintGoal
+
+%% Conditions (Constraints)
+TeamSizeLimit["Team Size Limit (<= capacity)"]:::constraint
+SkillCertification["Skill Certification Required"]:::constraint
+EmployeeAvailability["Employee Availability"]:::constraint
+TaskEffortLimit["Task Effort within Sprint Capacity"]:::constraint
+SprintDateLimit["Sprint Duration Limits"]:::constraint
+RoleAssignment["Role Assignment Required"]:::constraint
+BacklogStatus["Product Backlog Status Active"]:::constraint
+BlockerSeverityLimit["Blocker Severity Resolution Time"]:::constraint
+PriorityFeatureRelease["Priority Feature Delivery"]:::constraint
+TeamLocationCompatibility["Team Location Compatibility"]:::constraint
+
+%% Connect conditions to entities
+TeamSizeLimit --> Team
+SkillCertification --> Skill
+EmployeeAvailability --> Employee
+TaskEffortLimit --> Task
+SprintDateLimit --> Sprint
+RoleAssignment --> Role
+BacklogStatus --> ProductBacklog
+BlockerSeverityLimit --> Blocker
+PriorityFeatureRelease --> Feature
+TeamLocationCompatibility --> Team
+
+%% Decision Variables (highlighted as variables)
+TaskAssignment["Task Assignment\n(x_{j,e} ∈ {0,1})"]:::variable
+SprintDuration["Sprint Duration\n(y_s ∈ ℕ⁺)"]:::variable
+EmployeeWorkload["Employee Workload\n(w_e ≥ 0)"]:::variable
+FeatureCompletion["Feature Completion\n(z_f ∈ {0,1})"]:::variable
+BlockerResolution["Blocker Resolution Time\n(r_b ≥ 0)"]:::variable
+TeamSizeVar["Team Size\n(u_t ∈ ℕ⁺)"]:::variable
+BudgetUsed["Budget Used\n(c_p ≥ 0)"]:::variable
+
+%% Link variables to entities
+TaskAssignment --> Task
+TaskAssignment --> Employee
+SprintDuration --> Sprint
+EmployeeWorkload --> Employee
+FeatureCompletion --> Feature
+BlockerResolution --> Blocker
+TeamSizeVar --> Team
+BudgetUsed --> Project

@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Optimization Model for SCRUM-based Software Development}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Sets and Indices}
+\begin{itemize}
+    \item $s \in S$: set of Sprints
+    \item $t \in T$: set of Tasks
+    \item $e \in E$: set of Employees
+    \item $k \in K$: set of Skills
+    \item $f \in F$: set of Features
+    \item $b \in B$: set of Blockers
+    \item $r \in R$: set of Roles
+\end{itemize}
+
+\section*{Parameters}
+\begin{align*}
+    & \text{effort}_t: \text{Estimated effort for task } t \\
+    & \text{availability}_e: \text{Availability percentage of employee } e \\
+    & \text{skillLevel}_{e,k}: \text{Skill level of employee } e \text{ for skill } k \\
+    & \text{severity}_b: \text{Severity of blocker } b \\
+    & \text{storyPoints}_s: \text{Planned story points in sprint } s \\
+    & \text{maxTeamSize}: \text{Maximum allowed team size} \\
+    & \text{minSkillLevel}: \text{Minimum skill level required} \\
+    & \text{blockerSeverityThreshold}: \text{Severity threshold for critical blockers} \\
+\end{align*}
+
+\section*{Decision Variables}
+\begin{align*}
+    & x_{t,s} \in \{0,1\}: \text{1 if task } t \text{ is assigned in sprint } s, \text{0 otherwise}\\
+    & y_{e,t} \in \{0,1\}: \text{1 if employee } e \text{ is assigned to task } t, \text{0 otherwise}\\
+    & z_{s}: \text{Total story points completed in sprint } s \\
+    & d_{b} \in \{0,1\}: \text{1 if blocker } b \text{ is resolved, 0 otherwise} \\
+\end{align*}
+
+\section*{Objective Functions}
+\begin{align*}
+    & \max \sum_{s \in S} z_{s} && \text{(Maximize Sprint Velocity)} \\
+    & \min \sum_{b \in B} (1 - d_b) \cdot \text{resolutionTime}_b && \text{(Minimize Blocker Resolution Time)} \\
+    & \max \sum_{e \in E} \sum_{t \in T} y_{e,t} \cdot \text{availability}_e && \text{(Maximize Team Utilization)} \\
+    & \min \sum_{t \in T} | \text{effort}_t - \text{actualEffort}_t | && \text{(Minimize Task Effort Overrun)} \\
+    & \max \sum_{f \in F} \text{includedInSprint}_f && \text{(Maximize Backlog Coverage)} \\
+\end{align*}
+
+\section*{Constraints}
+\begin{align*}
+    & \sum_{e \in E} y_{e,t} \geq 1, \quad \forall t \in T && \text{(Each task assigned to at least one employee)} \\
+    & \sum_{t \in T} y_{e,t} \cdot \text{effort}_t \leq \text{availability}_e \cdot \text{SprintDuration}, \quad \forall e \in E && \text{(Respect employee availability)} \\
+    & \sum_{t \in T} x_{t,s} \cdot \text{storyPoints}_t \leq \text{maxSprintCapacity}_s, \quad \forall s \in S && \text{(Sprint capacity limits)} \\
+    & \sum_{e \in E} \text{role}_{e,r} \geq \text{requiredRoleCount}_r, \quad \forall r \in R && \text{(Role coverage constraints)} \\
+    & \text{skillLevel}_{e,k} \geq \text{minSkillLevel}, \quad \text{if } y_{e,t}=1 \text{ and task } t \text{ requires skill } k && \text{(Minimum skill level)} \\
+    & \sum_{b \in B: \text{severity}_b \geq \text{blockerSeverityThreshold}} (1 - d_b) = 0 && \text{(Critical blockers must be resolved)} \\
+    & \sum_{e \in E} \text{teamMembers}_e \leq \text{maxTeamSize} && \text{(Team size limit)} \\
+\end{align*}
+
+\end{document}
