@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\begin{document}
+
+\title{Software Development Optimization Model}
+\date{}
+\maketitle
+
+\section{Decision Variables}
+
+\begin{itemize}
+    \item $x_1$: Sprint Task Allocation (effort assigned to a task)
+    \item $x_2$: Feature Priority Weight
+    \item $x_3$: Skill Gap Training Investment
+    \item $x_4$: Sprint Backlog Task Estimate Accuracy
+    \item $x_5$: Stakeholder Feedback Integration Frequency
+    \item $x_6$: Technical Debt Refactoring Effort (percentage)
+    \item $x_7$: Blocker Resolution Priority
+    \item $x_8$: Sprint Scope Adjustment (percentage)
+    \item $x_9$: Team Member Overload Factor
+    \item $x_{10}$: Stakeholder Engagement Level (Binary: 0/1)
+    \item $x_{11}$: Automated Testing Coverage (percentage)
+    \item $x_{12}$: Skill Diversity Metric (Normalized Score)
+    \item $x_{13}$: Sprint Goal Focus (Binary: 0/1)
+\end{itemize}
+
+\section{Parameters}
+
+\begin{itemize}
+    \item $s$: Number of Sprints
+    \item $f$: Number of Features
+    \item $t$: Number of Tasks
+    \item $e$: Number of Epics
+    \item $u$: Number of User Stories
+    \item $b$: Number of Blockers
+    \item $st$: Number of Stakeholders
+    \item $te$: Number of Teams
+    \item $Effort(i)$: Estimated Effort of Task i
+    \item $Priority(i)$: Priority of Feature i
+    \item $AcceptanceCriteriaCoverage(i)$: Coverage of acceptance criteria of User Story i
+    \item $SkillGap(j)$: Skill gap for skill j
+    \item $Velocity(k)$: Velocity of Team k
+    \item $TeamSize(k)$: Size of Team k
+\end{itemize}
+
+\section{Objective Function}
+
+\begin{align*}
+\text{Maximize} \quad & \alpha \sum_{i=1}^{f} Priority(i) x_2 + \beta \sum_{k=1}^{te} Velocity(k) + \gamma \sum_{st=1}^{st} x_{10} \\
+\end{align*}
+
+\section{Constraints}
+
+\begin{align*}
+\sum_{i=1}^{t} x_1 &\leq TeamSize(k) \cdot 100  &\text{ (Team Capacity)} \\
+0.5 &\leq x_4 \leq 1.5  &\text{ (Effort Estimation Accuracy)} \\
+x_6 &\leq 20 &\text{ (Technical Debt Limit)} \\
+\sum_{j} x_3 &\leq \text{Budget} &\text{ (Skill Gap Investment)} \\
+x_7 &\geq 1 &\text{ (Blocker Resolution Priority)} \\
+x_8 &\leq 10 &\text{ (Sprint Scope Limit)} \\
+x_9 &\leq 1 &\text{ (Overload Prevention)} \\
+x_{10} &\in \{0, 1\} &\text{ (Stakeholder Engagement)} \\
+0 &\leq x_{11} \leq 100 &\text{ (Automated Testing Coverage)} \\
+0 &\leq x_{12} \leq 1 &\text{ (Skill Diversity)} \\
+x_{13} &\in \{0, 1\} &\text{ (Sprint Goal Focus)} \\
+\sum_{i=1}^{f} x_2 &= 1 &\text{ (Feature Priority)} \\
+AcceptanceCriteriaCoverage(i) x_{13} &\geq 0.8 &\text{ (Acceptance Criteria)} \\
+\end{align*}
+
+\end{document}

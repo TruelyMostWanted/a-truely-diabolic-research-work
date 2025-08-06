@@ -1,0 +1,76 @@
+graph LR
+    subgraph Domain Model
+        %% Entities
+        Entity_Task["Task\nAttributes: Effort, Priority"]:::entity
+        Entity_Feature["Feature\nAttributes: Priority, Description"]:::entity
+        Entity_Team["Team\nAttributes: Velocity, Size"]:::entity
+        Entity_Stakeholder["Stakeholder\nAttributes: Engagement Level"]:::entity
+
+        %% Decision Variables
+        Variable_Allocation["x1: Sprint Task Allocation"]:::variable
+        Variable_Priority["x2: Feature Priority Weight"]:::variable
+        Variable_Training["x3: Skill Gap Training Investment"]:::variable
+        Variable_Estimate["x4: Sprint Estimate Accuracy"]:::variable
+        Variable_Feedback["x5: Stakeholder Feedback Freq."]:::variable
+        Variable_Debt["x6: Tech Debt Refactoring"]:::variable
+        Variable_Blocker["x7: Blocker Resolution Priority"]:::variable
+        Variable_Scope["x8: Sprint Scope Adjustment"]:::variable
+        Variable_Overload["x9: Team Member Overload"]:::variable
+
+        %% Goals
+        Goal_Delivery["Maximize Feature Delivery"]:::goal
+        Goal_Velocity["Maximize Team Velocity"]:::goal
+        Goal_Satisfaction["Maximize Stakeholder Satisfaction"]:::goal
+
+        %% Conditions
+        Condition_Capacity["Team Capacity"]:::constraint
+        Condition_TechDebt["Technical Debt Limit"]:::constraint
+        Condition_SkillGap["Address Skill Gaps"]:::constraint
+        Condition_Blockers["Resolve Blockers"]:::constraint
+
+    end
+
+    %% Relationships
+    Entity_Task -- Variable_Allocation
+    Entity_Feature -- Variable_Priority
+    Entity_Team -- Variable_Allocation
+    Entity_Team -- Variable_Overload
+    Entity_Stakeholder -- Variable_Feedback
+
+    %% Goal Links
+    Variable_Priority -- Goal_Delivery
+    Variable_Allocation -- Goal_Delivery
+    Variable_Allocation -- Goal_Velocity
+    Variable_Feedback -- Goal_Satisfaction
+
+    %% Condition Links
+    Variable_Allocation -- Condition_Capacity
+    Variable_Debt -- Condition_TechDebt
+    Variable_Training -- Condition_SkillGap
+    Variable_Blocker -- Condition_Blockers
+
+    style Entity_Task fill:#d1b3ff,stroke:#333
+    style Entity_Feature fill:#d1b3ff,stroke:#333
+    style Entity_Team fill:#d1b3ff,stroke:#333
+    style Entity_Stakeholder fill:#d1b3ff,stroke:#333
+
+    style Variable_Allocation fill:#99e699,stroke:#333
+    style Variable_Priority fill:#99e699,stroke:#333
+    style Variable_Training fill:#99e699,stroke:#333
+    style Variable_Estimate fill:#99e699,stroke:#333
+    style Variable_Feedback fill:#99e699,stroke:#333
+    style Variable_Debt fill:#99e699,stroke:#333
+    style Variable_Blocker fill:#99e699,stroke:#333
+    style Variable_Scope fill:#99e699,stroke:#333
+    style Variable_Overload fill:#99e699,stroke:#333
+
+    style Goal_Delivery fill:#99ccff,stroke:#333
+    style Goal_Velocity fill:#99ccff,stroke:#333
+    style Goal_Satisfaction fill:#99ccff,stroke:#333
+
+    style Condition_Capacity fill:#ff9999,stroke:#333
+    style Condition_TechDebt fill:#ff9999,stroke:#333
+    style Condition_SkillGap fill:#ff9999,stroke:#333
+    style Condition_Blockers fill:#ff9999,stroke:#333
+
+    linkStyle default stroke:#333,stroke-width:1px
