@@ -1,0 +1,112 @@
+graph TB
+
+%% Entities
+subgraph entities {
+  classDef entity fill:#d1b3ff,stroke:#333;
+
+  Project[Entity: Project]
+  Team[Entity: Team]
+  Worker[Entity: Worker/Employee]
+  Feature[Entity: Feature]
+  Skill[Entity: Skill/Competence]
+  Role[Entity: Role(s)]
+  ProductOwner[Entity: Product Owner]
+  ScrumMaster[Entity: Scrum Master]
+  Backlog[Entity: Product Backlog]
+  Sprint[Entity: Sprint]
+  Planning[Entity: Sprint Planning]
+  DailyScrum[Entity: Daily Scrum]
+  Review[Entity: Sprint Review]
+  Retrospective[Entity: Sprint Retrospective]
+  BacklogItem[Entity: Backlog Item]
+  Task[Entity: Task/Sub-Task]
+  Snapshot[Entity: Development Snapshot]
+  Blocker[Entity: Blocker/Problem/Bug]
+  Stakeholder[Entity: Stakeholder]
+  Velocity[Entity: Velocity]
+  Plan[Entity: Release Plan]
+  Roadmap[Entity: Roadmap]
+  Board[Entity: Scrum Board]
+  Documentation[Entity: Feature Documentation]
+}
+
+%% Relationships
+subgraph relationships {
+  classDef relationship fill:#ffe066,stroke:#333;
+
+  Project -- "assigned to" --> Team
+  Worker --> Role
+  Worker --> Skill
+  Worker -- "belongs to" --> Team
+  Feature --> Backlog
+  Feature --> ProductOwner
+  Backlog --> Sprint
+  Sprint --> Planning
+  Sprint --> DailyScrum
+  Sprint --> Review
+  Sprint --> Retrospective
+  BacklogItem --> Task
+  Task --> Snapshot
+  Task --> Blocker
+  Stakeholder --> Review
+  Team --> ScrumMaster
+  Velocity --> Team
+  Plan --> Roadmap
+  Board --> Sprint
+  Documentation --> Feature
+}
+
+%% Variables
+subgraph variables {
+  classDef variable fill:#99e699,stroke:#333;
+
+  WorkloadFactor[Variable: Employee Workload Factor]
+  CompletionPercentage[Variable: Feature Completion Percentage]
+  BudgetUtilization[Variable: Project Budget Utilization]
+  VelocityTrendIndicator[Variable: Velocity Trend Indicator]
+}
+
+%% Goals
+subgraph goals {
+  classDef goal fill:#99ccff,stroke:#333;
+
+  PerformanceIndex[Goal: Maximize Project Performance Index]
+  RiskIndex[Goal: Minimize Risk Index]
+  ResourceEfficiency[Goal: Maximize Resource Efficiency]
+  ProjectDuration[Goal: Minimize Project Duration]
+}
+
+%% Constraints
+subgraph constraints {
+  classDef constraint fill:#ff9999,stroke:#333;
+
+  WorkloadConstraint[Constraint: Employee Workload Factor ≤ 100\%]
+  SkillSetMatchupRatio[Constraint: Skill Set Matchup Ratio ≥ 0\%]
+  ResponseTimeConstraint[Constraint: Average Response Time on Issues ≤ max\_allowed\_time]
+  BudgetConstraint[Constraint: Project Budget Utilization ≤ total\_budget]
+  VelocityRequirement[Constraint: Velocity Trend Indicator ≥ minimum\_velocity\_required]
+}
+
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
+
+%% Edges
+WorkloadFactor -- "related to" --> Worker
+CompletionPercentage -- "related to" --> Feature
+BudgetUtilization -- "related to" --> Project
+VelocityTrendIndicator -- "related to" --> Team
+
+PerformanceIndex -- "maximize" --> WorkloadFactor + CompletionPercentage + BudgetUtilization - VelocityTrendIndicator
+RiskIndex -- "minimize" --> BI + SI + IDD
+ResourceEfficiency -- "maximize" --> EF + SI + AR_T
+ProjectDuration -- "minimize" --> DT + RT
+
+WorkloadConstraint -.-> WorkloadFactor
+SkillSetMatchupRatio -.-> Skill
+ResponseTimeConstraint -.-> ResponseTime
+BudgetConstraint -.-> BudgetUtilization
+VelocityRequirement -.-> VelocityTrendIndicator
