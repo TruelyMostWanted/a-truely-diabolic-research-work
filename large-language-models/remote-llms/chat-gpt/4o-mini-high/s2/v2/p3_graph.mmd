@@ -1,0 +1,98 @@
+classDiagram
+    %% Class Definitions
+    classDef entity      fill:#d1b3ff,stroke:#333;
+    classDef variable    fill:#99e699,stroke:#333;
+    classDef goal        fill:#99ccff,stroke:#333;
+    classDef constraint  fill:#ff9999,stroke:#333;
+    classDef relationship fill:#ffe066,stroke:#333;
+
+    %% Entities
+    class Project           <<entity>> { +ID; +Name; +ProjectStart; +ProjectEnd; +Description; +Budget; +Status; +TargetAudience; +Priority }
+    class Team              <<entity>> { +ID; +Name; +TeamSize; +TeamStart; +TeamStatus; +Location; +TeamType }
+    class Employee          <<entity>> { +ID; +Name; +FirstName; +Email; +StartDate; +Status; +Availability }
+    class Feature           <<entity>> { +ID; +Title; +Description; +Status; +Priority; +EstimatedEffort }
+    class Skill             <<entity>> { +ID; +Label; +Description; +Level; +Certified; +Category }
+    class Role              <<entity>> { +ID; +RoleName; +Description; +AreaOfResponsibility }
+    class ProductOwner      <<entity>> { +ID; +Name; +Email; +Availability }
+    class ScrumMaster       <<entity>> { +ID; +Name; +Email; +Experience }
+    class ProductBacklog    <<entity>> { +ID; +CreatedOn; +LastUpdated; +NumberOfEntries; +Status }
+    class Sprint            <<entity>> { +ID; +SprintNumber; +StartDate; +EndDate; +Status; +AchievementOfGoal }
+    class SprintBacklog     <<entity>> { +ID; +NumberOfTasks; +LastUpdated; +Status; +TotalEffort }
+    class SprintGoal        <<entity>> { +ID; +ObjectiveDescription; +AchievementStatus; +Benefit }
+    class Epic              <<entity>> { +ID; +Title; +Description; +Priority; +Status; +EstimatedEffort }
+    class UserStory         <<entity>> { +ID; +Title; +Description; +AcceptanceCriteria; +Priority; +StoryPoints; +Status }
+    class Task              <<entity>> { +ID; +Title; +Description; +Status; +Effort; +Type }
+    class DevelopmentSnapshot<<entity>>{ +ID; +VersionNumber; +CreationDate; +TestStatus; +DeploymentTarget; +Documentation }
+    class Blocker           <<entity>> { +ID; +Title; +Description; +Severity; +Status; +DetectedOn; +ResolvedOn }
+    class Stakeholder       <<entity>> { +ID; +Name; +Organization; +Role; +Email; +AreaOfInterest; +InfluenceLevel; +RelevanceToFeature }
+    class Velocity          <<entity>> { +ID; +NumberOfSprintsUsed; +AvgStoryPoints; +MaxVelocity; +MinVelocity; +Trend }
+    class ReleasePlan       <<entity>> { +ID; +Version; +PlannedDate; +IncludedFeatures; +Status }
+    class Roadmap           <<entity>> { +ID; +StartDate; +EndDate; +Milestones; +Objectives; +Versions }
+    class ScrumBoard        <<entity>> { +ID; +BoardType; +Columns; +NumberOfCards; +LastUpdated }
+    class FeatureDocs       <<entity>> { +ID; +Title; +Description; +CreationDate; +ChangeLog; +LinkedRequirements; +Author }
+
+    %% Decision Variables
+    class DV1  <<variable>> { Sprint Duration Days [7–30] }
+    class DV2  <<variable>> { Team Size [3–10] }
+    class DV3  <<variable>> { Budget Allocation [10 000–1 000 000] }
+    class DV4  <<variable>> { Sprint Capacity [20–100] }
+    class DV5  <<variable>> { Number of Developers [1–10] }
+    class DV6  <<variable>> { Features per Release [1–20] }
+    class DV7  <<variable>> { Tasks per Sprint [1–200] }
+    class DV8  <<variable>> { Skill Level Threshold [1–5] }
+    class DV9  <<variable>> { Daily Scrum Duration [5–60] }
+    class DV10 <<variable>> { Sprint Review Duration [15–240] }
+    class DV11 <<variable>> { Retrospective Actions Count [0–20] }
+    class DV12 <<variable>> { Release Frequency per Month [0.1–4] }
+
+    %% Goals
+    class G1  <<goal>> { Maximize Velocity }
+    class G2  <<goal>> { Minimize Sprint Overrun }
+    class G3  <<goal>> { Maximize Goal Achievement Rate }
+    class G4  <<goal>> { Minimize Defect Rate }
+    class G5  <<goal>> { Maximize Feature Completion }
+    class G6  <<goal>> { Minimize Time to Market }
+    class G7  <<goal>> { Maximize Team Utilization }
+    class G8  <<goal>> { Minimize Budget Overrun }
+    class G9  <<goal>> { Maximize Customer Satisfaction }
+    class G10 <<goal>> { Minimize Backlog Ageing }
+    class G11 <<goal>> { Maximize Release Frequency }
+    class G12 <<goal>> { Minimize Technical Debt }
+
+    %% Conditions (Constraints)
+    class C1  <<constraint>> { Budget Compliance }
+    class C2  <<constraint>> { Skill Coverage }
+    class C3  <<constraint>> { Sprint Predictability }
+    class C4  <<constraint>> { Team Satisfaction }
+    class C5  <<constraint>> { Stakeholder Participation }
+    class C6  <<constraint>> { Defect Leakage }
+    class C7  <<constraint>> { Backlog Freshness }
+    class C8  <<constraint>> { Technical Debt Ratio }
+    class C9  <<constraint>> { Compliance Status }
+    class C10 <<constraint>> { Risk Level }
+    class C11 <<constraint>> { Timezone Overlap }
+    class C12 <<constraint>> { Communication Delay }
+
+    %% Relationships
+    Team               --> Project           : is_assigned_to_project       <<relationship>>
+    Employee           --> Team              : belongs_to_team              <<relationship>>
+    Employee           --> Skill             : has_skill                    <<relationship>>
+    Employee           --> Role              : takes_on_role                <<relationship>>
+    ProductOwner       --> ProductBacklog    : manages_backlog              <<relationship>>
+    Team               --> ScrumMaster       : is_supported_by              <<relationship>>
+    ProductBacklog     --> Feature           : contains_feature             <<relationship>>
+    ProductBacklog     --> Epic              : contains_epic                <<relationship>>
+    Epic               --> UserStory         : contains_user_story          <<relationship>>
+    UserStory          --> Task              : consists_of_tasks            <<relationship>>
+    UserStory          --> SprintBacklog     : is_in_sprint_backlog         <<relationship>>
+    SprintBacklog      --> Sprint            : belongs_to_sprint            <<relationship>>
+    Sprint             --> SprintGoal        : pursues_goal                 <<relationship>>
+    ScrumBoard         --> Task              : contains_tasks               <<relationship>>
+    FeatureDocs        --> Feature           : documents_feature            <<relationship>>
+    Task               --> Blocker           : is_blocked_by                <<relationship>>
+    Stakeholder        --> SprintReview      : participates_in              <<relationship>>
+    ScrumMaster        --> SprintRetrospective: moderates_retrospective     <<relationship>>
+    Velocity           --> Team              : refers_to_team               <<relationship>>
+    ReleasePlan        --> Feature           : plans_release                <<relationship>>
+    ReleasePlan        --> Roadmap           : is_part_of_roadmap           <<relationship>>
+    Sprint             --> DevelopmentSnapshot: generates_snapshot          <<relationship>>

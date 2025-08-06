@@ -1,0 +1,11 @@
+ID,Name,Description,LogicalName,TargetedEntities,Goal,CriteriaType
+C1,SkillMatch,Ensure assigned employees have required skills,skill_mismatch_count,Employee;Skill / Competence,Min,🟢
+C2,RoleCoverage,Ensure each team has exactly one Product Owner and one Scrum Master,role_gap_count,Team;Product Owner;Scrum Master,Min,🟢
+C3,TeamSizeLimit,Team size must not exceed organizational cap,team_size_violation,Team,Min,🟢
+C4,SprintDurationFixed,Sprint duration deviation from standard 14 days,sprint_duration_deviation,Sprint,Min,🟢
+C5,BudgetConstraint,Project cost must stay within budget,budget_overrun,Project,Min,🟢
+C6,DeadlineCompliance,Feature delivery delay beyond planned deadline,delivery_delay_days,Feature,Min,🟢
+C7,QualityThreshold,Test coverage should reach at least 80% as a soft target,coverage_pct_shortfall,Development Snapshot,Min,🟡
+C8,StakeholderApproval,Stakeholder approval score should be ≥4.0,approval_score,Stakeholder;Sprint Review,Max,🟡
+C9,BugCountLimit,Number of post-release high-severity bugs must not exceed 5,post_release_bugs,Blocker / Problem / Bug,Min,🔴
+C10,RegulatoryCompliance,Number of compliance violations during development,compliance_violations,Project;Feature,Min,🟢

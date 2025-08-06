@@ -1,0 +1,112 @@
+graph TD
+  %% Class Definitions
+  classDef entity fill:#d1b3ff,stroke:#333;
+  classDef variable fill:#99e699,stroke:#333;
+  classDef goal fill:#99ccff,stroke:#333;
+  classDef constraint fill:#ff9999,stroke:#333;
+  classDef relationship fill:#ffe066,stroke:#333;
+
+  %% Entities
+  Proj["Project\nID, Name, Project Start, Project End, Description, Budget, Status, Target Audience, Priority"]:::entity
+  Team["Team\nID, Name, Team Size, Team Start, Team Status, Location, Team Type"]:::entity
+  Emp["Employee\nID, Name, First Name, Email, Start Date, Status, Availability"]:::entity
+  Feat["Feature\nID, Title, Description, Status, Priority, Estimated Effort"]:::entity
+  Skill["Skill\nID, Label, Description, Level, Certified, Category"]:::entity
+  Role["Role(s)\nID, Role Name, Description, Area of Responsibility"]:::entity
+  PO["Product Owner\nID, Name, Email, Availability"]:::entity
+  SM["Scrum Master\nID, Name, Email, Experience"]:::entity
+  PB["Product Backlog\nID, Created On, Last Updated, Number of Entries, Status"]:::entity
+  Sp["Sprint\nID, Sprint Number, Start Date, End Date, Status, Achievement of Goal"]:::entity
+  SPla["Sprint Planning\nID, Date, Duration, Moderation, Outcome Documentation"]:::entity
+  DS["Daily Scrum\nID, Date, Time, Duration, Moderation"]:::entity
+  SRv["Sprint Review\nID, Date, Duration, Feedback Documentation, Attendees Count"]:::entity
+  SRe["Sprint Retrospective\nID, Date, Duration, Improvement Actions, Team Satisfaction, Moderation"]:::entity
+  SBack["Sprint Backlog\nID, Number of Tasks, Last Updated, Status, Total Effort"]:::entity
+  SG["Sprint Goal\nID, Objective Description, Achievement Status, Benefit"]:::entity
+  Epic["Epic\nID, Title, Description, Priority, Status, Estimated Effort"]:::entity
+  US["User Story\nID, Title, Description, Acceptance Criteria, Priority, Story Points, Status"]:::entity
+  Task["Task/Sub-Task\nID, Title, Description, Status, Effort, Type"]:::entity
+  Snap["Development Snapshot\nID, Version Number, Creation Date, Test Status, Deployment Target, Documentation"]:::entity
+  Bug["Blocker/Bug\nID, Title, Description, Severity, Status, Detected On, Resolved On"]:::entity
+  Stk["Stakeholder\nID, Name, Organization, Role, Email, Area of Interest, Influence Level, Relevance to Feature"]:::entity
+  Vel["Velocity\nID, Number of Sprints Used, Avg. Story Points, Max Velocity, Min Velocity, Trend"]:::entity
+  Rel["Release Plan\nID, Version, Planned Date, Included Features, Status"]:::entity
+  Road["Roadmap\nID, Start Date, End Date, Milestones, Objectives, Versions"]:::entity
+  Board["Scrum Board\nID, Board Type, Columns, Number of Cards, Last Updated"]:::entity
+  Doc["Feature Documentation\nID, Title, Description, Creation Date, Change Log, Linked Requirements, Author"]:::entity
+
+  %% Relationship Nodes
+  RA1["is_assigned_to_project"]:::relationship
+  RA2["belongs_to_team"]:::relationship
+  RA3["has_skill"]:::relationship
+  RA4["takes_on_role"]:::relationship
+  RA5["manages_backlog"]:::relationship
+  RA6["is_supported_by"]:::relationship
+  RA7["contains_feature"]:::relationship
+  RA8["contains_epic"]:::relationship
+  RA9["contains_user_story"]:::relationship
+  RA10["consists_of_tasks"]:::relationship
+  RA11["is_in_sprint_backlog"]:::relationship
+  RA12["belongs_to_sprint"]:::relationship
+  RA13["pursues_goal"]:::relationship
+  RA14["contains_tasks"]:::relationship
+  RA15["documents_feature"]:::relationship
+  RA16["is_blocked_by"]:::relationship
+  RA17["participates_in"]:::relationship
+  RA18["moderates_retrospective"]:::relationship
+  RA19["refers_to_team"]:::relationship
+  RA20["plans_release"]:::relationship
+  RA21["is_part_of_roadmap"]:::relationship
+  RA22["generates_snapshot"]:::relationship
+
+  %% Goals
+  subgraph Goals
+    G1["Minimize Total Development Time"]:::goal
+    G2["Maximize Sprint Velocity"]:::goal
+    G3["Minimize Budget Overrun"]:::goal
+    G4["Maximize Feature Throughput"]:::goal
+    G5["Maximize Team Utilization"]:::goal
+    G6["Minimize Defect Rate"]:::goal
+    G7["Maximize Stakeholder Satisfaction"]:::goal
+    G8["Minimize Unplanned Work"]:::goal
+    G9["Maximize Backlog Health"]:::goal
+    G10["Minimize Rework Effort"]:::goal
+  end
+
+  %% Conditions
+  subgraph Conditions
+    C1["Project End Deadline"]:::constraint
+    C2["Budget Cap"]:::constraint
+    C3["Team Size Limit"]:::constraint
+    C4["Employee Availability"]:::constraint
+    C5["Sprint Length"]:::constraint
+    C6["Feature Effort Estimate"]:::constraint
+    C7["Backlog Entry Status"]:::constraint
+    C8["Daily Scrum Attendance"]:::constraint
+    C9["Required Skill Match"]:::constraint
+    C10["Release Plan Coverage"]:::constraint
+  end
+
+  %% Edges (Entities ↔ Relationships)
+  Team --> RA1 --> Proj
+  Emp  --> RA2 --> Team
+  Emp  --> RA3 --> Skill
+  Emp  --> RA4 --> Role
+  PO   --> RA5 --> PB
+  Team --> RA6 --> SM
+  PB   --> RA7 --> Feat
+  PB   --> RA8 --> Epic
+  Epic --> RA9 --> US
+  US   --> RA10 --> Task
+  US   --> RA11 --> SBack
+  SBack--> RA12 --> Sp
+  Sp   --> RA13 --> SG
+  Board--> RA14 --> Task
+  Doc  --> RA15 --> Feat
+  Task --> RA16 --> Bug
+  Stk  --> RA17 --> SRv
+  SM   --> RA18 --> SRe
+  Vel  --> RA19 --> Team
+  Rel  --> RA20 --> Feat
+  Rel  --> RA21 --> Road
+  Sp   --> RA22 --> Snap

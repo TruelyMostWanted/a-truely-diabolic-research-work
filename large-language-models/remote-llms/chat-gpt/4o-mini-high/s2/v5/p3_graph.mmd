@@ -1,0 +1,84 @@
+classDiagram
+    %% Class Definitions
+    classDef entity      fill:#d1b3ff,stroke:#333;
+    classDef variable    fill:#99e699,stroke:#333;
+    classDef goal        fill:#99ccff,stroke:#333;
+    classDef constraint  fill:#ff9999,stroke:#333;
+    classDef relationship fill:#ffe066,stroke:#333;
+
+    %% Entities
+    class Project             { +ID\n+Name\n+Project Start\n+Project End\n+Budget\n+Status }      <<entity>>
+    class Team                { +ID\n+Name\n+Team Size\n+Team Start\n+Location\n+Team Type }       <<entity>>
+    class Employee            { +ID\n+Name\n+Email\n+Start Date\n+Status\n+Availability }      <<entity>>
+    class Feature             { +ID\n+Title\n+Description\n+Status\n+Priority\n+Estimated Effort } <<entity>>
+    class Skill               { +ID\n+Label\n+Description\n+Level\n+Certified\n+Category }         <<entity>>
+    class Role                { +ID\n+Role Name\n+Description\n+Area of Responsibility }       <<entity>>
+    class ProductOwner        { +ID\n+Name\n+Email\n+Availability }                   <<entity>>
+    class ScrumMaster         { +ID\n+Name\n+Email\n+Experience }                     <<entity>>
+    class ProductBacklog      { +ID\n+Created On\n+Last Updated\n+Entries Count\n+Status }    <<entity>>
+    class Sprint              { +ID\n+Sprint Number\n+Start Date\n+End Date\n+Status }         <<entity>>
+    class SprintPlanning      { +ID\n+Date\n+Duration\n+Moderation\n+Outcome Doc }       <<entity>>
+    class DailyScrum          { +ID\n+Date\n+Time\n+Duration\n+Moderation }               <<entity>>
+    class SprintReview        { +ID\n+Date\n+Duration\n+Feedback Doc\n+Attendees Count }    <<entity>>
+    class SprintRetrospective { +ID\n+Date\n+Duration\n+Improvement Actions\n+Satisfaction } <<entity>>
+    class SprintBacklog       { +ID\n+Tasks Count\n+Last Updated\n+Status\n+Total Effort }    <<entity>>
+    class SprintGoal          { +ID\n+Objective Description\n+Achievement Status\n+Benefit }      <<entity>>
+    class Epic                { +ID\n+Title\n+Description\n+Priority\n+Status\n+Estimated Effort } <<entity>>
+    class UserStory           { +ID\n+Title\n+Description\n+Acceptance Criteria\n+Priority\n+Story Points } <<entity>>
+    class Task                { +ID\n+Title\n+Description\n+Status\n+Effort\n+Type }             <<entity>>
+    class DevSnapshot         { +ID\n+Version\n+Creation Date\n+Test Status\n+Deployment Target } <<entity>>
+    class Blocker             { +ID\n+Title\n+Description\n+Severity\n+Status\n+Detected On\n+Resolved On }    <<entity>>
+    class Stakeholder         { +ID\n+Name\n+Organization\n+Role\n+Email\n+Influence Level }  <<entity>>
+    class Velocity            { +ID\n+Sprints Used\n+Avg Story Points\n+Max Velocity\n+Min Velocity\n+Trend }     <<entity>>
+    class ReleasePlan         { +ID\n+Version\n+Planned Date\n+Status }                  <<entity>>
+    class Roadmap             { +ID\n+Start Date\n+End Date\n+Milestones\n+Objectives }         <<entity>>
+    class ScrumBoard          { +ID\n+Board Type\n+Columns\n+Cards Count\n+Last Updated }   <<entity>>
+    class FeatureDocumentation{ +ID\n+Title\n+Creation Date\n+Change Log\n+Author }        <<entity>>
+
+    %% Relationships
+    Project             "1" o-- "N" Team             : is_assigned_to_project <<relationship>>
+    Employee            "N" o-- "1" Team             : belongs_to_team          <<relationship>>
+    Employee            "N" o-- "M" Skill            : has_skill                <<relationship>>
+    Employee            "N" o-- "M" Role             : takes_on_role            <<relationship>>
+    ProductOwner        "1" o-- "1" ProductBacklog    : manages_backlog          <<relationship>>
+    Team                "1" o-- "1" ScrumMaster       : is_supported_by          <<relationship>>
+    ProductBacklog      "1" o-- "N" Feature           : contains_feature         <<relationship>>
+    ProductBacklog      "1" o-- "N" Epic              : contains_epic            <<relationship>>
+    Epic                "1" o-- "N" UserStory         : contains_user_story      <<relationship>>
+    UserStory           "1" o-- "N" Task              : consists_of_tasks        <<relationship>>
+    UserStory           "N" o-- "M" SprintBacklog     : is_in_sprint_backlog     <<relationship>>
+    SprintBacklog       "N" o-- "1" Sprint            : belongs_to_sprint        <<relationship>>
+    Sprint              "1" o-- "1" SprintGoal        : pursues_goal             <<relationship>>
+    ScrumBoard          "1" o-- "N" Task              : contains_tasks           <<relationship>>
+    FeatureDocumentation"1" o-- "1" Feature           : documents_feature        <<relationship>>
+    Task                "N" o-- "M" Blocker           : is_blocked_by            <<relationship>>
+    Stakeholder         "N" o-- "M" SprintReview      : participates_in          <<relationship>>
+    ScrumMaster         "1" o-- "N" SprintRetrospective: moderates_retrospective  <<relationship>>
+    Velocity            "1" o-- "1" Team             : refers_to_team           <<relationship>>
+    ReleasePlan         "1" o-- "N" Feature           : plans_release            <<relationship>>
+    ReleasePlan         "N" o-- "1" Roadmap           : is_part_of_roadmap       <<relationship>>
+    Sprint              "1" o-- "1" DevSnapshot       : generates_snapshot       <<relationship>>
+
+    %% Goals
+    class MinProjDur    { Minimize Project Duration }           <<goal>>
+    class MaxTeamVel    { Maximize Team Velocity }              <<goal>>
+    class MinBudgetOv   { Minimize Budget Overrun }             <<goal>>
+    class MaxSprintAch  { Maximize Sprint Goal Achievement }    <<goal>>
+    class MinBugs       { Minimize Blockers/Bugs }              <<goal>>
+    class MaxFeatThr    { Maximize Feature Throughput }         <<goal>>
+    class MaxTestPass   { Maximize Test Pass Rate }             <<goal>>
+    class MinChReq      { Minimize Change Requests }            <<goal>>
+    class MaxStakeFb    { Maximize Stakeholder Feedback }       <<goal>>
+    class MaxOnTimeRel  { Maximize On-Time Releases }           <<goal>>
+
+    %% Conditions / Constraints
+    class C_MaxTeamSize    { Team Size ≤ 9 }                  <<constraint>>
+    class C_MinBacklog     { Backlog Items ≥ 5 }              <<constraint>>
+    class C_MinAvail       { Employee Availability ≥ 80% }    <<constraint>>
+    class C_MaxTaskEffort  { Task Effort ≤ 16h }              <<constraint>>
+    class C_MaxBlockers    { Blockers ≤ 5/sprint }            <<constraint>>
+    class C_MinReviewAtt   { Review Attendees ≥ 3 }            <<constraint>>
+    class C_MaxFeatEff     { Feature Effort ≤ 40 SP }         <<constraint>>
+    class C_RoadmapEnd     { Roadmap End ≤ Project End }      <<constraint>>
+    class C_ReleaseDate    { Release Date ≤ Roadmap End }     <<constraint>>
+    class C_MinStoryPts    { Story Points ≥ 1 }               <<constraint>>

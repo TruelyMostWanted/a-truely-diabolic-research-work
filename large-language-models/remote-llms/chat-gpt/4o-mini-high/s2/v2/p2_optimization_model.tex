@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+\section*{Optimization Model for Scrum-Based Software Development}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_1 &:= \text{Sprint Duration Days (DV1)} \\
+x_2 &:= \text{Team Size (DV2)} \\
+x_3 &:= \text{Budget Allocation (DV3)} \\
+x_4 &:= \text{Sprint Capacity (DV4)} \\
+x_5 &:= \text{Number of Developers (DV5)} \\
+x_6 &:= \text{Features per Release (DV6)} \\
+x_7 &:= \text{Tasks per Sprint (DV7)} \\
+x_8 &:= \text{Skill Level Threshold (DV8)} \\
+x_9 &:= \text{Daily Scrum Duration (DV9)} \\
+x_{10} &:= \text{Sprint Review Duration (DV10)} \\
+x_{11} &:= \text{Retrospective Actions Count (DV11)} \\
+x_{12} &:= \text{Release Frequency per Month (DV12)} 
+\end{align*}
+
+\subsection*{Objective Functions}
+\begin{align*}
+\text{Maximize } &F_1(x) = \text{Velocity}(x) \quad (G1) \\
+\text{Minimize } &F_2(x) = \text{Sprint Overrun}(x) \quad (G2) \\
+\text{Maximize } &F_3(x) = \text{Goal Achievement Rate}(x) \quad (G3) \\
+\text{Minimize } &F_4(x) = \text{Defect Rate}(x) \quad (G4) \\
+\text{Maximize } &F_5(x) = \text{Feature Completion Ratio}(x) \quad (G5) \\
+\text{Minimize } &F_6(x) = \text{Time to Market}(x) \quad (G6) \\
+\text{Maximize } &F_7(x) = \text{Team Utilization}(x) \quad (G7) \\
+\text{Minimize } &F_8(x) = \text{Budget Overrun}(x) \quad (G8) \\
+\text{Maximize } &F_9(x) = \text{Customer Satisfaction}(x) \quad (G9) \\
+\text{Minimize } &F_{10}(x) = \text{Backlog Ageing}(x) \quad (G10) \\
+\text{Maximize } &F_{11}(x) = \text{Release Frequency}(x) \quad (G11) \\
+\text{Minimize } &F_{12}(x) = \text{Technical Debt}(x) \quad (G12)
+\end{align*}
+
+\subsection*{Constraints}
+\begin{align*}
+\text{(C1) Budget Compliance: } &g_1(x) \ge 1 \\
+\text{(C2) Skill Coverage: } &g_2(x) \ge 1 \\
+\text{(C3) Sprint Predictability: } &g_3(x) \ge \alpha_3 \\
+\text{(C4) Team Satisfaction: } &g_4(x) \ge \alpha_4 \\
+\text{(C5) Stakeholder Participation: } &g_5(x) \ge 1 \\
+\text{(C6) Defect Leakage: } &g_6(x) \le \beta_6 \\
+\text{(C7) Backlog Freshness: } &g_7(x) \ge \alpha_7 \\
+\text{(C8) Technical Debt Ratio: } &g_8(x) \le \beta_8 \\
+\text{(C9) Compliance Status: } &g_9(x) \ge 1 \\
+\text{(C10) Risk Level: } &g_{10}(x) \le 0 \\
+\text{(C11) Timezone Overlap: } &g_{11}(x) \ge \alpha_{11} \\
+\text{(C12) Communication Delay: } &g_{12}(x) \le \beta_{12}
+\end{align*}
+
+\subsection*{Variable Bounds}
+\[
+\begin{aligned}
+7 \le &\, x_1 \le 30 \\
+3 \le &\, x_2 \le 10 \\
+10{,}000 \le &\, x_3 \le 1{,}000{,}000 \\
+20 \le &\, x_4 \le 100 \\
+1 \le &\, x_5 \le 10 \\
+1 \le &\, x_6 \le 20 \\
+1 \le &\, x_7 \le 200 \\
+1 \le &\, x_8 \le 5 \\
+5 \le &\, x_9 \le 60 \\
+15 \le &\, x_{10} \le 240 \\
+0 \le &\, x_{11} \le 20 \\
+0.1 \le &\, x_{12} \le 4
+\end{aligned}
+\]
+
+\end{document}

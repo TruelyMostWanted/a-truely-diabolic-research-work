@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+\section*{Optimization Model}
+
+\subsection*{Decision Variables}
+Let the following decision variables be defined:
+\[
+\begin{aligned}
+x_1 &= \text{Team Size (TeamSize)} \\
+x_2 &= \text{Sprint Length (SprintLength)} \\
+x_3 &= \text{Story Points (StoryPoints)} \\
+x_4 &= \text{Task Effort Hours (TaskEffortHours)} \\
+x_5 &= \text{Backlog Items Count (BacklogItemsCount)} \\
+x_6 &= \text{Feature Effort in Story Points (FeatureEffort)} \\
+x_7 &= \text{Number of Planned Releases (ReleaseCount)} \\
+x_8 &= \text{Risk Buffer Percentage (RiskBufferPercent)} \\
+x_9 &= \text{Max Concurrent Sprints (MaxConcurrentSprints)} \\
+x_{10} &= \text{Sprint Planning Duration (minutes) (SprintPlanningDuration)} \\
+D &= \text{Project Duration (days)} \\
+V &= \text{Average Velocity (story points/sprint)} \\
+B_{ov} &= \text{Budget Overrun (currency)} \\
+G_{ach} &= \text{Sprint Goal Achievement Rate (\%)} \\
+Bugs &= \text{Number of Blockers/Bugs per Sprint} \\
+F_{thr} &= \text{Features Completed per Release} \\
+T_{pass} &= \text{Test Pass Rate (\%)} \\
+CR &= \text{Change Requests per Feature} \\
+SF &= \text{Positive Stakeholder Feedback Count} \\
+OTR &= \text{On-Time Releases Count}
+\end{aligned}
+\]
+
+\subsection*{Objective Functions}
+This is a multi-objective optimization problem:
+\[
+\begin{aligned}
+\min\;& D, \quad &\min\;& B_{ov}, \quad &\min\;& Bugs, \quad &\min\;& CR, \\
+\max\;& V, \quad &\max\;& G_{ach}, \quad &\max\;& F_{thr}, \quad &\max\;& T_{pass}, \quad &\max\;& SF, \quad &\max\;& OTR.
+\end{aligned}
+\]
+
+\subsection*{Constraints}
+\begin{align*}
+3 &\le x_1 \le 9 &&\text{(Team Size)} \\
+7 &\le x_2 \le 30 &&\text{(Sprint Length)} \\
+1 &\le x_3 \le 13 &&\text{(Story Points)} \\
+0.5 &\le x_4 \le 16 &&\text{(Task Effort Hours)} \\
+x_5 &\ge 5 &&\text{(Backlog Items)} \\
+x_4 &\le 16 &&\text{(Task Effort max)} \\
+x_6 &\le 40 &&\text{(Feature Effort max)} \\
+60 &\le x_{10} \le 240 &&\text{(Sprint Planning Duration)} \\
+% Conditions not directly mapped to x_i:
+a_e &\ge 0.8 &&\forall \text{ employees } e &&\text{(Availability)} \\
+b_s &\le 5 &&\forall \text{ sprints } s &&\text{(Blockers)} \\
+att_r &\ge 3 &&\forall \text{ reviews } r &&\text{(Review Attendees)} \\
+roadmap_{end} &\le project_{end} &&\text{(Roadmap end \le Project end)} \\
+release_{date} &\le roadmap_{end} &&\text{(Release date \le Roadmap end)} \\
+x_3 &\ge 1 &&\text{(Minimum Story Points)} 
+\end{align*}
+
+\end{document}

@@ -1,0 +1,111 @@
+graph LR
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+
+%% Entities with key attributes
+subgraph Entities
+    Project["Project\nID\nName\nProject Start\nProject End\nBudget\nStatus\nTarget Audience\nPriority"]:::entity
+    Team["Team\nID\nName\nTeam Size\nTeam Start\nTeam Status\nLocation\nTeam Type"]:::entity
+    Employee["Employee\nID\nName\nFirst Name\nEmail\nStart Date\nStatus\nAvailability"]:::entity
+    Feature["Feature\nID\nTitle\nDescription\nStatus\nPriority\nEstimated Effort"]:::entity
+    Sprint["Sprint\nID\nSprint Number\nStart Date\nEnd Date\nStatus\nAchievement of Goal"]:::entity
+    ReleasePlan["Release Plan\nID\nVersion\nPlanned Date\nIncluded Features\nStatus"]:::entity
+    UserStory["User Story\nID\nTitle\nDescription\nAcceptance Criteria\nPriority\nStory Points\nStatus"]:::entity
+    Blocker["Blocker\nID\nTitle\nDescription\nSeverity\nStatus\nDetected On\nResolved On"]:::entity
+    Task["Task/Sub-Task\nID\nTitle\nStatus\nEffort\nType"]:::entity
+    Epic["Epic\nID\nTitle\nDescription\nPriority\nEstimated Effort"]:::entity
+    ProductBacklog["Product Backlog\nID\nCreated On\nLast Updated\nEntries"]:::entity
+    Stakeholder["Stakeholder\nID\nName\nOrganization\nRole\nEmail\nInfluence"]:::entity
+    Velocity["Velocity\nID\nAvg. Story Points\nTrend"]:::entity
+    SprintBacklog["Sprint Backlog\nID\nTasks\nLast Updated\nTotal Effort"]:::entity
+    SprintReview["Sprint Review\nID\nDate\nDuration\nFeedback\nAttendees"]:::entity
+    ProductOwner["Product Owner\nID\nName\nEmail\nAvailability"]:::entity
+    ScrumMaster["Scrum Master\nID\nName\nEmail\nExperience"]:::entity
+end
+
+%% Relationships as edge labels
+Project ---|is_assigned_to_project (1:N)| Team:::relationship
+Employee ---|belongs_to_team (N:1)| Team:::relationship
+Employee ---|has_skill (N:M)| Skill["Skill\nID\nLabel\nLevel"]:::entity
+Employee ---|takes_on_role (N:M)| Role["Role\nID\nRole Name\nArea"]:::entity
+ProductOwner ---|manages_backlog (1:1)| ProductBacklog:::relationship
+Team ---|is_supported_by (1:1)| ScrumMaster:::relationship
+ProductBacklog ---|contains_feature (1:N)| Feature:::relationship
+Epic ---|contains_user_story (1:N)| UserStory:::relationship
+UserStory ---|consists_of_tasks (1:N)| Task:::relationship
+Task ---|is_blocked_by (N:M)| Blocker:::relationship
+ReleasePlan ---|plans_release (1:N)| Feature:::relationship
+Sprint ---|generates_snapshot (1:1)| DevelopmentSnapshot["Dev Snapshot\nID\nVersion\nTest Status"]:::entity
+Stakeholder ---|participates_in (N:M)| SprintReview:::relationship
+ScrumMaster ---|moderates_retrospective (1:N)| SprintRetrospective["Sprint Retrospective\nID\nDate\nActions\nSatisfaction"]:::entity
+Velocity ---|refers_to_team (1:1)| Team:::relationship
+ReleasePlan ---|is_part_of_roadmap (N:1)| Roadmap["Roadmap\nID\nStart\nEnd\nMilestones"]:::entity
+
+%% Goals
+subgraph Goals
+    G1["G1: Minimize Total Dev Time"]:::goal
+    G2["G2: Maximize Delivered Feature Count"]:::goal
+    G3["G3: Minimize Cost Variance"]:::goal
+    G4["G4: Maximize Stakeholder Satisfaction"]:::goal
+    G5["G5: Maximize Team Utilization"]:::goal
+    G6["G6: Minimize Defect Count"]:::goal
+    G7["G7: Maximize Velocity Trend"]:::goal
+    G8["G8: Minimize Carryover Stories"]:::goal
+    G9["G9: Maximize On-Time Release Prob."]:::goal
+    G10["G10: Minimize Resource Over-allocation"]:::goal
+end
+
+%% Conditions / Constraints
+subgraph Conditions
+    C1["C1: Budget Constraint"]:::constraint
+    C2["C2: Sprint Duration Limit"]:::constraint
+    C3["C3: Team Capacity Constraint"]:::constraint
+    C4["C4: Priority Requirement"]:::constraint
+    C5["C5: Developer Availability"]:::constraint
+    C6["C6: Sprint Overlap Avoidance"]:::constraint
+    C7["C7: Dependency Constraint"]:::constraint
+    C8["C8: Blocker Resolution Time"]:::constraint
+    C9["C9: Backlog Grooming Frequency"]:::constraint
+    C10["C10: Release Date Adherence"]:::constraint
+    C11["C11: Stakeholder Engagement"]:::constraint
+end
+
+%% Link Goals to their targeted entities
+G1 --> Sprint
+G1 --> Project
+G2 --> Feature
+G2 --> ReleasePlan
+G3 --> Project
+G4 --> Stakeholder
+G4 --> SprintReview
+G5 --> Team
+G5 --> Sprint
+G6 --> Blocker
+G7 --> Velocity
+G8 --> SprintBacklog
+G9 --> ReleasePlan
+G10 --> Team
+G10 --> Employee
+
+%% Link Conditions to their relevant entities
+C1 --> Project
+C2 --> Sprint
+C3 --> Team
+C3 --> Sprint
+C4 --> Feature
+C4 --> ReleasePlan
+C5 --> Employee
+C5 --> Task
+C6 --> Team
+C6 --> Sprint
+C7 --> UserStory
+C7 --> Epic
+C8 --> Blocker
+C9 --> ProductBacklog
+C10 --> ReleasePlan
+C11 --> Stakeholder
+C11 --> SprintReview

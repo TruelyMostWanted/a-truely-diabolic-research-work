@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\begin{document}
+\section*{Optimization Model}
+
+\subsection*{Sets}
+\begin{align}
+\mathcal{P} &: \text{Projects},\\
+\mathcal{T} &: \text{Teams},\\
+\mathcal{E} &: \text{Employees},\\
+\mathcal{F} &: \text{Features},\\
+\mathcal{I} &: \text{Epics},\\
+\mathcal{R} &: \text{Release Plans},\\
+\mathcal{S} &: \text{Sprints},\\
+\mathcal{D} &: \text{Feature Documentation}.
+\end{align}
+
+\subsection*{Decision Variables}
+\begin{align}
+& x_{t}^{\mathrm{TM}} && 3\le x_{t}^{\mathrm{TM}}\le15, && \forall t\in\mathcal{T}\\
+& x_{p}^{\mathrm{AB}} && 10000\le x_{p}^{\mathrm{AB}}\le1000000, && \forall p\in\mathcal{P}\\
+& x_{s}^{\mathrm{SD}} && 7\le x_{s}^{\mathrm{SD}}\le30, && \forall s\in\mathcal{S}\\
+& x_{s}^{\mathrm{SP}} && 20\le x_{s}^{\mathrm{SP}}\le100, && \forall s\in\mathcal{S}\\
+& x_{e,s}^{\mathrm{TPE}} && 1\le x_{e,s}^{\mathrm{TPE}}\le10, && \forall e\in\mathcal{E},\,s\in\mathcal{S}\\
+& x_{r}^{\mathrm{FPR}} && 1\le x_{r}^{\mathrm{FPR}}\le20, && \forall r\in\mathcal{R}\\
+& x_{i}^{\mathrm{ESC}} && 2\le x_{i}^{\mathrm{ESC}}\le50, && \forall i\in\mathcal{I}\\
+& x_{d}^{\mathrm{DSD}} && 10\le x_{d}^{\mathrm{DSD}}\le30, && \forall d\in\mathcal{D}\\
+& x_{p}^{\mathrm{CS}} && 1\le x_{p}^{\mathrm{CS}}\le5, && \forall p\in\mathcal{P}\\
+& x_{d}^{\mathrm{DP}} && 1\le x_{d}^{\mathrm{DP}}\le200, && \forall d\in\mathcal{D}
+\end{align}
+
+\subsection*{Objectives}
+\begin{subequations}
+\begin{align}
+\min\ & Z_1(x)=\text{Total Development Time}\\
+\max\ & Z_2(x)=\text{Sprint Velocity}\\
+\min\ & Z_3(x)=\text{Budget Overrun}\\
+\max\ & Z_4(x)=\text{Feature Throughput}\\
+\max\ & Z_5(x)=\text{Team Utilization}\\
+\min\ & Z_6(x)=\text{Defect Rate}\\
+\max\ & Z_7(x)=\text{Stakeholder Satisfaction}\\
+\min\ & Z_8(x)=\text{Unplanned Work}\\
+\max\ & Z_9(x)=\text{Backlog Health}\\
+\min\ & Z_{10}(x)=\text{Rework Effort}
+\end{align}
+\end{subequations}
+
+\subsection*{Constraints}
+\begin{align}
+& \text{C1: } End_p \le EndPlan_p, && \forall p\in\mathcal{P}\\
+& \text{C2: } Spend_p \le x_{p}^{\mathrm{AB}}, && \forall p\in\mathcal{P}\\
+& \text{C3: } 3\le x_{t}^{\mathrm{TM}}\le15, && \forall t\in\mathcal{T}\\
+& \text{C4: } x_{e,s}^{\mathrm{TPE}} \le Availability_e, && \forall e,s\\
+& \text{C5: } EndDate_s - StartDate_s = x_{s}^{\mathrm{SD}}, && \forall s\\
+& \text{C6: } a_f \le EffortEstimate_f \le b_f, && \forall f\\
+& \text{C7: } Status_i=\text{Approved} \Rightarrow InSprintBacklog_i=1, && \forall i\\
+& \text{C8: } Attendance_e \ge 0.9, && \forall e\\
+& \text{C9: } \text{Skill}(\tau) \subseteq \text{Skills}(AssignedEmp(\tau)), && \forall \tau\\
+& \text{C10: } \sum_{r} InRelease_{r,f} =1, && \forall f \in \mathcal{F}_{critical}
+\end{align}
+
+\end{document}

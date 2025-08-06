@@ -1,0 +1,158 @@
+graph LR
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
+
+%% Entities
+Project["Project\n(ID,Name,Project Start,Project End,Description,Budget,Status,Target Audience,Priority)"]
+Team["Team\n(ID,Name,Team Size,Team Start,Team Status,Location,Team Type)"]
+Employee["Employee\n(ID,Name,First Name,Email,Start Date,Status,Availability)"]
+Feature["Feature\n(ID,Title,Description,Status,Priority,Estimated Effort)"]
+Skill["Skill\n(ID,Label,Description,Level,Certified,Category)"]
+Role["Role\n(ID,Role Name,Description,Area of Responsibility)"]
+ProductOwner["Product Owner\n(ID,Name,Email,Availability)"]
+ScrumMaster["Scrum Master\n(ID,Name,Email,Experience)"]
+ProductBacklog["Product Backlog\n(ID,Created On,Last Updated,Number of Entries,Status)"]
+Sprint["Sprint\n(ID,Sprint Number,Start Date,End Date,Status,Achievement of Goal)"]
+SprintBacklog["Sprint Backlog\n(ID,Number of Tasks,Last Updated,Status,Total Effort)"]
+SprintGoal["Sprint Goal\n(ID,Objective Description,Achievement Status,Benefit)"]
+Epic["Epic\n(ID,Title,Description,Priority,Status,Estimated Effort)"]
+UserStory["User Story\n(ID,Title,Description,Acceptance Criteria,Priority,Story Points,Status)"]
+Task["Task\n(ID,Title,Description,Status,Effort,Type)"]
+DevSnapshot["Development Snapshot\n(ID,Version Number,Creation Date,Test Status,Deployment Target,Documentation)"]
+Blocker["Blocker\n(ID,Title,Description,Severity,Status,Detected On,Resolved On)"]
+Stakeholder["Stakeholder\n(ID,Name,Organization,Role,Email,Area of Interest,Influence Level,Relevance to Feature)"]
+Velocity["Velocity\n(ID,Number of Sprints Used,Avg. Story Points,Max Velocity,Min Velocity,Trend)"]
+ReleasePlan["Release Plan\n(ID,Version,Planned Date,Included Features,Status)"]
+Roadmap["Roadmap\n(ID,Start Date,End Date,Milestones,Objectives,Versions)"]
+ScrumBoard["Scrum Board\n(ID,Board Type,Columns,Number of Cards,Last Updated)"]
+FeatureDoc["Feature Documentation\n(ID,Title,Description,Creation Date,Change Log,Linked Requirements,Author)"]
+DailyScrum["Daily Scrum\n(ID,Date,Time,Duration,Moderation)"]
+SprintReview["Sprint Review\n(ID,Date,Duration,Feedback Documentation,Attendees Count)"]
+SprintRetro["Sprint Retrospective\n(ID,Date,Duration,Improvement Actions,Team Satisfaction,Moderation)"]
+
+%% Relationship Nodes
+R1["is_assigned_to_project"]
+R2["belongs_to_team"]
+R3["has_skill"]
+R4["takes_on_role"]
+R5["manages_backlog"]
+R6["is_supported_by"]
+R7["contains_feature"]
+R8["contains_epic"]
+R9["contains_user_story"]
+R10["consists_of_tasks"]
+R11["is_in_sprint_backlog"]
+R12["belongs_to_sprint"]
+R13["pursues_goal"]
+R14["contains_tasks"]
+R15["documents_feature"]
+R16["is_blocked_by"]
+R17["participates_in"]
+R18["moderates_retrospective"]
+R19["refers_to_team"]
+R20["plans_release"]
+R21["is_part_of_roadmap"]
+R22["generates_snapshot"]
+
+Team --> R1 --> Project
+Employee --> R2 --> Team
+Employee --> R3 --> Skill
+Employee --> R4 --> Role
+ProductOwner --> R5 --> ProductBacklog
+Team --> R6 --> ScrumMaster
+ProductBacklog --> R7 --> Feature
+ProductBacklog --> R8 --> Epic
+Epic --> R9 --> UserStory
+UserStory --> R10 --> Task
+UserStory --> R11 --> SprintBacklog
+SprintBacklog --> R12 --> Sprint
+Sprint --> R13 --> SprintGoal
+ScrumBoard --> R14 --> Task
+FeatureDoc --> R15 --> Feature
+Task --> R16 --> Blocker
+Stakeholder --> R17 --> SprintReview
+ScrumMaster --> R18 --> SprintRetro
+Velocity --> R19 --> Team
+ReleasePlan --> R20 --> Feature
+ReleasePlan --> R21 --> Roadmap
+Sprint --> R22 --> DevSnapshot
+
+%% Decision Variables
+DV1["numSprints"]
+DV2["sprintLength"]
+DV3["teamSize"]
+DV4["storyPoints"]
+DV5["taskEffort"]
+DV6["budgetPerFeature"]
+DV7["featuresPerRelease"]
+DV8["tasksPerStory"]
+DV9["dailyScrumDuration"]
+DV10["testCoverage"]
+
+DV1 --> Project
+DV2 --> Sprint
+DV3 --> Team
+DV4 --> UserStory
+DV5 --> Task
+DV6 --> Feature
+DV7 --> ReleasePlan
+DV8 --> UserStory
+DV9 --> DailyScrum
+DV10 --> DevSnapshot
+
+%% Goals
+G1["Team Velocity"]
+G2["Defect Count"]
+G3["Stakeholder Satisfaction"]
+G4["Test Coverage"]
+G5["Time-to-Market"]
+G6["Budget Variance"]
+G7["Feature Throughput"]
+G8["Team Satisfaction"]
+G9["Estimation Accuracy"]
+G10["Release Adherence"]
+
+G1 --> Velocity
+G2 --> Blocker
+G3 --> Stakeholder
+G4 --> DevSnapshot
+G5 --> ReleasePlan
+G6 --> Project
+G7 --> Feature
+G8 --> SprintRetro
+G9 --> Feature
+G10 --> ReleasePlan
+
+%% Conditions
+C1["Max Team Size"]
+C2["Minimum Skill Coverage"]
+C3["Budget Limit"]
+C4["Sprint Capacity"]
+C5["Zero Unresolved Blockers"]
+C6["Sprint Duration Minimum"]
+C7["Daily Scrum Attendance"]
+C8["Backlog Size Limit"]
+C9["High-Priority Feature Scheduling"]
+C10["Review Frequency"]
+
+C1 --> Team
+C2 --> Team
+C3 --> Project
+C4 --> SprintBacklog
+C5 --> Blocker
+C6 --> Sprint
+C7 --> DailyScrum
+C8 --> ProductBacklog
+C9 --> Feature
+C10 --> SprintReview
+
+%% Apply Classes
+class Project,Team,Employee,Feature,Skill,Role,ProductOwner,ScrumMaster,ProductBacklog,Sprint,SprintBacklog,SprintGoal,Epic,UserStory,Task,DevSnapshot,Blocker,Stakeholder,Velocity,ReleasePlan,Roadmap,ScrumBoard,FeatureDoc,DailyScrum,SprintReview,SprintRetro entity;
+class DV1,DV2,DV3,DV4,DV5,DV6,DV7,DV8,DV9,DV10 variable;
+class G1,G2,G3,G4,G5,G6,G7,G8,G9,G10 goal;
+class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10 constraint;
+class R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14,R15,R16,R17,R18,R19,R20,R21,R22 relationship;

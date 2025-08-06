@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+\section*{Optimization Model for Scrum-based Software Development}
+
+\subsection*{Sets and Indices}
+\begin{align*}
+P & : \text{Set of projects}\\
+T & : \text{Set of teams}\\
+S & : \text{Set of sprints}\\
+R & : \text{Set of release plans}\\
+E & : \text{Set of employees}\\
+F & : \text{Set of features}\\
+U & : \text{Set of user stories}\\
+B & : \text{Set of blockers/bugs}
+\end{align*}
+
+\subsection*{Parameters}
+\begin{align*}
+Budget_p &: \text{Budget for project } p \\
+cap_t &: \text{Capacity (story points) of team } t \\
+avail_e &: \text{Availability indicator for employee } e \\
+priority_f &: \text{Priority level of feature } f \\
+\end{align*}
+
+\subsection*{Decision Variables}
+\begin{align*}
+d_s &\in \mathbb{Z},\quad 1 \le d_s \le 4 &&\forall s\in S \\
+ts_t &\in \mathbb{Z},\quad 3 \le ts_t \le 9 &&\forall t\in T \\
+fr_r &\in \mathbb{Z},\quad 1 \le fr_r \le 20 &&\forall r\in R \\
+l_{t,s} &\in \mathbb{Z},\quad 0 \le l_{t,s} \le 200 &&\forall t\in T,\,s\in S \\
+b_s &\in \mathbb{R},\quad 0 \le b_s \le 100000 &&\forall s\in S \\
+tp_s &\in \mathbb{Z},\quad 0 \le tp_s \le 100 &&\forall s\in S \\
+sc_p &\in \mathbb{Z},\quad 1 \le sc_p \le 52 &&\forall p\in P \\
+wh_e &\in \mathbb{R},\quad 20 \le wh_e \le 40 &&\forall e\in E \\
+sp_u &\in \mathbb{Z},\quad 1 \le sp_u \le 13 &&\forall u\in U \\
+es_e &\in \mathbb{Z},\quad 1 \le es_e \le 50 &&\forall e\in E
+\end{align*}
+
+\subsection*{Objective Functions}
+\begin{align*}
+\min &\; G_1 = \sum_{s\in S} d_s \\
+\max &\; G_2 = \sum_{r\in R} fr_r \\
+\min &\; G_3 = \sum_{p\in P} \Bigl| Budget_p - \sum_{s\in S_p} b_s \Bigr| \\
+\max &\; G_4 = \sum_{\text{reviews } rev} sat_{rev} \\
+\max &\; G_5 = \sum_{t\in T}\sum_{s\in S} \frac{l_{t,s}}{cap_t} \\
+\min &\; G_6 = \sum_{b\in B} is\_bug_b \\
+\max &\; G_7 = \text{trend}\Bigl(\{\tfrac{1}{|S|}\sum_{s\in S} l_{t,s}\}_{t\in T}\Bigr) \\
+\min &\; G_8 = \sum_{s\in S} co_s \\
+\max &\; G_9 = \sum_{r\in R} ontime_r \\
+\min &\; G_{10} = \sum_{t\in T}\sum_{e\in E} over_{t,e}
+\end{align*}
+
+\subsection*{Constraints}
+\begin{align}
+\text{(C1) Budget:} &\quad \sum_{s\in S_p} b_s \le Budget_p &&\forall p\in P \\
+\text{(C2) Duration:} &\quad 1 \le d_s \le 4 &&\forall s\in S \\
+\text{(C3) Capacity:} &\quad l_{t,s} \le cap_t &&\forall t,s \\
+\text{(C4) Priority:} &\quad \sum_{r} y_{f,r} = 1 &&\forall f\in F_{\text{high}} \\
+\text{(C5) Availability:} &\quad x_{e,t,s} \le avail_e &&\forall e,t,s \\
+\text{(C6) No Overlap:} &\quad \text{no two sprints } s,s' \text{ for } t \text{ overlap} \\
+\text{(C7) Dependencies:} &\quad z_{u,s} \le z_{v,s'} &&\forall (v \to u) \\
+\text{(C8) Blocker:} &\quad ResTime_b \le 2 &&\forall b\in B \\
+\text{(C9) Grooming:} &\quad \text{update\_freq}(ProductBacklog) \ge 1\,/\text{week} \\
+\text{(C10) Release Date:} &\quad rel\_date_r = planned\_date_r &&\forall r\in R \\
+\text{(C11) Engagement:} &\quad \sum rev\_fb_{f,rev} \ge 1 &&\forall rev
+\end{align}
+
+\end{document}

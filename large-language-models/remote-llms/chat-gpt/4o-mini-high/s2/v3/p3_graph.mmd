@@ -1,0 +1,119 @@
+graph LR
+  %% Class Definitions
+  classDef entity      fill:#d1b3ff,stroke:#333;
+  classDef variable    fill:#99e699,stroke:#333;
+  classDef goal        fill:#99ccff,stroke:#333;
+  classDef constraint  fill:#ff9999,stroke:#333;
+  classDef relationship fill:#ffe066,stroke:#333;
+
+  %% Entities
+  Project["Project\nID, Name, Project Start, Project End, Description, Budget, Status, Target Audience, Priority"]:::entity
+  Team["Team\nID, Name, Team Size, Team Start, Team Status, Location, Team Type"]:::entity
+  Employee["Employee\nID, Name, First Name, Email, Start Date, Status, Availability"]:::entity
+  Feature["Feature\nID, Title, Description, Status, Priority, Estimated Effort"]:::entity
+  Skill["Skill\nID, Label, Description, Level, Certified, Category"]:::entity
+  Role["Role\nID, Role Name, Description, Area of Responsibility"]:::entity
+  ProductOwner["ProductOwner\nID, Name, Email, Availability"]:::entity
+  ScrumMaster["ScrumMaster\nID, Name, Email, Experience"]:::entity
+  ProductBacklog["ProductBacklog\nID, Created On, Last Updated, #Entries, Status"]:::entity
+  Sprint["Sprint\nID, Sprint Number, Start Date, End Date, Status, Achievement of Goal"]:::entity
+  SprintPlanning["SprintPlanning\nID, Date, Duration(min), Moderation, Outcome"]:::entity
+  DailyScrum["DailyScrum\nID, Date, Time, Duration, Moderation"]:::entity
+  SprintReview["SprintReview\nID, Date, Duration, Feedback, Attendees"]:::entity
+  SprintRetrospective["SprintRetrospective\nID, Date, Duration, Improvements, Satisfaction, Moderation"]:::entity
+  SprintBacklog["SprintBacklog\nID, #Tasks, Last Updated, Status, Total Effort"]:::entity
+  SprintGoal["SprintGoal\nID, Objective, Achievement Status, Benefit"]:::entity
+  Epic["Epic\nID, Title, Description, Priority, Status, Est. Effort"]:::entity
+  UserStory["UserStory\nID, Title, Description, Acceptance Criteria, Priority, Story Points, Status"]:::entity
+  Task["Task\nID, Title, Description, Status, Effort, Type"]:::entity
+  DevSnapshot["DevSnapshot\nID, Version, Creation Date, Test Status, Deployment Target, Docs"]:::entity
+  Blocker["Blocker\nID, Title, Description, Severity, Status, Detected On, Resolved On"]:::entity
+  Stakeholder["Stakeholder\nID, Name, Org, Role, Email, Interest, Influence, Relevance"]:::entity
+  Velocity["Velocity\nID, #Sprints, Avg SP, Max, Min, Trend"]:::entity
+  ReleasePlan["ReleasePlan\nID, Version, Planned Date, Included Features, Status"]:::entity
+  Roadmap["Roadmap\nID, Start Date, End Date, Milestones, Objectives, Versions"]:::entity
+  ScrumBoard["ScrumBoard\nID, Type, Columns, #Cards, Last Updated"]:::entity
+  FeatureDoc["FeatureDoc\nID, Title, Description, Creation Date, ChangeLog, Linked Req, Author"]:::entity
+
+  %% Relationships as Nodes
+  R1["is_assigned_to_project"]:::relationship
+  R2["belongs_to_team"]:::relationship
+  R3["has_skill"]:::relationship
+  R4["takes_on_role"]:::relationship
+  R5["manages_backlog"]:::relationship
+  R6["is_supported_by"]:::relationship
+  R7["contains_feature"]:::relationship
+  R8["contains_epic"]:::relationship
+  R9["contains_user_story"]:::relationship
+  R10["consists_of_tasks"]:::relationship
+  R11["is_in_sprint_backlog"]:::relationship
+  R12["belongs_to_sprint"]:::relationship
+  R13["pursues_goal"]:::relationship
+  R14["contains_tasks"]:::relationship
+  R15["documents_feature"]:::relationship
+  R16["is_blocked_by"]:::relationship
+  R17["participates_in"]:::relationship
+  R18["moderates_retrospective"]:::relationship
+  R19["refers_to_team"]:::relationship
+  R20["plans_release"]:::relationship
+  R21["is_part_of_roadmap"]:::relationship
+  R22["generates_snapshot"]:::relationship
+
+  %% Link Relationships
+  Team --> R1 --> Project
+  Employee --> R2 --> Team
+  Employee --> R3 --> Skill
+  Employee --> R4 --> Role
+  ProductOwner --> R5 --> ProductBacklog
+  Team --> R6 --> ScrumMaster
+  ProductBacklog --> R7 --> Feature
+  ProductBacklog --> R8 --> Epic
+  Epic --> R9 --> UserStory
+  UserStory --> R10 --> Task
+  UserStory --> R11 --> SprintBacklog
+  SprintBacklog --> R12 --> Sprint
+  Sprint --> R13 --> SprintGoal
+  ScrumBoard --> R14 --> Task
+  FeatureDoc --> R15 --> Feature
+  Task --> R16 --> Blocker
+  Stakeholder --> R17 --> SprintReview
+  ScrumMaster --> R18 --> SprintRetrospective
+  Velocity --> R19 --> Team
+  ReleasePlan --> R20 --> Feature
+  ReleasePlan --> R21 --> Roadmap
+  Sprint --> R22 --> DevSnapshot
+
+  %% Goals
+  G1["Maximize Velocity"]:::goal
+  G2["Minimize Defect Rate"]:::goal
+  G3["Maximize Customer Satisfaction"]:::goal
+  G4["Minimize Budget Variance"]:::goal
+  G5["Maximize On-time Delivery"]:::goal
+  G6["Minimize Cycle Time"]:::goal
+  G7["Maximize Code Coverage"]:::goal
+  G8["Minimize Technical Debt"]:::goal
+  G9["Maximize Feature Throughput"]:::goal
+  G10["Maximize Team Satisfaction"]:::goal
+  G11["Minimize Scope Changes"]:::goal
+
+  %% Conditions (Constraints)
+  C1["Team Size Limit"]:::constraint
+  C2["Developer Availability"]:::constraint
+  C3["Skill Level Threshold"]:::constraint
+  C4["Sprint Duration Limit"]:::constraint
+  C5["Sprint Planning Duration"]:::constraint
+  C6["Daily Scrum Duration"]:::constraint
+  C7["Retrospective Action Items"]:::constraint
+  C8["Defect Resolution Time"]:::constraint
+  C9["Code Coverage Minimum"]:::constraint
+  C10["Story Points per Sprint"]:::constraint
+  C11["Backlog Items per Sprint"]:::constraint
+
+  %% Position Goals & Constraints
+  subgraph Goals
+    G1; G2; G3; G4; G5; G6; G7; G8; G9; G10; G11
+  end
+
+  subgraph Conditions
+    C1; C2; C3; C4; C5; C6; C7; C8; C9; C10; C11
+  end

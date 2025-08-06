@@ -1,0 +1,82 @@
+flowchart LR
+  %% Class Definitions
+  classDef entity fill:#d1b3ff,stroke:#333;
+  classDef variable fill:#99e699,stroke:#333;
+  classDef goal fill:#99ccff,stroke:#333;
+  classDef constraint fill:#ff9999,stroke:#333;
+  classDef relationship fill:#ffe066,stroke:#333;
+
+  %% Entities
+  Project["Project\n(ID, Name, Start, End, Description, Budget, Status, Audience, Priority)"]:::entity
+  Team["Team\n(ID, Name, Team Size, Team Start, Team Status, Location, Team Type)"]:::entity
+  Employee["Employee\n(ID, Name, First Name, Email, Start Date, Status, Availability)"]:::entity
+  Feature["Feature\n(ID, Title, Description, Status, Priority, Estimated Effort)"]:::entity
+  Skill["Skill\n(ID, Label, Description, Level, Certified, Category)"]:::entity
+  Role["Role\n(ID, Role Name, Description, Area of Responsibility)"]:::entity
+  ProductOwner["Product Owner\n(ID, Name, Email, Availability)"]:::entity
+  ScrumMaster["Scrum Master\n(ID, Name, Email, Experience)"]:::entity
+  ProductBacklog["Product Backlog\n(ID, Created On, Last Updated, # Entries, Status)"]:::entity
+  Sprint["Sprint\n(ID, Sprint Number, Start Date, End Date, Status, Achievement)"]:::entity
+  SprintBacklog["Sprint Backlog\n(ID, # Tasks, Last Updated, Status, Total Effort)"]:::entity
+  Epic["Epic\n(ID, Title, Description, Priority, Status, Estimated Effort)"]:::entity
+  UserStory["User Story\n(ID, Title, Description, Acceptance Criteria, Priority, Story Points, Status)"]:::entity
+  Task["Task/Sub-Task\n(ID, Title, Description, Status, Effort, Type)"]:::entity
+  Blocker["Blocker/Bug\n(ID, Title, Description, Severity, Status, Detected On, Resolved On)"]:::entity
+  Stakeholder["Stakeholder\n(ID, Name, Org, Role, Email, Interest, Influence, Relevance)"]:::entity
+  Velocity["Velocity\n(ID, # Sprints, Avg SP, Max V, Min V, Trend)"]:::entity
+  ReleasePlan["Release Plan\n(ID, Version, Planned Date, Included Features, Status)"]:::entity
+  Roadmap["Roadmap\n(ID, Start Date, End Date, Milestones, Objectives, Versions)"]:::entity
+
+  %% Relationships
+  Team --|is_assigned_to_project| Project:::relationship
+  Employee --|belongs_to_team| Team:::relationship
+  Employee --|has_skill| Skill:::relationship
+  Employee --|takes_on_role| Role:::relationship
+  ProductOwner --|manages_backlog| ProductBacklog:::relationship
+  Team --|is_supported_by| ScrumMaster:::relationship
+  ProductBacklog --|contains_feature| Feature:::relationship
+  ProductBacklog --|contains_epic| Epic:::relationship
+  Epic --|contains_user_story| UserStory:::relationship
+  UserStory --|consists_of_tasks| Task:::relationship
+  UserStory --|is_in_sprint_backlog| SprintBacklog:::relationship
+  SprintBacklog --|belongs_to_sprint| Sprint:::relationship
+  Sprint --|pursues_goal| SprintBacklog:::relationship
+  Stakeholder --|participates_in| Sprint:::relationship
+  ReleasePlan --|plans_release| Feature:::relationship
+  ReleasePlan --|is_part_of_roadmap| Roadmap:::relationship
+
+  %% Decision Variables
+  V1["V1: team_size ∈ [3,9]"]:::variable
+  V2["V2: num_sprints ∈ [1,20]"]:::variable
+  V3["V3: sprint_duration_days ∈ [7,30]"]:::variable
+  V4["V4: features_per_sprint ∈ [0,10]"]:::variable
+  V5["V5: story_points_per_sprint ∈ [0,50]"]:::variable
+  V6["V6: employee_assignment ∈ {0,1}"]:::variable
+  V7["V7: budget_per_sprint ≥ 0"]:::variable
+  V8["V8: tasks_per_employee ∈ [0,20]"]:::variable
+  V9["V9: release_version ∈ [1,100]"]:::variable
+  V10["V10: feature_inclusion ∈ {0,1}"]:::variable
+
+  %% Goals
+  G1["G1: Maximize Velocity"]:::goal
+  G2["G2: Minimize Defects"]:::goal
+  G3["G3: Maximize Stakeholder Satisfaction"]:::goal
+  G4["G4: Minimize Time to Market"]:::goal
+  G5["G5: Maximize Budget Utilization"]:::goal
+  G6["G6: Minimize Resource Idle Time"]:::goal
+  G7["G7: Maximize Team Utilization"]:::goal
+  G8["G8: Minimize Overdue Tasks"]:::goal
+  G9["G9: Maximize Feature Throughput"]:::goal
+  G10["G10: Minimize Budget Variance"]:::goal
+
+  %% Conditions
+  C1["C1: team_size ≤ 9"]:::constraint
+  C2["C2: team_size ≥ 3"]:::constraint
+  C3["C3: availability ≥ 0.5"]:::constraint
+  C4["C4: sprint_duration_days ≤ 14"]:::constraint
+  C5["C5: budget_per_sprint ≤ Budget/n_sprints"]:::constraint
+  C6["C6: ≥1 Product Owner per team"]:::constraint
+  C7["C7: ≥1 Scrum Master per team"]:::constraint
+  C8["C8: backlog_age ≤ 7 days"]:::constraint
+  C9["C9: priority_f ≥ 3 if included"]:::constraint
+  C10["C10: tasks_per_employee ≤ 20"]:::constraint

@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_1 &= \text{Team Size}, &3 \le x_1 \le 9,\\
+x_2 &= \text{Sprint Length (days)}, &7 \le x_2 \le 30,\\
+x_3 &= \text{Project Budget (EUR)}, &0 \le x_3 \le 1\,000\,000,\\
+x_4 &= \text{Story Points per Sprint}, &10 \le x_4 \le 50,\\
+x_5 &= \text{Testing Hours per Feature}, &1 \le x_5 \le 40,\\
+x_6 &= \text{Releases per Year}, &1 \le x_6 \le 12,\\
+x_7 &= \text{Sprints per Release}, &1 \le x_7 \le 12,\\
+x_8 &= \text{Features per Release}, &1 \le x_8 \le 20,\\
+x_9 &= \text{Tasks per Sprint}, &5 \le x_9 \le 100,\\
+x_{10} &= \text{Scrum Master Hours per Sprint}, &0 \le x_{10} \le 40,\\
+x_{11} &= \text{Retrospective Duration (min)}, &30 \le x_{11} \le 180.
+\end{align*}
+
+\subsection*{Auxiliary Metrics}
+\begin{align*}
+v_1 &= \text{Velocity (story points/sprint)},\\
+v_2 &= \text{Defect Rate (bugs/sprint)},\\
+v_3 &= \text{Customer Satisfaction (score)},\\
+v_4 &= \text{Budget Variance (\%)},\\
+v_5 &= \text{On-time Delivery (\%)},\\
+v_6 &= \text{Cycle Time (days)},\\
+v_7 &= \text{Code Coverage (\%)},\\
+v_8 &= \text{Technical Debt (count)},\\
+v_9 &= \text{Feature Throughput (features/quarter)},\\
+v_{10} &= \text{Team Satisfaction (score)},\\
+v_{11} &= \text{Scope Changes (count/sprint)}.
+\end{align*}
+
+\subsection*{Objective (Multi-objective)}
+\begin{align*}
+\max\ & \bigl(v_1,\,-v_2,\,v_3,\,-v_4,\,v_5,\,-v_6,\,v_7,\,-v_8,\,v_9,\,v_{10},\,-v_{11}\bigr).
+\end{align*}
+
+\subsection*{Constraints}
+\begin{alignat*}{2}
+\text{C1: } & x_1 \le 9, \\
+\text{C2: } & a_{\text{dev}} \ge 0.8, \\
+\text{C3: } & s_{\text{level}} \ge 3, \\
+\text{C4: } & x_2 \le 14, \\
+\text{C5: } & t_{\text{planning}} \le 120, \\
+\text{C6: } & t_{\text{daily}} \le 15, \\
+\text{C7: } & n_{\text{retro}} \le 5, \\
+\text{C8: } & t_{\text{defect}} \le 2, \\
+\text{C9: } & v_7 \ge 80, \\
+\text{C10: } & x_4 \ge 20, \\
+\text{C11: } & v_{11} \le 20.
+\end{alignat*}
+
+\end{document}

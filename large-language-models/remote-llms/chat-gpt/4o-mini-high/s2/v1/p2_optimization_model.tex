@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+\section*{Optimization Model for Scrum-based Development}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_1 &= \text{Developers per project (Integer): }1 \le x_1 \le 20\\
+x_2 &= \text{Sprint length days (Integer): }7 \le x_2 \le 28\\
+x_3 &= \text{User stories per sprint (Integer): }1 \le x_3 \le 50\\
+x_4 &= \text{Budget allocation per sprint (Float): }0 \le x_4 \le 100000\\
+x_5 &= \text{Automation coverage (Float): }0 \le x_5 \le 1\\
+x_6 &= \text{Daily scrum count (Integer): }1 \le x_6 \le 3\\
+x_7 &= \text{Features per release (Integer): }1 \le x_7 \le 10\\
+x_8 &= \text{Tasks per story (Float): }1 \le x_8 \le 10\\
+x_9 &= \text{Test cases per feature (Integer): }0 \le x_9 \le 200\\
+x_{10} &= \text{Retrospective actions per sprint (Integer): }0 \le x_{10} \le 20
+\end{align*}
+
+\subsection*{Objectives}
+\begin{align*}
+\min\; &F_1(x) = \text{Project Duration}\\
+\max\; &F_2(x) = \text{Team Velocity}\\
+\min\; &F_3(x) = \text{Budget Overrun}\\
+\max\; &F_4(x) = \text{Feature Throughput}\\
+\min\; &F_5(x) = \text{Bug Escape Rate}\\
+\max\; &F_6(x) = \text{Stakeholder Satisfaction}\\
+\min\; &F_7(x) = \text{Sprint Backlog Age}\\
+\max\; &F_8(x) = \text{Test Coverage}\\
+\min\; &F_9(x) = \text{Cycle Time}\\
+\max\; &F_{10}(x) = \text{Release Frequency}
+\end{align*}
+
+\subsection*{Constraints}
+\begin{align*}
+\text{C1: } & ProjectCost(x) \le Budget &&(\text{Must-Match})\\
+\text{C2: } & 3 \le x_1 \le 9 &&(\text{Must-Match})\\
+\text{C3: } & x_1 \le AvailableEmployees &&(\text{Must-Match})\\
+\text{C4: } & x_2 = 14 &&(\text{Must-Match})\\
+\text{C5: } & Skill_{testing} \ge 1 &&(\text{Must-Match})\\
+\text{C6: } & ActiveSprints \le 3 &&(\text{Can-Match})\\
+\text{C7: } & Priority_f \ge 3 \quad \forall f \in \text{Features} &&(\text{Must-Match})\\
+\text{C8: } & OpenCriticalBugs(\text{releaseDate}) = 0 &&(\text{Cannot-Match})\\
+\text{C9: } & ReviewsPerSprint \ge 1 &&(\text{Must-Match})\\
+\text{C10: } & LinkedDocs(f) \ge 1 \quad \forall f \in \text{Features} &&(\text{Can-Match})
+\end{align*}
+\end{document}

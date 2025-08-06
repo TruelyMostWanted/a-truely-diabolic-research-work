@@ -1,0 +1,168 @@
+%% Class Definitions
+classDef entity   fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal     fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
+
+graph LR
+  subgraph Entities
+    Project["Project\nID, Name, Project Start, Project End, Description, Budget, Status, Target Audience, Priority"]
+    class Project entity
+
+    Team["Team\nID, Name, Team Size, Team Start, Team Status, Location, Team Type"]
+    class Team entity
+
+    Employee["Worker / Employee\nID, Name, First Name, Email, Start Date, Status, Availability"]
+    class Employee entity
+
+    Feature["Feature\nID, Title, Description, Status, Priority, Estimated Effort"]
+    class Feature entity
+
+    Skill["Skill / Competence\nID, Label, Description, Level, Certified, Category"]
+    class Skill entity
+
+    Roles["Role(s)\nID, Role Name, Description, Area of Responsibility"]
+    class Roles entity
+
+    ProductOwner["Product Owner\nID, Name, Email, Availability"]
+    class ProductOwner entity
+
+    ScrumMaster["Scrum Master\nID, Name, Email, Experience"]
+    class ScrumMaster entity
+
+    ProductBacklog["Product Backlog\nID, Created On, Last Updated, Number of Entries, Status"]
+    class ProductBacklog entity
+
+    Sprint["Sprint\nID, Sprint Number, Start Date, End Date, Status, Achievement of Goal"]
+    class Sprint entity
+
+    SprintPlanning["Sprint Planning\nID, Date, Duration (min), Moderation, Outcome Documentation"]
+    class SprintPlanning entity
+
+    DailyScrum["Daily Scrum\nID, Date, Time, Duration, Moderation"]
+    class DailyScrum entity
+
+    SprintReview["Sprint Review\nID, Date, Duration, Feedback Documentation, Attendees Count"]
+    class SprintReview entity
+
+    SprintRetrospective["Sprint Retrospective\nID, Date, Duration, Improvement Actions, Team Satisfaction, Moderation"]
+    class SprintRetrospective entity
+
+    SprintBacklog["Sprint Backlog\nID, Number of Tasks, Last Updated, Status, Total Effort"]
+    class SprintBacklog entity
+
+    SprintGoal["Sprint Goal\nID, Objective Description, Achievement Status, Benefit"]
+    class SprintGoal entity
+
+    Epic["Epic\nID, Title, Description, Priority, Status, Estimated Effort"]
+    class Epic entity
+
+    UserStory["User Story\nID, Title, Description, Acceptance Criteria, Priority, Story Points, Status"]
+    class UserStory entity
+
+    Task["Task / Sub-Task\nID, Title, Description, Status, Effort, Type"]
+    class Task entity
+
+    DevelopmentSnapshot["Development Snapshot\nID, Version Number, Creation Date, Test Status, Deployment Target, Documentation"]
+    class DevelopmentSnapshot entity
+
+    Blocker["Blocker / Problem / Bug\nID, Title, Description, Severity, Status, Detected On, Resolved On"]
+    class Blocker entity
+
+    Stakeholder["Stakeholder\nID, Name, Organization, Role, Email, Area of Interest, Influence Level, Relevance to Feature"]
+    class Stakeholder entity
+
+    Velocity["Velocity\nID, Number of Sprints Used, Avg. Story Points, Max Velocity, Min Velocity, Trend"]
+    class Velocity entity
+
+    ReleasePlan["Release Plan\nID, Version, Planned Date, Included Features, Status"]
+    class ReleasePlan entity
+
+    Roadmap["Roadmap\nID, Start Date, End Date, Milestones, Objectives, Versions"]
+    class Roadmap entity
+
+    ScrumBoard["Scrum Board\nID, Board Type, Columns (ToDo/Done...), Number of Cards, Last Updated"]
+    class ScrumBoard entity
+
+    FeatureDocumentation["Feature Documentation\nID, Title, Description, Creation Date, Change Log, Linked Requirements, Author"]
+    class FeatureDocumentation entity
+  end
+
+  subgraph Relationships
+    R1[(is_assigned_to_project)]      class R1 relationship
+    R2[(belongs_to_team)]            class R2 relationship
+    R3[(has_skill)]                  class R3 relationship
+    R4[(takes_on_role)]              class R4 relationship
+    R5[(manages_backlog)]            class R5 relationship
+    R6[(is_supported_by)]            class R6 relationship
+    R7[(contains_feature)]           class R7 relationship
+    R8[(contains_epic)]              class R8 relationship
+    R9[(contains_user_story)]        class R9 relationship
+    R10[(consists_of_tasks)]         class R10 relationship
+    R11[(is_in_sprint_backlog)]      class R11 relationship
+    R12[(belongs_to_sprint)]         class R12 relationship
+    R13[(pursues_goal)]              class R13 relationship
+    R14[(contains_tasks)]            class R14 relationship
+    R15[(documents_feature)]         class R15 relationship
+    R16[(is_blocked_by)]             class R16 relationship
+    R17[(participates_in)]           class R17 relationship
+    R18[(moderates_retrospective)]   class R18 relationship
+    R19[(refers_to_team)]            class R19 relationship
+    R20[(plans_release)]             class R20 relationship
+    R21[(is_part_of_roadmap)]        class R21 relationship
+    R22[(generates_snapshot)]        class R22 relationship
+
+    Team        -->|1:N| R1 -->|N:1| Project
+    Employee    -->|N:1| R2 -->|1:N| Team
+    Employee    -->|N:M| R3 -->|M:1| Skill
+    Employee    -->|N:M| R4 -->|M:1| Roles
+    ProductOwner-->|1:1| R5 -->|1:1| ProductBacklog
+    Team        -->|1:1| R6 -->|1:1| ScrumMaster
+    ProductBacklog--> |1:N| R7 -->|N:1| Feature
+    ProductBacklog--> |1:N| R8 -->|N:1| Epic
+    Epic        -->|1:N| R9 -->|N:1| UserStory
+    UserStory   -->|1:N| R10-->|N:1| Task
+    UserStory   -->|N:M| R11-->|M:N| SprintBacklog
+    SprintBacklog-->|1:1| R12-->|1:N| Sprint
+    Sprint      -->|1:1| R13-->|1:N| SprintGoal
+    ScrumBoard  -->|1:N| R14-->|N:1| Task
+    FeatureDocumentation-->|1:1| R15-->|1:1| Feature
+    Task        -->|N:M| R16-->|M:N| Blocker
+    Stakeholder -->|N:M| R17-->|M:N| SprintReview
+    ScrumMaster -->|1:N| R18-->|N:1| SprintRetrospective
+    Velocity    -->|1:1| R19-->|1:N| Team
+    ReleasePlan -->|1:N| R20-->|N:1| Feature
+    ReleasePlan -->|N:1| R21-->|1:N| Roadmap
+    Sprint      -->|1:1| R22-->|1:N| DevelopmentSnapshot
+  end
+
+  subgraph Goals
+    G1["G1: Minimize Project Duration"]             class G1 goal
+    G2["G2: Maximize Team Velocity"]                class G2 goal
+    G3["G3: Minimize Budget Variance"]              class G3 goal
+    G4["G4: Maximize Stakeholder Satisfaction"]     class G4 goal
+    G5["G5: Maximize Feature Throughput"]           class G5 goal
+    G6["G6: Minimize Blockers"]                     class G6 goal
+    G7["G7: Maximize Team Utilization"]             class G7 goal
+    G8["G8: Minimize Sprint Planning Time"]         class G8 goal
+    G9["G9: Maximize Skills Coverage"]              class G9 goal
+    G10["G10: Minimize Task Switches"]              class G10 goal
+    G11["G11: Maximize Release Frequency"]          class G11 goal
+    G12["G12: Minimize Defect Leakage"]             class G12 goal
+  end
+
+  subgraph Conditions
+    C1["C1: Team Size Limit (3–9)"]                class C1 constraint
+    C2["C2: Availability ≥ 80%"]                   class C2 constraint
+    C3["C3: Required PO & SM"]                     class C3 constraint
+    C4["C4: Skill Matching"]                       class C4 constraint
+    C5["C5: Max Sprint Length (≤28 days)"]         class C5 constraint
+    C6["C6: Backlog ≥ 20 items"]                   class C6 constraint
+    C7["C7: Budget Cap"]                           class C7 constraint
+    C8["C8: Release ≥ every 8 weeks"]              class C8 constraint
+    C9["C9: Documentation Coverage"]               class C9 constraint
+    C10["C10: Retro Action Closure ≥ 80%"]         class C10 constraint
+    C11["C11: ≥ 3 Stakeholder Feedbacks"]          class C11 constraint
+    C12["C12: Overlap Hours ≥ 2"]                  class C12 constraint
+  end

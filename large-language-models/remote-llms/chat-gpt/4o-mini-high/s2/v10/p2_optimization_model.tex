@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+\section*{Multi-Objective Optimization Model}
+
+\textbf{Sets:}
+\begin{align*}
+T &: \text{Teams},\\
+P &: \text{Projects},\\
+S &: \text{Sprints},\\
+B &: \text{Sprint Backlogs},\\
+E &: \text{Employees},\\
+F &: \text{Features},\\
+R &: \text{Release Plans}.
+\end{align*}
+
+\textbf{Decision Variables:}
+\begin{align*}
+x_t &\in \mathbb{Z},\quad 3 \le x_t \le 9 \quad \forall t\in T,\\
+n_p &\in \mathbb{Z},\quad 1 \le n_p \le 20 \quad \forall p\in P,\\
+\delta_s &\in \mathbb{Z},\quad 7 \le \delta_s \le 30 \quad \forall s\in S,\\
+f_s &\in \mathbb{Z},\quad 0 \le f_s \le 10 \quad \forall s\in S,\\
+sp_b &\in \mathbb{Z},\quad 0 \le sp_b \le 50 \quad \forall b\in B,\\
+e_{e,p} &\in \{0,1\}\quad \forall e\in E,p\in P,\\
+b_{p,s} &\ge 0 \quad \forall p\in P,s\in S,\\
+t_{e,s} &\in \mathbb{Z},\quad 0 \le t_{e,s} \le 20 \quad \forall e\in E,s\in S,\\
+r_r &\in \mathbb{Z},\quad 1 \le r_r \le 100 \quad \forall r\in R,\\
+u_{f,r} &\in \{0,1\}\quad \forall f\in F,r\in R.
+\end{align*}
+
+\textbf{Objective Functions:}
+\begin{align*}
+\max &\quad f_1 \;=\; \frac{1}{|S|}\sum_{b\in B} sp_b,\\
+\min &\quad f_2 \;=\; \sum_{s\in S} d_s,\\
+\max &\quad f_3 \;=\; \frac{1}{|\text{Reviews}|}\sum_{\text{reviews}} sat,\\
+\min &\quad f_4 \;=\; \sum_{p\in P} n_p,\\
+\max &\quad f_5 \;=\; \frac{\sum_{f\in F}\sum_{r\in R} u_{f,r}}{\sum_{p\in P}Budget_p},\\
+\min &\quad f_6 \;=\; \sum_{e\in E}\sum_{s\in S} idle_{e,s},\\
+\max &\quad f_7 \;=\; \sum_{t\in T}\sum_{s\in S} completed\_tasks_{t,s},\\
+\min &\quad f_8 \;=\; \sum_{s\in S} \bigl(\text{tasks}_s - \sum_{e\in E}t_{e,s}\bigr),\\
+\max &\quad f_9 \;=\; \sum_{f\in F}\sum_{r\in R} u_{f,r},\\
+\min &\quad f_{10} \;=\; \sum_{p\in P}\bigl|Spent_p - Budget_p\bigr|.
+\end{align*}
+
+\textbf{Constraints (Conditions):}
+\begin{align*}
+x_t &\le 9 &&\forall t\in T, &&(C1)\\
+x_t &\ge 3 &&\forall t\in T, &&(C2)\\
+A_e &\ge 0.5 &&\forall e\in E, &&(C3)\\
+\delta_s &\le 14 &&\forall s\in S, &&(C4)\\
+b_{p,s} &\le \frac{Budget_p}{n_p} &&\forall p\in P,s\in S, &&(C5)\\
+\sum_{e\in E_{PO}} e_{e,p} &\ge 1 &&\forall p\in P, &&(C6)\\
+\sum_{e\in E_{SM}} m_{e,t} &\ge 1 &&\forall t\in T, &&(C7)\\
+age_b &\le 7 &&\forall b\in B, &&(C8)\\
+u_{f,r}\cdot priority_f &\ge 3 &&\forall f\in F,r\in R, &&(C9)\\
+t_{e,s} &\le 20 &&\forall e\in E,s\in S. &&(C10)
+\end{align*}
+
+\end{document}

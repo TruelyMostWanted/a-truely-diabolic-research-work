@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\begin{document}
+\section*{Optimization Model}
+
+\subsection*{Sets}
+\begin{align*}
+P &: \text{Projects}\\
+T &: \text{Teams}\\
+S &: \text{Sprints}\\
+B &: \text{Sprint Backlogs}\\
+E &: \text{Epics}\\
+F &: \text{Features}\\
+W &: \text{Workers}\\
+D &: \text{Development Snapshots}\\
+R &: \text{Stakeholder Reviews}\\
+\end{align*}
+
+\subsection*{Decision Variables}
+\begin{align*}
+x_{\text{dev}}^{p} &\in \mathbb{Z}, \quad 3 \le x_{\text{dev}}^{p} \le 15, \quad \forall p \in P\\
+x_{\text{len}}^{s} &\in \mathbb{Z}, \quad 7 \le x_{\text{len}}^{s} \le 28, \quad \forall s \in S\\
+x_{\text{sp}}^{s} &\in \mathbb{Z}, \quad 10 \le x_{\text{sp}}^{s} \le 100, \quad \forall s \in S\\
+x_{\text{budg}}^{s} &\ge 0, \quad x_{\text{budg}}^{s} \le 100000, \quad \forall s \in S\\
+x_{\text{test}}^{p} &\in \mathbb{Z}, \quad 1 \le x_{\text{test}}^{p} \le 5, \quad \forall p \in P\\
+x_{\text{feat}}^{s} &\in \mathbb{Z}, \quad 1 \le x_{\text{feat}}^{s} \le 20, \quad \forall s \in S\\
+x_{\text{tasks}}^{w} &\ge 1, \quad x_{\text{tasks}}^{w} \le 10, \quad \forall w \in W\\
+x_{\text{stories}}^{e} &\in \mathbb{Z}, \quad 1 \le x_{\text{stories}}^{e} \le 10, \quad \forall e \in E\\
+x_{\text{budgF}}^{f} &\ge 0, \quad x_{\text{budgF}}^{f} \le 50000, \quad \forall f \in F\\
+x_{\text{otlim}}^{w} &\in \mathbb{Z}, \quad 0 \le x_{\text{otlim}}^{w} \le 10, \quad \forall w \in W
+\end{align*}
+
+\subsection*{Objective Functions}
+\begin{align*}
+\max\; Z_1 &= \sum_{t \in T} \mathrm{velocity\_avg}_t\\
+\min\; Z_2 &= \sum_{f \in F} \mathrm{cycle\_time}_f\\
+\max\; Z_3 &= \sum_{d \in D} \mathrm{quality\_score}_d\\
+\min\; Z_4 &= \sum_{b \in B} \mathrm{bug\_count}_b\\
+\max\; Z_5 &= \sum_{r \in R} \mathrm{stakeholder\_rating}_r\\
+\min\; Z_6 &= \sum_{p \in P} \mathrm{cost\_variance}_p\\
+\max\; Z_7 &= \sum_{f \in F} \mathrm{on\_time\_pct}_f\\
+\min\; Z_8 &= \sum_{s \in S} \mathrm{blocker\_count}_s\\
+\max\; Z_9 &= \sum_{w \in W} \mathrm{utilization\_rate}_w\\
+\min\; Z_{10} &= \sum_{w \in W} \mathrm{overtime\_hours}_w
+\end{align*}
+
+\subsection*{Constraints}
+\begin{align*}
+\text{C1: } & \mathrm{skill\_mismatch}_e = 0, &\forall e \in W\\
+\text{C2: } & \sum_{po \in PO_t} 1 = 1,\quad \sum_{sm \in SM_t} 1 = 1, &\forall t \in T\\
+\text{C3: } & \mathrm{team\_size}_t \le \mathrm{capacity}_t, &\forall t \in T\\
+\text{C4: } & \mathrm{sprint\_duration\_dev}_s = 0, &\forall s \in S\\
+\text{C5: } & \mathrm{budget\_overrun}_p = 0, &\forall p \in P\\
+\text{C6: } & \mathrm{delivery\_delay}_f = 0, &\forall f \in F\\
+\text{C7: } & \mathrm{coverage\_pct}_f \ge 0.8, &\forall f \in F\\
+\text{C8: } & \mathrm{approval\_score}_r \ge 4.0, &\forall r \in R\\
+\text{C9: } & \mathrm{post\_release\_bugs}_b \le 5, &\forall b \in B\\
+\text{C10: } & \mathrm{compliance\_violations}_p = 0, &\forall p \in P
+\end{align*}
+
+\end{document}

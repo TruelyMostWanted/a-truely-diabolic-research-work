@@ -1,0 +1,335 @@
+classDiagram
+    %% Entities
+    class Project <<entity>> {
+        +ID
+        +Name
+        +Project_Start
+        +Project_End
+        +Description
+        +Budget
+        +Status
+        +Target_Audience
+        +Priority
+    }
+    class Team <<entity>> {
+        +ID
+        +Name
+        +Team_Size
+        +Team_Start
+        +Team_Status
+        +Location
+        +Team_Type
+    }
+    class Employee <<entity>> {
+        +ID
+        +Name
+        +First_Name
+        +Email
+        +Start_Date
+        +Status
+        +Availability
+    }
+    class Feature <<entity>> {
+        +ID
+        +Title
+        +Description
+        +Status
+        +Priority
+        +Estimated_Effort
+    }
+    class Skill <<entity>> {
+        +ID
+        +Label
+        +Description
+        +Level
+        +Certified
+        +Category
+    }
+    class Role <<entity>> {
+        +ID
+        +Role_Name
+        +Description
+        +Area_of_Responsibility
+    }
+    class ProductOwner <<entity>> {
+        +ID
+        +Name
+        +Email
+        +Availability
+    }
+    class ScrumMaster <<entity>> {
+        +ID
+        +Name
+        +Email
+        +Experience
+    }
+    class ProductBacklog <<entity>> {
+        +ID
+        +Created_On
+        +Last_Updated
+        +Number_of_Entries
+        +Status
+    }
+    class Sprint <<entity>> {
+        +ID
+        +Sprint_Number
+        +Start_Date
+        +End_Date
+        +Status
+        +Achievement_of_Goal
+    }
+    class SprintPlanning <<entity>> {
+        +ID
+        +Date
+        +Duration_min
+        +Moderation
+        +Outcome_Documentation
+    }
+    class DailyScrum <<entity>> {
+        +ID
+        +Date
+        +Time
+        +Duration
+        +Moderation
+    }
+    class SprintReview <<entity>> {
+        +ID
+        +Date
+        +Duration
+        +Feedback_Documentation
+        +Attendees_Count
+    }
+    class SprintRetrospective <<entity>> {
+        +ID
+        +Date
+        +Duration
+        +Improvement_Actions
+        +Team_Satisfaction
+        +Moderation
+    }
+    class SprintBacklog <<entity>> {
+        +ID
+        +Number_of_Tasks
+        +Last_Updated
+        +Status
+        +Total_Effort
+    }
+    class SprintGoal <<entity>> {
+        +ID
+        +Objective_Description
+        +Achievement_Status
+        +Benefit
+    }
+    class Epic <<entity>> {
+        +ID
+        +Title
+        +Description
+        +Priority
+        +Status
+        +Estimated_Effort
+    }
+    class UserStory <<entity>> {
+        +ID
+        +Title
+        +Description
+        +Acceptance_Criteria
+        +Priority
+        +Story_Points
+        +Status
+    }
+    class Task <<entity>> {
+        +ID
+        +Title
+        +Description
+        +Status
+        +Effort
+        +Type
+    }
+    class DevelopmentSnapshot <<entity>> {
+        +ID
+        +Version_Number
+        +Creation_Date
+        +Test_Status
+        +Deployment_Target
+        +Documentation
+    }
+    class Bug <<entity>> {
+        +ID
+        +Title
+        +Description
+        +Severity
+        +Status
+        +Detected_On
+        +Resolved_On
+    }
+    class Stakeholder <<entity>> {
+        +ID
+        +Name
+        +Organization
+        +Role
+        +Email
+        +Area_of_Interest
+        +Influence_Level
+        +Relevance_to_Feature
+    }
+    class Velocity <<entity>> {
+        +ID
+        +Number_of_Sprints_Used
+        +Avg_Story_Points
+        +Max_Velocity
+        +Min_Velocity
+        +Trend
+    }
+    class ReleasePlan <<entity>> {
+        +ID
+        +Version
+        +Planned_Date
+        +Included_Features
+        +Status
+    }
+    class Roadmap <<entity>> {
+        +ID
+        +Start_Date
+        +End_Date
+        +Milestones
+        +Objectives
+        +Versions
+    }
+    class ScrumBoard <<entity>> {
+        +ID
+        +Board_Type
+        +Columns
+        +Number_of_Cards
+        +Last_Updated
+    }
+    class FeatureDocumentation <<entity>> {
+        +ID
+        +Title
+        +Description
+        +Creation_Date
+        +Change_Log
+        +Linked_Requirements
+        +Author
+    }
+
+    %% Relationships
+    class is_assigned_to_project <<relationship>> {
+        Team 1 : N Project
+    }
+    class belongs_to_team <<relationship>> {
+        Employee N : 1 Team
+    }
+    class has_skill <<relationship>> {
+        Employee N : M Skill
+    }
+    class takes_on_role <<relationship>> {
+        Employee N : M Role
+    }
+    class manages_backlog <<relationship>> {
+        ProductOwner 1 : 1 ProductBacklog
+    }
+    class is_supported_by <<relationship>> {
+        Team 1 : 1 ScrumMaster
+    }
+    class contains_feature <<relationship>> {
+        ProductBacklog 1 : N Feature
+    }
+    class contains_epic <<relationship>> {
+        ProductBacklog 1 : N Epic
+    }
+    class contains_user_story <<relationship>> {
+        Epic 1 : N UserStory
+    }
+    class consists_of_tasks <<relationship>> {
+        UserStory 1 : N Task
+    }
+    class is_in_sprint_backlog <<relationship>> {
+        UserStory N : M SprintBacklog
+    }
+    class belongs_to_sprint <<relationship>> {
+        SprintBacklog 1 : 1 Sprint
+    }
+    class pursues_goal <<relationship>> {
+        Sprint 1 : 1 SprintGoal
+    }
+    class contains_tasks_rb <<relationship>> {
+        ScrumBoard 1 : N Task
+    }
+    class documents_feature <<relationship>> {
+        FeatureDocumentation 1 : 1 Feature
+    }
+    class is_blocked_by <<relationship>> {
+        Task N : M Bug
+    }
+    class participates_in <<relationship>> {
+        Stakeholder N : M SprintReview
+    }
+    class moderates_retrospective <<relationship>> {
+        ScrumMaster 1 : N SprintRetrospective
+    }
+    class refers_to_team <<relationship>> {
+        Velocity 1 : 1 Team
+    }
+    class plans_release <<relationship>> {
+        ReleasePlan 1 : N Feature
+    }
+    class is_part_of_roadmap <<relationship>> {
+        ReleasePlan N : 1 Roadmap
+    }
+    class generates_snapshot <<relationship>> {
+        Sprint 1 : 1 DevelopmentSnapshot
+    }
+
+    %% Goals
+    class G1 <<goal>> { Minimize_Project_Duration }
+    class G2 <<goal>> { Maximize_Team_Velocity }
+    class G3 <<goal>> { Minimize_Budget_Overrun }
+    class G4 <<goal>> { Maximize_Feature_Throughput }
+    class G5 <<goal>> { Minimize_Bug_Escape_Rate }
+    class G6 <<goal>> { Maximize_Stakeholder_Satisfaction }
+    class G7 <<goal>> { Minimize_Sprint_Backlog_Age }
+    class G8 <<goal>> { Maximize_Test_Coverage }
+    class G9 <<goal>> { Minimize_Cycle_Time }
+    class G10 <<goal>> { Maximize_Release_Frequency }
+
+    %% Conditions
+    class C1 <<constraint>> { ProjectCost ≤ Budget }
+    class C2 <<constraint>> { 3 ≤ x₁ ≤ 9 }
+    class C3 <<constraint>> { x₁ ≤ AvailableEmployees }
+    class C4 <<constraint>> { x₂ = 14 }
+    class C5 <<constraint>> { Skill_testing ≥ 1 }
+    class C6 <<constraint>> { ActiveSprints ≤ 3 }
+    class C7 <<constraint>> { Priority_f ≥ 3 }
+    class C8 <<constraint>> { OpenCriticalBugs = 0 }
+    class C9 <<constraint>> { ReviewsPerSprint ≥ 1 }
+    class C10 <<constraint>> { LinkedDocs(f) ≥ 1 }
+
+    %% Associations Goals → Entities
+    G1 --> Project
+    G2 --> Velocity
+    G3 --> Project
+    G4 --> Feature
+    G5 --> Bug
+    G6 --> Stakeholder
+    G7 --> SprintBacklog
+    G8 --> DevelopmentSnapshot
+    G9 --> Task
+    G10 --> ReleasePlan
+
+    %% Associations Conditions → Entities
+    C1 --> Project
+    C2 --> Team
+    C3 --> Employee
+    C4 --> Sprint
+    C5 --> Skill
+    C6 --> Sprint
+    C7 --> Feature
+    C8 --> Bug
+    C9 --> SprintReview
+    C10 --> FeatureDocumentation
+
+    %% Style Definitions
+    classDef entity fill:#d1b3ff,stroke:#333;
+    classDef relationship fill:#ffe066,stroke:#333;
+    classDef goal fill:#99ccff,stroke:#333;
+    classDef constraint fill:#ff9999,stroke:#333;
