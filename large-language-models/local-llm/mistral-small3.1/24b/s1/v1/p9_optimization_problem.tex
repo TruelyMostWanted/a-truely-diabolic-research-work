@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{Optimization Model}
+\author{}
+\date{}
+\maketitle
+
+\section{Decision Variables}
+
+\begin{itemize}
+    \item \( x_1 \): AssignAliceToProjectX (1 if Alice is assigned to ProjectX, 0 otherwise)
+    \item \( x_2 \): AliceHasJavaSkill (1 if Alice has Java skill, 0 otherwise)
+    \item \( x_3 \): AliceHasPythonSkill (1 if Alice has Python
+  - **required** skills for ProjectX
+
+- **Can-Match Constraints**
+  - \( x_1
+  - \( x_2
+    \[x_1 ≤ x_2+x_3
+   - \( x_1 ≤ x_3
+
+  \[
+   - \( x_1 ≤ x_2
+
+ - **Ensure** that all the  **required** are satisfied.
+
+  - The objective function **ensuring** the constraints are satisfied.
+
+  - \( x_1 ≤ x_2
+
+ - \( x_1 ≤ x_3
+  - \( x_2 ≤ x_3
+
+  - \( x_3 ≤ x_1
+
+  - \( x_4 ≤ 1
+  -  - \( x_4 ≤ x_1
+
+  - \( x_2 ≤ x_1
+
+  - \( x_3 ≤ x_2
+
+ - \( x_1 ≤ x_4
+
+  - **Ensure** the  \[  **required**
+
+  - **Ensure** the constraints  \( x_1 ≤ x_2
+
+  - **Ensure** the constraints are satisfied.
+  - \( x_3 ≤ 1
+
+  - **Ensure** the constraints are satisfied.
+
+  - **Ensure** the constraints
+
+  - **Ensure** the constraints
+
+  - \( x_4  - **Ensure** the constraints
+
+  - \( x_1
+  - \( x_2  **Ensure** the constraints are satisfied.
+
+  - **Ensure** the constraints are satisfied.
+
+  - **Ensure** the constraints
+
+  - \( x_3 ≤ 1
+  - **Ensure** the constraints
+
+  - \( x_4 ≤ 1
+  - \( x_1 ≤ 1
+
+  - \( x_2  ≤ 1
+
+  - \( x_3 ≤ 1
+
+  - \( x_4 ≤ 1
+1,AssignAliceToProjectX,Boolean,Domain,Alice,ProjectX, AliceHasJavaSkill
+2,AssignAliceToProjectX,Indicates whether Alice is assigned to ProjectX,Boolean,{0, 1},Alice, ProjectX, AliceHasJavaSkill,Alice must have the required skills for ProjectX
+3,AliceHasJavaSkill,Indicates whether Alice has Java skill,Boolean,{0, 1},Alice, Java, AliceHasJavaSkill,Alice must have the required skills for ProjectX
+4,AliceHasPythonSkill,Indicates whether Alice has Python skill,Boolean,{0, 1},Alice, Python, AliceHasPythonSkill, Alice must have the required skills for ProjectX
+5,AliceAttendsTraining,Indicates whether Alice attends additional training,Boolean,{0,1},Alice,,,AliceAttendsTraining,Alice can attend additional training courses
+6,ProjectXSkillRequirement,The skill requirement for ProjectX,Numeric,[0,∞),ProjectX,Java, Python,AliceHasJavaSkill,Alice must have the required skills for ProjectX
+7,AliceProductivity,Alice's productivity level,Numeric,[0, 100],Alice,,Maximize Alice's productivity,Alice should work on projects that align with her skills.
+8,AliceSkillGap,Alice's skill gap level,Numeric,[0,100],Alice,,Prevent skill gaps,Alice should not be assigned to projects requiring skills she lacks.
+
+### LaTeX Code:

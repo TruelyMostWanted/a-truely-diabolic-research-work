@@ -1,0 +1,21 @@
+ID,Name,Description,Type,Domain,Related Entities,Related Goals,Related Conditions
+1,TaskAssignment(Task, Employee),Boolean indicating whether a Task is assigned to an Employee,Boolean,{0,1},Task, Employee,Goal-4 (Balance Team Workload),Condition-2 (Team-Skill Alignment), Condition-7 (No Duplicate Task Assignments)
+2,SprintStartDate(Sprint),Start date (in days) of a Sprint,Numeric,Continuous,Sprint,Goal-1 (Maximize Sprint Goal Achievement),Condition-3 (No Overlapping Sprints)
+3,BlockerResolved(Blocker),Boolean indicating whether a Blocker is resolved before Sprint ends,Boolean,{0,1},Blocker,Goal-6 (Minimize Blocker Impact), 
+4,EmployeeAvailability(Employee, Sprint),Hours available to an Employee in a Sprint,Numeric,Discrete,Employee, Sprint,Goal-8 (Align Employee Availability), 
+5,SprintGoalAchieved(Sprint),Boolean indicating whether the Sprint Goal is met,Boolean,{0,1},Sprint,Goal-1 (Maximize Sprint Goal Achievement), 
+6,SkillMatch(Employee, Skill),Boolean indicating whether an Employee has the required Skill for a Task,Boolean,{0,1},Employee, Skill,Condition-2 (Team-Skill Alignment), 
+7,TaskEffort(Task),Effort (in hours) required to complete a Task,Numeric,Discrete,Task,Goal-4 (Balance Team Workload), 
+8,TaskDuration(Task),Duration (in days) required to complete a Task,Numeric,Discrete,Task,Goal-4 (Balance Team Workload), 
+9,StakeholderPriority(Feature),Priority score assigned to a Feature based on Stakeholder influence,Numeric,Continuous,Feature, Stakeholder,Condition-5 (Stakeholder-Feature Relevance), 
+10,SprintEndOverlap(Sprint, Sprint),Boolean indicating whether two Sprints overlap,Numeric,{0,1},Sprint, Sprint,Condition-3 (No Overlapping Sprints), 
+11,FeatureInReleasePlan(Feature, ReleasePlan),Boolean indicating whether a Feature is included in a Release Plan,Boolean,{0,1},Feature, ReleasePlan,Condition-9 (No Unassigned Tasks), 
+12,ReleasePlanStartDate(ReleasePlan),Start date (in days) of a Release Plan,Numeric,Continuous,ReleasePlan, 
+13,RoadmapAlignment(ReleasePlan, Roadmap),Boolean indicating whether a Release Plan aligns with the Roadmap,Boolean,{0,1},ReleasePlan, Roadmap, 
+14,DevelopmentSnapshotGenerated(Sprint),Boolean indicating whether a Development Snapshot is generated,Numeric,{0,1},Sprint,DevelopmentSnapshot, 
+15,DevelopmentSnapshotQuality(Sprint),Quality score (0-1) of the Development Snapshot,Numeric,Continuous,Sprint,DevelopmentSnapshot, 
+16,EmployeeCapacity(Employee, Sprint),Max hours an Employee can work in a Sprint,Numeric,Discrete,Employee, Sprint,Goal-8 (Align Employee Availability), 
+17,TaskCriticality(Task),Priority score (0-1) for a Task,Numeric,Continuous,Task, 
+18,TeamUtilizationRate(Team, Sprint),Percentage of Employee capacity used in a Sprint,Numeric,Continuous,Team, Sprint,Goal-4 (Balance Team Workload), 
+19,VelocityAchieved(Team, Sprint),Story points completed in a Sprint,Numeric,Discrete,Team, Sprint,Goal-4 (Balance Team Workload), 
+20,StakeholderSatisfaction(Stakeholder, Feature),Score (0-1) representing Stakeholder satisfaction,Numeric,Continuous,Stakeholder, Feature,Condition-5 (Stakeholder-Feature Relevance),

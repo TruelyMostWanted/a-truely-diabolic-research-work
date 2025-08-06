@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\title{Scrum Optimization Model}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Objective Function}
+Maximize alignment with Scrum principles and stakeholder needs while balancing workload and minimizing risks:
+$$
+\text{Maximize} \left( 
+\sum_{s \in \text{Sprints}} \alpha \cdot \text{SprintGoalAchieved}(s) 
++ \sum_{t \in \text{Tasks}} \beta \cdot \text{SkillMatch}(e, s) 
++ \sum_{e \in \text{Employees}} \gamma \cdot \text{EmployeeAvailability}(e, s) 
+- \sum_{b \in \text{Blockers}} \delta \cdot \text{BlockerResolved}(b) 
+\right)
+$$
+Where:
+\begin{itemize}
+    \item $\alpha, \beta, \gamma, \delta$: Weights for prioritizing goals.
+    \item $\text{SprintGoalAchieved}(s) \in \{0,1\}$: Binary variable indicating whether sprint $s$ achieves its goal.
+    \item $\text{SkillMatch}(e, s) \in \{0,1\}$: Binary variable indicating whether employee $e$ has the required skill for task $s$.
+    \item $\text{EmployeeAvailability}(e, s) \in \mathbb{Z}^+$: Hours available to employee $e$ in sprint $s$.
+    \item $\text{BlockerResolved}(b) \in \{0,1\}$: Binary variable indicating whether blocker $b$ is resolved.
+\end{itemize}
+
+---
+
+\section{Decision Variables}
+\begin{itemize}
+    \item **Binary Variables**:
+    \begin{itemize}
+        \item $\text{TaskAssignment}(t, e) \in \{0,1\}$: Task $t$ is assigned to employee $e$.
+        \item $\text{BlockerResolved}(b) \in \{0,1\}$: Blocker $b$ is resolved.
+        \item $\text{SprintGoalAchieved}(s) \in \{0,1\}$: Sprint $s$ achieves its goal.
+        \item $\text{SkillMatch}(e, s) \in \{0,1\}$: Employee $e$ has the required skill for task $s$.
+    \end{itemize}
+    \item **Continuous Variables**:
+    \begin{itemize}
+        \item $\text{SprintStartDate}(s) \in \mathbb{R}^+$: Start time of sprint $s$.
+        \item $\text{EmployeeAvailability}(e, s) \in \mathbb{Z}^+$: Hours available to employee $e$ in sprint $s$.
+        \item $\text{TaskEffort}(t) \in \mathbb{Z}^+$: Effort required for task $t$.
+        \item $\text{TeamUtilizationRate}(t, s) \in [0,1]$: Percentage of employee capacity used in sprint $s$.
+    \end{itemize}
+\end{itemize}
+
+---
+
+\section{Constraints}
+\subsection{Hard Constraints (Must-Match / Cannot-Match)}
+\begin{enumerate}
+    \item **Task Assignment**: 
+    $$
+    \sum_{e \in \text{Employees}} \text{TaskAssignment}(t, e) = 1 \quad \forall t \in \text{Tasks}
+    $$
+    (Each task is assigned to exactly one employee.) \label{constraint:task-assignment}
+
+    \item **Skill Matching**: 
+    $$
+    \text{SkillMatch}(e, s) = 1 \quad \text{if } \text{TaskAssignment}(t, e) = 1 \text{ and task } t \text{ requires skill } s
+    $$
+    (Tasks can only be assigned to employees with the required skills.) \label{constraint:skill-matching}
+
+    \item **No Overlapping Sprints**: 
+    $$
+    \text{SprintStartDate}(s_i) + \text{Duration}(s_i) \leq \text{SprintStartDate}(s_j) \quad \forall s_i, s_j \in \text{Sprints}, i \neq j
+    $$
+    (Sprints cannot overlap.) \label{constraint:no-overlap}
+
+    \item **Blocker Resolution**: 
+    $$
+    \text{BlockerResolved}(b) = 1 \quad \forall b \in \text{Blockers}
+    $$
+    (All blockers must be resolved.) \label{constraint:blocker-resolution}
+
+    \item **Sprint Goal Achievement**: 
+    $$
+    \text{SprintGoalAchieved}(s) = 1 \quad \text{if } \sum_{t \in \text{Tasks}(s)} \text{TaskAssignment}(t, e) \cdot \text{TaskEffort}(t) \leq \text{TeamCapacity}(s)
+    $$
+    (A sprint goal is achieved only if the total task effort is within team capacity.) \label{constraint:sprint-goal}
+\end{enumerate}
+
+\subsection{Soft Constraints (Can-Match)}
+\begin{enumerate}
+    \item **Workload Balance**: 
+    $$
+    \text{TeamUtilizationRate}(t, s) \in [\text{MinCapacity}, \text{MaxCapacity}]
+    $$
+    (Team utilization must stay within predefined bounds to avoid over/underwork.) \label{constraint:workload}
+
+    \item **Stakeholder Priority**: 
+    $$
+    \sum_{f \in \text{Features}} \text{StakeholderPriority}(f) \cdot \text{FeatureInReleasePlan}(f, r) \geq \text{MinPriority}
+    $$
+    (High-priority features must be included in release plans.) \label{constraint:stakeholder}
+\end{enumerate}
+
+---
+
+\section{Logical Relationships}
+\begin{itemize}
+    \item **Entity Hierarchy**:
+    $$
+    \text{Task} \in \text{Epic} \subseteq \text{ReleasePlan} \subseteq \text{Roadmap}, \quad \text{Employee} \in \text{Team}
+    $$
+    \item **Dependencies**:
+    \begin{itemize}
+        \item $\text{TaskEffort}(t)$ depends on $\text{TaskAssignment}(t, e)$.
+        \item $\text{TeamUtilizationRate}(s)$ depends on $\sum_{t \in \text{Tasks}(s)} \text{TaskEffort}(t)$.
+    \end{itemize}
+\end{itemize}
+
+---
+
+\section{Example Subproblem}
+$$
+\text{Maximize} \sum_{t \in T} \text{SkillMatch}(e, s) \cdot \text{TaskAssignment}(t, e)
+$$
+$$
+\text{Subject to:}
+$$
+\begin{align}
+\sum_{e} \text{TaskAssignment}(t, e) &= 1 \quad \forall t \in T \label{eq:sub-task-assignment} \\
+\sum_{t} \text{TaskEffort}(t) \cdot \text{TaskAssignment}(t, e) &\leq \text{EmployeeCapacity}(e, s) \quad \forall e \in E \label{eq:sub-capacity}
+\end{align}
+
+---
+
+\section{Final Notes}
+\begin{itemize}
+    \item This model is a **Mixed-Integer Linear Program (MILP)**.
+    \item Constraints \ref{constraint:task-assignment}--\ref{constraint:sprint-goal} are hard constraints (must be satisfied).
+    \item Constraints \ref{constraint:workload}--\ref{constraint:stakeholder} are soft constraints (optimize for balance).
+    \item Use solvers like Gurobi, CPLEX, or open-source alternatives (e.g., CBC, SCIP) for computation.
+\end{itemize}
+
+\end{document}

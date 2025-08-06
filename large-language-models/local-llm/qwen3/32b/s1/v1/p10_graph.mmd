@@ -1,0 +1,74 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': 'black'}} }%%
+graph TD
+    classDef entity fill:#d1b3ff,stroke:#333;
+    classDef variable fill:#99e699,stroke:#333;
+    classDef goal fill:#99ccff,stroke:#333;
+    classDef constraint fill:#ff9999,stroke:#333;
+    classDef relationship fill:#ffe066,stroke:#333;
+
+    %% Entities
+    subgraph Entities [Entities]
+        class Sprints, Tasks, Employees, Blockers, Features, Releases, Roadmaps, Epics, Teams entity;
+    end
+
+    %% Decision Variables
+    subgraph Variables [Variables]
+        class TaskAssignment, BlockerResolved, SprintGoalAchieved, SkillMatch, SprintStartDate, EmployeeAvailability, TaskEffort, TeamUtilizationRate variable;
+    end
+
+    %% Goals
+    subgraph Goals [Goals]
+        class Maximize_Sprint_Achievement, Maximize_Skill_Match, Maximize_Blocker_Resolution, Balance_Workload, Prioritize_Features goal;
+    end
+
+    %% Constraints
+    subgraph Constraints [Constraints]
+        class Task_Assignment_1, Skill_Matching, No_Overlapping_Sprints, Blocker_Resolution_Mandatory, Sprint_Goal_Capacity, Workload_Balance_Range, Stakeholder_Priority_Min constraint;
+    end
+
+    %% Relationships
+    subgraph Relationships [Relationships]
+        class Task_BelongsTo_Epic, Epic_BelongsTo_Release, Release_BelongsTo_Roadmap, Task_Assigned_To_Employee, Sprint_Contains_Task, Employee_BelongsTo_Team, Blocker_Affects_Task, Feature_BelongsTo_Release, Sprint_Start_Dependencies, Team_Capacity_Dependency relationship;
+    end
+
+    %% Entity Connections
+    Tasks -->|Task_BelongsTo_Epic| Epics
+    Epics -->|Epic_BelongsTo_Release| Releases
+    Releases -->|Release_BelongsTo_Roadmap| Roadmaps
+
+    Tasks -->|Blocker_Affects_Task| Blockers
+    Tasks -->|Task_Assigned_To_Employee| Employees
+    Sprints -->|Sprint_Contains_Task| Tasks
+    Employees -->|Employee_BelongsTo_Team| Teams
+    Features -->|Feature_BelongsTo_Release| Releases
+
+    %% Variable-Entity Links
+    TaskAssignment -->|Task_Assigned_To_Employee| Tasks
+    TaskAssignment -->|Task_Assigned_To_Employee| Employees
+    BlockerResolved -->|Blocker_Affects_Task| Blockers
+    SprintGoalAchieved -->|Sprint_Contains_Task| Sprints
+    SkillMatch -->|Task_Assigned_To_Employee| Tasks
+    SkillMatch -->|Task_Assigned_To_Employee| Employees
+    EmployeeAvailability -->|Employee_BelongsTo_Team| Employees
+    TaskEffort -->|Sprint_Contains_Task| Tasks
+    TeamUtilizationRate -->|Employee_BelongsTo_Team| Employees
+
+    %% Goal-Variable Links
+    Maximize_Sprint_Achievement -->|Sprint_Goal_Capacity| SprintGoalAchieved
+    Maximize_Skill_Match -->|Skill_Matching| SkillMatch
+    Maximize_Blocker_Resolution -->|Blocker_Resolution_Mandatory| BlockerResolved
+    Balance_Workload -->|Workload_Balance_Range| TeamUtilizationRate
+    Prioritize_Features -->|Stakeholder_Priority_Min| Feature_BelongsTo_Release
+
+    %% Constraint-Entity/Variable Links
+    Task_Assignment_1 -->|Task_Assignment| Tasks
+    Skill_Matching -->|Skill_Matching| SkillMatch
+    No_Overlapping_Sprints -->|No_Overlapping_Sprints| Sprints
+    Blocker_Resolution_Mandatory -->|Blocker_Resolution_Mandatory| BlockerResolved
+    Sprint_Goal_Capacity -->|Sprint_Goal_Capacity| SprintGoalAchieved
+    Workload_Balance_Range -->|Workload_Balance_Range| TeamUtilizationRate
+    Stakeholder_Priority_Min -->|Stakeholder_Priority_Min| Features
+
+    %% Cross-Group Relationships
+    Sprints -->|Sprint_Start_Dependencies| SprintStartDate
+    Tasks -->|Team_Capacity_Dependency| TeamUtilizationRate

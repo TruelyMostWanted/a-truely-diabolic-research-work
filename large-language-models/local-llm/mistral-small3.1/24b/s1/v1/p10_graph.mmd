@@ -1,0 +1,37 @@
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
+
+%% Nodes
+class DecisionVariables variable
+class ObjectiveFunction goal
+class Constraints constraint
+
+class Resource entity
+class Task entity
+
+class ResourceRequirement variable
+class TaskDuration variable
+
+%% Relationships
+Relationship1-->|has|DecisionVariables
+Relationship2-->|minimizes/maximizes|ObjectiveFunction
+Relationship3-->|subject to|Constraints
+
+Resource-->|requires|ResourceRequirement
+Task-->|has|TaskDuration
+
+%% Diagram
+graph TD;
+    DecisionVariables --> ObjectiveFunction;
+    DecisionVariables --> Constraints;
+
+    Resource --> Task;
+    Task --> DecisionVariables;
+
+    ObjectiveFunction --> Constraints;
+    ResourceRequirement --> Constraints;
+    TaskDuration --> Constraints;

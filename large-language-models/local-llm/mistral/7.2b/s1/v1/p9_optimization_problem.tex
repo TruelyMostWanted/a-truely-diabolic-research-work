@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{Optimization Model for a Software Development Company Using SCRUM}
+\author{}
+\date{}
+
+\maketitle
+
+\section{Problem Definition}
+The main goal is to balance efficiency, productivity, and team satisfaction while delivering high-quality software products within project scope and timelines. Minimize or maximize an objective function (depending on specific goals) subject to constraints defined by relationships and decision variables.
+
+\section{Objective Functions}
+
+1. Optimize Team Composition:
+\[
+\text{{Maximize}} \ \sum_{i=1}^{n} team\_assignment[i] \times skill\_distribution[i] \times workload\_balance[i]
+\]
+2. Optimize Skill Level Distribution:
+\[
+\text{{Minimize}} \ \sum_{i=1}^{m} (skill\_distribution[i] - 0.5)^2
+\]
+3. Optimize Workload Balancing:
+\[
+\text{{Minimize}} \ \sum_{i=1}^{m} |workload\_balance[i] - 100|
+\]
+4. Optimize Time Management Efficiency:
+\[
+\text{{Minimize}} \ \sum_{i=1}^{k} meeting\_efficiency[i] \times 100
+\]
+5. Optimize Requirements Clarity:
+\[
+\text{{Maximize}} \ \sum_{j=1}^{l} requirements\_clarity[j] \times 100
+\]
+6. Optimize Scope Control:
+\[
+\text{{Minimize}} \ \sum_{j=1}^{l} scope\_impact[j] \times (scope\_change[j] - 1)
+\]
+7. Optimize Backlog Management:
+\[
+\text{{Maximize}} \ \sum_{i=1}^{m} backlog\_management[i] \times 100
+\]
+8. Optimize Release Planning:
+\[
+\text{{Minimize}} \ \sum_{p=1}^{o} delay[p] + \sum_{q=1}^{r} success[q]
+\]
+9. Optimize Velocity Optimization:
+\[
+\text{{Maximize}} \ \sum_{i=1}^{m} velocity\_optimization[i] \times 100
+\]
+
+\section{Constraints}
+1. Each team is assigned to at most one project (`team_assignment[i]` binary):
+\[
+\sum_{i=1}^{n} team\_assignment[i] = m, \quad \forall i, team\_assignment[i] \in \{0, 1\}
+\]
+2. If `team_assignment[i] = 1`, then the team has sufficient skills to perform tasks for that project (based on related entities and decision variables):
+\[
+skills\_required[i] \leq \sum_{j=1}^{l} skill\_level[j], \quad \forall i, \text{{if}} \ team\_assignment[i] = 1
+\]
+3. Scope control: User stories cannot exceed project scope or have unplanned scope changes (based on related entities and decision variables):
+\[
+\sum_{j=1}^{l} impact[j] \times scope\_change[j] \leq scope, \quad \forall i
+\]
+4. Backlog management: The product backlog must be well-organized, up-to-date, and prioritized effectively (based on related entities and decision variables):
+\[
+backlog\_quality[i] \geq quality\_threshold, \quad \forall i
+\]
+5. Release planning: Releases should be planned effectively to minimize disruptions and maximize benefits (based on related entities and decision variables):
+\[
+\sum_{p=1}^{o} release\_impact[p] \times delay[p] \leq disruption, \quad \forall i
+\]
+6. Velocity optimization: The team's velocity should be balanced to maintain a healthy work environment (based on related entities and decision variables):
+\[
+velocity\_optimization[i] \geq velocity\_threshold, \quad \forall i
+\]
+\end{document}

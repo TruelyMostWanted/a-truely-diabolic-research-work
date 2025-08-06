@@ -1,0 +1,94 @@
+graph LR
+
+%% Class Definitions
+classDef entity fill:#d1b3ff,stroke:#333;
+classDef variable fill:#99e699,stroke:#333;
+classDef goal fill:#99ccff,stroke:#333;
+classDef constraint fill:#ff9999,stroke:#333;
+classDef relationship fill:#ffe066,stroke:#333;
+
+%% Entities
+subgraph Entity
+Project(Project)
+Team(Team)
+Employee(Employee)
+Skill/Competence(Skill/Competence)
+Role(s)(Role)
+Product Owner(Product Owner)
+Scrum Master(Scrum Master)
+Product Backlog(Product Backlog)
+Sprint(Sprint)
+Sprint Planning(Sprint Planning)
+Daily Scrum(Daily Scrum)
+Sprint Review(Sprint Review)
+Sprint Retrospective(Sprint Retrospective)
+Sprint Backlog(Sprint Backlog)
+Sprint Goal(Sprint Goal)
+Epic(Epic)
+User Story(User Story)
+Task/Sub-Task(Task/Sub-Task)
+Development Snapshot(Development Snapshot)
+Blocker/Problem/Bug(Blocker/Problem/Bug)
+Stakeholder(Stakeholder)
+Velocity(Velocity)
+Release Plan(Release Plan)
+Roadmap(Roadmap)
+Scrum Board(Scrum Board)
+Feature Documentation(Feature Documentation)
+end
+
+%% Attributes (Decision Variables)
+subgraph Variable
+team_assignment(team\_assignment[i]) :boolean entity
+skill_distribution(skill\_distribution[i]) :numeric variable
+workload_balance(workload\_balance[i]) :numeric variable
+meeting_efficiency(meeting\_efficiency[i]) :numeric variable
+requirements_clarity(requirements\_clarity[i]) :numeric variable
+scope_impact(scope\_impact[j]) :numeric variable
+scope_change(scope\_change[j]) :boolean variable
+backlog_management(backlog\_management[i]) :numeric variable
+release_impact(release\_impact[p]) :numeric variable
+delay(delay[p]) :numeric variable
+success(success[q]) :numeric variable
+velocity_optimization(velocity\_optimization[i]) :numeric variable
+end
+
+%% Relationships
+subgraph Relationship
+is_assigned_to_project(Team, Project) :relationship
+belongs_to_team(Employee, Team) :relationship
+has_skill(Employee, Skill/Competence) :relationship
+takes_on_role(Employee, Role) :relationship
+manages_backlog(Product Owner, Product Backlog) :relationship
+is_supported_by(Team, Scrum Master) :relationship
+contains_feature(Product Backlog, Feature) :relationship
+contains_epic(Product Backlog, Epic) :relationship
+contains_user_story(Epic, User Story) :relationship
+consists_of(User Story, Task/Sub-Task) :relationship
+impacts(User Story, Scope) :relationship
+impacts(Sprint, Velocity) :relationship
+impacts(Release Plan, Roadmap) :relationship
+end
+
+%% Goals
+subgraph Goal
+optimize_team_composition(Maximize $\sum_{i=1}^{n} team\_assignment[i] \times skill\_distribution[i] \times workload\_balance[i]$) :goal
+optimize_skill_level_distribution(Minimize $\sum_{i=1}^{m} (skill\_distribution[i] - 0.5)^2$) :goal
+optimize_workload_balancing(Minimize $\sum_{i=1}^{m} |workload\_balance[i] - 100|$) :goal
+optimize_time_management_efficiency(Minimize $\sum_{i=1}^{k} meeting\_efficiency[i] \times 100$) :goal
+optimize_requirements_clarity(Maximize $\sum_{j=1}^{l} requirements\_clarity[j] \times 100$) :goal
+optimize_scope_control(Minimize $\sum_{j=1}^{l} impact[j] \times scope\_change[j]$) :goal
+optimize_backlog_management(Maximize $\sum_{i=1}^{m} backlog\_management[i] \times 100$) :goal
+optimize_release_planning(Minimize $\sum_{p=1}^{o} delay[p] + \sum_{q=1}^{r} success[q]$) :goal
+optimize_velocity_optimization(Maximize $\sum_{i=1}^{m} velocity\_optimization[i] \times 100$) :goal
+end
+
+%% Constraints
+subgraph Constraint
+team_assignment_constraint(team\_assignment[i] in {0,1}) :constraint
+skills_required_constraint(skills\_required[i] <= $\sum_{j=1}^{l} skill\_level[j]$):constraint
+scope_change_constraint(scope\_impact[j] * scope\_change[j] <= scope) :constraint
+backlog_quality_constraint(backlog\_management[i] >= quality\_threshold) :constraint
+disruption_constraint($\sum_{p=1}^{o} release\_impact[p] \times delay[p] \leq disruption$) :constraint
+velocity_optimization_threshold(velocity\_optimization[i] >= velocity\_threshold) :constraint
+end
