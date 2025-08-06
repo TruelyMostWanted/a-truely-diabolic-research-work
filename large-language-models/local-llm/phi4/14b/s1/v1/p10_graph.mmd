@@ -1,0 +1,99 @@
+graph TD
+
+    %% Entities
+    subgraph Entities
+        E1[Company]:::entity
+        E2[Project]:::entity
+        E3[Team]:::entity
+        E4[Employee]:::entity
+        E5[Role(s)]:::entity
+        E6[Skill]:::entity
+        E7[Product Backlog Item]:::entity
+        E8[Epic]:::entity
+        E9[User Story]:::entity
+        E10[Task / Sub-Task]:::entity
+        E11[Blocker / Problem / Bug]:::entity
+        E12[Sprint]:::entity
+        E13[Roadmap & Release Plan]:::entity
+        E14[Stakeholder(s)]:::entity
+    end
+
+    %% Relationships
+    subgraph Relationships
+        R1[Has]:::relationship
+        R2[Part of]:::relationship
+        R3[Works on / is responsible for]:::relationship
+        R4[Has skills in]:::relationship
+        R5[Can perform]:::relationship
+        R6[Is related to]:::relationship
+        R7[Contains]:::relationship
+        R8[Belongs to]:::relationship
+        R9[Is a part of]:::relationship
+        R10[Has tasks / sub-tasks]:::relationship
+        R11[Depends on]:::relationship
+        R12[Can be blocked by]:::relationship
+        R13[Includes]:::relationship
+        R14[Is responsible for]:::relationship
+        R15[Updates]:::relationship
+    end
+
+    %% Entity Relationships
+    E1 -- R1 --> E2
+    E2 -- R2 --> E3
+    E3 -- R3 --> E4
+    E4 -- R4 --> E6
+    E5 -- R5 --> E6
+    E7 -- R6 --> E9
+    E8 -- R7 --> E9
+    E9 -- R8 --> E10
+    E11 -- R9 --> E12
+    E2 -- R10 --> E10
+    E4 -- R11 --> E12
+    E4 -- R12 --> E11
+    E13 -- R13 --> E14
+    E4 -- R14 --> E12
+    E14 -- R15 --> E7
+
+    %% Goals
+    subgraph Goals
+        G1[Maximize Sprint Velocity]:::goal
+        G2[Minimize Cycle Time]:::goal
+        G3[Optimize Team Performance]:::goal
+        G4[Enhance Skill Utilization]:::goal
+        G5[Ensure Clear Role Definitions]:::goal
+    end
+
+    %% Conditions
+    subgraph Conditions
+        C1[Resource Constraints]:::constraint
+        C2[Time Constraints]:::constraint
+        C3[Budget Limitations]:::constraint
+        C4[Skill Availability]:::constraint
+    end
+
+    %% Connections between Goals and Entities/Variables
+    G1 -- "Increases" --> E3
+    G2 -- "Reduces" --> E12
+    G3 -- "Depends on" --> E4
+    G4 -- "Utilizes" --> E6
+    G5 -- "Defines" --> E5
+
+    %% Connections between Conditions and Entities/Variables
+    C1 -- "Limits" --> E2
+    C2 -- "Restricts" --> E12
+    C3 -- "Affects" --> E2
+    C4 -- "Depends on" --> E6
+
+    %% Decision Variables
+    subgraph DecisionVariables
+        V1[Team Size]:::variable
+        V2[Budget Allocation]:::variable
+        V3[Sprint Duration]:::variable
+        V4[Skill Assignment]:::variable
+    end
+
+    %% Connections between Variables and Entities/Goals
+    V1 -- "Optimizes" --> G3
+    V2 -- "Manages" --> C3
+    V3 -- "Controls" --> G2
+    V4 -- "Enhances" --> G4
