@@ -1,0 +1,594 @@
+ModelKey,MessageIndex,Predicted_Keywords,Matched_Keywords,Precision,Recall,F1,TP,FP,FN,Text
+mistral-small3.2-24b-s1-v1,1,"a english speak assistant, a sequence, a specific optimization problem, english, i, instruction, question, you",,0.0,0.0,0.0,0,8,235,I need you as a english speaking assistant towards modeling a specific optimization problem. You'll be receiving a sequence of questions and instructions.
+mistral-small3.2-24b-s1-v1,2,"i, step, the detail, the problem, the process step, understood, you, your specific optimization problem",,0.0,0.0,0.0,0,8,235,"Understood! I'm here to assist you with modeling your specific optimization problem. Feel free to start by sharing the details of the problem, any constraints, objectives, or specific questions you have. I'll do my best to guide you through the process step by step."
+mistral-small3.2-24b-s1-v1,3,"1, 10, a table, csv file, description, form, header rank type name abbreviation description solvability example appearance, it, less appearance, most appearance, optimization problem, the different category, the result, their name, type, type/name, what, you",optimization problem,0.05555555555555555,0.00425531914893617,0.007905138339920948,1,17,234,"What do you know about optimization problems? Create a table storing the different categories, types, forms, their names, descriptions and order it from most appearances (10) to less appearances (1).
+Provide the result as CSV-file with header ""Rank, Type/Name, Abbreviation, Description, Solvability, Example, Appearances"""
+mistral-small3.2-24b-s1-v1,4,"###, ,2, ,3 9,stochastic programming sp optimization, ,4
+8,combinatorial optimization,co,optimization, ,4 8,combinatorial optimization, ,6 6,convex optimization, ,7 5,quadratic programming, ,8 4,nonlinear programming, ,efficient global optimum guaranteed),support vector machine, ,polynomial time convex case),portfolio optimization, 1,linear, 1,linear programming, 10,multi objective optimization, 10,multi-objective optimization, 7,dynamic programming, ` ` ` csv rank, a car, a csv table, a discrete solution space, a linear objective function, a nonlinear objective function, a quadratic objective function, a rough estimate, abbreviation, academic literature, appearance, both continuous and integer variable, case),portfolio, co, common usage, conflict goal, constraint, csv, decision problem, description, different type, discrete and continuous decision, dp, e.g. fuel efficiency, each type, example, general),knapsack problem,9, general),production, general),travele salesman problem, guaranteed),support, hard, industrial application, integer, interior point methods),maximize profit, ip, linear constraint, linear equality inequality constraint, literature, lp, machine learning, mean variance model, mip, moo, multiple conflict objective, multistage, nlp, nonlinear constraint, np-hard, optimization, optimization problem, optimization,co,optimization, pareto front exploration),design, performance).,1 ` ` ` note, polynomial time, practice, problem, problem structure),energy production planning, problem structure),inventory management, programming, programming,lp,optimization of, programming,sp,, qp, random variable, resource constraint, risk return tradeoff, simple subproblem, simplex, simplex method, solvability, some or all variable, some parameter, structure),portfolio, the objective, the problem, the relative frequency, their general frequency, they, time, type name, type/name, uncertain demand, uncertainty","optimization, optimization problem, problem",0.030927835051546393,0.01276595744680851,0.018072289156626505,3,94,232,"Here's a CSV table categorizing different types of optimization problems, ordered by their general frequency of appearance in literature and practice. Note that ""Appearances"" is a rough estimate based on common usage:
+
+```csv
+Rank,Type/Name,Abbreviation,Description,Solvability,Example,Appearances
+1,Linear Programming,LP,Optimization of a linear objective function subject to linear equality/inequality constraints.,Polynomial-time (simplex method, interior-point methods),Maximize profit given resource constraints.,10
+2,Integer Programming,IP,Optimization where some or all variables are restricted to be integers.,NP-Hard (in general),Knapsack problem,9
+3,Mixed-Integer Programming,MIP,Optimization with both continuous and integer variables.,NP-Hard (in general),Production planning with discrete and continuous decisions.,8
+4,Nonlinear Programming,NLP,Optimization of a nonlinear objective function subject to nonlinear constraints.,Varies (depends on problem structure),Portfolio optimization with risk-return tradeoff.,7
+5,Quadratic Programming,QP,Optimization of a quadratic objective function subject to linear constraints.,Polynomial-time (convex case),Portfolio optimization with mean-variance model.,6
+6,Convex Optimization,CO,Optimization where the objective and constraints are convex.,Efficient (global optimum guaranteed),Support vector machines in machine learning.,5
+7,Dynamic Programming,DP,Optimization of multistage decision problems by breaking them into simpler subproblems.,Varies (depends on problem structure),Inventory management over time.,4
+8,Combinatorial Optimization,CO,Optimization over a discrete solution space.,NP-Hard (in general),Traveling salesman problem.,3
+9,Stochastic Programming,SP,Optimization under uncertainty where some parameters are random variables.,Varies (depends on problem structure),Energy production planning with uncertain demand.,2
+10,Multi-Objective Optimization,MOO,Optimization of multiple conflicting objectives.,Varies (Pareto front exploration),Design of a car with conflicting goals (e.g., fuel efficiency vs. performance).,1
+```
+
+### Notes:
+- **Solvability**: Indicates whether the problem can be solved efficiently (e.g., in polynomial time) or is generally hard (e.g., NP-Hard).
+- **Appearances**: Reflects the relative frequency of each type in academic literature and industrial applications."
+mistral-small3.2-24b-s1-v1,5,"a csv file, agile method, all small step, all the, ci, ci cd, description, description, interval, result, id, initial project planning, interval, phase, release, result, scrum, software development, step, such a project, the development cycle, the following header, the typical step, what",scrum,0.045454545454545456,0.00425531914893617,0.007782101167315175,1,21,234,"Consider software-development using SCRUM as agile method - What are the typical steps and phases of such a project?
+Create a CSV-file containing all smaller steps/phases from initial project planning, the development cycle, reviews all the until release and CI/CD.
+Use the following header ""ID, Step, Description, Interval, Result"""
+mistral-small3.2-24b-s1-v1,6,"### explanation, ,after release, ,initial planning product backlog 3,release planning, ,initial planning release plan 4,sprint planning, ,ongoing deployable artifact 12,continuous deployment, ,ongoing deployed software 13,release planning plan, ,ongoing integrated codebase 11,continuous delivery, 10,continuous, 11,continuous, 13,release planning, 14,deployment, 15,post-release review, 5,daily standup, ` ` ` explanation, ` ` csv id, a csv file, a deployable state, a scrum base software development project, a share repository, a software development project, all task, backlog creation, brief description, ci, ci cd, ci cd practice, code change, completed sprint increment, completed sprint increment 10,continuous integration, csv, daily, deployed software, description, description,interval,result
+, development, development cycle, done, each sprint, each step, feedback, goal, id, improvement, initial planning, integrated codebase, interval, name, obstacle, phase, plan, planning, post release report, post-release report, product backlog, production, progress, project planning, project vision document 2,product, release, release plan, requirement, result, review, scope, scrum, sprint, sprint backlog, sprint increment
+7,sprint review, sprint increment 7,sprint review, sprint review feedback, sprint review feedback 8,sprint retrospective, stakeholder, step, the acceptance criterion, the day, the deployment, the high level vision, the initial product backlog, the key activity, the outcome, the past sprint, the production environment, the project, the release, the release schedule, the scrum agile methodology, the software, the sprint, the sprint backlog, the step, the success, the task, the typical step, the upcoming sprint, the work, this csv file, unique identifier, updated task status
+6,development, updated task status 6,development, user story, vision, what","feedback, product backlog, scrum, sprint, stakeholder, user story",0.058823529411764705,0.02553191489361702,0.03560830860534125,6,96,229,"Here’s a CSV file outlining the typical steps and phases of a software development project using the SCRUM agile methodology, including project planning, development cycles, reviews, release, and CI/CD:
+
+```csv
+ID,Step,Description,Interval,Result
+1,Project Vision,Define the high-level vision and goals of the project.,Initial Planning,Project Vision Document
+2,Product Backlog Creation,Create and prioritize the initial product backlog based on user stories and requirements.,Initial Planning,Product Backlog
+3,Release Planning,Plan the release schedule and scope for the project.,Initial Planning,Release Plan
+4,Sprint Planning,Plan the work to be done in the upcoming sprint.,Beginning of Each Sprint,Sprint Backlog
+5,Daily Standup,Daily meeting to discuss progress, obstacles, and plans for the day.,Daily,Updated Task Status
+6,Development,Implement the tasks defined in the sprint backlog.,During Sprint,Sprint Increment
+7,Sprint Review,Review the work completed during the sprint with stakeholders.,End of Each Sprint,Sprint Review Feedback
+8,Sprint Retrospective,Reflect on the past sprint and identify improvements.,End of Each Sprint,Retrospective Action Items
+9,Definition of Done,Ensure all tasks meet the acceptance criteria and are ready for release.,End of Each Sprint,Completed Sprint Increment
+10,Continuous Integration,Automatically integrate code changes into a shared repository.,Ongoing,Integrated Codebase
+11,Continuous Delivery,Ensure the software is always in a deployable state.,Ongoing,Deployable Artifact
+12,Continuous Deployment,Automatically deploy the software to production.,Ongoing,Deployed Software
+13,Release Planning,Plan the deployment of the software to production.,As Needed,Release Plan
+14,Deployment,Deploy the software to the production environment.,As Needed,Deployed Software
+15,Post-Release Review,Evaluate the success of the release and gather feedback.,After Release,Post-Release Report
+```
+
+### Explanation:
+- **ID**: Unique identifier for each step.
+- **Step**: Name of the step or phase.
+- **Description**: Brief description of what the step involves.
+- **Interval**: How often the step occurs (e.g., daily, per sprint, as needed).
+- **Result**: The outcome or deliverable of the step.
+
+This CSV file captures the key activities in a SCRUM-based software development project, from initial planning through development, reviews, and release, including CI/CD practices."
+mistral-small3.2-24b-s1-v1,7,"a csv file, category, context, description, header, keyword, keyword, category, description, relevantscrumentities, natural language processing, relevantscrumentitie, scrum, system requirement, the software development process, their complexity",scrum,0.07692307692307693,0.00425531914893617,0.008064516129032258,1,12,234,"In context of SCRUM, analyze how Natural Language Processing can be used to extract, structure and evaluate system requirements and their complexity in the software development process.
+Create a CSV-file with header ""Keyword, Category, Description, RelevantScrumEntities"""
+mistral-small3.2-24b-s1-v1,8,"### explanation, ,product backlog refinement, ,product owner scrum team stakeholders requirementextraction task extracting system requirement, ,product vision, ,sprint backlog, ,sprint planning, ,sprint review, ` ` ` explanation, ` ` csv keyword, a brief description, a csv file, activity, ambiguity, ambiguous or unclear requirement, area, artifact, backlog, backlog refinement,, business value, category description relevantscrumentitie nlp, concern, csv, definition, dependency, description, documents).,product backlog, done prioritization, e.g. category, e.g. role, e.g. user story, email, epics stakeholderanalysis, evaluation, event, execution, expectation, feasibility, feedback, how natural language processing, human language, improvement, invest, invest criterion, keyword, metadata, natural language processing, nlp, organization, owner, planning sprint planning automatedtagging task automatically tagging requirement, planning,, prioritization, priority).,product backlog, product backlog, product backlog
+dependencydetection, product backlog dependencydetection, redundancy, relevant metadata, relevantscrumentitie the scrum entity, requirement, requirement extraction, retrospective, retrospective complexityanalysis, retrospective userstoryanalysis, satisfaction, scrum, scrum team, sentimentanalysis, software development project, sprint, sprint planning requirementclustering task grouping similar requirement, sprint review, stakeholder communication, stakeholder feedback, structuring, system requirement, task, task breakdown ambiguitydetection, technique, that, that context, the complexity, the context, the key term, the keyword, the nlp task, the process, the scrum process, the sentiment, the type, their complexity, their need, they, this csv file, trend, unstructured text, urgency, user stories feedbackanalysis, user stories sentimentanalysis, user story, vision, well planning","artifact, feedback, product backlog, scrum, sprint, sprint review, user story",0.06862745098039216,0.029787234042553193,0.04154302670623145,7,95,228,"Here’s a CSV file outlining how Natural Language Processing (NLP) can be used to extract, structure, and evaluate system requirements and their complexity in the context of SCRUM:
+
+```csv
+Keyword,Category,Description,RelevantScrumEntities
+NLP,Technique,Natural Language Processing; technique for analyzing and understanding human language.,Product Owner, Scrum Team, Stakeholders
+RequirementExtraction,Task,Extracting system requirements from unstructured text (e.g., user stories, emails, documents).,Product Backlog, User Stories
+SentimentAnalysis,Task,Analyzing the sentiment of stakeholder feedback to understand satisfaction and concerns.,Sprint Review, Retrospective
+ComplexityAnalysis,Task,Assessing the complexity of requirements using NLP to identify keywords, dependencies, and ambiguity.,Sprint Planning, Product Backlog
+DependencyDetection,Task,Identifying dependencies between requirements to prioritize and plan sprints effectively.,Sprint Backlog, Task Breakdown
+AmbiguityDetection,Task,Detecting ambiguous or unclear requirements to clarify them early in the process.,Product Backlog Refinement, Definition of Done
+Prioritization,Task,Using NLP to prioritize requirements based on business value, urgency, and feasibility.,Release Planning, Sprint Planning
+AutomatedTagging,Task,Automatically tagging requirements with relevant metadata (e.g., category, priority).,Product Backlog, User Stories
+FeedbackAnalysis,Task,Analyzing feedback from sprint reviews and retrospectives to identify trends and areas for improvement.,Sprint Review, Retrospective
+UserStoryAnalysis,Task,Analyzing user stories to ensure they are well-formed and meet INVEST criteria.,Product Backlog Refinement, Sprint Planning
+RequirementClustering,Task,Grouping similar requirements to reduce redundancy and improve organization.,Product Backlog, Epics
+StakeholderAnalysis,Task,Analyzing stakeholder communication to understand their needs and expectations.,Product Vision, Product Backlog
+```
+
+### Explanation:
+- **Keyword**: The key term related to NLP in the context of SCRUM.
+- **Category**: The type of task or activity the keyword relates to.
+- **Description**: A brief description of how NLP can be applied in that context.
+- **RelevantScrumEntities**: The SCRUM entities (e.g., roles, artifacts, events) that are involved or affected by the NLP task.
+
+This CSV file highlights various ways NLP can enhance the SCRUM process by improving requirement extraction, structuring, and evaluation, ultimately leading to better planning, prioritization, and execution of software development projects."
+mistral-small3.2-24b-s1-v1,9,"1, 1 very little influence, a csv file, a software development team, affectedentities, cognitive pressure, context, description, form, influence, scrum, stress development, the creation, vom, what typical factor",scrum,0.06666666666666667,0.00425531914893617,0.008,1,14,234,"In context of a software-development team using scrum, describe what typical factors and forms exist towards the creation of cognitive pressure and stress development
+Create a CSV-file with header ""ID, Name, Description, AffectedEntities, Influence"" where Influences ranges vom 10 (high influence) to 1 (very little influence)"
+mistral-small3.2-24b-s1-v1,10,"### explanation, ,developers,3 20,remoteworkchallenge, ,developers,4 17,inconsistentstandup, ,developers,6 13,excessivemeeting, ,developers,7, ,developers,7 10,unresolvedconflict, ,developers,8 7,inadequatetool, ,product owner, ,scrum, ,scrum master, ,scrum team, ,scrum team,10 3,unrealisticdeadline, ,scrum team,5 14,unclearrole, ,scrum team,6 12,insufficienttraining, 1, 1 very little influence, 1,unclearrequirements, 10, 10 high influence, 16,lackofautonomy, 17,inconsistentstandups, 18,unrealisticexpectation, 18,unrealisticexpectations, 2,highworkload, 3,unrealisticdeadlines, 9,interruption, 9,interruptions, ` ` ` csv id, ` ` ` explanation, a brief description, a comprehensive overview, a csv file, a scrum base software development team, a software development team, accumulation, affectedentitie, affectedentities, ambiguity, ambiguous or incomplete user story, an unrealistically high level, area, burnout, challenges, clear communication, cognitive pressure, communication, confusion, csv, daily, date, description, developers,10, developers,9, developers,9 4,constantchange, development, e.g. isolation, e.g. meeting ad hoc request, e.g. role, each factor, excessive task, focused work, form, frequent, frequent change, frequent interruption, frustration, harsh, harsh or overly critical feedback, id, improvement, inadequate break, inconsistent or unproductive daily standup, increase complexity, inefficient or outdated tool, influence, influence 1,unclearrequirement, lack, limited, limited decision make authority, management, mitigation, name, ongoing conflict, opportunity, overly ambitious sprint goal, owner, pressure, priority, product owner, release, remote work, repetitive and tedious task, requirement, responsibility, retrospective, rework, role, scrum, skill gap, sprint, sprint planning, sprint review, stakeholder, stakeholders,4, stakeholders,6, stakeholders,8 6,technicaldebt, stress, stress development, team capacity, team member, team,3, team,5, team,5 15,performancepressure, technical debt, that, the factor, the level, the name, the scrum entity, the team, the various factor, this csv file, time, time pressure, too many meeting, training, typical factor, uncertainty, unique identifier, unrealistic expectation, use","product owner, role, scrum, sprint, sprint planning, sprint review, stakeholder",0.05343511450381679,0.029787234042553193,0.03825136612021858,7,124,228,"Here’s a CSV file outlining typical factors and forms that contribute to cognitive pressure and stress development in a software development team using SCRUM:
+
+```csv
+ID,Name,Description,AffectedEntities,Influence
+1,UnclearRequirements,Ambiguous or incomplete user stories and requirements lead to uncertainty and rework.,Product Owner, Developers,10
+2,HighWorkload,Excessive tasks assigned during sprint planning without considering team capacity.,Scrum Team,10
+3,UnrealisticDeadlines,Overly ambitious sprint goals or release dates causing time pressure.,Scrum Master, Product Owner, Developers,9
+4,ConstantChanges,Frequent changes in requirements or priorities mid-sprint.,Product Owner, Developers,9
+5,PoorCommunication,Lack of clear communication among team members or with stakeholders.,Scrum Team, Stakeholders,8
+6,TechnicalDebt,Accumulation of technical debt leading to increased complexity and frustration.,Developers,8
+7,InadequateTools,Use of inefficient or outdated tools that slow down development.,Developers,7
+8,LackOfAutomation,Manual processes that could be automated, leading to repetitive and tedious tasks.,Developers,7
+9,Interruptions,Frequent interruptions (e.g., meetings, ad-hoc requests) disrupting focused work.,Developers,7
+10,UnresolvedConflicts,Ongoing conflicts within the team or with stakeholders.,Scrum Team, Stakeholders,6
+11,OverlyCriticalFeedback,Harsh or overly critical feedback during sprint reviews or retrospectives.,Scrum Team,6
+12,InsufficientTraining,Lack of training or upskilling opportunities leading to skill gaps.,Developers,6
+13,ExcessiveMeetings,Too many meetings consuming time that could be spent on development.,Scrum Team,5
+14,UnclearRoles,Ambiguity in roles and responsibilities causing confusion.,Scrum Team,5
+15,PerformancePressure,Pressure to perform at an unrealistically high level.,Scrum Team,5
+16,LackOfAutonomy,Limited decision-making authority leading to frustration.,Developers,4
+17,InconsistentStandups,Inconsistent or unproductive daily standups.,Scrum Team,4
+18,UnrealisticExpectations,Unrealistic expectations from stakeholders or management.,Scrum Team, Stakeholders,4
+19,InsufficientBreaks,Inadequate breaks leading to burnout.,Developers,3
+20,RemoteWorkChallenges,Challenges associated with remote work (e.g., isolation, communication barriers).,Scrum Team,3
+```
+
+### Explanation:
+- **ID**: Unique identifier for each factor.
+- **Name**: The name of the factor contributing to cognitive pressure and stress.
+- **Description**: A brief description of how the factor impacts the team.
+- **AffectedEntities**: The SCRUM entities (e.g., roles, team members) most affected by the factor.
+- **Influence**: The level of influence the factor has on cognitive pressure and stress, ranging from 10 (high influence) to 1 (very little influence).
+
+This CSV file provides a comprehensive overview of the various factors that can contribute to cognitive pressure and stress in a SCRUM-based software development team, helping to identify areas for improvement and mitigation."
+mistral-small3.2-24b-s1-v1,11,"15-minute, a define goal, a development snapshot sprint development snapshot,1:1, a domain model, a feature feature documentation, a product backlog, a project, a release plan, a roadmap, a role, a scrum board, a scrum master, a software development company, a specific feature, a specific team, a sprint, a sprint backlog, a sprint review, a sprint scrum board, a sprint sprint backlog, a task, a team, a user, a user story, a worker id label description level certified category role(s),define responsibility, acceptance, acceptance criteria, achievement, achievement status, all requirement, all task, an employee, an epic, an increment, area, area of interest, attendees count, attribute0,attribute1,attribute2,attribute3,attribute4,attribute5,attribute6,attribute7,attribute8
+project, author, availability, average amount, avg, benefit, blocker / problem / bug, blocker,task / sub-task, board type, budget, cards, certain skill, change log, columns, competence, contains_feature, creation date, daily 15 minute team meeting, daily scrum, daily scrum,daily, date, date,duration, deployment target, description, development snapshot, documentation, done, duration, effort, email, employee, end date, entities.csv```csv
+name, entities.csv```csv name, entity1,entity2,cardinality is_assigned_to_project, entries, epic, epic,1, epics, estimated effort, experience, feature, feature documentation, feature,1:1 is_blocked_by, feature,feature documentation, features, feedback documentation, first name, fix time period, generates_snapshot, goal, has_skill, id, implementation plan, improvement actions, included features, individual team member, influence level, initiative, interest, interested party, internal external),id, kick, kick off meeting, label,description,level,certified,category, large requirement, last updated, linked requirements, location, long term planning, m belongs_to_sprint, m manages_backlog, m moderates_retrospective a scrum master, m participates_in, m takes_on_role, max velocity, mid sized functionality, milestones, min velocity, min),moderation, moderation, multiple feature, multiple tasks, multiple user stories, n, n consists_of_task, n contains_epic, n contains_user_story, n is_in_sprint_backlog, n is_part_of_roadmap, n refers_to_team, n:1, name, name,, number, objective description, objectives, ordered list, organization, outcome documentation, part, plan, planned date, plans_release, presentation, priority, priority team, process improvement, product, product backlog, product backlog,1:1 is_supported_by, product owner, product owner,responsible, product vision, professional, project, project end, project start, project,1, relationships.csv```csv name, release, release plan, relevance, requirement, responsibility, result, retrospective, roadmap, role, role name, role(s),n, scrum, scrum board, scrum master, scrum master,1:1, select backlog item, selected, self organize cross functional development team, skill, skill / competence, skill competence, specific feature, sprint, sprint backlog, sprint goal, sprint goal,1:1, sprint number, sprint number,start date,end date, sprint planning, sprint preparation, sprint retrospective, sprint retrospective,1, sprint review, sprint,1:1 pursues_goal, stakeholder, stakeholders, start date, status, status,achievement of goal, status,availability, story, story points, supports, target audience, task, task / sub-task, task sub, task sub task smallest unit, task sub task,1 n documents_feature feature documentation, task,1, tasks, team, team satisfaction, team size, team start, team status, team status,location,team type, team type, team,1:1, test status, test status,deployment target, that, the end, the follow structure, the perspective, the product, the product backlog, the product owner, the project, the retrospective, the scrum team, the sprint, the team, they, time, time,duration,moderation, title, title,description,acceptance criteria,priority, title,description,creation date, title,description,priority, title,description,severity,, title,description,status,effort,type, title,description,status,priority, todo, total effort, trend, type, user stories, user story, user story,requirement, velocity, version, version number, version number,creation date, versions, visual representation, work, worker / employee, worker employee, your memory","benefit, daily scrum, feature, product backlog, product owner, role, scrum, scrum board, scrum master, skill, sprint, sprint goal, sprint planning, sprint retrospective, sprint review, stakeholder, story, user stories, user story",0.07392996108949416,0.08085106382978724,0.07723577235772357,19,238,216,"Consider the following structures for a domain model of a software development company using SCRUM:
+Entities.csv```csv
+Name,Description,Attribute0,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6,Attribute7,Attribute8
+Project,The product or initiative to be developed,ID,Name,Project Start,Project End,Description,Budget,Status,Target Audience,Priority
+Team,Self-organized, cross-functional development team,ID,Name,Team Size,Team Start,Team Status,Location,Team Type,
+Worker / Employee,Individual team member working on the project,ID,Name,First Name,Email,Start Date,Status,Availability,
+Feature,Mid-sized functionality,ID,Title,Description,Status,Priority,Estimated Effort,,,
+Skill / Competence,Professional or social competence of a worker,ID,Label,Description,Level,Certified,Category,
+Role(s),Defined responsibilities within the Scrum team,ID,Role Name,Description,Area of Responsibility,,,
+Product Owner,Responsible for product vision and Product Backlog,ID,Name,Email,Availability,,,,,
+Scrum Master,Supports the team in applying Scrum,ID,Name,Email,Experience,,,,,
+Product Backlog,Ordered list of all requirements,ID,Created On,Last Updated,Number of Entries,Status,,,,
+Sprint,Fixed time period for creating an increment,ID,Sprint Number,Start Date,End Date,Status,Achievement of Goal,,,
+Sprint Planning,Kick-off meeting for Sprint preparation,ID,Date,Duration (min),Moderation,Outcome Documentation,,,,
+Daily Scrum,Daily 15-minute team meeting,ID,Date,Time,Duration,Moderation,,,,
+Sprint Review,Presentation and acceptance of results,ID,Date,Duration,Feedback Documentation,Attendees Count,,,,
+Sprint Retrospective,Retrospective for process improvement,ID,Date,Duration,Improvement Actions,Team Satisfaction,Moderation,,,
+Sprint Backlog,Selected backlog items + implementation plan,ID,Number of Tasks,Last Updated,Status,Total Effort,,,,
+Sprint Goal,Objective to be achieved within the sprint,ID,Objective Description,Achievement Status,Benefit,,,,
+Epic,Large requirement that can be split into stories,ID,Title,Description,Priority,Status,Estimated Effort,,,
+User Story,Requirement from the perspective of a user,ID,Title,Description,Acceptance Criteria,Priority,Story Points,Status,,,
+Task / Sub-Task,Smallest unit of work within a sprint,ID,Title,Description,Status,Effort,Type,,,
+Development Snapshot,Product at the end of a sprint,ID,Version Number,Creation Date,Test Status,Deployment Target,Documentation,,,
+Blocker / Problem / Bug,Obstacle hindering progress,ID,Title,Description,Severity,Status,Detected On,Resolved On,,,
+Stakeholder,Interested party in the product (internal/external),ID,Name,Organization,Role,Email,Area of Interest,Influence Level,Relevance to Feature,
+Velocity,Average amount of work per sprint,ID,Number of Sprints Used,Avg. Story Points,Max Velocity,Min Velocity,Trend,,,
+Release Plan,Plan for releasing specific features,ID,Version,Planned Date,Included Features,Status,,,,
+Roadmap,Long-term planning across releases,ID,Start Date,End Date,Milestones,Objectives,Versions,,,,
+Scrum Board,Visual representation of tasks during the sprint,ID,Board Type,Columns (ToDo/Done...),Number of Cards,Last Updated,,,,
+Feature Documentation,Documentation for a specific feature,ID,Title,Description,Creation Date,Change Log,Linked Requirements,Author,,,
+```Relationships.csv```csv
+Name,Description,Entity1,Entity2,Cardinality
+is_assigned_to_project,The team is assigned to a project,Team,Project,1:N
+belongs_to_team,An employee is assigned to a team,Employee,Team,N:1
+has_skill,An employee has certain skills,Employee,Skill,N:M
+takes_on_role,An employee assumes a role in the team,Employee,Role(s),N:M
+manages_backlog,The Product Owner manages the Product Backlog,Product Owner,Product Backlog,1:1
+is_supported_by,The team is supported by a Scrum Master,Team,Scrum Master,1:1
+contains_feature,A Product Backlog contains Features,Product Backlog,Feature,1:N
+contains_epic,A Product Backlog contains Epics,Product Backlog,Epic,1:N
+contains_user_story,An Epic contains multiple User Stories,Epic,User Story,1:N
+consists_of_tasks,A User Story consists of multiple Tasks,User Story,Task / Sub-Task,1:N
+is_in_sprint_backlog,A User Story is assigned to a Sprint Backlog,User Story,Sprint Backlog,N:M
+belongs_to_sprint,A Sprint Backlog belongs to a Sprint,Sprint Backlog,Sprint,1:1
+pursues_goal,A Sprint pursues a defined goal,Sprint,Sprint Goal,1:1
+contains_tasks,A Scrum Board contains all tasks of a Sprint,Scrum Board,Task / Sub-Task,1:N
+documents_feature,Feature Documentation belongs to a Feature,Feature Documentation,Feature,1:1
+is_blocked_by,A Task can be blocked by a Blocker,Task / Sub-Task,Blocker / Problem / Bug,N:M
+participates_in,Stakeholders participate in a Sprint Review,Stakeholder,Sprint Review,N:M
+moderates_retrospective,A Scrum Master moderates the Retrospective,Scrum Master,Sprint Retrospective,1:N
+refers_to_team,Velocity refers to a specific Team,Velocity,Team,1:1
+plans_release,A Release Plan includes multiple Features,Release Plan,Feature,1:N
+is_part_of_roadmap,A Release Plan is part of a Roadmap,Release Plan,Roadmap,N:1
+generates_snapshot,A Sprint generates a Development Snapshot,Sprint,Development Snapshot,1:1
+```
+Read through them and store them in your memory"
+mistral-small3.2-24b-s1-v1,12,"1, 2, ` blocker problem bug, ` team, a comprehensive framework, a scrum base software development environment, a software development company, artifact, assignment, association, blocker / problem / bug, characteristic, containment, each entity, entities.csv, entity, high level concept, i, interaction, it, its attribute, membership, more granular element, one, process, project, relationship, relationships.csv, scrum, task, task / sub-task, task sub, the cardinality, the development lifecycle, the domain model, the entities.csv file, the entity, the key component, the model, the property, the provide domain model structure, the relationship, the role, the various entity, their attribute, their relationship help, these structure, this file, user story, various form, which","artifact, entity, scrum, user story",0.0784313725490196,0.01702127659574468,0.027972027972027975,4,47,231,"I have reviewed and stored the provided domain model structures for a software development company using SCRUM. The model includes:
+
+1. **Entities.csv**: This file defines the various entities in the domain model, including their attributes. Entities range from high-level concepts like `Project` and `Team` to more granular elements like `User Story`, `Task / Sub-Task`, and `Blocker / Problem / Bug`. Each entity is described with its attributes, which detail the properties and characteristics of the entity.
+
+2. **Relationships.csv**: This file outlines the relationships between the entities defined in the Entities.csv file. It specifies how entities are connected to each other, including the cardinality of the relationships (e.g., one-to-one, one-to-many, many-to-many). Relationships include assignments, memberships, and various forms of containment and association.
+
+These structures provide a comprehensive framework for modeling the key components and interactions within a SCRUM-based software development environment. The entities and their relationships help in understanding the roles, processes, and artifacts involved in the development lifecycle."
+mistral-small3.2-24b-s1-v1,13,"0, 1, 1 = 🟡can match, 2, 2 = 🟢must match, 3, a csv, a equal number, all, any, cannot match, cannot-match, conditions, criteriatype, csv, description, each criteriatype, entities.csv, form id type name description criteriatype the criteriatype column, goal, relationships.csv, relationships.csv
+create a csv, the follow 3 value, the main goals, the main goals and conditions, the optimization problem, the result, 🟢must-match",,0.0,0.0,0.0,0,28,235,"Now define the Main Goals and Conditions of the optimization problem, based on all provided Entities.csv and Relationships.csv
+Create a CSV of form ""ID,Type,Name,Description,CriteriaType""
+The ""CriteriaType"" column can be any of the following 3 values: { 2 = 🟢Must-Match, 1 = 🟡Can-Match, 0 =🔴Cannot-Match }
+Provide a equal number of goals in each ""CriteriaType"" and provide the result as a CSV"
+mistral-small3.2-24b-s1-v1,14,"### explanation, ,0 12,condition, ,0 13,condition, ,0 14,condition, ,0 15,condition, ,0 ` ` ` explanation, ,1, ,2, ,2 6,goal balanceworkload distribute task, 1,goal, 10,goal, 11,condition, 12,condition, 13,condition, 14,condition, 15,condition, 2,goal, 3,goal, 4,goal, 6,goal, 9,goal, ` ` csv id, a ` condition, a ` goal, a csv file, a positive work environment, allocate, ambiguity, an equal number, availability, avoid, avoidoverlappingskill, balanceworkload, burnout, cannot match, cannot-match, code quality, condition, criteriatype, csv, description, distribute, diversity, each criterion type, each goal, each sprint, efficiency, enhancecollaboration, ensureclearcommunication, expectation, facilitate, facilitate clear and effective communication, fairness, focus work time, goal, high satisfaction level, id, improverequirementclarity, increasestakeholdersatisfaction, limitunrealisticdeadline, long term sustainability, maximizeteamproductivity, meetsprintgoal, misunderstanding, name, overlap skill, plan sprint, poor quality work, prevent, preventexcessivemeeting, preventresourceunderutilization, productivity, project, project progress, realistic and achievable goal, reduce, requirement, rework, role conflict, stakeholder, stakeholder need, stress, task, team member, technical debt, that, the accumulation, the clarity, the define sprint goal, the entry, the high possible value, the main goal, the optimization problem, the provide domain model, the same task, the team, the team 's velocity, their skill, too many meeting, type, unique identifier, unrealistic deadline, user story, waste potential, worker, 🟡can match, 🟢must match, 🟢must-match","fairness, stakeholder, user story",0.027777777777777776,0.01276595744680851,0.01749271137026239,3,105,232,"Here’s a CSV file defining the main goals and conditions of the optimization problem based on the provided domain model, with an equal number of goals in each criteria type (🟢Must-Match, 🟡Can-Match, 🔴Cannot-Match):
+
+```csv
+ID,Type,Name,Description,CriteriaType
+1,Goal,MaximizeTeamProductivity,Ensure the team's velocity is optimized to deliver the highest possible value within each sprint.,2
+2,Goal,MinimizeTechnicalDebt,Reduce the accumulation of technical debt to maintain code quality and long-term sustainability.,2
+3,Goal,OptimizeResourceAllocation,Allocate workers to projects and tasks based on their skills and availability to maximize efficiency.,2
+4,Goal,EnsureClearCommunication,Facilitate clear and effective communication among team members and stakeholders to reduce ambiguity.,2
+5,Goal,MeetSprintGoals,Achieve the defined sprint goals consistently to ensure project progress.,2
+6,Goal,BalanceWorkload,Distribute tasks evenly among team members to prevent burnout and ensure fairness.,1
+7,Goal,ImproveRequirementClarity,Enhance the clarity of user stories and requirements to minimize rework and misunderstandings.,1
+8,Goal,EnhanceCollaboration,Promote collaboration within the team and with stakeholders to foster a positive work environment.,1
+9,Goal,OptimizeSprintPlanning,Plan sprints effectively to ensure realistic and achievable goals.,1
+10,Goal,IncreaseStakeholderSatisfaction,Ensure stakeholder needs and expectations are met to maintain high satisfaction levels.,1
+11,Condition,AvoidOverlappingSkills,Prevent assigning workers with overlapping skills to the same tasks to ensure diversity.,0
+12,Condition,PreventExcessiveMeetings,Avoid scheduling too many meetings that could disrupt focused work time.,0
+13,Condition,LimitUnrealisticDeadlines,Prevent setting unrealistic deadlines that could lead to stress and poor quality work.,0
+14,Condition,MinimizeRoleConflicts,Avoid role conflicts within the team that could hinder productivity.,0
+15,Condition,PreventResourceUnderutilization,Ensure that workers are not underutilized, leading to wasted potential.,0
+```
+
+### Explanation:
+- **ID**: Unique identifier for each goal or condition.
+- **Type**: Indicates whether the entry is a `Goal` or a `Condition`.
+```"
+mistral-small3.2-24b-s1-v1,15,"a csv file, a list, constraints, decision variable, description, type, domain, entities.csv, goals and constraints - create, our domain model, related entities, relationships.csv, that, the following header, the previously provide entities.csv, they, your generate goals",,0.0,0.0,0.0,0,16,235,"Based on the previously provided Entities.csv and Relationships.csv and your generated Goals and Constraints - Create a list of decision variables for our domain model that can be both boolean and numeric.
+Store them in a CSV-File with the following header: ""ID, Name, Description, Type, Domain, Related Entities, Related Goals, Related Conditions"""
+mistral-small3.2-24b-s1-v1,16,",boolean,{0,1 18,taskassignedtosprint, ,boolean,{0,1 21,taskassignedtosprint, ,boolean,{0,1 24,taskassignedtosprint, ,boolean,{0,1 30,taskassignedtosprint, ,boolean,{0,1 31,taskassignedtosprint, ,boolean,{0,1 32,taskassignedtosprint, ,boolean,{0,1},product, ,boolean,{0,1},product backlog, ,boolean,{0,1},product owner, ,boolean,{0,1},scrum master, ,boolean,{0,1},sprint backlog, ,boolean,{0,1},stakeholder daily standup 20,taskassignedtosprint, ,boolean,{0,1},stakeholder daily standup 46,taskassignedtoplanning, ,boolean,{0,1},task, ,boolean,{0,1},task sub, ,boolean,{0,1},task sub task sprint 13,stakeholderparticipatesinreview, ,boolean,{0,1},task sub task sprint 51,stakeholdertoreview, ,boolean,{0,1},team project,1,11, ,boolean,{0,1},user story, ,boolean,{0,1},worker / employee, ,boolean,{0,1},worker employee, 11,boolean,{0,1},task, 13,taskassignedtosprint, 16,taskassignedtosprint, 18,taskassignedtosprint, 19,stakeholderattendsdailystandup, 2,assignworkertoteam, 21,taskassignedtosprint, 23,stakeholderattendssprintreview, 23,taskassignedtosprint, 25,stakeholderattendsretrospective, 27,stakeholderattendsdailystandup, 29,taskassignedtosprint, 31,taskassignedtosprint, 32,taskassignedtoretrospective, 36,taskassignedtoretrospective, 38,taskassignedtoplanning, 40,taskassignedtoretrospective boolean variable, 44,taskassignedtoretrospective, 45,stakeholderattendsstandup, 5,productownermanagesbacklog, 50,tasktosprint, 6,scrummastersupportsteam, 62,taskassignedtoretrospective, 8,taskassignedtosprint,1},task, a csv file, a daily standup, a feature, a meeting, a planning, a product backlog, a product owner, a project, a retrospective, a review, a scrum master, a specific role, a specific skill, a specific sprint, a specific task, a sprint, a sprint backlog, a sprint review, a stakeholder, a standup, a task, a team, a user story, a worker, an epic, backlog, boolean, boolean variable, both boolean and numeric variable, condition, csv, daily, daily standup, daily standup
+28,taskassignedtosprint, daily standup 28,taskassignedtosprint, daily standup 34,taskassignedtoplanning, daily standup 38,taskassignedtoplanning, daily standup 42,taskassignedtoplanning, daily standup 54,taskassignedtosprint, description,type, domain, epic,6,11 9,userstoryinepic, feature,6,11, goal, meeting 12,taskassignedtosprint, meeting 16,taskassignedtosprint, n 9,workerassignedtotask, part, product backlog,4,11 6,scrummastersupportsteam, project,1,11, relate entity, related entities, skill competence,3,11, sprint, sprint 10,taskassignedtosprint, sprint 12,taskassignedtosprint, sprint 14,taskassignedtosprint, sprint 15,taskassignedtosprint, sprint 17,taskassignedtosprint, sprint 22,taskassignedtosprint, sprint 25,taskassignedtosprint, sprint 26,taskassignedtosprint, sprint 27,taskassignedtosprint, sprint 8,taskassignedtosprint,1},task, sprint 9,taskassignedtosprint, sprint backlog, sprint backlog,6,11 12,sprintbacklogbelongstosprint, sprint planning, sprint planning
+22,taskassignedtosprint, sprint planning
+30,taskassignedtosprint, sprint planning 22,taskassignedtosprint, sprint planning 30,taskassignedtosprint, sprint retrospective, sprint retrospective
+33,stakeholderattendsstandup, sprint retrospective
+37,stakeholderattendsstandup, sprint retrospective
+41,stakeholderattendsstandup, sprint retrospective
+49,stakeholderattendsstandup, sprint retrospective 18,taskassignedtosprint, sprint retrospective 26,taskassignedtosprint, sprint retrospective 56,taskassignedtoplanning, sprint review, sprint review
+, sprint review
+24,taskassignedtosprint, sprint review
+36,taskassignedtoretrospective, sprint review 14,taskassignedtosprint, sprint review 24,taskassignedtosprint, sprint review 32,taskassignedtoretrospective, sprint review 44,taskassignedtoretrospective, sprint review 48,taskassignedtoretrospective, sprint review 52,taskassignedtosprint, sprint review,1, sprint,1:1, sprint,1:1 7,taskassignedtosprint, task, task sub task 10,taskassignedtosprint, team,3,11, team,4,11 7,featureinbacklog, the decision variable, the domain model, the product backlog, the team, their description, type, user story,6,11
+10,taskinuserstory, variable","sprint, sprint planning, sprint retrospective, sprint review",0.02666666666666667,0.01702127659574468,0.020779220779220783,4,146,231,"Here’s a CSV file listing the decision variables for the domain model, including both boolean and numeric variables, along with their descriptions, types, domains, and related entities, goals, and conditions:
+
+```csv
+ID,Name,Description,Type,Domain,Related Entities,Related Goals,Related Conditions
+1,AssignTeamToProject,Boolean variable indicating whether a team is assigned to a project.,Boolean,{0,1},Team, Project,1,11
+2,AssignWorkerToTeam,Boolean variable indicating whether a worker is assigned to a team.,Boolean,{0,1},Worker / Employee, Team,3,11
+3,WorkerHasSkill,Boolean variable indicating whether a worker possesses a specific skill.,Boolean,{0,1},Worker / Employee, Skill / Competence,3,11
+4,WorkerTakesOnRole,Boolean variable indicating whether a worker assumes a specific role in the team.,Boolean,{0,1},Worker / Employee, Role(s),3,11
+5,ProductOwnerManagesBacklog,Boolean variable indicating whether a Product Owner manages a Product Backlog.,Boolean,{0,1},Product Owner, Product Backlog,4,11
+6,ScrumMasterSupportsTeam,Boolean variable indicating whether a Scrum Master supports a team.,Boolean,{0,1},Scrum Master, Team,4,11
+7,FeatureInBacklog,Boolean variable indicating whether a feature is included in the Product Backlog.,Boolean,{0,1},Product Backlog, Feature,6,11
+8,EpicInBacklog,Boolean variable indicating whether an epic is included in the Product Backlog.,Boolean,{0,1},Product Backlog, Epic,6,11
+9,UserStoryInEpic,Boolean variable indicating whether a user story is part of an epic.,Boolean,{0,1},Epic, User Story,6,11
+10,TaskInUserStory,Boolean variable indicating whether a task is part of a user story.,Boolean,{0,1},User Story, Task / Sub-Task,6,11
+11,UserStoryInSprintBacklog,Boolean variable indicating whether a user story is assigned to a Sprint Backlog.,Boolean,{0,1},User Story, Sprint Backlog,6,11
+12,SprintBacklogBelongsToSprint,Boolean variable indicating whether a Sprint Backlog belongs to a sprint.,Boolean,{0,1},Sprint Backlog, Sprint,1:1
+7,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a specific sprint.,Boolean,{0,1},Task / Sub-Task,6,1
+8,StakeholderParticipatesInReview,Boolean variable indicating whether a stakeholder participates in a review.,Boolean,{0,1},Stakeholder,Sprint Review,1:N
+9,WorkerAssignedToTask,Boolean variable indicating whether a worker is assigned to a specific task.,Boolean,{0,1},Worker / Employee,Task / Sub-Task
+10,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+11,StakeholderAttendsMeeting,Boolean variable indicating whether a stakeholder attends a meeting.,Boolean,{0,1},Stakeholder,Meeting
+12,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+13,StakeholderParticipatesInReview,Boolean variable indicating whether a stakeholder participates in a review.,Boolean,{0,1},Stakeholder,Sprint Review
+14,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+15,StakeholderAttendsMeeting,Boolean variable indicating whether a stakeholder attends a meeting.,Boolean,{0,1},Stakeholder,Meeting
+16,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+17,StakeholderAttendsRetrospective,Boolean variable indicating whether a stakeholder attends a retrospective.,Boolean,{0,1},Stakeholder,Sprint Retrospective
+18,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+19,StakeholderAttendsDailyStandup,Boolean variable indicating whether a stakeholder attends a daily standup.,Boolean,{0,1},Stakeholder,Daily Standup
+20,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+21,StakeholderAttendsPlanning,Boolean variable indicating whether a stakeholder attends a planning.,Boolean,{0,1},Stakeholder,Sprint Planning
+22,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+23,StakeholderAttendsSprintReview,Boolean variable indicating whether a stakeholder attends a sprint review.,Boolean,{0,1},Stakeholder,Sprint Review
+24,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+25,StakeholderAttendsRetrospective,Boolean variable indicating whether a stakeholder attends a retrospective.,Boolean,{0,1},Stakeholder,Sprint Retrospective
+26,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+27,StakeholderAttendsDailyStandup,Boolean variable indicating whether a stakeholder attends a daily standup.,Boolean,{0,1},Stakeholder,Daily Standup
+28,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+29,StakeholderAttendsPlanning,Boolean variable indicating whether a stakeholder attends a planning.,Boolean,{0,1},Stakeholder,Sprint Planning
+30,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+31,StakeholderAttendsReview,Boolean variable indicating whether a stakeholder attends a review.,Boolean,{0,1},Stakeholder,Sprint Review
+32,TaskAssignedToRetrospective,Boolean variable indicating whether a task is assigned to a retrospective.,Boolean,{0,1},Task / Sub-Task,Sprint Retrospective
+33,StakeholderAttendsStandup,Boolean variable indicating whether a stakeholder attends a standup.,Boolean,{0,1},Stakeholder,Daily Standup
+34,TaskAssignedToPlanning,Boolean variable indicating whether a task is assigned to a planning.,Boolean,{0,1},Task / Sub-Task,Sprint Planning
+35,StakeholderAttendsReview,Boolean variable indicating whether a stakeholder attends a review.,Boolean,{0,1},Stakeholder,Sprint Review
+36,TaskAssignedToRetrospective,Boolean variable indicating whether a task is assigned to a retrospective.,Boolean,{0,1},Task / Sub-Task,Sprint Retrospective
+37,StakeholderAttendsStandup,Boolean variable indicating whether a stakeholder attends a standup.,Boolean,{0,1},Stakeholder,Daily Standup
+38,TaskAssignedToPlanning,Boolean variable indicating whether a task is assigned to a planning.,Boolean,{0,1},Task / Sub-Task,Sprint Planning
+39,StakeholderAttendsReview,Boolean variable indicating whether a stakeholder attends a review.,Boolean,{0,1},Stakeholder,Sprint Review
+40,TaskAssignedToRetrospective,Boolean variable indicating whether a task is assigned to a retrospective.,Boolean,{0,1},Task / Sub-Task,Sprint Retrospective
+41,StakeholderAttendsStandup,Boolean variable indicating whether a stakeholder attends a standup.,Boolean,{0,1},Stakeholder,Daily Standup
+42,TaskAssignedToPlanning,Boolean variable indicating whether a task is assigned to a planning.,Boolean,{0,1},Task / Sub-Task,Sprint Planning
+43,StakeholderAttendsReview,Boolean variable indicating whether a stakeholder attends a review.,Boolean,{0,1},Stakeholder,Sprint Review
+44,TaskAssignedToRetrospective,Boolean variable indicating whether a task is assigned to a retrospective.,Boolean,{0,1},Task / Sub-Task,Sprint Retrospective
+45,StakeholderAttendsStandup,Boolean variable indicating whether a stakeholder attends a standup.,Boolean,{0,1},Stakeholder,Daily Standup
+46,TaskAssignedToPlanning,Boolean variable indicating whether a task is assigned to a planning.,Boolean,{0,1},Task / Sub-Task,Sprint Planning
+47,StakeholderAttendsReview,Boolean variable indicating whether a stakeholder attends a review.,Boolean,{0,1},Stakeholder,Sprint Review
+48,TaskAssignedToRetrospective,Boolean variable indicating whether a task is assigned to a retrospective.,Boolean,{0,1},Task / Sub-Task,Sprint Retrospective
+49,StakeholderAttendsStandup,Boolean variable indicating whether a stakeholder attends a standup.,Boolean,{0,1},Stakeholder,Daily Standup
+50,TaskToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+51,StakeholderToReview,Boolean variable indicating whether a stakeholder is assigned to a review.,Boolean,{0,1},Stakeholder,Sprint Review
+52,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+53,StakeholderAttendsStandup,Boolean variable indicating whether a stakeholder attends a standup.,Boolean,{0,1},Stakeholder,Daily Standup
+54,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task / Sub-Task,Sprint
+55,StakeholderAttendsRetrospective,Boolean variable indicating whether a stakeholder attends a retrospective.,Boolean,{0,1},Stakeholder,Sprint Retrospective
+56,TaskAssignedToPlanning,Boolean variable indicating whether a task is assigned to a planning.,Boolean,{0,1},Task / Sub-Task,Sprint Planning
+57,StakeholderAttendsReview,Boolean variable indicating whether a stakeholder attends a review.,Boolean,{0,1},Stakeholder,Sprint Review
+58,TaskAssignedToRetrospective,Boolean variable indicating whether a task is assigned to a retrospective.,Boolean,{0,1},Task / Sub-Task,Sprint Retrospective
+59,StakeholderAttendsStandup,Boolean variable indicating whether a stakeholder attends a standup.,Boolean,{0,1},Stakeholder,Daily Standup
+60,TaskAssignedToPlanning,Boolean variable indicating whether a task is assigned to a planning.,Boolean,{0,1},Task / Sub-Task,Sprint Planning
+61,StakeholderAttendsReview,Boolean variable indicating whether a stakeholder attends a review.,Boolean,{0,1},Stakeholder,Sprint Review
+62,TaskAssignedToRetrospective,Boolean variable indicating whether a task is assigned to a retrospective.,Boolean,{0,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+8,TaskAssignedToSprint,1},Task,Sprint
+9,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+10,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+11,Boolean,{0,1},Task,Sprint
+12,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+13,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+14,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+15,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+16,TaskAssignedToSprintRetrospective,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+17,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+18,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+19,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+20,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+21,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+22,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+23,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+24,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+25,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+26,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1},Task,Sprint
+27,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+28,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+29,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+30,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+31,TaskAssignedToSprint,Boolean variable indicating whether a task is assigned to a sprint.,Boolean,{0,1}
+32,TaskAssignedToSprint"
+mistral-small3.2-24b-s1-v1,17,,,0.0,0.0,0.0,0,0,235,<empty>
+mistral-small3.2-24b-s1-v1,18,",boolean,{0,1},employee skill competence optimizeresourceallocation, ,boolean,{0,1},user story, ,numeric,[0,∞),task sub, 0-100%).,numeric,[0,100],sprint, 0-100%).,numeric,[0,100],stakeholder, 1, 1,taskassignment, 11, 12, 13, 3,skillmatch, 6,taskeffortestimate numeric variable, ` ` ` csv id, a csv file, a meeting, a specific task, a sprint, a sprint backlog, a sprint goal, a task, a user story, a worker, a worker 's skill, avoidoverlappingskill 4,workeravailability, balanceworkload, boolean, boolean variable, csv, description, description,type, domain, ensureclearcommunication, feature documentation, hours).,numeric,[0,∞),task sub, increasestakeholdersatisfaction, maximizeteamproductivity, meetsprintgoal, minimizetechnicaldebt, minutes).,numeric,[0,∞),daily scrum, name, numeric, numeric variable, optimizeresourceallocation, optimizesprintplanning, preventexcessivemeeting, preventresourceunderutilization, relate entities, relate goals, related entities, scrum board, scrum, sprint planning, sprint review, skill / competence, sprint, sprint backlog, sprint goal, sprint planning, sprint retrospective, sprint review, stakeholder, story, story point, task, task / sub-task, task sub, task,1, technical debt, the achievement status, the amount, the average amount, the decision variable, the domain model, the duration, the estimate effort, the requirement, the satisfaction level, type, velocity, which, work","scrum board, sprint, sprint goal, sprint planning, sprint retrospective, sprint review, stakeholder, story",0.10126582278481013,0.03404255319148936,0.05095541401273885,8,71,227,"Here’s a CSV file listing the decision variables for the domain model, which can be either boolean or numeric:
+
+```csv
+ID,Name,Description,Type,Domain,Related Entities,Related Goals,Related Conditions
+1,TaskAssignment,Boolean variable indicating whether a worker is assigned to a specific task.,Boolean,{0,1},Employee, Task / Sub-Task,MaximizeTeamProductivity,BalanceWorkload
+2,SprintBacklogSelection,Boolean variable indicating whether a user story is selected for a sprint backlog.,Boolean,{0,1},User Story, Sprint Backlog,OptimizeSprintPlanning,MeetSprintGoals
+3,SkillMatch,Boolean variable indicating whether a worker's skill matches the requirements of a task.,Boolean,{0,1},Employee, Skill / Competence, OptimizeResourceAllocation, AvoidOverlappingSkills
+4,WorkerAvailability,Boolean variable indicating whether a worker is available for a specific task during a sprint.,Boolean,{0,1},Employee, Task / Sub-Task,BalanceWorkload,PreventResourceUnderutilization
+5,SprintGoalAchievement,Numeric variable representing the achievement status of a sprint goal (0-100%).,Numeric,[0,100],Sprint, Sprint Goal,MeetSprintGoals,PreventExcessiveMeetings
+6,TaskEffortEstimate,Numeric variable representing the estimated effort required to complete a task (in hours).,Numeric,[0,∞),Task / Sub-Task,MaximizeTeamProductivity,OptimizeResourceAllocation
+7,TeamVelocity,Numeric variable representing the average amount of work (story points) completed per sprint.,Numeric,[0,∞),Team,Velocity,MaximizeTeamProductivity,IncreaseStakeholderSatisfaction
+8,MeetingDuration,Numeric variable representing the duration of a meeting (in minutes).,Numeric,[0,∞),Daily Scrum, Sprint Planning, Sprint Review, Sprint Retrospective,PreventExcessiveMeetings
+9,TechnicalDebtAccumulation,Numeric variable representing the amount of technical debt accumulated during a sprint.,Numeric,[0,∞),Task / Sub-Task,MinimizeTechnicalDebt,PreventResourceUnderutilization
+10,StakeholderSatisfaction,Numeric variable representing the satisfaction level of stakeholders (0-100%).,Numeric,[0,100],Stakeholder,IncreaseStakeholderSatisfaction,EnsureClearCommunication
+,OptimizeResourceAllocation,PreventResourceUnderutilization
+,Scrum Board,Task / Sub-Task,1:N
+11:N
+,PreventExcessiveMeetings
+12:N
+,Feature Documentation,Feature,1:1
+1:N
+1:N
+,PreventExcessiveMeetings
+13:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N
+1:N"
+mistral-small3.2-24b-s1-v1,19,,,0.0,0.0,0.0,0,0,235,<empty>
+mistral-small3.2-24b-s1-v1,20,,,0.0,0.0,0.0,0,0,235,<empty>
+mistral-small3.2-24b-s1-v1,21,,,0.0,0.0,0.0,0,0,235,<empty>
+mistral-small3.2-24b-s1-v1,22,,,0.0,0.0,0.0,0,0,235,<empty>
