@@ -31,14 +31,14 @@ All output files of the LLMs are named as follows:
 - p3_graph.mmd
 
 
-# 🔍 LLM Keyword Analyse & Vergleich
+# LLM Keyword Analyse & Vergleich
 
 Dieses Repository enthält Tools zur **automatisierten Auswertung** von Chat-Verläufen verschiedener LLMs
 hinsichtlich ihrer **Keyword-Abdeckung** und **Prompt-Performance**.
 
 ---
 
-## 📁 Ordnerstruktur
+## Ordnerstruktur
 
 ```
 a-truely-diabolic-research-work/
@@ -66,7 +66,7 @@ a-truely-diabolic-research-work/
 
 ---
 
-## ⚙️ Funktionsweise
+## Funktionsweise
 
 ### `keyword_analyse.py`
 - **Liest** alle `chat.json`-Dateien unter `LLM_ROOT`
