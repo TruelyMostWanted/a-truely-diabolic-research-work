@@ -48,8 +48,8 @@ Five different CSV files are used: **Entities**, **Relations**, **Goals**, **Con
 | `ID`             | String  | Unique identifier of the goal |
 | `Name`           | String  | Readable name of the goal |
 | `Description`    | String  | Description or additional information |
-| `IsSum`          | Boolean | `true` = aggregation over multiple values, `false` = single value |
-| `GoalType`       | String  | Goal type: `Max` or `Min` |
+| `IsSum`          | Boolean | `true` = aggregation over multiple (or all) values of same entity, `false` = single value |
+| `GoalType`       | String  | Goal type: `min`(minimize) or `max`(maximize) |
 | `EntityName`     | String  | Name of the entity the goal refers to |
 | `EntityAttribute`| String  | Attribute of the entity being optimized |
 | `CriteriaType`   | String  | Type of Criteria (`2`(Must-Match), `1`(May-Match), `0`(Cannot-Match)) |
@@ -66,8 +66,8 @@ Five different CSV files are used: **Entities**, **Relations**, **Goals**, **Con
 | `ID`             | String  | Unique identifier of the condition |
 | `Name`           | String  | Readable name of the condition |
 | `Description`    | String  | Description or additional information |
-| `IsSum`          | Boolean | `true` = aggregation over multiple values, `false` = single value |
-| `GoalType`       | String  | `Max`, `Min` or other comparison types (depending on the model) |
+| `IsSum`          | Boolean | `true` = aggregation over multiple (or all) values of same entity, `false` = single value |
+| `GoalType`       | String  | Goal type: `min`(minimize) or `max`(maximize) or other comparison types |
 | `EntityName`     | String  | Name of the entity the condition refers to |
 | `EntityAttribute`| String  | Attribute of the entity being checked |
 | `CriteriaType`   | String  | Type of Criteria (`2`(Must-Match), `1`(May-Match), `0`(Cannot-Match)) |
