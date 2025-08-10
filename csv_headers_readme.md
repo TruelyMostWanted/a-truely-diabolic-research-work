@@ -1,106 +1,106 @@
-# SCRUM Optimierungsdaten – CSV-Struktur
+# SCRUM Optimization Data – CSV Structure
 
-Dieses Dokument beschreibt das Datenformat für die Eingabedateien eines Optimierungsmodells in einem SCRUM-basierten Softwareunternehmen.  
-Es werden fünf verschiedene CSV-Dateien verwendet: **Entitäten**, **Relationen**, **Ziele (Goals)**, **Nebenbedingungen (Conditions)** und **Entscheidungsvariablen (Decision Variables)**.
-
----
-
-## 1. Entities (Entitäten)
-
-**Dateiname:** `entities.csv`
-
-| Spalte        | Typ     | Beschreibung |
-|---------------|---------|--------------|
-| `ID`          | String  | Eindeutige Bezeichnung der Entität (innerhalb dieser Datei) |
-| `Name`        | String  | Lesbarer Name der Entität |
-| `Description` | String  | Beschreibung oder Zusatzinformationen |
-| `Attribute0`–`Attribute8` | String/Numeric | Bis zu 9 zusätzliche Eigenschaften der Entität, deren Bedeutung projektspezifisch definiert wird |
-
-**Hinweis:**  
-- `Name` wird für Referenzen in anderen Dateien verwendet (nicht `ID`).  
-- Die Attribute sind generisch benannt, um eine einfache CSV-Struktur zu behalten.  
+This document describes the data format for the input files of an optimization model in a SCRUM-based software company.  
+Five different CSV files are used: **Entities**, **Relations**, **Goals**, **Conditions**, and **Decision Variables**.
 
 ---
 
-## 2. Relations (Relationen)
+## 1. Entities
 
-**Dateiname:** `relations.csv`
+**File name:** `entities.csv`
 
-| Spalte           | Typ     | Beschreibung |
-|------------------|---------|--------------|
-| `ID`             | String  | Eindeutige Bezeichnung der Relation |
-| `Name`           | String  | Lesbarer Name der Relation |
-| `Description`    | String  | Beschreibung oder Zusatzinformationen |
-| `FromEntity`     | String  | Name der Quell-Entität (muss in `entities.csv` vorkommen) |
-| `ToEntity`       | String  | Name der Ziel-Entität (muss in `entities.csv` vorkommen) |
-| `FromCardinality`| String  | Kardinalität der Beziehung von der Quellseite (z. B. `1`, `n`) |
-| `ToCardinality`  | String  | Kardinalität der Beziehung von der Zielseite |
-| `Weight`         | Numeric | Optionales Gewicht oder Stärke der Relation |
+| Column          | Type    | Description |
+|-----------------|---------|-------------|
+| `ID`            | String  | Unique identifier of the entity (within this file) |
+| `Name`          | String  | Readable name of the entity |
+| `Description`   | String  | Description or additional information |
+| `Attribute0`–`Attribute8` | String/Numeric | Up to 9 additional properties of the entity, meaning is project-specific |
 
----
-
-## 3. Goals (Ziele)
-
-**Dateiname:** `goals.csv`
-
-| Spalte           | Typ     | Beschreibung |
-|------------------|---------|--------------|
-| `ID`             | String  | Eindeutige Bezeichnung des Ziels |
-| `Name`           | String  | Lesbarer Name des Ziels |
-| `Description`    | String  | Beschreibung oder Zusatzinformationen |
-| `IsSum`          | Boolean | `true` = Aggregation über mehrere Werte, `false` = Einzelwert |
-| `GoalType`       | String  | Art des Ziels: `Max` oder `Min` |
-| `EntityName`     | String  | Name der Entität, auf die sich das Ziel bezieht |
-| `EntityAttribute`| String  | Attribut der Entität, das optimiert wird |
-| `CriteriaType`   | String  | Typ des Vergleichs oder der Berechnung (projektspezifisch definiert) |
-| `Weight`         | Numeric | Gewichtung des Ziels bei Mehrziel-Optimierung |
+**Note:**  
+- `Name` is used for references in other files (not `ID`).  
+- The attributes are generically named to keep a simple CSV structure.  
 
 ---
 
-## 4. Conditions (Nebenbedingungen / Constraints)
+## 2. Relations
 
-**Dateiname:** `conditions.csv`
+**File name:** `relations.csv`
 
-| Spalte           | Typ     | Beschreibung |
-|------------------|---------|--------------|
-| `ID`             | String  | Eindeutige Bezeichnung der Nebenbedingung |
-| `Name`           | String  | Lesbarer Name der Nebenbedingung |
-| `Description`    | String  | Beschreibung oder Zusatzinformationen |
-| `IsSum`          | Boolean | `true` = Aggregation über mehrere Werte, `false` = Einzelwert |
-| `GoalType`       | String  | `Max`, `Min` oder andere Vergleichsarten (abhängig vom Modell) |
-| `EntityName`     | String  | Name der Entität, auf die sich die Bedingung bezieht |
-| `EntityAttribute`| String  | Attribut der Entität, das geprüft wird |
-| `CriteriaType`   | String  | Typ des Vergleichs oder der Prüfung (z. B. `<`, `<=`, `=`, `>=`, `>`) |
-| `Weight`         | Numeric | Gewichtung: leer oder ∞ für HardConstraint, positiver Wert für SoftConstraint |
-
-**Hinweis:**  
-- **HardConstraint**: `Weight` leer lassen oder sehr hoher Wert (∞).  
-- **SoftConstraint**: `Weight` > 0, dieser Wert wird als Strafkosten in die Zielfunktion einbezogen.
+| Column           | Type    | Description |
+|------------------|---------|-------------|
+| `ID`             | String  | Unique identifier of the relation |
+| `Name`           | String  | Readable name of the relation |
+| `Description`    | String  | Description or additional information |
+| `FromEntity`     | String  | Name of the source entity (must exist in `entities.csv`) |
+| `ToEntity`       | String  | Name of the target entity (must exist in `entities.csv`) |
+| `FromCardinality`| String  | Cardinality of the relation from the source side (e.g., `1`, `n`) |
+| `ToCardinality`  | String  | Cardinality of the relation from the target side |
+| `Weight`         | Numeric | Optional weight or strength of the relation |
 
 ---
 
-## 5. Decision Variables (Entscheidungsvariablen)
+## 3. Goals
 
-**Dateiname:** `decision_variables.csv`
+**File name:** `goals.csv`
 
-| Spalte        | Typ     | Beschreibung |
-|---------------|---------|--------------|
-| `ID`          | String  | Eindeutige Bezeichnung der Variablen |
-| `Name`        | String  | Lesbarer Name der Variablen |
-| `Description` | String  | Beschreibung oder Zusatzinformationen |
-| `DataType`    | String  | `Binary`, `Integer` oder `Real` |
-| `Domain`      | String  | Wertebereich (z. B. `{0,1}` oder `{A,B,C}`) |
-| `MinValue`    | Numeric | Untergrenze (falls anwendbar) |
-| `MaxValue`    | Numeric | Obergrenze (falls anwendbar) |
+| Column           | Type    | Description |
+|------------------|---------|-------------|
+| `ID`             | String  | Unique identifier of the goal |
+| `Name`           | String  | Readable name of the goal |
+| `Description`    | String  | Description or additional information |
+| `IsSum`          | Boolean | `true` = aggregation over multiple values, `false` = single value |
+| `GoalType`       | String  | Goal type: `Max` or `Min` |
+| `EntityName`     | String  | Name of the entity the goal refers to |
+| `EntityAttribute`| String  | Attribute of the entity being optimized |
+| `CriteriaType`   | String  | Type of Criteria (`2`(Must-Match), `1`(May-Match), `0`(Cannot-Match)) |
+| `Weight`         | Numeric | Weight of the goal in multi-objective optimization |
 
 ---
 
-## Allgemeine Hinweise
+## 4. Conditions (Constraints)
 
-- **Referenzen** zwischen Dateien erfolgen über den `Name` einer Entität oder Relation, nicht über `ID`.  
-- CSV-Dateien sollten UTF-8-kodiert sein.  
-- Numerische Felder sollten Punkt `.` als Dezimaltrennzeichen nutzen.  
-- Leere Werte in optionalen Feldern dürfen frei gelassen werden.  
-- Kommentare sind in CSV-Dateien nicht erlaubt. Für Notizen bitte separate Dokumentation führen.
+**File name:** `conditions.csv`
+
+| Column           | Type    | Description |
+|------------------|---------|-------------|
+| `ID`             | String  | Unique identifier of the condition |
+| `Name`           | String  | Readable name of the condition |
+| `Description`    | String  | Description or additional information |
+| `IsSum`          | Boolean | `true` = aggregation over multiple values, `false` = single value |
+| `GoalType`       | String  | `Max`, `Min` or other comparison types (depending on the model) |
+| `EntityName`     | String  | Name of the entity the condition refers to |
+| `EntityAttribute`| String  | Attribute of the entity being checked |
+| `CriteriaType`   | String  | Type of Criteria (`2`(Must-Match), `1`(May-Match), `0`(Cannot-Match)) |
+| `Weight`         | Numeric | Weight: empty or ∞ for HardConstraint, positive value for SoftConstraint |
+
+**Note:**  
+- **HardConstraint**: leave `Weight` empty or use a very high value (∞).  
+- **SoftConstraint**: `Weight` > 0, value is treated as penalty cost in the objective function.
+
+---
+
+## 5. Decision Variables
+
+**File name:** `decision_variables.csv`
+
+| Column        | Type    | Description |
+|---------------|---------|-------------|
+| `ID`          | String  | Unique identifier of the decision variable |
+| `Name`        | String  | Readable name of the decision variable |
+| `Description` | String  | Description or additional information |
+| `DataType`    | String  | `Binary`, `Integer`, or `Real` |
+| `Domain`      | String  | Value domain (e.g., `{0,1}` or `{A,B,C}`) |
+| `MinValue`    | Numeric | Lower bound (if applicable) |
+| `MaxValue`    | Numeric | Upper bound (if applicable) |
+
+---
+
+## General Notes
+
+- **References** between files use the `Name` of an entity or relation, not the `ID`.  
+- CSV files should be UTF-8 encoded.  
+- Numeric fields should use `.` as the decimal separator.  
+- Empty values in optional fields can be left blank.  
+- Comments are not allowed in CSV files. Keep notes in separate documentation.
 
 ---
