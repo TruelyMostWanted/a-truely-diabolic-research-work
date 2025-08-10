@@ -18,7 +18,16 @@ Five different CSV files are used: **Entities**, **Relations**, **Goals**, **Con
 
 **Note:**  
 - `Name` is used for references in other files (not `ID`).  
-- The attributes are generically named to keep a simple CSV structure.  
+- The attributes are generically named to keep a simple CSV structure.
+
+**Example:**
+```csv
+ID,Name,Description,Attribute0,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6,Attribute7,Attribute8
+E0,Developer,Software Developer skilled in various technologies,SkillLevel,MaxHoursPerWeek,,,,,,,
+E1,Team,Group of developers working together,TeamSize,Location,,,,,,,
+E2,Task,Work item to be completed,EstimatedEffort,Priority,Type,Status,,,,,,,
+E3,Sprint,Time-boxed iteration period,StartDate,EndDate,MaxCapacity,,,,,,,
+```
 
 ---
 
@@ -37,6 +46,14 @@ Five different CSV files are used: **Entities**, **Relations**, **Goals**, **Con
 | `ToCardinality`  | String  | Cardinality of the relation from the target side |
 | `Weight`         | Numeric | Optional weight or strength of the relation |
 
+**Example:**
+```csv
+Name,Description,FromEntity,ToEntity,FromCardinality,ToCardinality,Unit,Weight
+works_on,"Developer works on Task","Developer","Task","0..n","0..n",1.0
+assigned_to_sprint,"Task is assigned to a sprint","Task","Sprint","1","1..n",1.0
+is_member_of,"Developer belongs to Team","Developer","Team","1","1..n",1.0
+```
+
 ---
 
 ## 3. Goals
@@ -54,6 +71,14 @@ Five different CSV files are used: **Entities**, **Relations**, **Goals**, **Con
 | `EntityAttribute`| String  | Attribute of the entity being optimized |
 | `CriteriaType`   | String  | Type of Criteria (`2`(Must-Match), `1`(May-Match), `0`(Cannot-Match)) |
 | `Weight`         | Numeric | Weight of the goal in multi-objective optimization |
+
+**Example:**
+```csv
+Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+maximize_velocity,"Maximize completed tasks per sprint",TRUE,Max,"Task","StoryPoints",2,1.0
+minimize_overtimes,"Minimize the overtimes (worktimes above limit) of all Developers",TRUE,Min,"Developer","WeeklyCapacity",1,0.5
+minimize_cost,"Minimize total costs",TRUE,Min,"Developer","HourlyCost",2,0.8
+```
 
 ---
 
@@ -76,6 +101,10 @@ Five different CSV files are used: **Entities**, **Relations**, **Goals**, **Con
 **Note:**  
 - **HardConstraint**: leave `Weight` empty or use a very high value (∞).  
 - **SoftConstraint**: `Weight` > 0, value is treated as penalty cost in the objective function.
+
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+```
 
 ---
 
