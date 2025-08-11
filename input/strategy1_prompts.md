@@ -5,23 +5,23 @@ You'll be receiving a sequence of questions and instructions."
 
 What do you know about optimization problems? 
 Create a table storing the different categories, types, forms, their names, descriptions and order it from most appearances (10) to less appearances (1). 
-Provide the result as CSV-file with header ""Rank, Type/Name, Abbreviation, Description, Solvability, Example, Appearances"""
+Provide the result as CSV code-block (file) with header "Rank,Name,Abbreviation,Description,Solvability,Example,Appearances"
 
 ---
 
 Consider software-development using SCRUM as agile method.
-What are the typical steps and phases of such a project? Create a CSV-file containing all smaller steps/phases from initial project planning, the development cycle, reviews all the until release and CI/CD. 
-Use the following header "ID, Step, Description, Interval, Result"
+What are the typical steps and phases of a SCRUM project? Create a CSV code-block (file) containing all smaller steps/phases from initial project planning, the development cycle, reviews all the until and past the release and CI/CD. 
+Create a CSV code-block (file) with header "ID, Step, Description, Interval, Result" and provide the contents in chat.
 
 ---
 
 In context of SCRUM, analyze how Natural Language Processing can be used to extract, structure and evaluate system requirements and their complexity in the software development process. 
-Create a CSV-file with header "Keyword, Category, Description, RelevantScrumEntities"
+Create a CSV code-block (file) with header "Keyword, Category, Description, RelevantScrumEntities" and provide the contents in chat.
 
 ---
 
 In context of a software-development team using scrum, describe what typical factors and forms exist towards the creation of cognitive pressure and stress development.
-Create a CSV-file with header "ID, Name, Description, AffectedEntities, Influence"" where Influences ranges vom 10 (high influence) to 1 (very little influence)"
+Create a CSV code-block (file) with header "ID, Name, Description, AffectedEntities, Influence"" where Influences ranges vom 10 (high influence) to 1 (very little influence)" and provide the contents in chat.
 
 ---
 
@@ -83,11 +83,11 @@ R20,plans_release,A Release Plan includes multiple Features,ReleasePlan,Feature,
 R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,ReleasePlan,Roadmap,N,1,1.0
 R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,DevelopmentSnapshot,1,1,1.0
 ```
-Read through them and store them in your memory"
+Read through them and store them in your memory
 
 ---
 
-Based on Entities.csv and Relationships.csv - Proceed and Create 3 individual CSV files (or code-blocks) named: Goals.csv + Conditions.csv + DecisionVariables.csv
+Based on Entities.csv and Relationships.csv - Proceed and Create 3 individual CSV code-blocks (alternative: files) in chat named: Goals.csv + Conditions.csv + DecisionVariables.csv
 Goals.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
 Conditions.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
 DecisionVariables.csv must have the following header: "ID,Name,Description,DataType,Domain,MinValue,MaxValue"
@@ -95,10 +95,11 @@ DecisionVariables.csv must have the following header: "ID,Name,Description,DataT
 The following conventions must be applied:
 ID starts with a letter G(oals), C(onditions), D(ecision)V(ariables) and a number follows, starting at 0, 1, 2, ....
 Name is written snake_case
+Names for Goals must begin with "maximize_" or "minimize_"
 IsSum is a boolean { True, False }
 GoalType is one of { "min", "max" }
 EntityName is always only 1 entry from the "Name" of Entities.csv
-EntityAttribute is one of the Attribute0...8 from Entities.csv
+EntityAttribute is one of the values in the "Attribute0" to "Attribute8" of the targeted Entity in Entities.csv
 CriteriaType is a number { 2 = Must-Match, 1 = May-Match, 0 = Cannot-Match }
 Domain can represent set of values like "{0,1}"
 MinValue is the smallest value that can be set
@@ -108,7 +109,7 @@ Created 10 to 15 entries in each of these files.
 
 ---
 
-Use ALL of the previoulsy provided and generated CSV data (Entities, Relations, Goals, Conditions, DecisionVariables) and formulate the optimization model mathematically and logically. 
+Use ALL of the previously provided and generated CSV data (Entities, Relations, Goals, Conditions, DecisionVariables) and formulate the optimization model mathematically and logically. 
 Write it into a code-block for a LaTeX (.tex) file and provide the generated Latex code in chat.
 The file consists of a introduction page with Title, Author, Date and Table of Contents.
 The actual file contest consists of 5 different \sections labeled "1. Sets (Entities)", "2. Indices", "3. Goals", "4. Conditions", "5. DecisionVariables"
