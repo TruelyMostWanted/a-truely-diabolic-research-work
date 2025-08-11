@@ -7,60 +7,60 @@ p4,"In context of a software-development team using scrum, describe what typical
 p5,"Consider the following structures for a domain model of a software development company using SCRUM:
 Entities.csv
 ```csv
-Name,Description,Attribute0,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6,Attribute7,Attribute8
-Project,The product or initiative to be developed,ID,Name,Project Start,Project End,Description,Budget,Status,Target Audience,Priority
-Team,Self-organized, cross-functional development team,ID,Name,Team Size,Team Start,Team Status,Location,Team Type,
-Worker / Employee,Individual team member working on the project,ID,Name,First Name,Email,Start Date,Status,Availability,
-Feature,Mid-sized functionality,ID,Title,Description,Status,Priority,Estimated Effort,,,
-Skill / Competence,Professional or social competence of a worker,ID,Label,Description,Level,Certified,Category,
-Role(s),Defined responsibilities within the Scrum team,ID,Role Name,Description,Area of Responsibility,,,
-Product Owner,Responsible for product vision and Product Backlog,ID,Name,Email,Availability,,,,,
-Scrum Master,Supports the team in applying Scrum,ID,Name,Email,Experience,,,,,
-Product Backlog,Ordered list of all requirements,ID,Created On,Last Updated,Number of Entries,Status,,,,
-Sprint,Fixed time period for creating an increment,ID,Sprint Number,Start Date,End Date,Status,Achievement of Goal,,,
-Sprint Planning,Kick-off meeting for Sprint preparation,ID,Date,Duration (min),Moderation,Outcome Documentation,,,,
-Daily Scrum,Daily 15-minute team meeting,ID,Date,Time,Duration,Moderation,,,,
-Sprint Review,Presentation and acceptance of results,ID,Date,Duration,Feedback Documentation,Attendees Count,,,,
-Sprint Retrospective,Retrospective for process improvement,ID,Date,Duration,Improvement Actions,Team Satisfaction,Moderation,,,
-Sprint Backlog,Selected backlog items + implementation plan,ID,Number of Tasks,Last Updated,Status,Total Effort,,,,
-Sprint Goal,Objective to be achieved within the sprint,ID,Objective Description,Achievement Status,Benefit,,,,
-Epic,Large requirement that can be split into stories,ID,Title,Description,Priority,Status,Estimated Effort,,,
-User Story,Requirement from the perspective of a user,ID,Title,Description,Acceptance Criteria,Priority,Story Points,Status,,,
-Task / Sub-Task,Smallest unit of work within a sprint,ID,Title,Description,Status,Effort,Type,,,
-Development Snapshot,Product at the end of a sprint,ID,Version Number,Creation Date,Test Status,Deployment Target,Documentation,,,
-Blocker / Problem / Bug,Obstacle hindering progress,ID,Title,Description,Severity,Status,Detected On,Resolved On,,,
-Stakeholder,Interested party in the product (internal/external),ID,Name,Organization,Role,Email,Area of Interest,Influence Level,Relevance to Feature,
-Velocity,Average amount of work per sprint,ID,Number of Sprints Used,Avg. Story Points,Max Velocity,Min Velocity,Trend,,,
-Release Plan,Plan for releasing specific features,ID,Version,Planned Date,Included Features,Status,,,,
-Roadmap,Long-term planning across releases,ID,Start Date,End Date,Milestones,Objectives,Versions,,,,
-Scrum Board,Visual representation of tasks during the sprint,ID,Board Type,Columns (ToDo/Done...),Number of Cards,Last Updated,,,,
-Feature Documentation,Documentation for a specific feature,ID,Title,Description,Creation Date,Change Log,Linked Requirements,Author,,,
+Name,SetName,Index,Description,Attribute0,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6,Attribute7,Attribute8
+Project,P,p,The product or initiative to be developed,ID,Name,Project Start,Project End,Description,Budget,Status,Target Audience,Priority
+Team,T,t,Self-organized, cross-functional development team,ID,Name,Team Size,Team Start,Team Status,Location,Team Type,
+Worker,W,w,Individual team member working on the project,ID,Name,First Name,Email,Start Date,Status,Availability,
+Feature,F,f,Mid-sized functionality,ID,Title,Description,Status,Priority,Estimated Effort,,,
+Skill,S,s,Professional or social competence of a worker,ID,Label,Description,Level,Certified,Category,
+Role,R,r,Defined responsibilities within the Scrum team,ID,Role Name,Description,Area of Responsibility,,,
+Product Owner,PO,po,Responsible for product vision and Product Backlog,ID,Name,Email,Availability,,,,,
+Scrum Master,SM,sm,Supports the team in applying Scrum,ID,Name,Email,Experience,,,,,
+Product Backlog,PB,pb,Ordered list of all requirements,ID,Created On,Last Updated,Number of Entries,Status,,,,
+Sprint,SP,sp,Fixed time period for creating an increment,ID,Sprint Number,Start Date,End Date,Status,Achievement of Goal,,,
+Sprint Planning,SPP,spp,Kick-off meeting for Sprint preparation,ID,Date,Duration (min),Moderation,Outcome Documentation,,,,
+Daily Scrum,DS,ds,Daily 15-minute team meeting,ID,Date,Time,Duration,Moderation,,,,
+Sprint Review,SR,sr,Presentation and acceptance of results,ID,Date,Duration,Feedback Documentation,Attendees Count,,,,
+Sprint Retrospective,SRE,sre,Retrospective for process improvement,ID,Date,Duration,Improvement Actions,Team Satisfaction,Moderation,,,
+Sprint Backlog,SBL,sbl,Selected backlog items + implementation plan,ID,Number of Tasks,Last Updated,Status,Total Effort,,,,
+Sprint Goal,SG,sg,Objective to be achieved within the sprint,ID,Objective Description,Achievement Status,Benefit,,,,
+Epic,E,e,Large requirement that can be split into stories,ID,Title,Description,Priority,Status,Estimated Effort,,,
+User Story,US,us,Requirement from the perspective of a user,ID,Title,Description,Acceptance Criteria,Priority,Story Points,Status,,,
+Task,TSK,tsk,Smallest unit of work within a sprint,ID,Title,Description,Status,Effort,Type,,,
+Development Snapshot,DEV,dev,Product at the end of a sprint,ID,Version Number,Creation Date,Test Status,Deployment Target,Documentation,,,
+Blocker,BL,bl,Obstacle hindering progress,ID,Title,Description,Severity,Status,Detected On,Resolved On,,,
+Stakeholder,SH,sh,Interested party in the product (internal/external),ID,Name,Organization,Role,Email,Area of Interest,Influence Level,Relevance to Feature,
+Velocity,VEL,vel,Average amount of work per sprint,ID,Number of Sprints Used,Avg. Story Points,Max Velocity,Min Velocity,Trend,,,
+Release Plan,REP,rep,Plan for releasing specific features,ID,Version,Planned Date,Included Features,Status,,,,
+Roadmap,RM,rm,Long-term planning across releases,ID,Start Date,End Date,Milestones,Objectives,Versions,,,,
+Scrum Board,SCB,scb,Visual representation of tasks during the sprint,ID,Board Type,Columns (ToDo/Done...),Number of Cards,Last Updated,,,,
+Feature Documentation,FED,fed,Documentation for a specific feature,ID,Title,Description,Creation Date,Change Log,Linked Requirements,Author,,,
 ```
 Relationships.csv
 ```csv
-Name,Description,Entity1,Entity2,Cardinality
-is_assigned_to_project,The team is assigned to a project,Team,Project,1:N
-belongs_to_team,An employee is assigned to a team,Employee,Team,N:1
-has_skill,An employee has certain skills,Employee,Skill,N:M
-takes_on_role,An employee assumes a role in the team,Employee,Role(s),N:M
-manages_backlog,The Product Owner manages the Product Backlog,Product Owner,Product Backlog,1:1
-is_supported_by,The team is supported by a Scrum Master,Team,Scrum Master,1:1
-contains_feature,A Product Backlog contains Features,Product Backlog,Feature,1:N
-contains_epic,A Product Backlog contains Epics,Product Backlog,Epic,1:N
-contains_user_story,An Epic contains multiple User Stories,Epic,User Story,1:N
-consists_of_tasks,A User Story consists of multiple Tasks,User Story,Task / Sub-Task,1:N
-is_in_sprint_backlog,A User Story is assigned to a Sprint Backlog,User Story,Sprint Backlog,N:M
-belongs_to_sprint,A Sprint Backlog belongs to a Sprint,Sprint Backlog,Sprint,1:1
-pursues_goal,A Sprint pursues a defined goal,Sprint,Sprint Goal,1:1
-contains_tasks,A Scrum Board contains all tasks of a Sprint,Scrum Board,Task / Sub-Task,1:N
-documents_feature,Feature Documentation belongs to a Feature,Feature Documentation,Feature,1:1
-is_blocked_by,A Task can be blocked by a Blocker,Task / Sub-Task,Blocker / Problem / Bug,N:M
-participates_in,Stakeholders participate in a Sprint Review,Stakeholder,Sprint Review,N:M
-moderates_retrospective,A Scrum Master moderates the Retrospective,Scrum Master,Sprint Retrospective,1:N
-refers_to_team,Velocity refers to a specific Team,Velocity,Team,1:1
-plans_release,A Release Plan includes multiple Features,Release Plan,Feature,1:N
-is_part_of_roadmap,A Release Plan is part of a Roadmap,Release Plan,Roadmap,N:1
-generates_snapshot,A Sprint generates a Development Snapshot,Sprint,Development Snapshot,1:1
+ID,Name,Description,FromEntity,ToEntity,FromCardinality,ToCardinality,Weight
+R1,is_assigned_to_project,The team is assigned to a project,Team,Project,1,N,1.0
+R2,belongs_to_team,An employee is assigned to a team,Employee,Team,N,1,1.0
+R3,has_skill,An employee has certain skills,Employee,Skill,N,M,1.0
+R4,takes_on_role,An employee assumes a role in the team,Employee,Role,N,M,1.0
+R5,manages_backlog,The Product Owner manages the Product Backlog,Product Owner,Product Backlog,1,1,1.0
+R6,is_supported_by,The team is supported by a Scrum Master,Team,Scrum Master,1,1,1.0
+R7,contains_feature,A Product Backlog contains Features,Product Backlog,Feature,1,N,1.0
+R8,contains_epic,A Product Backlog contains Epics,Product Backlog,Epic,1,N,1.0
+R9,contains_user_story,An Epic contains multiple User Stories,Epic,User Story,1,N,1.0
+R10,consists_of_tasks,A User Story consists of multiple Tasks,User Story,Task,1,N,1.0
+R11,is_in_sprint_backlog,A User Story is assigned to a Sprint Backlog,User Story,Sprint Backlog,N,M,1.0
+R12,belongs_to_sprint,A Sprint Backlog belongs to a Sprint,Sprint Backlog,Sprint,1,1,1.0
+R13,pursues_goal,A Sprint pursues a defined goal,Sprint,Sprint Goal,1,1,1.0
+R14,contains_tasks,A Scrum Board contains all tasks of a Sprint,Scrum Board,Task,1,N,1.0
+R15,documents_feature,Feature Documentation belongs to a Feature,Feature Documentation,Feature,1,1,1.0
+R16,is_blocked_by,A Task can be blocked by a Blocker,Task,Blocker,N,M,1.0
+R17,participates_in,Stakeholders participate in a Sprint Review,Stakeholder,Sprint Review,N,M,1.0
+R18,moderates_retrospective,A Scrum Master moderates the Retrospective,Scrum Master,Sprint Retrospective,1,N,1.0
+R19,refers_to_team,Velocity refers to a specific Team,Velocity,Team,1,1,1.0
+R20,plans_release,A Release Plan includes multiple Features,Release Plan,Feature,1,N,1.0
+R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,Release Plan,Roadmap,N,1,1.0
+R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,Development Snapshot,1,1,1.0
 ```
 Read through them and store them in your memory"
 p6,"Now define the Main Goals and Conditions of the optimization problem, based on all provided Entities.csv and Relationships.csv Create a CSV of form ""ID,Type,Name,Description,CriteriaType"" The ""CriteriaType"" column can be any of the following 3 values: { 2 = 🟢Must-Match, 1 = 🟡Can-Match, 0 =🔴Cannot-Match } Provide a equal number of goals in each ""CriteriaType"" and provide the result as a CSV"
