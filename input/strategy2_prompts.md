@@ -82,6 +82,8 @@ Use ALL of the previoulsy provided and generated CSV data (Entities, Relations, 
 Write it into a code-block for a LaTeX (.tex) file and provide the generated Latex code in chat.
 The file consists of a introduction page with Title, Author, Date and Table of Contents.
 The actual file contest consists of 5 different \sections labeled "1. Sets (Entities)", "2. Indices", "3. Goals", "4. Conditions", "5. DecisionVariables"
+The items of each category are itemized between \begin and \end.
+Goals and Conditions show both their IDs, Names and the logical and mathematical representation
 
 ---
 
