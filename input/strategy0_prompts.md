@@ -40,11 +40,11 @@ Erstelle nun eine Liste von Zielen und Nebenbedingungen für dieses Modell. Weis
 #### Prompt 8: Entscheidungsvariablen definieren
 Erstelle nun Entscheidungsvariablen (boolean und numerisch)
 
-#### Prompt 9: Mathematische Repräsentation
+#### Prompt 9: Mathematische & Logische Repräsentation (LaTeX Datei?)
 Nutze ALLE BISHERIGEN DATEN und formuliere das Optimierungsproblen mathematisch bzw. logisch. 
 Erstelle eine LaTeX Datei und speichere dort: Mengen, Indices, Entscheidungsvariablen, Ziele und Nebenbedingunen.
 
-#### Prompt 10: Visualisierung durch Mermaid.js
+#### Prompt 10: Visualisierung durch geeignete Syntax (Mermaid.js Live Editor?)
 Verwandele das erstelle Domänen-Optimierungs-Modell nun in eine strukturelle Graphen-Repräsentation.
 Verwende dafür die Mermaid Live Editor Syntax.
 Der Graph MUSS die Entitäten, Attribute, Relationen, Ziele und Bedingungen enthalten
