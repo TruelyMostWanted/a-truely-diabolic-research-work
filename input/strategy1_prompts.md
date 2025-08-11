@@ -67,7 +67,7 @@ R4,takes_on_role,An employee assumes a role in the team,Employee,Role,N,M,1.0
 R5,manages_backlog,The Product Owner manages the Product Backlog,ProductOwner,ProductBacklog,1,1,1.0
 R6,is_supported_by,The team is supported by a Scrum Master,Team,ScrumMaster,1,1,1.0
 R7,contains_feature,A Product Backlog contains Features,ProductBacklog,Feature,1,N,1.0
-R8,contains_epic,A Product Backlog contains Epics,ProductBacklog,Epic,1,N,1.0
+R8,contains_epic,A Product Backlog contains Epics,Product Backlog,Epic,1,N,1.0
 R9,contains_user_story,An Epic contains multiple User Stories,Epic,UserStory,1,N,1.0
 R10,consists_of_tasks,A User Story consists of multiple Tasks,UserStory,Task,1,N,1.0
 R11,is_in_sprint_backlog,A User Story is assigned to a Sprint Backlog,UserStory,SprintBacklog,N,M,1.0
@@ -76,12 +76,12 @@ R13,pursues_goal,A Sprint pursues a defined goal,Sprint,SprintGoal,1,1,1.0
 R14,contains_tasks,A Scrum Board contains all tasks of a Sprint,ScrumBoard,Task,1,N,1.0
 R15,documents_feature,Feature Documentation belongs to a Feature,FeatureDocumentation,Feature,1,1,1.0
 R16,is_blocked_by,A Task can be blocked by a Blocker,Task,Blocker,N,M,1.0
-R17,participates_in,Stakeholders participate in a Sprint Review,Stakeholder,SprintReview,N,M,1.0
-R18,moderates_retrospective,A Scrum Master moderates the Retrospective,Scrum Master,SprintRetrospective,1,N,1.0
+R17,participates_in,Stakeholders participate in a Sprint Review,Stakeholder,Sprint Review,N,M,1.0
+R18,moderates_retrospective,A Scrum Master moderates the Retrospective,ScrumMaster,SprintRetrospective,1,N,1.0
 R19,refers_to_team,Velocity refers to a specific Team,Velocity,Team,1,1,1.0
-R20,plans_release,A Release Plan includes multiple Features,Release Plan,Feature,1,N,1.0
-R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,Release Plan,Roadmap,N,1,1.0
-R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,Development Snapshot,1,1,1.0
+R20,plans_release,A Release Plan includes multiple Features,ReleasePlan,Feature,1,N,1.0
+R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,ReleasePlan,Roadmap,N,1,1.0
+R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,DevelopmentSnapshot,1,1,1.0
 ```
 Read through them and store them in your memory"
 
