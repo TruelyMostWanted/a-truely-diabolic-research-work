@@ -67,7 +67,7 @@ R4,takes_on_role,An employee assumes a role in the team,Employee,Role,N,M,1.0
 R5,manages_backlog,The Product Owner manages the Product Backlog,ProductOwner,ProductBacklog,1,1,1.0
 R6,is_supported_by,The team is supported by a Scrum Master,Team,ScrumMaster,1,1,1.0
 R7,contains_feature,A Product Backlog contains Features,ProductBacklog,Feature,1,N,1.0
-R8,contains_epic,A Product Backlog contains Epics,Product Backlog,Epic,1,N,1.0
+R8,contains_epic,A Product Backlog contains Epics,ProductBacklog,Epic,1,N,1.0
 R9,contains_user_story,An Epic contains multiple User Stories,Epic,UserStory,1,N,1.0
 R10,consists_of_tasks,A User Story consists of multiple Tasks,UserStory,Task,1,N,1.0
 R11,is_in_sprint_backlog,A User Story is assigned to a Sprint Backlog,UserStory,SprintBacklog,N,M,1.0
