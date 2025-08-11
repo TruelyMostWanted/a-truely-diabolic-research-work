@@ -56,7 +56,7 @@ R20,plans_release,A Release Plan includes multiple Features,ReleasePlan,Feature,
 R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,ReleasePlan,Roadmap,N,1,1.0
 R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,DevelopmentSnapshot,1,1,1.0
 ```
-Based on Entities.csv and Relationships.csv - Proceed and Create 3 individual CSV files (or code-blocks) named: Goals.csv + Conditions.csv + DecisionVariables.csv
+Based on Entities.csv and Relationships.csv - Proceed and Create 3 individual CSV code-blocks (alternative: files) in chat named: Goals.csv + Conditions.csv + DecisionVariables.csv
 Goals.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
 Conditions.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
 DecisionVariables.csv must have the following header: "ID,Name,Description,DataType,Domain,MinValue,MaxValue"
@@ -67,7 +67,7 @@ Name is written snake_case
 IsSum is a boolean { True, False }
 GoalType is one of { "min", "max" }
 EntityName is always only 1 entry from the "Name" of Entities.csv
-EntityAttribute is one of the Attribute0...8 from Entities.csv
+EntityAttribute is one of the values in the "Attribute0" to "Attribute8" of the targeted Entity in Entities.csv
 CriteriaType is a number { 2 = Must-Match, 1 = May-Match, 0 = Cannot-Match }
 Domain can represent set of values like "{0,1}"
 MinValue is the smallest value that can be set
