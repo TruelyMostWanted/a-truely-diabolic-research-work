@@ -91,6 +91,7 @@ Connect...
 - Goals with the Entity/Attributes
 - Conditions with the Entity/Attributes
 - DecisionVariables with their relevant Entities
+
 Colorize...
 - Entities in blue
 - Attributes in white
