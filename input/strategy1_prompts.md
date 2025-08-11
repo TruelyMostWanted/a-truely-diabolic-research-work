@@ -1,20 +1,30 @@
 I need you as a english speaking assistant towards modeling a specific optimization problem. 
 You'll be receiving a sequence of questions and instructions."
+
 ---
+
 What do you know about optimization problems? 
 Create a table storing the different categories, types, forms, their names, descriptions and order it from most appearances (10) to less appearances (1). 
 Provide the result as CSV-file with header ""Rank, Type/Name, Abbreviation, Description, Solvability, Example, Appearances"""
+
 ---
+
 Consider software-development using SCRUM as agile method.
 What are the typical steps and phases of such a project? Create a CSV-file containing all smaller steps/phases from initial project planning, the development cycle, reviews all the until release and CI/CD. 
 Use the following header "ID, Step, Description, Interval, Result"
+
 ---
+
 In context of SCRUM, analyze how Natural Language Processing can be used to extract, structure and evaluate system requirements and their complexity in the software development process. 
 Create a CSV-file with header "Keyword, Category, Description, RelevantScrumEntities"
+
 ---
+
 In context of a software-development team using scrum, describe what typical factors and forms exist towards the creation of cognitive pressure and stress development.
 Create a CSV-file with header "ID, Name, Description, AffectedEntities, Influence"" where Influences ranges vom 10 (high influence) to 1 (very little influence)"
+
 ---
+
 Consider the following structures for a domain model of a software development company using SCRUM:
 Entities.csv
 ```csv
@@ -74,7 +84,9 @@ R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,Release Plan,Roadmap,
 R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,Development Snapshot,1,1,1.0
 ```
 Read through them and store them in your memory"
+
 ---
+
 Based on Entities.csv and Relationships.csv - Proceed and Create 3 individual CSV files (or code-blocks) named: Goals.csv + Conditions.csv + DecisionVariables.csv
 Goals.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
 Conditions.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
@@ -93,12 +105,16 @@ MinValue is the smallest value that can be set
 MaxValue is the highest value that can be set
 Weight is a mulptlier
 Created 10 to 15 entries in each of these files.
+
 ---
+
 Use ALL of the previoulsy provided and generated CSV data (Entities, Relations, Goals, Conditions, DecisionVariables) and formulate the optimization model mathematically and logically. 
 Write it into a LaTeX (.tex) file (or code-block) and provide the created file in chat.
 The file consists of a introduction page with Title, Author, Date and Table of Contents.
 The actual file contest consists of 7 different \sections labeled "1. Problem/Model Description", "2. Sets (Entities)", "3. Indices", "4. Goals", "5. Conditions", "6. DecisionVariables" and "7. Possible Model Extension(s)"
+
 ---
+
 Transform all of the provided and generated CSV data (Entities, Attributes, Relations, Goals, Conditions, DecisionVariables) into a graph TD using the Mermaid.js Live Editor graph TD syntax.
 Connect...
 - Entities with their Attributes and place the Attributes around the Entities they belong to. (can exist multiple times in the graph to make lines less short)
