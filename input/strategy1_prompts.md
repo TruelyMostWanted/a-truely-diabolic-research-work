@@ -118,7 +118,7 @@ Goals and Conditions show both their IDs, Names and the logical and mathematical
 
 ---
 
-Transform all of the provided and generated CSV data (Entities, Attributes, Relations, Goals, Conditions, DecisionVariables) into a graph TD using the Mermaid.js Live Editor graph TD syntax.
+Transform all of the provided and generated CSV data (Entities, Attributes, Relations, Goals, Conditions, DecisionVariables) into a graph using the Mermaid.js Live Editor graph TD syntax.
 Connect...
 - Entities with their Attributes and place the Attributes around the Entities they belong to. (can exist multiple times in the graph to make lines less short)
 - Entities with their Relations
