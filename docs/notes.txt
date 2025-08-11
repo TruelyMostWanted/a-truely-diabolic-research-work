@@ -182,3 +182,17 @@ Genauere Tests bei Lokalen LLMs: To-Do
 - Automatisierte Keyword-Analyse mit Python-Skript (aktuell manuell)
 - (@TO-DO) PIPELINE: Automatisiertes Prompting `python run_prompt_pipeline.py --strategy s1 --run 10 --url http://localhost:11434/api/generate`
 - (@TO-DO) Timeouts für Prompts festlegen -> Maximale Grenze Lokal: (Aktuell) 10 Minunten / (Idee) 30 Minuten --> Ab wann ist es nicht mehr rentabel lokal mit einem LLM ein Optimierungsmodell zu generieren? 
+
+
+12) Vergleichbarkeit von Daten:
+- Wir betrachten ein Modell mit bestimmter Parameteranzahl (z.B. gemma3:27b)
+- Wir erstellen Datensätze für Goals, Conditions, DecisionVariables in mehreren Durchläufe v0 ... vn
+- Wir mergen alle CSV Dateien des gleichen Types (z.B. ./v0/Goals.csv bis /v10/Goals.csv) 
+- Erstellung einer all_goals.csv mit allen Goals aus allen Versuchen
+- Entfernung von Duplikaten aus all_goals.csv erzeugt eine unique_goals.csv im /gemma3/27b/ Ordner oberhalb
+- Auswertung: X viele Goals wurden erstellt (Anzahl in all_goals.csv) , Y viele sind verschieden (Anzahl in unique_goals.csv)
+- Berechnung: %-Zahl verschiedener Elemente | Doppelungen
+- Gleiche Idee bei Conditions und auch DecisionVariables.csv
+- Anwendung auf allen Modellen
+- Großer Merge aller unique_goals.csv mit allen verschiedenen Modellen "Lokal" und "Remote"
+Ergebnis: "every_unique_goal.csv" aus allen Models
