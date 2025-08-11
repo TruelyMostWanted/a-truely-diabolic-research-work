@@ -64,6 +64,7 @@ DecisionVariables.csv must have the following header: "ID,Name,Description,DataT
 The following conventions must be applied:
 ID starts with a letter G(oals), C(onditions), D(ecision)V(ariables) and a number follows, starting at 0, 1, 2, ....
 Name is written snake_case
+Names for Goals must begin with "maximize_" or "minimize_"
 IsSum is a boolean { True, False }
 GoalType is one of { "min", "max" }
 EntityName is always only 1 entry from the "Name" of Entities.csv
