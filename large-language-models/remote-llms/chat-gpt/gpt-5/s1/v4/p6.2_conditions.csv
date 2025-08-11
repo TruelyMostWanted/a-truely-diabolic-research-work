@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,minimize_overallocated_workers,"Keep individual availability within sustainable limits",False,min,Worker,availability,2,1.0
+C1,minimize_tasks_without_story,"Avoid tasks not linked to any user story",False,min,Task,type,2,0.8
+C2,maximize_definition_of_done_alignment,"Ensure tasks meet DoD status before review",False,max,Task,status,2,0.9
+C3,minimize_unplanned_scope,"Limit scope creep within a sprint",True,min,SprintBacklog,status,2,1.0
+C4,maximize_acceptance_criteria_coverage,"Stories must include acceptance criteria before start",False,max,UserStory,acceptance_criteria,2,1.0
+C5,minimize_blocked_tasks,"Keep blocked tasks below threshold",True,min,Blocker,status,2,1.0
+C6,minimize_unreviewed_code,"Ensure code review occurs for all tasks",True,min,Task,status,2,0.7
+C7,maximize_stakeholder_participation,"Encourage stakeholder attendance in sprint reviews",False,max,SprintReview,attendees_count,1,0.4
+C8,minimize_overlong_daily_scrum,"Keep daily scrum within time box",False,min,DailyScrum,duration,2,0.6
+C9,maximize_planning_outcome_quality,"Require documented outcome from sprint planning",False,max,SprintPlanning,outcome_documentation,2,0.9
+C10,minimize_backlog_size_spikes,"Avoid excessive backlog growth spurts",True,min,ProductBacklog,number_of_entries,1,0.5
+C11,maximize_feature_documentation_linkage,"Every feature should have linked documentation",False,max,FeatureDocumentation,linked_requirements,2,0.8

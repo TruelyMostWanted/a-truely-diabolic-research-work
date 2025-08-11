@@ -1,0 +1,217 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\geometry{margin=1in}
+
+\title{Multi-Objective Optimization Model for a Scrum-Based Software Development Organization}
+\author{Generated Assistant}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% ------------------------------------------------------------
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em]
+  \item $\mathcal{P}$ (P): set of Projects (\textit{Project})
+  \item $\mathcal{T}$ (T): set of Teams (\textit{Team})
+  \item $\mathcal{W}$ (W): set of Workers (\textit{Worker})
+  \item $\mathcal{F}$ (F): set of Features (\textit{Feature})
+  \item $\mathcal{S}$ (S): set of Skills (\textit{Skill})
+  \item $\mathcal{R}$ (R): set of Roles (\textit{Role})
+  \item $\mathcal{PO}$ (PO): set of Product Owners (\textit{ProductOwner})
+  \item $\mathcal{SM}$ (SM): set of Scrum Masters (\textit{ScrumMaster})
+  \item $\mathcal{PB}$ (PB): set of Product Backlogs (\textit{ProductBacklog})
+  \item $\mathcal{SP}$ (SP): set of Sprints (\textit{Sprint})
+  \item $\mathcal{SPP}$ (SPP): set of Sprint Planning events (\textit{SprintPlanning})
+  \item $\mathcal{DS}$ (DS): set of Daily Scrums (\textit{DailyScrum})
+  \item $\mathcal{SR}$ (SR): set of Sprint Reviews (\textit{SprintReview})
+  \item $\mathcal{SRE}$ (SRE): set of Sprint Retrospectives (\textit{SprintRetrospective})
+  \item $\mathcal{SBL}$ (SBL): set of Sprint Backlogs (\textit{SprintBacklog})
+  \item $\mathcal{SG}$ (SG): set of Sprint Goals (\textit{SprintGoal})
+  \item $\mathcal{E}$ (E): set of Epics (\textit{Epic})
+  \item $\mathcal{US}$ (US): set of User Stories (\textit{UserStory})
+  \item $\mathcal{TSK}$ (TSK): set of Tasks (\textit{Task})
+  \item $\mathcal{DEV}$ (DEV): set of Development Snapshots (\textit{DevelopmentSnapshot})
+  \item $\mathcal{BL}$ (BL): set of Blockers (\textit{Blocker})
+  \item $\mathcal{SH}$ (SH): set of Stakeholders (\textit{Stakeholder})
+  \item $\mathcal{VEL}$ (VEL): set of Velocity records (\textit{Velocity})
+  \item $\mathcal{REP}$ (REP): set of Release Plans (\textit{ReleasePlan})
+  \item $\mathcal{RM}$ (RM): set of Roadmaps (\textit{Roadmap})
+  \item $\mathcal{SCB}$ (SCB): set of Scrum Boards (\textit{ScrumBoard})
+  \item $\mathcal{FED}$ (FED): set of Feature Documents (\textit{FeatureDocumentation})
+\end{itemize}
+
+\noindent\textbf{Relationship sets (from \texttt{Relationships.csv}):}
+\begin{itemize}[leftmargin=2em]
+  \item $\mathcal{R}^{\text{team\_proj}} \subseteq \mathcal{T}\times\mathcal{P}$ (R1: team assigned to project)
+  \item $\mathcal{R}^{\text{worker\_team}} \subseteq \mathcal{W}\times\mathcal{T}$ (R2: worker belongs to team)\footnote{The CSV used ``Employee''; here we map to \textit{Worker}.}
+  \item $\mathcal{R}^{\text{worker\_skill}} \subseteq \mathcal{W}\times\mathcal{S}$ (R3)
+  \item $\mathcal{R}^{\text{worker\_role}} \subseteq \mathcal{W}\times\mathcal{R}$ (R4)
+  \item $\mathcal{R}^{\text{po\_pb}} \subseteq \mathcal{PO}\times\mathcal{PB}$ (R5)
+  \item $\mathcal{R}^{\text{team\_sm}} \subseteq \mathcal{T}\times\mathcal{SM}$ (R6)
+  \item $\mathcal{R}^{\text{pb\_feature}} \subseteq \mathcal{PB}\times\mathcal{F}$ (R7)
+  \item $\mathcal{R}^{\text{pb\_epic}} \subseteq \mathcal{PB}\times\mathcal{E}$ (R8)
+  \item $\mathcal{R}^{\text{epic\_us}} \subseteq \mathcal{E}\times\mathcal{US}$ (R9)
+  \item $\mathcal{R}^{\text{us\_task}} \subseteq \mathcal{US}\times\mathcal{TSK}$ (R10)
+  \item $\mathcal{R}^{\text{us\_sbl}} \subseteq \mathcal{US}\times\mathcal{SBL}$ (R11)
+  \item $\mathcal{R}^{\text{sbl\_sp}} \subseteq \mathcal{SBL}\times\mathcal{SP}$ (R12)
+  \item $\mathcal{R}^{\text{sp\_goal}} \subseteq \mathcal{SP}\times\mathcal{SG}$ (R13)
+  \item $\mathcal{R}^{\text{scb\_task}} \subseteq \mathcal{SCB}\times\mathcal{TSK}$ (R14)
+  \item $\mathcal{R}^{\text{fed\_feature}} \subseteq \mathcal{FED}\times\mathcal{F}$ (R15)
+  \item $\mathcal{R}^{\text{task\_blocker}} \subseteq \mathcal{TSK}\times\mathcal{BL}$ (R16)
+  \item $\mathcal{R}^{\text{sh\_review}} \subseteq \mathcal{SH}\times\mathcal{SR}$ (R17)
+  \item $\mathcal{R}^{\text{sm\_retro}} \subseteq \mathcal{SM}\times\mathcal{SRE}$ (R18)
+  \item $\mathcal{R}^{\text{vel\_team}} \subseteq \mathcal{VEL}\times\mathcal{T}$ (R19)
+  \item $\mathcal{R}^{\text{rep\_feature}} \subseteq \mathcal{REP}\times\mathcal{F}$ (R20)
+  \item $\mathcal{R}^{\text{rep\_rm}} \subseteq \mathcal{REP}\times\mathcal{RM}$ (R21)
+  \item $\mathcal{R}^{\text{sp\_dev}} \subseteq \mathcal{SP}\times\mathcal{DEV}$ (R22)
+\end{itemize}
+
+% ------------------------------------------------------------
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em]
+  \item $p \in \mathcal{P}$, $t \in \mathcal{T}$, $w \in \mathcal{W}$, $f \in \mathcal{F}$, $s \in \mathcal{S}$, $r \in \mathcal{R}$,
+        $po \in \mathcal{PO}$, $sm \in \mathcal{SM}$, $pb \in \mathcal{PB}$, $\sigma \in \mathcal{SP}$,
+        $spp \in \mathcal{SPP}$, $ds \in \mathcal{DS}$, $sr \in \mathcal{SR}$, $sre \in \mathcal{SRE}$,
+        $sbl \in \mathcal{SBL}$, $sg \in \mathcal{SG}$, $e \in \mathcal{E}$, $u \in \mathcal{US}$,
+        $k \in \mathcal{TSK}$, $v \in \mathcal{DEV}$, $b \in \mathcal{BL}$, $sh \in \mathcal{SH}$,
+        $vel \in \mathcal{VEL}$, $rep \in \mathcal{REP}$, $rm \in \mathcal{RM}$, $scb \in \mathcal{SCB}$, $fd \in \mathcal{FED}$.
+\end{itemize}
+
+\noindent\textbf{Selected parameters (from entity attributes):}
+\begin{itemize}[leftmargin=2em]
+  \item $\text{budget}_p$ (Project.budget), $\text{priority}^F_f$ (Feature.priority), $\text{effort}^{SBL}_{sbl}$ (SprintBacklog.total\_effort),
+        $\text{status}^{BL}_b$ (Blocker.status; treated via binary condition), $\text{avail}_w$ (Worker.availability),
+        $\text{avgSP}_{vel}$ (Velocity.avg\_story\_points), $\text{attend}_{sr}$ (SprintReview.attendees\_count),
+        $\text{objdesc}_{sg}$ (SprintGoal.objective\_description presence), $\text{acc}_{u}$ (UserStory.acceptance\_criteria presence),
+        $\text{tests}^{DEV}_{v}$ (DevelopmentSnapshot.test\_status), $\text{cards}_{scb}$ (ScrumBoard.number\_of\_cards),
+        $\text{size}_t$ (Team.team\_size).
+\end{itemize}
+
+% ------------------------------------------------------------
+\section{3. Goals}
+We formulate a scalarized multi-objective function using weights $w_g$ from \texttt{Goals.csv}. For each goal $g$, let $\operatorname{dir}(g)=+1$ if \texttt{GoalType}=\texttt{max} and $\operatorname{dir}(g)=-1$ if \texttt{GoalType}=\texttt{min}. The master objective is:
+\[
+\max\ \sum_{g \in \mathcal{G}} \operatorname{dir}(g)\, w_g \cdot \text{GoalValue}_g
+\]
+Below, each goal $G\#:$ \textit{name} is defined.
+
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{G0: maximize\_team\_velocity} \\
+  $\displaystyle \text{GoalValue}_{G0}=\sum_{vel\in\mathcal{VEL}} \text{avgSP}_{vel}$
+  \item \textbf{G1: minimize\_cycle\_time} \\
+  Proxy via snapshot creation lag; let $\text{cycle}(\sigma)=\text{lag}(\sigma)$ be a given metric. \\
+  $\displaystyle \text{GoalValue}_{G1}=\sum_{\sigma\in\mathcal{SP}} \text{cycle}(\sigma)$
+  \item \textbf{G2: minimize\_open\_blockers} \\
+  Let $open\_b\in\{0,1\}$ flag unresolved blockers. $\displaystyle \text{GoalValue}_{G2}=\sum_{b\in\mathcal{BL}} open\_b$
+  \item \textbf{G3: maximize\_sprint\_goal\_achievement} \\
+  Let $ach_{\sigma}\in\{0,1\}$ indicate Sprint goal achieved. $\displaystyle \text{GoalValue}_{G3}=\sum_{\sigma\in\mathcal{SP}} ach_{\sigma}$
+  \item \textbf{G4: minimize\_total\_effort} \\
+  $\displaystyle \text{GoalValue}_{G4}=\sum_{sbl\in\mathcal{SBL}} \text{effort}^{SBL}_{sbl}$
+  \item \textbf{G5: maximize\_feature\_priority\_delivered} \\
+  Decision link via $x^{rep}_{rep,f}\in\{0,1\}$. $\displaystyle \text{GoalValue}_{G5}=\sum_{rep\in\mathcal{REP}}\sum_{f\in\mathcal{F}} \text{priority}^F_f \, x^{rep}_{rep,f}$
+  \item \textbf{G6: minimize\_technical\_debt\_proxy} \\
+  Proxy via high-effort tasks done: $z^{done}_{\sigma,k}\in\{0,1\}$. $\displaystyle \text{GoalValue}_{G6}=\sum_{\sigma\in\mathcal{SP}}\sum_{k\in\mathcal{TSK}} \text{effort}_k \, z^{done}_{\sigma,k}$
+  \item \textbf{G7: maximize\_stakeholder\_satisfaction\_proxy} \\
+  $\displaystyle \text{GoalValue}_{G7}=\sum_{sr\in\mathcal{SR}} \text{attend}_{sr}$
+  \item \textbf{G8: minimize\_requirement\_ambiguity\_proxy} \\
+  Missing acceptance criteria: let $m_u = 1$ if $\text{acc}_u$ is missing, else $0$. $\displaystyle \text{GoalValue}_{G8}=\sum_{u\in\mathcal{US}} m_u$
+  \item \textbf{G9: maximize\_resource\_availability} \\
+  $\displaystyle \text{GoalValue}_{G9}=\sum_{w\in\mathcal{W}} \text{avail}_w$
+  \item \textbf{G10: minimize\_budget\_usage} \\
+  Let $\text{use}_p$ be planned/used budget. $\displaystyle \text{GoalValue}_{G10}=\sum_{p\in\mathcal{P}} \text{use}_p$
+  \item \textbf{G11: maximize\_roadmap\_progress} \\
+  Let $\text{milestonesHit}_{rm}$ be achieved milestones. $\displaystyle \text{GoalValue}_{G11}=\sum_{rm\in\mathcal{RM}} \text{milestonesHit}_{rm}$
+  \item \textbf{G12: maximize\_feature\_throughput} \\
+  Proxy via versions advanced: $\displaystyle \text{GoalValue}_{G12}=\sum_{v\in\mathcal{DEV}} \text{version\_number}_v$
+\end{itemize}
+
+% ------------------------------------------------------------
+\section{4. Conditions}
+Each condition is encoded as a hard constraint (CriteriaType 2 = must-match, 0 = cannot-match) or a structural rule. Below, $w_c$ denotes the weight of soft constraints (CriteriaType 1), if relaxed in a penalty term (not shown in the master objective for brevity).
+
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{C0: must\_have\_product\_owner} \\
+  For each $pb\in\mathcal{PB}$, $\exists\, po\in\mathcal{PO}:\ (po,pb)\in\mathcal{R}^{\text{po\_pb}}$ and $\text{avail}_{po}>0$.
+  \item \textbf{C1: must\_have\_scrum\_master} \\
+  For each $t\in\mathcal{T}$, $\exists\, sm\in\mathcal{SM}:\ (t,sm)\in\mathcal{R}^{\text{team\_sm}}$.
+  \item \textbf{C2: must\_define\_sprint\_goal} \\
+  For each $\sigma\in\mathcal{SP}$, $\exists\, sg\in\mathcal{SG}:\ (\sigma,sg)\in\mathcal{R}^{\text{sp\_goal}}$ and $\text{objdesc}_{sg}$ present.
+  \item \textbf{C3: cannot\_exceed\_team\_capacity} \\
+  For each $\sigma\in\mathcal{SP}$ and team $t$ active in $\sigma$:
+  \[
+  \sum_{k\in\mathcal{TSK}} \sum_{w\in\mathcal{W}} a^{\sigma}_{k,t}\, y^{alloc}_{k,w} \cdot \text{effort}_k \ \le\ \kappa \cdot \text{size}_t
+  \]
+  where $a^{\sigma}_{k,t}=1$ if task $k$ of sprint $\sigma$ belongs to team $t$; $\kappa$ converts headcount to capacity (hours/points).
+  \item \textbf{C4: must\_backlog\_items\_ready} \\
+  If $x^{us}_{u,sbl}=1$ (US $u$ selected into sprint backlog $sbl$), then $\text{acc}_u$ present. (Implication: $x^{us}_{u,sbl} \le \text{ready}_u$.)
+  \item \textbf{C5: cannot\_schedule\_blocked\_tasks} \\
+  If a blocker $b$ is active for task $k$ in $\sigma$, then $z^{done}_{\sigma,k}=0$. (i.e., $z^{done}_{\sigma,k} \le 1-open\_b$.)
+  \item \textbf{C6: must\_lock\_sprint\_scope} \\
+  For in-progress $\sigma$, sprint backlog $sbl$ linked via $(sbl,\sigma)\in\mathcal{R}^{\text{sbl\_sp}}$ remains fixed: $\Delta x^{us}_{u,sbl}=0$ after start.
+  \item \textbf{C7: must\_ci\_green} \\
+  For deployment decision $d^{prod}_{v}\in\{0,1\}$ on snapshot $v$, require $\text{tests}^{DEV}_{v}=\text{pass}$: $d^{prod}_{v} \le pass_v$.
+  \item \textbf{C8: must\_review\_documented} \\
+  For each $sr\in\mathcal{SR}$, $\text{feedback\_documentation}_{sr}$ present.
+  \item \textbf{C9: must\_retro\_actions\_tracked} \\
+  For each $sre\in\mathcal{SRE}$, record $\text{improvement\_actions}_{sre}$ and team satisfaction.
+  \item \textbf{C10: cannot\_exceed\_budget} \\
+  $\displaystyle \sum_{rep\in\mathcal{REP}}\sum_{f\in\mathcal{F}} \text{cost}_f\, x^{rep}_{rep,f} \ \le\ \sum_{p\in\mathcal{P}} \text{budget}_p$
+  \item \textbf{C11: must\_prioritize\_epics} \\
+  If $(e,u)\in\mathcal{R}^{\text{epic\_us}}$, then $\text{priority}^{E}_e$ defined.
+  \item \textbf{C12: must\_update\_velocity\_window} \\
+  For each $vel\in\mathcal{VEL}$, $\text{avgSP}_{vel}$ is computed over exactly $\text{number\_of\_sprints\_used}_{vel}$ recent sprints.
+  \item \textbf{C13: cannot\_overload\_columns} \\
+  For each $scb\in\mathcal{SCB}$, $\text{cards}_{scb} \le \text{WIPLimit}_{scb}$.
+\end{itemize}
+
+% ------------------------------------------------------------
+\section{5. DecisionVariables}
+Let the following decision variables encode assignment, selection, and capacity choices. Domains and bounds follow \texttt{DecisionVariables.csv}.
+
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{DV0: assign\_user\_story\_to\_sprint} \\
+  $x^{us}_{u,\sigma}\in\{0,1\}$: $1$ if user story $u$ is assigned to sprint $\sigma$; else $0$.
+  \item \textbf{DV1: select\_feature\_for\_release} \\
+  $x^{rep}_{rep,f}\in\{0,1\}$: $1$ if feature $f$ is included in release plan $rep$.
+  \item \textbf{DV2: allocate\_task\_to\_worker} \\
+  $y^{alloc}_{k,w}\in\{0,1\}$: $1$ if task $k$ is executed by worker $w$.
+  \item \textbf{DV3: set\_task\_status\_done} \\
+  $z^{done}_{\sigma,k}\in\{0,1\}$: $1$ if task $k$ is completed within sprint $\sigma$.
+  \item \textbf{DV4: activate\_blocker\_resolution} \\
+  $r^{blk}_{\sigma,b}\in\{0,1\}$: $1$ if blocker $b$ is resolved in sprint $\sigma$.
+  \item \textbf{DV5: choose\_sprint\_goal\_commitment} \\
+  $c^{goal}_{\sigma}\in\{0,1\}$: $1$ if sprint goal for $\sigma$ is committed.
+  \item \textbf{DV6: allocate\_team\_to\_project} \\
+  $x^{tp}_{t,p}\in\{0,1\}$: $1$ if team $t$ is assigned to project $p$.
+  \item \textbf{DV7: prioritize\_user\_story} \\
+  $\pi^{us}_{u}\in\{1,2,3,4,5\}$: integer priority rank for user story $u$.
+  \item \textbf{DV8: estimate\_story\_points} \\
+  $sp_u\in\{1,2,3,5,8,13,20\}$: integer story-point estimate for $u$.
+  \item \textbf{DV9: set\_worker\_availability} \\
+  $\alpha_w\in[0,100]$: availability percentage for worker $w$ in the sprint.
+  \item \textbf{DV10: limit\_sprint\_wip} \\
+  $L^{wip}_{\sigma,w}\in[1,10]\cap\mathbb{Z}$: max concurrent tasks per worker $w$ in sprint $\sigma$.
+  \item \textbf{DV11: select\_epic\_for\_decomposition} \\
+  $x^{epic}_{e}\in\{0,1\}$: $1$ if epic $e$ is selected for decomposition this increment.
+  \item \textbf{DV12: choose\_deployment\_target} \\
+  $d^{prod}_{v}\in\{0,1\}$: $1$ if development snapshot $v$ targets production.
+\end{itemize}
+
+\bigskip
+\noindent\textbf{Linking/structural constraints (typical):}
+\begin{itemize}[leftmargin=2em]
+  \item User Story--Sprint Backlog linkage: if $x^{us}_{u,\sigma}=1$ then $\exists\, sbl:\ (u,sbl)\in\mathcal{R}^{\text{us\_sbl}} \wedge (sbl,\sigma)\in\mathcal{R}^{\text{sbl\_sp}}$.
+  \item Task completion implies allocation: $z^{done}_{\sigma,k}\ \le\ \sum_{w\in\mathcal{W}} y^{alloc}_{k,w}$.
+  \item WIP limit: $\sum_{k} y^{alloc}_{k,w} \le L^{wip}_{\sigma,w}$ for each $\sigma,w$ concurrently active.
+  \item Capacity vs availability: $\sum_{k} y^{alloc}_{k,w}\,\text{effort}_k \le \gamma \cdot \alpha_w$ (calibration factor $\gamma$).
+  \item Team--Project consistency: $x^{tp}_{t,p}=1 \Rightarrow (t,p)\in \mathcal{R}^{\text{team\_proj}}$ (or create/activate such assignment).
+  \item Release membership feasibility: $x^{rep}_{rep,f}=1 \Rightarrow (rep,f)\in \mathcal{R}^{\text{rep\_feature}}$.
+\end{itemize}
+
+\end{document}

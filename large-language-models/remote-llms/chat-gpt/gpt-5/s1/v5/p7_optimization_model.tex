@@ -1,0 +1,273 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{enumitem}
+\geometry{margin=1in}
+
+\title{Integrated Optimization Model for a SCRUM-based Software Development Organization}
+\author{(based on provided Entities, Relationships, Goals, Conditions, Decision Variables)}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em]
+  \item $\mathcal{P}$ (Projects; Entity: \texttt{Project}, Index $p$)
+  \item $\mathcal{T}$ (Teams; Entity: \texttt{Team}, Index $t$)
+  \item $\mathcal{W}$ (Workers; Entity: \texttt{Worker}, Index $w$)
+  \item $\mathcal{F}$ (Features; Entity: \texttt{Feature}, Index $f$)
+  \item $\mathcal{S}$ (Skills; Entity: \texttt{Skill}, Index $s$)
+  \item $\mathcal{R}$ (Roles; Entity: \texttt{Role}, Index $r$)
+  \item $\mathcal{PO}$ (Product Owners; Entity: \texttt{ProductOwner}, Index $po$)
+  \item $\mathcal{SM}$ (Scrum Masters; Entity: \texttt{ScrumMaster}, Index $sm$)
+  \item $\mathcal{PB}$ (Product Backlogs; Entity: \texttt{ProductBacklog}, Index $pb$)
+  \item $\mathcal{SP}$ (Sprints; Entity: \texttt{Sprint}, Index $sp$)
+  \item $\mathcal{SPP}$ (Sprint Plannings; Entity: \texttt{SprintPlanning}, Index $spp$)
+  \item $\mathcal{DS}$ (Daily Scrums; Entity: \texttt{DailyScrum}, Index $ds$)
+  \item $\mathcal{SR}$ (Sprint Reviews; Entity: \texttt{SprintReview}, Index $sr$)
+  \item $\mathcal{SRE}$ (Sprint Retrospectives; Entity: \texttt{SprintRetrospective}, Index $sre$)
+  \item $\mathcal{SBL}$ (Sprint Backlogs; Entity: \texttt{SprintBacklog}, Index $sbl$)
+  \item $\mathcal{SG}$ (Sprint Goals; Entity: \texttt{SprintGoal}, Index $sg$)
+  \item $\mathcal{E}$ (Epics; Entity: \texttt{Epic}, Index $e$)
+  \item $\mathcal{US}$ (User Stories; Entity: \texttt{UserStory}, Index $us$)
+  \item $\mathcal{TSK}$ (Tasks; Entity: \texttt{Task}, Index $tsk$)
+  \item $\mathcal{DEV}$ (Development Snapshots; Entity: \texttt{DevelopmentSnapshot}, Index $dev$)
+  \item $\mathcal{BL}$ (Blockers; Entity: \texttt{Blocker}, Index $bl$)
+  \item $\mathcal{SH}$ (Stakeholders; Entity: \texttt{Stakeholder}, Index $sh$)
+  \item $\mathcal{VEL}$ (Velocities; Entity: \texttt{Velocity}, Index $vel$)
+  \item $\mathcal{REP}$ (Release Plans; Entity: \texttt{ReleasePlan}, Index $rep$)
+  \item $\mathcal{RM}$ (Roadmaps; Entity: \texttt{Roadmap}, Index $rm$)
+  \item $\mathcal{SCB}$ (Scrum Boards; Entity: \texttt{ScrumBoard}, Index $scb$)
+  \item $\mathcal{FED}$ (Feature Documentations; Entity: \texttt{FeatureDocumentation}, Index $fed$)
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em]
+  \item $p \in \mathcal{P}$,\; $t \in \mathcal{T}$,\; $w \in \mathcal{W}$,\; $f \in \mathcal{F}$,\; $s \in \mathcal{S}$,\; $r \in \mathcal{R}$.
+  \item $po \in \mathcal{PO}$,\; $sm \in \mathcal{SM}$,\; $pb \in \mathcal{PB}$,\; $sp \in \mathcal{SP}$,\; $spp \in \mathcal{SPP}$,\; $ds \in \mathcal{DS}$.
+  \item $sr \in \mathcal{SR}$,\; $sre \in \mathcal{SRE}$,\; $sbl \in \mathcal{SBL}$,\; $sg \in \mathcal{SG}$,\; $e \in \mathcal{E}$,\; $us \in \mathcal{US}$.
+  \item $tsk \in \mathcal{TSK}$,\; $dev \in \mathcal{DEV}$,\; $bl \in \mathcal{BL}$,\; $sh \in \mathcal{SH}$,\; $vel \in \mathcal{VEL}$.
+  \item $rep \in \mathcal{REP}$,\; $rm \in \mathcal{RM}$,\; $scb \in \mathcal{SCB}$,\; $fed \in \mathcal{FED}$.
+\end{itemize}
+
+\subsection*{Relationship-induced subsets (from Relationships.csv)}
+\begin{itemize}[leftmargin=2em]
+  \item $\mathcal{F}(pb) \subseteq \mathcal{F}$: features contained in product backlog $pb$ (R7).
+  \item $\mathcal{E}(pb) \subseteq \mathcal{E}$: epics contained in product backlog $pb$ (R8).
+  \item $\mathcal{US}(e) \subseteq \mathcal{US}$: user stories in epic $e$ (R9).
+  \item $\mathcal{TSK}(us) \subseteq \mathcal{TSK}$: tasks of user story $us$ (R10).
+  \item $\mathcal{US}(sbl) \subseteq \mathcal{US}$: user stories assigned to sprint backlog $sbl$ (R11).
+  \item $sbl(sp) \in \mathcal{SBL}$: unique sprint backlog of sprint $sp$ (R12).
+  \item $sg(sp) \in \mathcal{SG}$: goal pursued by sprint $sp$ (R13).
+  \item $\mathcal{TSK}(scb) \subseteq \mathcal{TSK}$: tasks represented on board $scb$ (R14).
+  \item $\mathcal{FED}(f)$: documentation linked to feature $f$ (R15).
+  \item $\mathcal{BL}(tsk) \subseteq \mathcal{BL}$: blockers that block task $tsk$ (R16).
+  \item $\mathcal{F}(rep) \subseteq \mathcal{F}$: features planned in release plan $rep$ (R20).
+  \item $rm(rep) \in \mathcal{RM}$: roadmap to which release plan $rep$ belongs (R21).
+\end{itemize}
+
+\subsection*{Parameters (from Entities' attributes)}
+\begin{itemize}[leftmargin=2em]
+  \item $\text{eff}^{F}_f$ = \texttt{estimated\_effort} of feature $f$; $\text{prio}^{US}_{us}$ = \texttt{priority} of user story $us$; $\text{sp}^{US}_{us}$ = \texttt{story\_points}.
+  \item $\text{eff}^{TSK}_{tsk}$ = \texttt{effort} of task $tsk$; $\text{sev}^{BL}_{bl}$ = \texttt{severity}.
+  \item $\text{cards}^{SCB}_{scb}$ = \texttt{number\_of\_cards}; $\text{nTasks}^{SBL}_{sbl}$ = \texttt{number\_of\_tasks}; $\text{totEff}^{SBL}_{sbl}$ = \texttt{total\_effort}.
+  \item $\text{fresh}^{PB}_{pb}$ = freshness proxy from \texttt{last\_updated}; $\text{entries}^{PB}_{pb}$ = \texttt{number\_of\_entries}.
+  \item $\text{sat}^{SRE}_{sre}$ = \texttt{team\_satisfaction}; $\text{dur}^{SR}_{sr}$ = \texttt{duration}; $\text{dur}^{DS}_{ds}$ = \texttt{duration}.
+  \item $\text{ach}^{SP}_{sp}$ = \texttt{achievement\_of\_goal}; $\text{mil}^{RM}_{rm}$ = count proxy from \texttt{milestones}.
+  \item $\text{maxVel}^{VEL}_{t}$, $\overline{\text{sp}}^{VEL}_{t}$ = \texttt{max\_velocity}, \texttt{avg.\_story\_points} referring to team $t$ (R19).
+  \item $\text{avail}^{PO}_{po}$ = \texttt{availability}; $\text{exp}^{SM}_{sm}$ = \texttt{experience}.
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{G0 maximize\_velocity} \; (ID: G0)\\
+  \emph{Maximize historical team throughput (Velocity.max\_velocity).}\\
+  \[
+    \max \; Z_{0} = \sum_{t \in \mathcal{T}} 1.0 \cdot \text{maxVel}^{VEL}_{t}
+  \]
+
+  \item \textbf{G1 maximize\_average\_story\_points} \; (ID: G1)\\
+  \emph{Maximize average story points completed (Velocity.avg\_story\_points).}\\
+  \[
+    \max \; Z_{1} = \sum_{t \in \mathcal{T}} 1.0 \cdot \overline{\text{sp}}^{VEL}_{t}
+  \]
+
+  \item \textbf{G2 minimize\_total\_sprint\_effort} \; (ID: G2)\\
+  \emph{Minimize total planned effort in sprint backlogs.}\\
+  \[
+    \min \; Z_{2} = \sum_{sp \in \mathcal{SP}} \sum_{tsk \in \mathcal{TSK}} \text{eff}^{TSK}_{tsk} \cdot x^{\text{assign}}_{tsk,sp}
+  \]
+
+  \item \textbf{G3 minimize\_open\_tasks} \; (ID: G3)\\
+  \emph{Minimize number of cards (open tasks) on Scrum Boards.}\\
+  \[
+    \min \; Z_{3} = \sum_{scb \in \mathcal{SCB}} n^{\text{cards}}_{scb}
+    \qquad \text{with } n^{\text{cards}}_{scb} = \sum_{tsk \in \mathcal{TSK}(scb)} x^{\text{onBoard}}_{tsk,scb}
+  \]
+
+  \item \textbf{G4 minimize\_blocker\_severity} \; (ID: G4)\\
+  \emph{Minimize cumulative blocker severity affecting selected tasks.}\\
+  \[
+    \min \; Z_{4} = \sum_{tsk \in \mathcal{TSK}} \sum_{bl \in \mathcal{BL}(tsk)} \text{sev}^{BL}_{bl} \cdot x^{\text{assign}}_{tsk,\cdot}
+  \]
+
+  \item \textbf{G5 maximize\_team\_satisfaction} \; (ID: G5)\\
+  \emph{Maximize team satisfaction (from Retrospective).}\\
+  \[
+    \max \; Z_{5} = \sum_{sre \in \mathcal{SRE}} 0.8 \cdot \text{sat}^{SRE}_{sre}
+  \]
+
+  \item \textbf{G6 minimize\_feature\_effort} \; (ID: G6)\\
+  \emph{Minimize total estimated feature effort selected for release.}\\
+  \[
+    \min \; Z_{6} = \sum_{f \in \mathcal{F}} \text{eff}^{F}_f \cdot y^{\text{feat}}_{f}
+  \]
+
+  \item \textbf{G7 maximize\_story\_priority\_value} \; (ID: G7)\\
+  \emph{Maximize sum of priorities of selected user stories.}\\
+  \[
+    \max \; Z_{7} = \sum_{us \in \mathcal{US}} 0.6 \cdot \text{prio}^{US}_{us} \cdot x^{\text{story}}_{us}
+  \]
+
+  \item \textbf{G8 minimize\_task\_effort} \; (ID: G8)\\
+  \emph{Prefer smaller tasks to improve flow.}\\
+  \[
+    \min \; Z_{8} = \sum_{tsk \in \mathcal{TSK}} 0.9 \cdot \text{eff}^{TSK}_{tsk} \cdot x^{\text{assign}}_{tsk,\cdot}
+  \]
+
+  \item \textbf{G9 maximize\_roadmap\_objectives} \; (ID: G9)\\
+  \emph{Maximize milestones proxy on roadmaps.}\\
+  \[
+    \max \; Z_{9} = \sum_{rm \in \mathcal{RM}} 0.5 \cdot \text{mil}^{RM}_{rm}
+  \]
+
+  \item \textbf{G10 maximize\_product\_backlog\_freshness} \; (ID: G10)\\
+  \emph{Favor recently updated backlogs (freshness proxy).}\\
+  \[
+    \max \; Z_{10} = \sum_{pb \in \mathcal{PB}} 0.4 \cdot \text{fresh}^{PB}_{pb}
+  \]
+
+  \item \textbf{G11 minimize\_cycle\_instability} \; (ID: G11)\\
+  \emph{Minimize missed-goal proxy (1 - achievement\_of\_goal).}\\
+  \[
+    \min \; Z_{11} = \sum_{sp \in \mathcal{SP}} 0.3 \cdot \left(1 - \text{ach}^{SP}_{sp}\right)
+  \]
+\end{itemize}
+
+\paragraph{Multi-objective aggregation (optional)}
+One may combine the above via weighted sum:
+\[
+  \max\; Z = \sum_{g \in \{0,1,5,7,9,10\}} Z_g \;-\; \sum_{h \in \{2,3,4,6,8,11\}} Z_h
+\]
+with all $Z_\cdot$ as defined above.
+
+\section{4. Conditions}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{C0 max\_tasks\_per\_sprint} \; (ID: C0)\\
+  \emph{Constrain total number of tasks planned per sprint backlog.}\\
+  \[
+     \sum_{tsk \in \mathcal{TSK}} x^{\text{assign}}_{tsk,sp} \;\le\; N^{\max}_{\text{tasks}}, \quad \forall sp \in \mathcal{SP}
+  \]
+
+  \item \textbf{C1 max\_features\_per\_release} \; (ID: C1)\\
+  \emph{Limit features in any release plan.}\\
+  \[
+     \sum_{f \in \mathcal{F}(rep)} y^{\text{feat}}_{f} \;\le\; N^{\max}_{\text{feat}}, \quad \forall rep \in \mathcal{REP}
+  \]
+
+  \item \textbf{C2 min\_team\_availability} \; (ID: C2)\\
+  \emph{Minimum Product Owner availability reserved for backlog work.}\\
+  \[
+     a^{PO} \;\ge\; A^{\min}_{PO}
+  \]
+
+  \item \textbf{C3 min\_scrum\_master\_experience} \; (ID: C3)\\
+  \emph{Scrum Master experience threshold for complex sprints.}\\
+  \[
+     \text{exp}^{SM}_{sm} \;\ge\; E^{\min}, \quad \forall sm \in \mathcal{SM}
+  \]
+
+  \item \textbf{C4 max\_blocker\_severity} \; (ID: C4)\\
+  \emph{Cumulative blocker severity affecting planned tasks bounded.}\\
+  \[
+     \sum_{tsk \in \mathcal{TSK}} \sum_{bl \in \mathcal{BL}(tsk)} \text{sev}^{BL}_{bl} \cdot x^{\text{assign}}_{tsk,\cdot} \;\le\; S^{\max}
+  \]
+
+  \item \textbf{C5 max\_total\_feature\_effort} \; (ID: C5)\\
+  \emph{Cap on total effort of selected features for a release.}\\
+  \[
+     \sum_{f \in \mathcal{F}} \text{eff}^{F}_f \cdot y^{\text{feat}}_{f} \;\le\; E^{\max}_{\text{feat}}
+  \]
+
+  \item \textbf{C6 max\_task\_effort} \; (ID: C6)\\
+  \emph{Selected task effort cannot exceed ceiling.}\\
+  \[
+     \text{eff}^{TSK}_{tsk} \cdot x^{\text{assign}}_{tsk,\cdot} \;\le\; E^{\max}_{\text{task}}, \quad \forall tsk \in \mathcal{TSK}
+  \]
+
+  \item \textbf{C7 min\_story\_points\_mix} \; (ID: C7)\\
+  \emph{Maintain minimum average story points of selected stories.}\\
+  \[
+    \frac{\sum_{us \in \mathcal{US}} \text{sp}^{US}_{us} \cdot x^{\text{story}}_{us}}{\sum_{us \in \mathcal{US}} x^{\text{story}}_{us}} \;\ge\; \overline{S}^{\min}
+  \]
+
+  \item \textbf{C8 max\_backlog\_size} \; (ID: C8)\\
+  \emph{Bound the number of entries in Product Backlog(s).}\\
+  \[
+     \text{entries}^{PB}_{pb} \;\le\; N^{\max}_{\text{backlog}}, \quad \forall pb \in \mathcal{PB}
+  \]
+
+  \item \textbf{C9 max\_review\_duration} \; (ID: C9)\\
+  \emph{Sprint Review timeboxed.}\\
+  \[
+     d^{SR} \;\le\; D^{\max}_{SR} \qquad \text{(and } d^{SR} \le 240\text{ minutes)}
+  \]
+
+  \item \textbf{C10 max\_daily\_scrum\_duration} \; (ID: C10)\\
+  \emph{Daily Scrum $\le 15$ minutes.}\\
+  \[
+     d^{DS} \;\le\; 15
+  \]
+
+  \item \textbf{C11 min\_team\_size} \; (ID: C11)\\
+  \emph{Ensure minimum team size for cross-functionality.}\\
+  \[
+     \text{team\_size}_t \;\ge\; N^{\min}_{\text{team}}, \quad \forall t \in \mathcal{T}
+  \]
+
+  \item \textbf{C12 max\_tasks\_on\_board} \; (ID: C12)\\
+  \emph{WIP limit on Scrum Board.}\\
+  \[
+     \sum_{tsk \in \mathcal{TSK}} x^{\text{onBoard}}_{tsk,scb} \;\le\; L^{\text{WIP}}, \quad \forall scb \in \mathcal{SCB}
+  \]
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=2em]
+  \item $y^{\text{feat}}_{f} \in \{0,1\}$ (DV0 \texttt{select\_feature\_f}): include feature $f$ in release.
+  \item $x^{\text{story}}_{us} \in \{0,1\}$ (DV1 \texttt{select\_user\_story\_us}): include user story $us$ in next sprint.
+  \item $x^{\text{assign}}_{tsk,sp} \in \{0,1\}$ (DV2 \texttt{assign\_task\_to\_sprint}): assign task $tsk$ to sprint $sp$ (active).
+  \item $r^{US}_{us} \in \{1,\dots,100\}$ (DV3 \texttt{prioritize\_user\_story\_us}): priority rank for $us$.
+  \item $h^{\text{cap}} \ge 0$ (DV4 \texttt{allocate\_team\_capacity\_hours}): total capacity (hours) allocated to sprint.
+  \item $sp^{\text{set}}_{us} \in \{0,\dots,100\}$ (DV5 \texttt{set\_story\_points\_us}): assigned story points for $us$.
+  \item $e^{\text{set}}_{tsk} \in \{0,\dots,100\}$ (DV6 \texttt{set\_task\_effort\_t}): assigned effort for $tsk$.
+  \item $d^{SR} \in \{0,\dots,240\}$ (DV7 \texttt{schedule\_review\_duration}): minutes for Sprint Review.
+  \item $L^{\text{WIP}} \in \{1,\dots,200\}$ (DV8 \texttt{limit\_board\_wip}): WIP limit for Scrum Board(s).
+  \item $z^{\text{rep}}_{rep} \in \{0,1\}$ (DV9 \texttt{select\_release\_plan\_rep}): activate release plan $rep$.
+  \item $d^{\text{target}} \in \{\text{dev},\text{staging},\text{production}\}$ (DV10 \texttt{choose\_deployment\_target}): deployment target for snapshot(s).
+  \item $\alpha^{SG} \in \{0,1\}$ (DV11 \texttt{set\_sprint\_goal\_achievement\_target}): target indicator for goal achievement.
+  \item $a^{PO} \in \{0,\dots,100\}$ (DV12 \texttt{assign\_product\_owner\_availability}): PO availability reserved (\%).
+\end{itemize}
+
+\subsection*{Integrating Relationships with Decision Variables}
+\begin{itemize}[leftmargin=2em]
+  \item Task--Story consistency: $x^{\text{assign}}_{tsk,sp} \le \sum\limits_{us: \, tsk \in \mathcal{TSK}(us)} x^{\text{story}}_{us}$.
+  \item Release feature selection consistent with active plan: $y^{\text{feat}}_{f} \le \sum\limits_{rep: f \in \mathcal{F}(rep)} z^{\text{rep}}_{rep}$.
+  \item Board cards proxy: $n^{\text{cards}}_{scb} = \sum\limits_{tsk \in \mathcal{TSK}(scb)} x^{\text{onBoard}}_{tsk,scb}$, with $x^{\text{onBoard}}_{tsk,scb}\!\in\!\{0,1\}$.
+  \item Sprint capacity: $\sum\limits_{tsk} e^{\text{set}}_{tsk} \cdot x^{\text{assign}}_{tsk,sp} \le h^{\text{cap}}$.
+\end{itemize}
+
+\end{document}

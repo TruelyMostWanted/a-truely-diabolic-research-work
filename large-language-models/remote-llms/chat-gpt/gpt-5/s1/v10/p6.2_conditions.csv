@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,status_must_be_active,Only consider teams that are active,False,min,Team,team_status,2,1.0
+C1,project_within_budget,Projects must remain within planned budget,False,min,Project,budget,2,1.0
+C2,worker_must_be_available,Only schedule available workers,False,min,Worker,availability,2,1.2
+C3,user_story_must_be_ready,Only plan ready user stories,False,min,UserStory,status,2,1.0
+C4,feature_priority_threshold,Favor higher-priority features,True,min,Feature,priority,1,0.8
+C5,task_cannot_be_blocked,Exclude currently blocked tasks,False,min,Task,status,0,1.3
+C6,backlog_recently_updated,Prefer backlogs updated recently,False,min,ProductBacklog,last_updated,1,0.5
+C7,sprint_with_defined_goal,Only sprints that have a goal,False,min,SprintGoal,objective_description,2,1.0
+C8,release_must_be_planned,Work tied to a planned release,False,min,ReleasePlan,planned_date,2,1.0
+C9,roadmap_alignment_preferred,Prefer items aligned to roadmap milestones,False,min,Roadmap,milestones,1,0.7
+C10,documentation_required,Features should have documentation,False,min,FeatureDocumentation,creation_date,1,0.6
+C11,velocity_baseline_sprints,Use velocity only if enough sprints measured,False,min,Velocity,number_of_sprints_used,2,1.1
+C12,epic_status_open_or_in_progress,Epics must be actionable,False,min,Epic,status,2,1.0

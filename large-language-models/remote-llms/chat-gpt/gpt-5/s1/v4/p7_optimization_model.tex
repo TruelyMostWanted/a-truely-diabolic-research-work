@@ -1,0 +1,238 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\geometry{margin=1in}
+\title{SCRUM Portfolio Planning and Delivery Optimization Model}
+\author{Generated Assistant}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=1.2cm]
+  \item $\mathcal{P}$: Projects (Entity: Project)
+  \item $\mathcal{T}$: Teams (Entity: Team)
+  \item $\mathcal{W}$: Workers (Entity: Worker)
+  \item $\mathcal{F}$: Features (Entity: Feature)
+  \item $\mathcal{S}$: Skills (Entity: Skill)
+  \item $\mathcal{R}$: Roles (Entity: Role)
+  \item $\mathcal{PO}$: Product Owners (Entity: ProductOwner)
+  \item $\mathcal{SM}$: Scrum Masters (Entity: ScrumMaster)
+  \item $\mathcal{PB}$: Product Backlogs (Entity: ProductBacklog)
+  \item $\mathcal{SP}$: Sprints (Entity: Sprint)
+  \item $\mathcal{SPP}$: Sprint Planning events (Entity: SprintPlanning)
+  \item $\mathcal{DS}$: Daily Scrums (Entity: DailyScrum)
+  \item $\mathcal{SR}$: Sprint Reviews (Entity: SprintReview)
+  \item $\mathcal{SRE}$: Sprint Retrospectives (Entity: SprintRetrospective)
+  \item $\mathcal{SBL}$: Sprint Backlogs (Entity: SprintBacklog)
+  \item $\mathcal{SG}$: Sprint Goals (Entity: SprintGoal)
+  \item $\mathcal{E}$: Epics (Entity: Epic)
+  \item $\mathcal{US}$: User Stories (Entity: UserStory)
+  \item $\mathcal{TSK}$: Tasks (Entity: Task)
+  \item $\mathcal{DEV}$: Development Snapshots (Entity: DevelopmentSnapshot)
+  \item $\mathcal{BL}$: Blockers (Entity: Blocker)
+  \item $\mathcal{SH}$: Stakeholders (Entity: Stakeholder)
+  \item $\mathcal{VEL}$: Velocity records (Entity: Velocity)
+  \item $\mathcal{REP}$: Release Plans (Entity: ReleasePlan)
+  \item $\mathcal{RM}$: Roadmaps (Entity: Roadmap)
+  \item $\mathcal{SCB}$: Scrum Boards (Entity: ScrumBoard)
+  \item $\mathcal{FED}$: Feature Documentation (Entity: FeatureDocumentation)
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=1.2cm]
+  \item $p \in \mathcal{P}$ (projects), $t \in \mathcal{T}$ (teams), $w \in \mathcal{W}$ (workers)
+  \item $f \in \mathcal{F}$ (features), $e \in \mathcal{E}$ (epics), $u \in \mathcal{US}$ (user stories)
+  \item $k \in \mathcal{TSK}$ (tasks), $bl \in \mathcal{BL}$ (blockers)
+  \item $s \in \mathcal{SP}$ (sprints), $rep \in \mathcal{REP}$ (release plans)
+  \item $vel \in \mathcal{VEL}$ (velocity records)
+\end{itemize}
+
+\subsection*{Parameters (from Entities/Attributes and Relationships)}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Feature attributes: $eff_f \ge 0$ (Feature.estimated\_effort), $prio^F_f \ge 0$ (Feature.priority).
+  \item User Story attributes: $prio^U_u \ge 0$ (UserStory.priority), $sp_u \ge 0$ (UserStory.story\_points), $hasAcc_u \in \{0,1\}$ (UserStory.acceptance\_criteria present).
+  \item Task attributes: $eff^T_k \ge 0$ (Task.effort), $isCode_k \in \{0,1\}$ (Task.type = code), linkage $L^{US}_{k,u} \in \{0,1\}$ (Task $\to$ UserStory).
+  \item Blocker attributes: $sev_{bl} \ge 0$ (Blocker.severity), linkage $L^{BL}_{k,bl}\in\{0,1\}$ (Task $\to$ Blocker).
+  \item Velocity attributes: $\overline{v}_{t}$ (Velocity.avg.\_story\_points for team $t$).
+  \item Availability: $av_w \ge 0$ (Worker.availability); capacity transform $\alpha$ hours-to-story-points.
+  \item Planning targets: $\widehat{cap}_s$ (target story points commitment for sprint $s$), $\mathrm{DoD}\in\{0,1\}$ gate flag(s), allowed daily duration $\widehat{d}^{\text{daily}}$ (e.g.\ 15 minutes).
+  \item Release dates: $date^{plan}_{rep}$ (ReleasePlan.planned\_date), $date^{calc}_{rep}$ (calculated date from workload; model-dependent).
+  \item Documentation links: $link^{FED}_f \in \{0,1\}$ (Feature has linked docs), $att^{SR}_s$ (SprintReview.attendees\_count).
+\end{itemize}
+
+\subsection*{Decision Variables (from DecisionVariables.csv)}
+\begin{itemize}[leftmargin=1.2cm]
+  \item $x_{u,s} \in \{0,1\}$ (DV0: assign\_user\_story\_to\_sprint): story $u$ is selected for sprint $s$.
+  \item $y_{f,rep} \in \{0,1\}$ (DV1: select\_feature\_for\_release): feature $f$ included in release plan $rep$.
+  \item $h_k \in \mathbb{Z}_{\ge 0}$ (DV2: allocate\_task\_effort): hours allocated to task $k$.
+  \item $\hat{p}_u \in \{1,2,3,4,5\}$ (DV3: set\_user\_story\_priority): planned execution priority for user story $u$ during sprinting.
+  \item $C_s \in \mathbb{Z}_{\ge 0}$ (DV4: team\_capacity\_committed): committed sprint capacity (story points) for sprint $s$.
+  \item $r^{BL}_{bl} \in \{0,1\}$ (DV5: activate\_blocker\_resolution): 1 if blocker $bl$ is scheduled for resolution in plan horizon.
+  \item $a_{w,k} \in \{0,1\}$ (DV6: assign\_worker\_to\_task): worker $w$ works on task $k$.
+  \item $q_u \in \mathbb{Z}_{\ge 0}$ (DV7: qa\_test\_allocation): number of test cases planned for user story $u$.
+  \item $r^T_k \in \{0,1\}$ (DV8: code\_review\_required): task $k$ has mandatory code review gate.
+  \item $z_s \in \mathbb{Z}_{\ge 0}$ (DV9: bugfix\_story\_points\_buffer): sprint $s$ bugfix buffer (story points).
+  \item $g \in \{0,1,2,3,4\}$ (DV10: ci\_pipeline\_gate\_level): number of CI mandatory gates before merge (global or pipeline).
+  \item $B_{rep} \in \{1,\dots,20\}$ (DV11: release\_batch\_size): number of features per release batch $rep$.
+\end{itemize}
+
+\section{3. Goals}
+\noindent Generic multi-objective structure with scalarization (weights from Goals.csv):
+\[
+\max/\min \;\; \sum_{i} w_i \cdot \text{Goal}_i \quad \text{with } w_i \text{ from CSV and signs given by GoalType.}
+\]
+Below, each item shows ID, name, and mathematical form. (Weights shown as $W[\cdot]$.)
+
+\begin{itemize}[leftmargin=1.2cm]
+  \item[\textbf{G0} maximize\_team\_velocity]
+  \[
+  \max \; W[G0]\cdot \sum_{t\in\mathcal{T}} \overline{v}_t
+  \]
+  (proxy objective to favor historically higher throughput teams in planning)
+  \item[\textbf{G1} minimize\_total\_estimated\_effort]
+  \[
+  \min \; W[G1]\cdot \sum_{f\in\mathcal{F}} \sum_{rep\in\mathcal{REP}} eff_f \, y_{f,rep}
+  \]
+  \item[\textbf{G2} maximize\_user\_story\_priority\_coverage]
+  \[
+  \max \; W[G2]\cdot \sum_{u\in\mathcal{US}}\sum_{s\in\mathcal{SP}} prio^U_u \, x_{u,s}
+  \]
+  \item[\textbf{G3} minimize\_open\_blocker\_severity]
+  \[
+  \min \; W[G3]\cdot \sum_{bl\in\mathcal{BL}} sev_{bl}\,\bigl(1- r^{BL}_{bl}\bigr)
+  \]
+  \item[\textbf{G4} maximize\_sprint\_goal\_achievement]
+  \[
+  \max \; W[G4]\cdot \sum_{s\in\mathcal{SP}} \underbrace{\phi_s(C_s, \{x_{u,s}\}, z_s)}_{\text{proxy for goal achievement }\in[0,1]}
+  \]
+  where $\phi_s$ is a monotone proxy increasing with capacity sufficiency vs.\ planned load.
+  \item[\textbf{G5} minimize\_cycle\_tasks\_effort]
+  \[
+  \min \; W[G5]\cdot \sum_{k\in\mathcal{TSK}} h_k
+  \]
+  \item[\textbf{G6} maximize\_feature\_priority]
+  \[
+  \max \; W[G6]\cdot \sum_{f\in\mathcal{F}}\sum_{rep\in\mathcal{REP}} prio^F_f \, y_{f,rep}
+  \]
+  \item[\textbf{G7} minimize\_wip\_status\_pressure]
+  \[
+  \min \; W[G7]\cdot \sum_{k\in\mathcal{TSK}} \underbrace{\psi_k(\{a_{w,k}\})}_{\text{WIP proxy}}
+  \]
+  with $\psi_k$ increasing in parallel task starts / context switching.
+  \item[\textbf{G8} maximize\_backlog\_freshness]
+  \[
+  \max \; W[G8]\cdot \sum_{pb\in\mathcal{PB}} \mathrm{freshness}(pb)
+  \]
+  (data-quality proxy using last\_updated; encourages grooming cadence)
+  \item[\textbf{G9} minimize\_release\_slippage]
+  \[
+  \min \; W[G9]\cdot \sum_{rep\in\mathcal{REP}} \bigl|\,date^{calc}_{rep}-date^{plan}_{rep}\,\bigr|
+  \]
+  \item[\textbf{G10} maximize\_team\_utilization]
+  \[
+  \max \; W[G10]\cdot \frac{\sum_{w\in\mathcal{W}}\sum_{k\in\mathcal{TSK}} a_{w,k}\,h_k}{\sum_{w\in\mathcal{W}} av_w}
+  \]
+  \item[\textbf{G11} minimize\_sprint\_duration\_variance]
+  \[
+  \min \; W[G11]\cdot \sum_{s\in\mathcal{SP}} \bigl(\mathrm{duration}(s)-\widehat{\mathrm{duration}}\bigr)^2
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+Each condition is expressed as a hard constraint (``must-match''), a soft constraint (``may-match'') or a prohibition (``cannot-match'') using the CSV \emph{CriteriaType} $=\{2,1,0\}$ respectively. Below, we write the mathematical form and (where applicable) note the type.
+
+\begin{itemize}[leftmargin=1.2cm]
+  \item[\textbf{C0} minimize\_overallocated\_workers \; (Must: 2)]
+  \[
+    \sum_{k\in\mathcal{TSK}} a_{w,k}\,h_k \;\le\; av_w \qquad \forall w\in\mathcal{W}.
+  \]
+  \item[\textbf{C1} minimize\_tasks\_without\_story \; (Must: 2)]
+  \[
+    \sum_{u\in\mathcal{US}} L^{US}_{k,u} \;\ge\; 1 \qquad \forall k\in\mathcal{TSK}.
+  \]
+  \item[\textbf{C2} maximize\_definition\_of\_done\_alignment \; (Must: 2)]
+  \[
+    r^T_k \;\ge\; isCode_k \qquad \forall k\in\mathcal{TSK}\quad
+    \text{(code tasks require review gate).}
+  \]
+  \item[\textbf{C3} minimize\_unplanned\_scope \; (Must: 2)]
+  \[
+    \sum_{u\in\mathcal{US}} x_{u,s} \;\le\; C_s + z_s \qquad \forall s\in\mathcal{SP}.
+  \]
+  Interprets $C_s$ (commitment) and $z_s$ (bugfix buffer) as WIP cap in story-point units (via $sp_u$ if desired).
+  \item[\textbf{C4} maximize\_acceptance\_criteria\_coverage \; (Must: 2)]
+  \[
+    x_{u,s} \;\le\; hasAcc_u \qquad \forall u\in\mathcal{US},\; \forall s\in\mathcal{SP}.
+  \]
+  \item[\textbf{C5} minimize\_blocked\_tasks \; (Must: 2)]
+  \[
+    r^{BL}_{bl} \;\ge\; \min\bigl\{1,\sum_{k} L^{BL}_{k,bl}\bigr\} \qquad \forall bl\in\mathcal{BL}.
+  \]
+  (If any task is blocked by $bl$, schedule its resolution.)
+  \item[\textbf{C6} minimize\_unreviewed\_code \; (Must: 2)]
+  \[
+    r^T_k \in \{0,1\},\quad r^T_k=1 \text{ if } isCode_k=1.
+  \]
+  (Equivalent to C2; kept explicit for audit.)
+  \item[\textbf{C7} maximize\_stakeholder\_participation \; (May: 1)]
+  \[
+    att^{SR}_s \;\ge\; \widehat{A} \qquad \forall s\in\mathcal{SP}
+  \]
+  where $\widehat{A}$ is a recommended threshold for Sprint Review attendees (soft target).
+  \item[\textbf{C8} minimize\_overlong\_daily\_scrum \; (Must: 2)]
+  \[
+    \mathrm{duration}(ds) \;\le\; \widehat{d}^{\text{daily}} \qquad \forall ds\in\mathcal{DS}.
+  \]
+  \item[\textbf{C9} maximize\_planning\_outcome\_quality \; (Must: 2)]
+  \[
+    \mathbf{1}\{\text{documentation present at } spp\} \;=\; 1 \qquad \forall spp\in\mathcal{SPP}.
+  \]
+  \item[\textbf{C10} minimize\_backlog\_size\_spikes \; (May: 1)]
+  \[
+    \Delta\,\#(\text{entries in } pb) \;\le\; \widehat{\Delta} \qquad \forall pb\in\mathcal{PB}.
+  \]
+  \item[\textbf{C11} maximize\_feature\_documentation\_linkage \; (Must: 2)]
+  \[
+    link^{FED}_f \;=\; 1 \qquad \forall f\in\mathcal{F}.
+  \]
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=1.2cm]
+  \item[\textbf{DV0} assign\_user\_story\_to\_sprint] $x_{u,s}\in\{0,1\}$ \; for $u\in\mathcal{US}, s\in\mathcal{SP}$.
+  \item[\textbf{DV1} select\_feature\_for\_release] $y_{f,rep}\in\{0,1\}$ \; for $f\in\mathcal{F}, rep\in\mathcal{REP}$.
+  \item[\textbf{DV2} allocate\_task\_effort] $h_k\in\mathbb{Z}_{\ge0}$ \; for $k\in\mathcal{TSK}$.
+  \item[\textbf{DV3} set\_user\_story\_priority] $\hat{p}_u\in\{1,2,3,4,5\}$ \; for $u\in\mathcal{US}$.
+  \item[\textbf{DV4} team\_capacity\_committed] $C_s\in\mathbb{Z}_{\ge0}$ \; for $s\in\mathcal{SP}$.
+  \item[\textbf{DV5} activate\_blocker\_resolution] $r^{BL}_{bl}\in\{0,1\}$ \; for $bl\in\mathcal{BL}$.
+  \item[\textbf{DV6} assign\_worker\_to\_task] $a_{w,k}\in\{0,1\}$ \; for $w\in\mathcal{W}, k\in\mathcal{TSK}$.
+  \item[\textbf{DV7} qa\_test\_allocation] $q_u\in\mathbb{Z}_{\ge0}$ \; for $u\in\mathcal{US}$.
+  \item[\textbf{DV8} code\_review\_required] $r^T_k\in\{0,1\}$ \; for $k\in\mathcal{TSK}$.
+  \item[\textbf{DV9} bugfix\_story\_points\_buffer] $z_s\in\mathbb{Z}_{\ge0}$ \; for $s\in\mathcal{SP}$.
+  \item[\textbf{DV10} ci\_pipeline\_gate\_level] $g\in\{0,1,2,3,4\}$.
+  \item[\textbf{DV11} release\_batch\_size] $B_{rep}\in\{1,\dots,20\}$ \; for $rep\in\mathcal{REP}$.
+\end{itemize}
+
+\subsection*{Additional Linking / Accounting Constraints (derived from Entities/Relations)}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Story-to-sprint workload accounting (optional):
+  \[
+    \sum_{u\in\mathcal{US}} sp_u\,x_{u,s} \;\le\; C_s + z_s \qquad \forall s\in\mathcal{SP}.
+  \]
+  \item Task assignment to availability (refines C0):
+  \[
+    \sum_{k\in\mathcal{TSK}} a_{w,k}\,h_k \;\le\; av_w \qquad \forall w\in\mathcal{W}.
+  \]
+  \item Release batch size control:
+  \[
+    \sum_{f\in\mathcal{F}} y_{f,rep} \;\le\; B_{rep} \qquad \forall rep\in\mathcal{REP}.
+  \]
+\end{itemize}
+
+\end{document}

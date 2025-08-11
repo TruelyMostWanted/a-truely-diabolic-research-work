@@ -1,0 +1,14 @@
+# Conditions.csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,user_stories_must_be_ready,Only user stories with acceptable status are eligible,False,min,UserStory,status,2,1.0
+C1,tasks_cannot_be_blocked,Exclude tasks whose status indicates blocking,False,min,Task,status,0,1.0
+C2,only_available_workers,Only workers with sufficient availability can be assigned,False,min,Worker,availability,2,1.0
+C3,sprint_goal_may_match,Prefer sprints with higher goal achievement status,False,max,SprintGoal,achievement_status,1,0.8
+C4,blockers_must_be_low_severity,Include only blockers below a severity threshold when counting risk,True,min,Blocker,severity,2,1.2
+C5,features_may_match_high_priority,Prefer higher-priority features in selection,True,max,Feature,priority,1,0.9
+C6,product_backlog_status_must_match,Backlog must be in an allowed operational status,False,min,ProductBacklog,status,2,1.0
+C7,sprint_status_must_match,Sprint must be in a plannable/executable status,False,min,Sprint,status,2,1.0
+C8,dev_snapshot_must_match_test_status,Only snapshots meeting minimum test status are valid,False,min,DevelopmentSnapshot,test_status,2,1.1
+C9,stakeholder_may_match_high_influence,Prefer items aligned to higher-influence stakeholders,True,max,Stakeholder,influence_level,1,0.7
+C10,sprint_backlog_status_must_match,Sprint backlog must be in a consistent status before commit,False,min,SprintBacklog,status,2,1.0
+C11,task_type_cannot_match_excluded,Exclude disallowed task types from planning,False,min,Task,type,0,1.0
