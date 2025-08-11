@@ -80,7 +80,7 @@ Created 10 to 15 entries in each of these files.
 Use ALL of the previoulsy provided and generated CSV data (Entities, Relations, Goals, Conditions, DecisionVariables) and formulate the optimization model mathematically and logically. 
 Write it into a LaTeX (.tex) file (or code-block) and provide the created file in chat.
 The file consists of a introduction page with Title, Author, Date and Table of Contents.
-The actual file contest consists of 7 different \sections labeled "1. Problem/Model Description", "2. Sets (Entities)", "3. Indices", "4. Goals", "5. Conditions", "6. DecisionVariables" and "7. Possible Model Extension(s)"
+The actual file contest consists of 5 different \sections labeled "1. Sets (Entities)", "2. Indices", "3. Goals", "4. Conditions", "5. DecisionVariables"
 
 ---
 
