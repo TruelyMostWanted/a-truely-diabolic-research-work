@@ -1,0 +1,275 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\geometry{margin=1in}
+
+\title{SCRUM Company Optimization Model\\\large From Entities, Relationships, Goals, Conditions, and Decision Variables}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% ------------------------------------------------------------
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em]
+
+\item \textbf{Entity Sets (from \texttt{Entities.csv}):}
+  \begin{itemize}
+    \item $P$ (\textsf{Project}): projects.
+    \item $T$ (\textsf{Team}): teams.
+    \item $W$ (\textsf{Worker}): workers (note: Relationships used ``Employee''; here, \emph{Employee} $\equiv$ \emph{Worker}).
+    \item $F$ (\textsf{Feature}): features.
+    \item $S$ (\textsf{Skill}): skills.
+    \item $R$ (\textsf{Role}): roles.
+    \item $PO$ (\textsf{ProductOwner}): product owners.
+    \item $SM$ (\textsf{ScrumMaster}): scrum masters.
+    \item $PB$ (\textsf{ProductBacklog}): product backlogs.
+    \item $SP$ (\textsf{Sprint}): sprints.
+    \item $SPP$ (\textsf{SprintPlanning}): sprint planning events.
+    \item $DS$ (\textsf{DailyScrum}): daily scrums.
+    \item $SR$ (\textsf{SprintReview}): sprint reviews.
+    \item $SRE$ (\textsf{SprintRetrospective}): sprint retrospectives.
+    \item $SBL$ (\textsf{SprintBacklog}): sprint backlogs.
+    \item $SG$ (\textsf{SprintGoal}): sprint goals.
+    \item $E$ (\textsf{Epic}): epics.
+    \item $US$ (\textsf{UserStory}): user stories.
+    \item $TSK$ (\textsf{Task}): tasks.
+    \item $DEV$ (\textsf{DevelopmentSnapshot}): development snapshots.
+    \item $BL$ (\textsf{Blocker}): blockers.
+    \item $SH$ (\textsf{Stakeholder}): stakeholders.
+    \item $VEL$ (\textsf{Velocity}): velocity records (per team).
+    \item $REP$ (\textsf{ReleasePlan}): release plans.
+    \item $RM$ (\textsf{Roadmap}): roadmaps.
+    \item $SCB$ (\textsf{ScrumBoard}): scrum boards.
+    \item $FED$ (\textsf{FeatureDocumentation}): feature documentation entries.
+  \end{itemize}
+
+\item \textbf{Relationship Sets (from \texttt{Relationships.csv}; normalized names):}
+  \begin{itemize}
+    \item $R^{P}_{T} \subseteq T \times P$ (\textsf{is\_assigned\_to\_project})
+    \item $R^{T}_{W} \subseteq W \times T$ (\textsf{belongs\_to\_team})
+    \item $R^{S}_{W} \subseteq W \times S$ (\textsf{has\_skill})
+    \item $R^{R}_{W} \subseteq W \times R$ (\textsf{takes\_on\_role})
+    \item $R^{PB}_{PO} \subseteq PO \times PB$ (\textsf{manages\_backlog})
+    \item $R^{SM}_{T} \subseteq T \times SM$ (\textsf{is\_supported\_by})
+    \item $R^{F}_{PB} \subseteq PB \times F$ (\textsf{contains\_feature})
+    \item $R^{E}_{PB} \subseteq PB \times E$ (\textsf{contains\_epic})
+    \item $R^{US}_{E} \subseteq E \times US$ (\textsf{contains\_user\_story})
+    \item $R^{TSK}_{US} \subseteq US \times TSK$ (\textsf{consists\_of\_tasks})
+    \item $R^{SBL}_{US} \subseteq US \times SBL$ (\textsf{is\_in\_sprint\_backlog})
+    \item $R^{SP}_{SBL} \subseteq SBL \times SP$ (\textsf{belongs\_to\_sprint})
+    \item $R^{SG}_{SP} \subseteq SP \times SG$ (\textsf{pursues\_goal})
+    \item $R^{TSK}_{SCB} \subseteq SCB \times TSK$ (\textsf{contains\_tasks})
+    \item $R^{F}_{FED} \subseteq FED \times F$ (\textsf{documents\_feature})
+    \item $R^{BL}_{TSK} \subseteq TSK \times BL$ (\textsf{is\_blocked\_by})
+    \item $R^{SR}_{SH} \subseteq SH \times SR$ (\textsf{participates\_in})
+    \item $R^{SRE}_{SM} \subseteq SM \times SRE$ (\textsf{moderates\_retrospective})
+    \item $R^{VEL}_{T} \subseteq VEL \times T$ (\textsf{refers\_to\_team})
+    \item $R^{F}_{REP} \subseteq REP \times F$ (\textsf{plans\_release})
+    \item $R^{RM}_{REP} \subseteq REP \times RM$ (\textsf{is\_part\_of\_roadmap})
+    \item $R^{DEV}_{SP} \subseteq SP \times DEV$ (\textsf{generates\_snapshot})
+  \end{itemize}
+
+\item \textbf{Parameters (from entity attributes; treated as given data):}
+  \begin{itemize}
+    \item $budget(p)\in\mathbb{R}_{+}$ for $p\in P$.
+    \item $priority(f)\in\mathbb{R}_{+}$, $eff\_est(f)\in\mathbb{R}_{+}$ for $f\in F$.
+    \item $totalEff(sbl)\in\mathbb{R}_{+}$, $numTasks(sbl)\in\mathbb{N}$ for $sbl\in SBL$.
+    \item $ag(sp)\in\{0,1\}$ (\emph{achievement\_of\_goal}) for $sp\in SP$.
+    \item $sev(bl)\in\mathbb{R}_{+}$, $activeBL(bl)\in\{0,1\}$ for $bl\in BL$.
+    \item $avail(w)\in\mathbb{R}_{+}$, $activeW(w)\in\{0,1\}$ for $w\in W$.
+    \item $cards(scb)\in\mathbb{N}$ for $scb\in SCB$.
+    \item $rel(sh)\in\mathbb{R}_{+}$ for $sh\in SH$.
+    \item $vel\_avg(t)\in\mathbb{R}_{+}$ for $t\in T$ (via $VEL$).
+    \item $included(rep)\in\mathbb{N}$ for $rep\in REP$.
+    \item Indicator $hasDoc(f)\in\{0,1\}$ from $FED$ linking (via $R^{F}_{FED}$).
+  \end{itemize}
+
+\item \textbf{Global policy parameters (model constants):}
+  \begin{itemize}
+    \item $B^{\max}$ (budget cap), $PR^{\min}$ (minimum epic priority), $EXP^{\min}$ (min SM experience indicator), $E^{\max}$ (task effort cap), $ENT^{\max}$ (max backlog entries), $DUR^{\max}$ (max sprint planning duration).
+  \end{itemize}
+
+\end{itemize}
+
+% ------------------------------------------------------------
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em]
+  \item $p\in P,\; t\in T,\; w\in W,\; f\in F,\; s\in S,\; r\in R,\; po\in PO,\; sm\in SM,$
+  \item $pb\in PB,\; sp\in SP,\; spp\in SPP,\; ds\in DS,\; sr\in SR,\; sre\in SRE,$
+  \item $sbl\in SBL,\; sg\in SG,\; e\in E,\; us\in US,\; tsk\in TSK,\; dev\in DEV,\; bl\in BL,$
+  \item $sh\in SH,\; vel\in VEL,\; rep\in REP,\; rm\in RM,\; scb\in SCB,\; fed\in FED.$
+\end{itemize}
+
+% ------------------------------------------------------------
+\section{3. Goals}
+\noindent
+We employ a weighted multi-objective approach with weights $w_i>0$ from \texttt{Goals.csv}. The composite objective is
+\[
+\max\; \sum_{i\in\mathcal{G}^{max}} w_i\,\Phi_i \;-\; \sum_{j\in\mathcal{G}^{min}} w_j\,\Phi_j,
+\]
+where each $\Phi$ term corresponds to an item below. Logical intent is stated alongside the mathematical form.
+
+\begin{itemize}[leftmargin=2em]
+
+  \item \textbf{G0: maximize\_average\_velocity} \\
+  Logical: Maximize the team's average story points per sprint. \\
+  Mathematical: $\displaystyle \Phi_{0}=\sum_{t\in T} vel\_avg(t)$.
+
+  \item \textbf{G1: minimize\_blocker\_severity} \\
+  Logical: Minimize cumulative severity of all \emph{active} blockers. \\
+  Mathematical: $\displaystyle \Phi_{1}=\sum_{bl\in BL} activeBL(bl)\cdot sev(bl)$.
+
+  \item \textbf{G2: minimize\_feature\_effort} \\
+  Logical: Prefer features with lower estimated effort among those selected into releases. \\
+  Mathematical: $\displaystyle \Phi_{2}=\sum_{rep\in REP}\sum_{f\in F} eff\_est(f)\cdot u_{f,rep}$.
+
+  \item \textbf{G3: maximize\_feature\_priority} \\
+  Logical: Emphasize higher-priority features selected into releases. \\
+  Mathematical: $\displaystyle \Phi_{3}=\sum_{rep\in REP}\sum_{f\in F} priority(f)\cdot u_{f,rep}$.
+
+  \item \textbf{G4: minimize\_sprint\_backlog\_total\_effort} \\
+  Logical: Keep total sprint effort manageable across all sprint backlogs. \\
+  Mathematical: $\displaystyle \Phi_{4}=\sum_{sbl\in SBL} totalEff(sbl)$.
+
+  \item \textbf{G5: maximize\_sprint\_goal\_achievement} \\
+  Logical: Maximize rate of sprint goal achievement. \\
+  Mathematical: $\displaystyle \Phi_{5}=\sum_{sp\in SP} ag(sp)$.
+
+  \item \textbf{G6: minimize\_task\_effort} \\
+  Logical: Prefer smaller tasks to improve flow. \\
+  Mathematical: $\displaystyle \Phi_{6}=\sum_{tsk\in TSK} e_{tsk}$.
+
+  \item \textbf{G7: maximize\_worker\_availability} \\
+  Logical: Maximize usable capacity through assignments to teams. \\
+  Mathematical: $\displaystyle \Phi_{7}=\sum_{w\in W}\sum_{t\in T} avail(w)\cdot y_{w,t}$.
+
+  \item \textbf{G8: minimize\_number\_of\_tasks} \\
+  Logical: Reduce number of tasks in the sprint backlogs overall. \\
+  Mathematical: $\displaystyle \Phi_{8}=\sum_{sbl\in SBL} numTasks(sbl)$.
+
+  \item \textbf{G9: maximize\_release\_plan\_coverage} \\
+  Logical: Maximize the number of features covered by release plans. \\
+  Mathematical: $\displaystyle \Phi_{9}=\sum_{rep\in REP}\sum_{f\in F} u_{f,rep}$.
+
+  \item \textbf{G10: minimize\_wip\_on\_board} \\
+  Logical: Reduce work-in-progress on scrum boards. \\
+  Mathematical: $\displaystyle \Phi_{10}=\sum_{scb\in SCB} cards(scb)$.
+
+  \item \textbf{G11: maximize\_stakeholder\_relevance} \\
+  Logical: Maximize focus on what is relevant to stakeholders. \\
+  Mathematical: $\displaystyle \Phi_{11}=\sum_{sh\in SH} rel(sh)$.
+\end{itemize}
+
+% ------------------------------------------------------------
+\section{4. Conditions}
+\noindent
+Each condition $Ck$ from \texttt{Conditions.csv} is given with logic and mathematical form. Unless otherwise stated, $\Rightarrow$ implications are linearized via big-$M$/binary gating using parameter indicators provided by data (so the right-hand side is effectively enforced only when the left-hand side is relevant).
+
+\begin{itemize}[leftmargin=2em]
+
+  \item \textbf{C0: limit\_total\_budget} \\
+  Logical: The sum of allocated project budgets must not exceed the cap. \\
+  Mathematical: $\displaystyle \sum_{p\in P} b_p \;\le\; B^{\max}$.
+
+  \item \textbf{C1: require\_active\_backlog} \\
+  Logical: Any backlog that is managed must be active/usable. \\
+  Mathematical: $\displaystyle o_{po,pb} \;\le\; activePB(pb)\quad \forall po\in PO,\; pb\in PB$, where $activePB(pb)\in\{0,1\}$ is derived from backlog \emph{status}.
+
+  \item \textbf{C2: require\_high\_priority\_epics} \\
+  Logical: Epics under consideration must meet a minimum priority. \\
+  Mathematical: $\displaystyle priority(e)\;\ge\; PR^{\min}\quad \forall e\in E$.
+
+  \item \textbf{C3: exclude\_resolved\_blockers} \\
+  Logical: Resolved blockers do not count as active scope. \\
+  Mathematical: $\displaystyle activeBL(bl)\in\{0,1\},\quad activeBL(bl)=0\ \text{if status}=\text{``resolved''},\ \forall bl\in BL$.
+
+  \item \textbf{C4: require\_scrum\_master\_experience} \\
+  Logical: A team can be supported by a SM only if the SM meets minimum experience. \\
+  Mathematical: $\displaystyle m_{sm,t} \;\le\; eligibleSM(sm)\quad \forall sm\in SM,\; t\in T$, where $eligibleSM(sm)=\mathbb{I}[\text{experience}(sm)\ge EXP^{\min}]$.
+
+  \item \textbf{C5: team\_size\_within\_bounds} \\
+  Logical: Configured team size bounds and assignment consistency. \\
+  Mathematical: $\displaystyle 3 \le sz_t \le 15,\ \ \sum_{w\in W} y_{w,t} = sz_t \quad \forall t\in T$.
+
+  \item \textbf{C6: workers\_must\_be\_active} \\
+  Logical: Only active workers are assignable to a team. \\
+  Mathematical: $\displaystyle y_{w,t} \;\le\; activeW(w)\quad \forall w\in W,\; t\in T$.
+
+  \item \textbf{C7: limit\_task\_effort} \\
+  Logical: Each task's effort must not exceed the threshold. \\
+  Mathematical: $\displaystyle e_{tsk} \;\le\; E^{\max}\quad \forall tsk\in TSK$.
+
+  \item \textbf{C8: require\_sprint\_goal} \\
+  Logical: Each sprint must pursue exactly one defined sprint goal (per $R^{SG}_{SP}$). \\
+  Mathematical: $\displaystyle \sum_{sg\in SG} \mathbb{I}[(sp,sg)\in R^{SG}_{SP}] \;=\; 1\quad \forall sp\in SP$.
+
+  \item \textbf{C9: cap\_backlog\_entries} \\
+  Logical: The entries in a product backlog must not exceed a maximum. \\
+  Mathematical: $\displaystyle entries(pb) \;\le\; ENT^{\max}\quad \forall pb\in PB$.
+
+  \item \textbf{C10: require\_feature\_documentation} \\
+  Logical: Features included in any release plan must have documentation. \\
+  Mathematical: $\displaystyle u_{f,rep} \;\le\; hasDoc(f)\quad \forall f\in F,\; rep\in REP$.
+
+  \item \textbf{C11: limit\_sprint\_planning\_duration} \\
+  Logical: Sprint Planning duration must stay within its timebox. \\
+  Mathematical: $\displaystyle duration(spp) \;\le\; DUR^{\max}\quad \forall spp\in SPP$.
+
+  \item \emph{Relationship cardinalities (reference):}
+  \begin{itemize}
+    \item Team--Project (R1): each $t$ may map to multiple $p$ but each $(t,p)\in R^{P}_{T}$ is at most one assignment: encoded via binary $x_{t,p}\in\{0,1\}$; many-to-one/one-to-many respected by sums.
+    \item Worker--Team (R2): $\sum_{t\in T} y_{w,t}\le 1$ (\textit{at most one} team per worker).
+    \item SprintBacklog--Sprint (R12): each $sbl$ belongs to exactly one $sp$: $\sum_{sp\in SP}\mathbb{I}[(sbl,sp)\in R^{SP}_{SBL}]=1$ (data linkage).
+  \end{itemize}
+
+\end{itemize}
+
+% ------------------------------------------------------------
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{DV0: assign\_team\_to\_project} \\
+  $x_{t,p}\in\{0,1\}$ indicates whether team $t$ is assigned to project $p$.
+  
+  \item \textbf{DV1: assign\_worker\_to\_team} \\
+  $y_{w,t}\in\{0,1\}$ indicates whether worker $w$ is assigned to team $t$.
+
+  \item \textbf{DV2: assign\_user\_story\_to\_sprint\_backlog} \\
+  $z_{us,sbl}\in\{0,1\}$ indicates whether user story $us$ is in sprint backlog $sbl$.
+
+  \item \textbf{DV3: select\_feature\_for\_release} \\
+  $u_{f,rep}\in\{0,1\}$ indicates whether feature $f$ is included in release plan $rep$.
+
+  \item \textbf{DV4: choose\_scrum\_master\_for\_team} \\
+  $m_{sm,t}\in\{0,1\}$ indicates whether scrum master $sm$ is linked to team $t$.
+
+  \item \textbf{DV5: choose\_product\_owner\_for\_backlog} \\
+  $o_{po,pb}\in\{0,1\}$ indicates whether product owner $po$ manages backlog $pb$.
+
+  \item \textbf{DV6: prioritize\_user\_story} \\
+  $p_{us}\in\{1,2,3,4,5\}$ is the discrete priority assigned to user story $us$.
+
+  \item \textbf{DV7: allocate\_budget\_to\_project} \\
+  $b_p\in[0,1{,}000{,}000]$ is the budget allocated to project $p$.
+
+  \item \textbf{DV8: set\_task\_effort} \\
+  $e_{tsk}\in\{1,2,3,5,8,13,21\}$ is the estimated effort for task $tsk$.
+
+  \item \textbf{DV9: set\_sprint\_number} \\
+  $sn_{sp}\in\{1,2,\dots,100\}$ is the identifier for sprint $sp$.
+
+  \item \textbf{DV10: set\_team\_size} \\
+  $sz_t\in\{3,4,\dots,15\}$ is the configured size for team $t$.
+
+  \item \textbf{DV11: set\_story\_points} \\
+  $sp_{us}\in\{1,2,3,5,8,13\}$ are the story points for user story $us$.
+\end{itemize}
+
+\end{document}

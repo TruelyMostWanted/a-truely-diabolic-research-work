@@ -1,0 +1,285 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{SCRUM Domain Optimization Model}
+\author{Generated from Entities, Relationships, Goals, Conditions, and Decision Variables}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2.2em]
+  \item $P$ := \textbf{Project} (products/initiatives).
+  \item $T$ := \textbf{Team} (cross-functional dev teams).
+  \item $W$ := \textbf{Worker} (employees).
+  \item $F$ := \textbf{Feature}.
+  \item $S$ := \textbf{Skill}.
+  \item $R$ := \textbf{Role}.
+  \item $PO$ := \textbf{ProductOwner}.
+  \item $SM$ := \textbf{ScrumMaster}.
+  \item $PB$ := \textbf{ProductBacklog}.
+  \item $SP$ := \textbf{Sprint}.
+  \item $SPP$ := \textbf{SprintPlanning} meetings.
+  \item $DS$ := \textbf{DailyScrum} meetings.
+  \item $SR$ := \textbf{SprintReview} events.
+  \item $SRE$ := \textbf{SprintRetrospective} events.
+  \item $SBL$ := \textbf{SprintBacklog}.
+  \item $SG$ := \textbf{SprintGoal}.
+  \item $E$ := \textbf{Epic}.
+  \item $US$ := \textbf{UserStory}.
+  \item $TSK$ := \textbf{Task}.
+  \item $DEV$ := \textbf{DevelopmentSnapshot}.
+  \item $BL$ := \textbf{Blocker}.
+  \item $SH$ := \textbf{Stakeholder}.
+  \item $VEL$ := \textbf{Velocity} measurements.
+  \item $REP$ := \textbf{ReleasePlan}.
+  \item $RM$ := \textbf{Roadmap}.
+  \item $SCB$ := \textbf{ScrumBoard}.
+  \item $FED$ := \textbf{FeatureDocumentation}.
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=2.2em]
+  \item Indices follow set symbols, e.g., $p\in P$, $t\in T$, $w\in W$, $f\in F$, $us\in US$, $tsk\in TSK$, $sp\in SP$, $sbl\in SBL$, $sg\in SG$, $bl\in BL$, $vel\in VEL$, $pb\in PB$, $po\in PO$, $sr\in SR$, $rep\in REP$.
+  \item Relationship incidence (from \emph{Relationships.csv}) represented as binary parameters:
+  \begin{itemize}
+    \item $A^{TP}_{t,p}\in\{0,1\}$ (\texttt{R1} Team $t$ is assigned to Project $p$).
+    \item $A^{WT}_{w,t}\in\{0,1\}$ (\texttt{R2} Worker $w$ belongs to Team $t$).
+    \item $A^{WS}_{w,s}\in\{0,1\}$ (\texttt{R3} Worker $w$ has Skill $s$).
+    \item $A^{WR}_{w,r}\in\{0,1\}$ (\texttt{R4} Worker $w$ takes Role $r$).
+    \item $A^{POPB}_{po,pb}\in\{0,1\}$ (\texttt{R5} ProductOwner $po$ manages ProductBacklog $pb$).
+    \item $A^{TSM}_{t,sm}\in\{0,1\}$ (\texttt{R6} Team $t$ is supported by ScrumMaster $sm$).
+    \item $A^{PB F}_{pb,f}\in\{0,1\}$ (\texttt{R7} ProductBacklog $pb$ contains Feature $f$).
+    \item $A^{PB E}_{pb,e}\in\{0,1\}$ (\texttt{R8} ProductBacklog $pb$ contains Epic $e$).
+    \item $A^{E US}_{e,us}\in\{0,1\}$ (\texttt{R9} Epic $e$ contains UserStory $us$).
+    \item $A^{US TSK}_{us,tsk}\in\{0,1\}$ (\texttt{R10} UserStory $us$ consists of Task $tsk$).
+    \item $A^{US SBL}_{us,sbl}\in\{0,1\}$ (\texttt{R11} UserStory $us$ is in SprintBacklog $sbl$).
+    \item $A^{SBL SP}_{sbl,sp}\in\{0,1\}$ (\texttt{R12} SprintBacklog $sbl$ belongs to Sprint $sp$).
+    \item $A^{SP SG}_{sp,sg}\in\{0,1\}$ (\texttt{R13} Sprint $sp$ pursues SprintGoal $sg$).
+    \item $A^{SCB TSK}_{scb,tsk}\in\{0,1\}$ (\texttt{R14} ScrumBoard $scb$ contains Task $tsk$).
+    \item $A^{FED F}_{fed,f}\in\{0,1\}$ (\texttt{R15} FeatureDocumentation $fed$ documents Feature $f$).
+    \item $A^{TSK BL}_{tsk,bl}\in\{0,1\}$ (\texttt{R16} Task $tsk$ is blocked by Blocker $bl$).
+    \item $A^{SH SR}_{sh,sr}\in\{0,1\}$ (\texttt{R17} Stakeholder $sh$ participates in SprintReview $sr$).
+    \item $A^{SM SRE}_{sm,sre}\in\{0,1\}$ (\texttt{R18} ScrumMaster $sm$ moderates Retrospective $sre$).
+    \item $A^{VEL T}_{vel,t}\in\{0,1\}$ (\texttt{R19} Velocity $vel$ refers to Team $t$).
+    \item $A^{REP F}_{rep,f}\in\{0,1\}$ (\texttt{R20} ReleasePlan $rep$ includes Feature $f$).
+    \item $A^{REP RM}_{rep,rm}\in\{0,1\}$ (\texttt{R21} ReleasePlan $rep$ is part of Roadmap $rm$).
+    \item $A^{SP DEV}_{sp,dev}\in\{0,1\}$ (\texttt{R22} Sprint $sp$ generates DevelopmentSnapshot $dev$).
+  \end{itemize}
+  \item Attribute parameters (from \emph{Entities.csv}; numerically encoded where needed):
+  \begin{itemize}
+    \item $priority^F_f\in\mathbb{R}_{\ge0}$, $effort^{TSK}_{tsk}\in\mathbb{R}_{\ge0}$, $storypts_{us}\in\mathbb{R}_{\ge0}$, $benefit_{sg}\in\mathbb{R}_{\ge0}$, $trend_{vel}\in\mathbb{R}$, $vmax_{vel}\in\mathbb{R}_{\ge0}$.
+    \item $avail_w\in[0,100]$, $teamsize_t\in\mathbb{Z}_{\ge0}$, $budget_p\in\mathbb{R}_{\ge0}$, $attend_{sr}\in\mathbb{Z}_{\ge0}$, $teffort_{sbl}\in\mathbb{R}_{\ge0}$.
+    \item Encoded indicators (1 if true, 0 else): $\text{active}^P_p$ (Project status active), $\text{ready}^{US}_{us}$ (UserStory ready), $\text{active}^{SBL}_{sbl}$ (SprintBacklog active), $\text{planned}^{REP}_{rep}$, $\text{cert}^{S}_s$ (Skill certified), $\text{recent}^{PB}_{pb}$ (recently updated), $\text{typeChore}_{tsk}$ (Task is chore), $\text{hasObj}_{sg}$ (objective description present), $\text{resolved}_{bl}$ (Blocker resolved).
+  \end{itemize}
+\end{itemize}
+
+\section{3. Goals}
+\textbf{Decision variables} used below are defined in Section~5. Each goal has ID, name, and a mathematical objective term. For weighted multi-objective optimization we aggregate with user-specified weights $\omega_g>0$:
+\[
+\max/\min \;\; \sum_{g\in\mathcal{G}} \omega_g \cdot \text{Goal}_g
+\]
+where each $\text{Goal}_g$ is given per item.
+
+\begin{itemize}[leftmargin=2.2em]
+  \item \textbf{G0} \texttt{maximize\_velocity\_trend} (IsSum=True, GoalType=max, Entity=Velocity.trend, CriteriaType=1, Weight=1.0). \\
+  Logical: Prefer teams whose velocity trend is positive \emph{and} assigned to projects. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G0}}=\sum_{vel\in VEL}\sum_{t\in T}\sum_{p\in P} A^{VEL T}_{vel,t}\, A^{TP}_{t,p}\, x^{TP}_{t,p}\cdot \text{trend}_{vel}.
+  \]
+
+  \item \textbf{G1} \texttt{minimize\_blocker\_severity} (IsSum=True, GoalType=min, Entity=Blocker.severity, CriteriaType=2, Weight=1.0). \\
+  Logical: Reduce impact of unresolved blockers. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G1}}=\sum_{bl\in BL} (1-y^{BL}_{bl})\cdot \text{severity}_{bl}.
+  \]
+
+  \item \textbf{G2} \texttt{minimize\_total\_task\_effort} (IsSum=True, GoalType=min, Entity=Task.effort, CriteriaType=2, Weight=1.0). \\
+  Logical: Minimize remaining task effort for selected stories in active sprint backlogs. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G2}}=\sum_{sbl\in SBL}\text{active}^{SBL}_{sbl}\sum_{us\in US} A^{US SBL}_{us,sbl}\sum_{tsk\in TSK}A^{US TSK}_{us,tsk}\,(1-y^{TSK}_{tsk})\cdot \text{effort}^{TSK}_{tsk}.
+  \]
+
+  \item \textbf{G3} \texttt{maximize\_sprint\_goal\_benefit} (IsSum=True, GoalType=max, Entity=SprintGoal.benefit, CriteriaType=1, Weight=1.0). \\
+  Logical: Prefer adopted sprint goals with higher business benefit. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G3}}=\sum_{sp\in SP}\sum_{sg\in SG}A^{SP SG}_{sp,sg}\, y^{SG}_{sp,sg}\cdot \text{benefit}_{sg}.
+  \]
+
+  \item \textbf{G4} \texttt{maximize\_feature\_priority} (IsSum=True, GoalType=max, Entity=Feature.priority, CriteriaType=1, Weight=0.8). \\
+  Logical: Select higher-priority features into sprints. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G4}}=\sum_{sp\in SP}\sum_{f\in F} z^{FSP}_{f,sp}\cdot \text{priority}^F_f.
+  \]
+
+  \item \textbf{G5} \texttt{minimize\_user\_story\_story\_points} (IsSum=True, GoalType=min, Entity=UserStory.story\_points, CriteriaType=2, Weight=1.0). \\
+  Logical: Keep selected user stories within capacity. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G5}}=\sum_{sbl\in SBL}\sum_{us\in US} z^{US SBL}_{us,sbl}\cdot \text{storypts}_{us}.
+  \]
+
+  \item \textbf{G6} \texttt{maximize\_worker\_availability} (IsSum=True, GoalType=max, Entity=Worker.availability, CriteriaType=2, Weight=1.0). \\
+  Logical: Assign more available workers to teams. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G6}}=\sum_{w\in W}\sum_{t\in T} x^{WT}_{w,t}\cdot \frac{a^{W}_{w}}{100}.
+  \]
+
+  \item \textbf{G7} \texttt{minimize\_project\_budget} (IsSum=True, GoalType=min, Entity=Project.budget, CriteriaType=2, Weight=1.0). \\
+  Logical: Keep budget allocations low. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G7}}=\sum_{p\in P} b^{P}_{p}.
+  \]
+
+  \item \textbf{G8} \texttt{maximize\_sprint\_review\_attendees} (IsSum=True, GoalType=max, Entity=SprintReview.attendees\_count, CriteriaType=1, Weight=0.6). \\
+  Logical: Prefer sprints with higher expected stakeholder participation. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G8}}=\sum_{sr\in SR} \text{attend}_{sr}.
+  \]
+
+  \item \textbf{G9} \texttt{minimize\_sprint\_backlog\_total\_effort} (IsSum=True, GoalType=min, Entity=SprintBacklog.total\_effort, CriteriaType=2, Weight=1.0). \\
+  Logical: Keep total sprint workload within capacity. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G9}}=\sum_{sbl\in SBL} \text{active}^{SBL}_{sbl}\cdot \text{teffort}_{sbl}.
+  \]
+
+  \item \textbf{G10} \texttt{maximize\_team\_size} (IsSum=True, GoalType=max, Entity=Team.team\_size, CriteriaType=1, Weight=0.4). \\
+  Logical: Prefer staffing larger teams when useful. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G10}}=\sum_{t\in T}\sum_{p\in P} x^{TP}_{t,p}\cdot \text{teamsize}_{t}.
+  \]
+
+  \item \textbf{G11} \texttt{maximize\_velocity\_max} (IsSum=True, GoalType=max, Entity=Velocity.max\_velocity, CriteriaType=1, Weight=0.7). \\
+  Logical: Prefer teams with historically higher maximum velocity assigned to active projects. \\
+  Mathematical:
+  \[
+  \text{Goal}_{\mathrm{G11}}=\sum_{vel\in VEL}\sum_{t\in T}\sum_{p\in P} A^{VEL T}_{vel,t}\, x^{TP}_{t,p}\cdot \text{vmax}_{vel}.
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+Logical constraints are encoded as linear (mixed-integer) constraints. For readability we denote $\mathbb{1}[\cdot]$ as indicator parameters prepared from attributes (\emph{Entities.csv}). Each item shows ID, name and a formal constraint.
+
+\begin{itemize}[leftmargin=2.2em]
+  \item \textbf{C0} \texttt{active\_projects\_only} (IsSum=False, GoalType=min, Entity=Project.status, CriteriaType=2, Weight=1.0). \\
+  Logical: Teams can only be assigned to active projects. \\
+  \[
+  x^{TP}_{t,p} \le \text{active}^P_p \qquad \forall t\in T,\, p\in P.
+  \]
+
+  \item \textbf{C1} \texttt{team\_within\_size\_limit} (IsSum=False, GoalType=min, Entity=Team.team\_size, CriteriaType=2, Weight=1.0). \\
+  Logical: Team capacity bounds the number of assigned workers. \\
+  \[
+  \sum_{w\in W} x^{WT}_{w,t} \le \text{teamsize}_{t} \qquad \forall t\in T.
+  \]
+
+  \item \textbf{C2} \texttt{workers\_available\_only} (IsSum=False, GoalType=min, Entity=Worker.availability, CriteriaType=2, Weight=1.0). \\
+  Logical: Worker assignment limited by declared availability percentage. \\
+  \[
+  \sum_{t\in T} x^{WT}_{w,t} \le \frac{a^{W}_{w}}{100} \qquad \forall w\in W.
+  \]
+
+  \item \textbf{C3} \texttt{exclude\_resolved\_blockers} (IsSum=False, GoalType=min, Entity=Blocker.resolved\_on, CriteriaType=0, Weight=1.0). \\
+  Logical: Already resolved blockers cannot be targeted for resolution again. \\
+  \[
+  y^{BL}_{bl} = 0 \qquad \forall bl\in BL \text{ with } \text{resolved}_{bl}=1.
+  \]
+
+  \item \textbf{C4} \texttt{prefer\_certified\_skills} (IsSum=False, GoalType=min, Entity=Skill.certified, CriteriaType=1, Weight=0.6). \\
+  Logical: When assigning workers to teams, weight certified skills (soft constraint as penalty/bonus). Implemented via linear bonus constraint using $\lambda\ge 0$. \\
+  \[
+  \sum_{w\in W}\sum_{s\in S} x^{WT}_{w,t}\, A^{WS}_{w,s}\,\text{cert}^{S}_s \ge \lambda_t \qquad \forall t\in T.
+  \]
+  (Choose $\lambda_t$ as a target threshold or push via the objective.)
+
+  \item \textbf{C5} \texttt{high\_priority\_features\_required} (IsSum=False, GoalType=min, Entity=Feature.priority, CriteriaType=2, Weight=1.0). \\
+  Logical: Only features above threshold $\pi_{\min}$ are selectable. \\
+  \[
+  z^{FSP}_{f,sp} \le \mathbb{1}[\text{priority}^F_f \ge \pi_{\min}] \qquad \forall f\in F,\, sp\in SP.
+  \]
+
+  \item \textbf{C6} \texttt{user\_stories\_ready\_only} (IsSum=False, GoalType=min, Entity=UserStory.status, CriteriaType=2, Weight=1.0). \\
+  Logical: Only ready stories can enter an active sprint backlog. \\
+  \[
+  z^{US SBL}_{us,sbl} \le \text{ready}^{US}_{us}\cdot \text{active}^{SBL}_{sbl} \qquad \forall us\in US,\, sbl\in SBL.
+  \]
+
+  \item \textbf{C7} \texttt{active\_sprint\_backlog\_only} (IsSum=False, GoalType=min, Entity=SprintBacklog.status, CriteriaType=2, Weight=1.0). \\
+  Logical: If a sprint backlog is inactive, nothing can be planned in it. \\
+  \[
+  \sum_{us\in US} z^{US SBL}_{us,sbl} \le M\cdot \text{active}^{SBL}_{sbl} \qquad \forall sbl\in SBL,
+  \]
+  with large $M$.
+
+  \item \textbf{C8} \texttt{prefer\_recent\_backlog\_updates} (IsSum=False, GoalType=min, Entity=ProductBacklog.last\_updated, CriteriaType=1, Weight=0.5). \\
+  Logical (soft): Prefer planning from recently updated product backlogs. Implement with bonus variable $\rho_{pb}\ge0$. \\
+  \[
+  \sum_{po\in PO} y^{PO PB}_{po,pb} \le \text{recent}^{PB}_{pb} + \rho_{pb} \qquad \forall pb\in PB.
+  \]
+
+  \item \textbf{C9} \texttt{exclude\_chore\_tasks} (IsSum=False, GoalType=min, Entity=Task.type, CriteriaType=0, Weight=1.0). \\
+  Logical: Chore tasks cannot be selected nor required to be done within the sprint. \\
+  \[
+  y^{TSK}_{tsk} \le 1-\text{typeChore}_{tsk} \qquad \forall tsk\in TSK.
+  \]
+
+  \item \textbf{C10} \texttt{sprint\_goal\_must\_exist} (IsSum=False, GoalType=min, Entity=SprintGoal.objective\_description, CriteriaType=2, Weight=1.0). \\
+  Logical: A sprint may only adopt goals that have an objective. \\
+  \[
+  y^{SG}_{sp,sg} \le \text{hasObj}_{sg} \qquad \forall sp\in SP,\, sg\in SG.
+  \]
+
+  \item \textbf{C11} \texttt{release\_plan\_planned\_only} (IsSum=False, GoalType=min, Entity=ReleasePlan.status, CriteriaType=2, Weight=1.0). \\
+  Logical: Only planned release plans may include features. \\
+  \[
+  y^{REP F}_{rep,f} \le \text{planned}^{REP}_{rep} \qquad \forall rep\in REP,\, f\in F.
+  \]
+\end{itemize}
+
+\section{5. DecisionVariables}
+All domains and bounds follow \emph{DecisionVariables.csv}. Variables are defined over the appropriate index sets.
+
+\begin{itemize}[leftmargin=2.2em]
+  \item \textbf{DV0} \texttt{assign\_team\_to\_project} : $x^{TP}_{t,p}\in\{0,1\}$ (\emph{binary}, domain $\{0,1\}$). Indicates if Team $t$ is assigned to Project $p$.
+  \item \textbf{DV1} \texttt{assign\_worker\_to\_team} : $x^{WT}_{w,t}\in\{0,1\}$ (\emph{binary}). Worker $w$ belongs to Team $t$.
+  \item \textbf{DV2} \texttt{select\_feature\_for\_sprint} : $z^{FSP}_{f,sp}\in\{0,1\}$ (\emph{binary}). Feature $f$ selected for Sprint $sp$.
+  \item \textbf{DV3} \texttt{select\_user\_story\_for\_sprint\_backlog} : $z^{US SBL}_{us,sbl}\in\{0,1\}$ (\emph{binary}). UserStory $us$ included in SprintBacklog $sbl$.
+  \item \textbf{DV4} \texttt{set\_task\_status\_done} : $y^{TSK}_{tsk}\in\{0,1\}$ (\emph{binary}). Task $tsk$ marked done in the sprint.
+  \item \textbf{DV5} \texttt{choose\_sprint\_goal} : $y^{SG}_{sp,sg}\in\{0,1\}$ (\emph{binary}). Sprint $sp$ adopts SprintGoal $sg$.
+  \item \textbf{DV6} \texttt{include\_feature\_in\_release} : $y^{REP F}_{rep,f}\in\{0,1\}$ (\emph{binary}). Feature $f$ included in ReleasePlan $rep$.
+  \item \textbf{DV7} \texttt{set\_blocker\_resolved} : $y^{BL}_{bl}\in\{0,1\}$ (\emph{binary}). Blocker $bl$ is resolved in the sprint.
+  \item \textbf{DV8} \texttt{allocate\_budget\_to\_project} : $b^{P}_{p}\in[0,10^8]$ (\emph{real}). Budget allocated to Project $p$; $0\le b^{P}_{p}\le 100{,}000{,}000$.
+  \item \textbf{DV9} \texttt{assign\_product\_owner\_to\_backlog} : $y^{PO PB}_{po,pb}\in\{0,1\}$ (\emph{binary}). PO $po$ manages Backlog $pb$.
+  \item \textbf{DV10} \texttt{set\_worker\_availability\_percent} : $a^{W}_{w}\in\{0,1,\dots,100\}$ (\emph{integer}). Availability percentage for Worker $w$.
+  \item \textbf{DV11} \texttt{set\_sprint\_number} : $n^{SP}_{sp}\in\{1,2,\dots,100\}$ (\emph{integer}). Chosen sprint sequence number.
+\end{itemize}
+
+\bigskip
+\noindent\textbf{Auxiliary linking constraints (from relationships)} \\
+These ensure structural consistency across entities and are implied by the CSV relationship semantics:
+\begin{align*}
+&z^{US SBL}_{us,sbl} \le \sum_{sp\in SP} A^{SBL SP}_{sbl,sp} && \forall us\in US,\, sbl\in SBL,\\
+&z^{FSP}_{f,sp} \le \sum_{pb\in PB} \sum_{po\in PO} A^{PB F}_{pb,f}\, y^{PO PB}_{po,pb} && \forall f\in F,\, sp\in SP,\\
+&y^{SG}_{sp,sg} \le \sum_{sbl\in SBL} A^{SBL SP}_{sbl,sp} && \forall sp\in SP,\, sg\in SG,\\
+&y^{TSK}_{tsk} \le \sum_{us\in US} A^{US TSK}_{us,tsk}\, \sum_{sbl\in SBL} z^{US SBL}_{us,sbl} && \forall tsk\in TSK,\\
+&y^{BL}_{bl} \le 1 - \text{resolved}_{bl} && \forall bl\in BL,\\
+&\sum_{p\in P} x^{TP}_{t,p} \le 1 \quad\text{(each team to at most one project)} && \forall t\in T.
+\end{align*}
+
+\end{document}

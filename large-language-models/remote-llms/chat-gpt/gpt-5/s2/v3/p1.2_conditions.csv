@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,active_projects_only,Projects considered must have an active status,False,min,Project,status,2,1.0
+C1,exclude_resolved_blockers,Resolved blockers should not be counted toward penalties,False,min,Blocker,status,0,1.0
+C2,user_stories_with_acceptance_criteria,User stories must include acceptance criteria,False,min,UserStory,acceptance_criteria,2,1.0
+C3,focus_on_development_tasks,Prefer development-type tasks when planning,False,min,Task,type,1,0.6
+C4,active_sprints_only,Only sprints with active status are eligible,False,min,Sprint,status,2,1.0
+C5,prefer_certified_skills,Prefer workers with certified skills for critical work,False,min,Skill,certified,1,0.7
+C6,roles_with_defined_responsibility,Team roles must specify area of responsibility,False,min,Role,area_of_responsibility,2,0.9
+C7,exclude_inactive_workers,Workers with inactive status cannot be assigned,False,min,Worker,status,0,1.0
+C8,goal_achievement_reported,Sprint goals must report achievement status,False,min,SprintGoal,achievement_status,2,0.9
+C9,prefer_current_backlog,Prefer product backlogs in a manageable status,False,min,ProductBacklog,status,1,0.5
+C10,epics_with_valid_status,Epics must have a valid status to be scheduled,False,min,Epic,status,2,0.8
+C11,exclude_blocked_tasks,Tasks with blocked status cannot be scheduled,False,min,Task,status,0,1.0

@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,enforce_active_projects,Only consider projects with active status,False,max,Project,status,2,1.0
+C1,require_team_status_ready,Teams must be ready before assignment,False,max,Team,team_status,2,1.0
+C2,exclude_unavailable_workers,Do not assign workers with zero availability,False,min,Worker,availability,0,1.0
+C3,prefer_certified_skills,Prefer skills that are certified,True,max,Skill,certified,1,0.6
+C4,limit_high_severity_blockers,High severity blockers must be minimized,True,min,Blocker,severity,2,1.0
+C5,require_user_story_acceptance_criteria,Only stories with clear acceptance criteria,False,max,UserStory,acceptance_criteria,2,1.0
+C6,prefer_high_team_type_fit,Prefer teams with matching team_type for domain,False,max,Team,team_type,1,0.5
+C7,require_sprint_status_active,Only active sprints are eligible,False,max,Sprint,status,2,1.0
+C8,prefer_positive_trend_velocity,Prefer teams with improving velocity trend,False,max,Velocity,trend,1,0.7
+C9,require_backlog_status_open,Product Backlog must be open to intake items,False,max,ProductBacklog,status,2,1.0
+C10,limit_scrum_board_wip,Keep number of cards on board within limits,True,min,ScrumBoard,number_of_cards,2,1.0
+C11,require_feature_documentation_linked,Features should have linked documentation,False,max,FeatureDocumentation,linked_requirements,2,0.9

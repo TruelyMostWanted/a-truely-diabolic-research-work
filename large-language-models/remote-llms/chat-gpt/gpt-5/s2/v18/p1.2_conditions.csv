@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,minimize_unscheduled_tasks,Tasks must be in a sprint backlog (cannot be outside),True,min,Task,status,2,1.0
+C1,minimize_unassigned_worker_roles,Workers should have at least one role,False,min,Worker,status,1,1.0
+C2,minimize_unplanned_epics,Epics should reside in a product backlog,False,min,Epic,status,2,1.0
+C3,minimize_story_without_acceptance_criteria,Stories must include acceptance criteria,False,min,UserStory,acceptance_criteria,2,1.0
+C4,minimize_sprint_without_goal,Each sprint must have a sprint goal,False,min,SprintGoal,objective_description,2,1.0
+C5,minimize_exceeded_sprint_duration,Sprint end_date should be after start_date,False,min,Sprint,end_date,2,1.0
+C6,minimize_overallocated_team_size,Team size should not exceed capacity,True,min,Team,team_size,1,1.0
+C7,minimize_missing_feature_docs,Each feature should have documentation,False,min,FeatureDocumentation,linked_requirements,1,0.8
+C8,minimize_stale_backlog,Backlog should be recently updated,False,min,ProductBacklog,last_updated,1,1.0
+C9,minimize_unmoderated_events,Key Scrum events should have moderation,False,min,SprintRetrospective,moderation,1,0.6
+C10,minimize_unestimated_stories,Stories should have story points,True,min,UserStory,story_points,2,1.0
+C11,minimize_untracked_velocity,Velocity records should reference a team,False,min,Velocity,number_of_sprints_used,1,0.9

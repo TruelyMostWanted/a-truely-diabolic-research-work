@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,must_have_certified_skills,Workers assigned to critical tasks must be certified,False,max,Skill,certified,2,1.0
+C1,cannot_assign_blocked_task,Tasks with blocking status cannot be planned,False,min,Task,status,0,1.0
+C2,must_have_available_worker,Only workers with availability can be assigned,False,max,Worker,availability,2,1.0
+C3,may_include_high_priority_features,High priority features are preferred when capacity allows,False,max,Feature,priority,1,0.7
+C4,must_limit_team_size,Team size must be within acceptable bounds,False,min,Team,team_size,2,1.0
+C5,must_active_sprint,Only active sprints can receive backlog items,False,max,Sprint,status,2,1.0
+C6,may_use_remote_teams,Teams in remote locations may be considered if needed,False,max,Team,location,1,0.3
+C7,must_respect_total_effort,Total sprint backlog effort must fit the capacity,True,min,SprintBacklog,total_effort,2,1.0
+C8,must_review_release_status,Only release plans with valid status are selectable,False,max,ReleasePlan,status,2,1.0
+C9,cannot_start_unready_story,User stories not in ready status cannot be scheduled,False,min,UserStory,status,0,1.0
+C10,must_target_correct_audience,Projects must specify a target audience,False,max,Project,target_audience,2,0.8
+C11,may_include_review_feedback,Feedback documentation may guide selection after review,False,max,SprintReview,feedback_documentation,1,0.4

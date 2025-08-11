@@ -1,0 +1,276 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{Multi-Objective Optimization Model for a Scrum-Based Software Development Company}
+\author{Generated from Entities, Relationships, Goals, Conditions, Decision Variables CSVs}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Modeling Overview}
+We formulate a mixed-integer, multi-objective model that uses:
+(i) the \textbf{Entities} as sets and attributes,
+(ii) the \textbf{Relationships} as incidence sets between entities,
+(iii) the provided \textbf{Decision Variables},
+and (iv) \textbf{Goals} and \textbf{Conditions} as (soft/hard) objectives and constraints.
+We scalarize the goals via a weighted sum with signs derived from \texttt{GoalType}.
+
+\bigskip
+\noindent\textbf{Notation conventions.}
+For each entity attribute used in goals/conditions we introduce parameters named intuitively:
+\[
+\begin{aligned}
+& a_w &&\text{: Worker availability (from \texttt{Worker.availability})} \\
+& b_p &&\text{: Project budget ceiling (from \texttt{Project.budget})} \\
+& \text{sp}_{us} &&\text{: UserStory story points (from \texttt{UserStory.story\_points})} \\
+& \text{ef}_{tsk} &&\text{: Task effort (from \texttt{Task.effort})} \\
+& \text{pr}_f &&\text{: Feature priority (from \texttt{Feature.priority})} \\
+& \text{nt}_{sbl} &&\text{: SprintBacklog number of tasks (from \texttt{SprintBacklog.number\_of\_tasks})} \\
+& \text{ag}_{sp} &&\text{: Sprint goal achievement (from \texttt{Sprint.achievement\_of\_goal})} \\
+& \text{ts}_{sre} &&\text{: Team satisfaction (from \texttt{SprintRetrospective.team\_satisfaction})} \\
+& \text{sev}_{bl} &&\text{: Blocker severity (from \texttt{Blocker.severity})} \\
+& \overline{\text{sp}}_{\!vel} &&\text{: Velocity average story points (from \texttt{Velocity.avg.\_story\_points})} \\
+& \text{tr}_{vel} &&\text{: Velocity trend (from \texttt{Velocity.trend})} \\
+& \text{att}_{sr} &&\text{: SprintReview attendees count (from \texttt{SprintReview.attendees\_count})} \\
+\end{aligned}
+\]
+For relationships, we use incidence sets, e.g.\ $(us,tsk)\!\in\!\mathcal{E}^{US\text{-}TSK}$ iff \texttt{UserStory} $us$ \emph{consists of} \texttt{Task} $tsk$ (R10).
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=*]
+  \item $\mathcal{P}$: Projects (\texttt{Project})
+  \item $\mathcal{T}$: Teams (\texttt{Team})
+  \item $\mathcal{W}$: Workers (\texttt{Worker})
+  \item $\mathcal{F}$: Features (\texttt{Feature})
+  \item $\mathcal{S}$: Skills (\texttt{Skill})
+  \item $\mathcal{R}$: Roles (\texttt{Role})
+  \item $\mathcal{PO}$: Product Owners (\texttt{ProductOwner})
+  \item $\mathcal{SM}$: Scrum Masters (\texttt{ScrumMaster})
+  \item $\mathcal{PB}$: Product Backlogs (\texttt{ProductBacklog})
+  \item $\mathcal{SP}$: Sprints (\texttt{Sprint})
+  \item $\mathcal{SPP}$: Sprint Plannings (\texttt{SprintPlanning})
+  \item $\mathcal{DS}$: Daily Scrums (\texttt{DailyScrum})
+  \item $\mathcal{SR}$: Sprint Reviews (\texttt{SprintReview})
+  \item $\mathcal{SRE}$: Sprint Retrospectives (\texttt{SprintRetrospective})
+  \item $\mathcal{SBL}$: Sprint Backlogs (\texttt{SprintBacklog})
+  \item $\mathcal{SG}$: Sprint Goals (\texttt{SprintGoal})
+  \item $\mathcal{E}$: Epics (\texttt{Epic})
+  \item $\mathcal{US}$: User Stories (\texttt{UserStory})
+  \item $\mathcal{TSK}$: Tasks (\texttt{Task})
+  \item $\mathcal{DEV}$: Development Snapshots (\texttt{DevelopmentSnapshot})
+  \item $\mathcal{BL}$: Blockers (\texttt{Blocker})
+  \item $\mathcal{SH}$: Stakeholders (\texttt{Stakeholder})
+  \item $\mathcal{VEL}$: Velocities (\texttt{Velocity})
+  \item $\mathcal{REP}$: Release Plans (\texttt{ReleasePlan})
+  \item $\mathcal{RM}$: Roadmaps (\texttt{Roadmap})
+  \item $\mathcal{SCB}$: Scrum Boards (\texttt{ScrumBoard})
+  \item $\mathcal{FED}$: Feature Documentations (\texttt{FeatureDocumentation})
+\end{itemize}
+
+\noindent\textbf{Relationship incidence sets (from \texttt{Relationships.csv}).} We introduce:
+\begin{itemize}[leftmargin=*]
+  \item $\mathcal{E}^{PB\text{-}F}\subseteq \mathcal{PB}\times\mathcal{F}$ for R7 (\emph{contains\_feature})
+  \item $\mathcal{E}^{PB\text{-}E}\subseteq \mathcal{PB}\times\mathcal{E}$ for R8 (\emph{contains\_epic})
+  \item $\mathcal{E}^{E\text{-}US}\subseteq \mathcal{E}\times\mathcal{US}$ for R9 (\emph{contains\_user\_story})
+  \item $\mathcal{E}^{US\text{-}TSK}\subseteq \mathcal{US}\times\mathcal{TSK}$ for R10 (\emph{consists\_of\_tasks})
+  \item $\mathcal{E}^{SBL\text{-}SP}\subseteq \mathcal{SBL}\times\mathcal{SP}$ for R12 (\emph{belongs\_to\_sprint})
+  \item $\mathcal{E}^{SP\text{-}SG}\subseteq \mathcal{SP}\times\mathcal{SG}$ for R13 (\emph{pursues\_goal})
+  \item $\mathcal{E}^{SCB\text{-}TSK}\subseteq \mathcal{SCB}\times\mathcal{TSK}$ for R14 (\emph{contains\_tasks})
+  \item $\mathcal{E}^{FED\text{-}F}\subseteq \mathcal{FED}\times\mathcal{F}$ for R15 (\emph{documents\_feature})
+  \item $\mathcal{E}^{TSK\text{-}BL}\subseteq \mathcal{TSK}\times\mathcal{BL}$ for R16 (\emph{is\_blocked\_by})
+  \item $\mathcal{E}^{VEL\text{-}T}\subseteq \mathcal{VEL}\times\mathcal{T}$ for R19 (\emph{refers\_to\_team})
+  \item $\mathcal{E}^{REP\text{-}F}\subseteq \mathcal{REP}\times\mathcal{F}$ for R20 (\emph{plans\_release})
+  \item $\mathcal{E}^{REP\text{-}RM}\subseteq \mathcal{REP}\times\mathcal{RM}$ for R21 (\emph{is\_part\_of\_roadmap})
+  \item $\mathcal{E}^{SP\text{-}DEV}\subseteq \mathcal{SP}\times\mathcal{DEV}$ for R22 (\emph{generates\_snapshot})
+\end{itemize}
+(Other relationships may be handled analogously as metadata or fixed associations.)
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=*]
+  \item $p\in\mathcal{P}$, $t\in\mathcal{T}$, $w\in\mathcal{W}$, $f\in\mathcal{F}$, $s\in\mathcal{S}$, $r\in\mathcal{R}$,
+  \item $po\in\mathcal{PO}$, $sm\in\mathcal{SM}$, $pb\in\mathcal{PB}$, $sp\in\mathcal{SP}$, $spp\in\mathcal{SPP}$, $ds\in\mathcal{DS}$,
+  \item $sr\in\mathcal{SR}$, $sre\in\mathcal{SRE}$, $sbl\in\mathcal{SBL}$, $sg\in\mathcal{SG}$, $e\in\mathcal{E}$,
+  \item $us\in\mathcal{US}$, $tsk\in\mathcal{TSK}$, $dev\in\mathcal{DEV}$, $bl\in\mathcal{BL}$, $sh\in\mathcal{SH}$,
+  \item $vel\in\mathcal{VEL}$, $rep\in\mathcal{REP}$, $rm\in\mathcal{RM}$, $scb\in\mathcal{SCB}$, $fed\in\mathcal{FED}$.
+\end{itemize}
+
+\section{3. Goals}
+We scalarize goals with weights $w^{(G)}_i$ and signs from \texttt{GoalType}:
+\[
+\max \; Z \;=\; \sum_{\text{max goals }i} w^{(G)}_i\, T_i \;-\; \sum_{\text{min goals }j} w^{(G)}_j\, T_j
+\quad (+\text{ soft-condition preferences; see Section 4}).
+\]
+Each item lists its ID/Name and the term $T_{\cdot}$ it contributes.
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{[G0] maximize\_team\_availability} (IsSum=True, max, \texttt{Worker.availability}, weight $=1.0$)\\
+  $T_{G0}=\displaystyle \sum_{w\in\mathcal{W}} a_w.$
+
+  \item \textbf{[G1] minimize\_total\_project\_budget} (IsSum=True, min, \texttt{Project.budget}, weight $=1.0$)\\
+  Decision uses allocated budget $B_p$; limit by $b_p$ (see constraints).\\
+  $T_{G1}=\displaystyle \sum_{p\in\mathcal{P}} B_p.$
+
+  \item \textbf{[G2] maximize\_story\_points\_delivered} (IsSum=True, max, \texttt{UserStory.story\_points}, weight $=1.2$)\\
+  $T_{G2}=\displaystyle \sum_{us\in\mathcal{US}} \text{sp}_{us}\, x_{us}.$
+
+  \item \textbf{[G3] minimize\_task\_effort} (IsSum=True, min, \texttt{Task.effort}, weight $=1.0$)\\
+  $T_{G3}=\displaystyle \sum_{tsk\in\mathcal{TSK}} \text{ef}_{tsk}\, x_{tsk}.$
+
+  \item \textbf{[G4] maximize\_feature\_priority} (IsSum=True, max, \texttt{Feature.priority}, weight $=0.8$)\\
+  $T_{G4}=\displaystyle \sum_{f\in\mathcal{F}} \text{pr}_f\, x_f.$
+
+  \item \textbf{[G5] minimize\_number\_of\_tasks\_in\_sprint\_backlog} (IsSum=True, min, \texttt{SprintBacklog.number\_of\_tasks}, weight $=0.7$)\\
+  $T_{G5}=\displaystyle \sum_{sbl\in\mathcal{SBL}} \text{nt}_{sbl}.$
+
+  \item \textbf{[G6] maximize\_sprint\_goal\_achievement} (IsSum=True, max, \texttt{Sprint.achievement\_of\_goal}, weight $=1.5$)\\
+  Uses user-set scalar weight $\omega$ on goal attainment if desired.\\
+  $T_{G6}=\displaystyle \sum_{sp\in\mathcal{SP}} \omega\, \text{ag}_{sp}.$
+
+  \item \textbf{[G7] maximize\_team\_satisfaction} (IsSum=True, max, \texttt{SprintRetrospective.team\_satisfaction}, weight $=1.3$)\\
+  $T_{G7}=\displaystyle \sum_{sre\in\mathcal{SRE}} \text{ts}_{sre}.$
+
+  \item \textbf{[G8] minimize\_blocker\_severity} (IsSum=True, min, \texttt{Blocker.severity}, weight $=1.1$)\\
+  $T_{G8}=\displaystyle \sum_{bl\in\mathcal{BL}} \text{sev}_{bl}.$
+
+  \item \textbf{[G9] maximize\_average\_velocity} (IsSum=True, max, \texttt{Velocity.avg.\_story\_points}, weight $=1.4$)\\
+  $T_{G9}=\displaystyle \sum_{vel\in\mathcal{VEL}} \overline{\text{sp}}_{\!vel}.$
+
+  \item \textbf{[G10] maximize\_velocity\_trend} (IsSum=True, max, \texttt{Velocity.trend}, weight $=0.9$)\\
+  $T_{G10}=\displaystyle \sum_{vel\in\mathcal{VEL}} \text{tr}_{vel}.$
+
+  \item \textbf{[G11] maximize\_review\_attendance} (IsSum=True, max, \texttt{SprintReview.attendees\_count}, weight $=0.5$)\\
+  $T_{G11}=\displaystyle \sum_{sr\in\mathcal{SR}} \text{att}_{sr}.$
+\end{itemize}
+
+\section{4. Conditions}
+Hard \emph{Must-Match} (CriteriaType $=2$) constraints are enforced strictly.
+\emph{Cannot-Match} (CriteriaType $=0$) exclude items.
+\emph{May-Match} (CriteriaType $=1$) are modeled as soft preferences via bonus terms $P_k$ added to $Z$ with their weights.
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{[C0] must\_have\_certified\_skills} (Must-Match, \texttt{Skill.certified}, weight $=1.0$)\\
+  Logical: only certified skills are considered in any skill-dependent assignment.\\
+  Math: define $\mathcal{S}^{cert}=\{s\in\mathcal{S}\,|\,\texttt{certified}(s)=1\}$ and restrict any skill-related sums to $\mathcal{S}^{cert}$.
+
+  \item \textbf{[C1] prefer\_high\_feature\_status} (May-Match, \texttt{Feature.status}, weight $=0.5$)\\
+  Logical: prefer features with advanced/ready status.\\
+  Math (soft): $P_{C1}= \sum_{f\in\mathcal{F}} \mathbf{1}\{\texttt{status}(f)\in \text{Ready/Approved}\}\, x_f.$
+
+  \item \textbf{[C2] exclude\_blocked\_tasks} (Cannot-Match, \texttt{Task.status}, weight $=1.0$)\\
+  Logical: tasks that are currently blocked are excluded.\\
+  Math: $x_{tsk}=0\quad \forall\, tsk\in\mathcal{TSK}\ \text{with}\ \texttt{status}(tsk)=\text{Blocked}.$
+
+  \item \textbf{[C3] must\_have\_team\_status\_active} (Must-Match, \texttt{Team.team\_status}, weight $=1.0$)\\
+  Logical: only active teams can receive workers.\\
+  Math: $\sum_{w\in\mathcal{W}} y_{w,t} = 0 \quad \forall\, t\in\mathcal{T}\ \text{with}\ \texttt{team\_status}(t)\neq \text{Active}.$
+
+  \item \textbf{[C4] prefer\_product\_backlog\_status\_ready} (May-Match, \texttt{ProductBacklog.status}, weight $=0.6$)\\
+  Logical: prefer PBs in ``Ready'' state.\\
+  Math (soft): $P_{C4}=\sum_{pb\in\mathcal{PB}} \mathbf{1}\{\texttt{status}(pb)=\text{Ready}\}.$
+
+  \item \textbf{[C5] must\_have\_worker\_status\_active} (Must-Match, \texttt{Worker.status}, weight $=1.0$)\\
+  Logical: only active workers can be assigned.\\
+  Math: $\sum_{t\in\mathcal{T}} y_{w,t}=0 \quad \forall\, w\in\mathcal{W}\ \text{with}\ \texttt{status}(w)\neq \text{Active}.$
+
+  \item \textbf{[C6] prefer\_team\_type\_cross\_functional} (May-Match, \texttt{Team.team\_type}, weight $=0.4$)\\
+  Logical: prefer cross-functional teams.\\
+  Math (soft): $P_{C6}=\sum_{t\in\mathcal{T}} \mathbf{1}\{\texttt{team\_type}(t)=\text{CrossFunctional}\}\cdot \min\{1,\sum_{w} y_{w,t}\}.$
+
+  \item \textbf{[C7] must\_have\_sprint\_status\_active} (Must-Match, \texttt{Sprint.status}, weight $=1.0$)\\
+  Logical: only active sprints are counted in sprint-related calculations.\\
+  Math: restrict sums involving $\mathcal{SP}$ to $\mathcal{SP}^{act}=\{sp\in\mathcal{SP}\,|\,\texttt{status}(sp)=\text{Active}\}$.
+
+  \item \textbf{[C8] exclude\_low\_priority\_user\_stories} (Cannot-Match, \texttt{UserStory.priority}, weight $=1.0$)\\
+  Logical: very low priority stories are excluded.\\
+  Math: $x_{us}=0\quad \forall\, us\in\mathcal{US}\ \text{with}\ \texttt{priority}(us)<\theta.$
+
+  \item \textbf{[C9] prefer\_high\_benefit\_sprint\_goal} (May-Match, \texttt{SprintGoal.benefit}, weight $=0.7$)\\
+  Logical: prefer sprints whose goals promise higher benefit.\\
+  Math (soft): $P_{C9}=\sum_{(sp,sg)\in\mathcal{E}^{SP\text{-}SG}} \texttt{benefit}(sg).$
+
+  \item \textbf{[C10] must\_have\_skill\_category\_required} (Must-Match, \texttt{Skill.category}, weight $=1.0$)\\
+  Logical: only skills from required categories are eligible.\\
+  Math: restrict skill sums to $\mathcal{S}^{req}=\{s\in\mathcal{S}\,|\, \texttt{category}(s)\in \text{RequiredSet}\}$.
+
+  \item \textbf{[C11] prefer\_location\_remote} (May-Match, \texttt{Team.location}, weight $=0.3$)\\
+  Logical: prefer teams that operate remotely, if allowed.\\
+  Math (soft \& gated): $P_{C11}=\rho \cdot \sum_{t\in\mathcal{T}} \mathbf{1}\{\texttt{location}(t)=\text{Remote}\}\cdot \min\{1,\sum_{w} y_{w,t}\}.$
+\end{itemize}
+
+\noindent\textbf{Soft-condition aggregation.}
+Let $w^{(C)}_k$ be the weight of a May-Match condition. We augment the objective:
+\[
+Z' = Z + \sum_{\text{May-Match }k} w^{(C)}_k\, P_k.
+\]
+
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Binary selections}
+  \begin{itemize}
+    \item $x_f \in \{0,1\}$: (\texttt{DV0}) \texttt{select\_feature} --- feature $f$ selected for implementation.
+    \item $x_{us} \in \{0,1\}$: (\texttt{DV1}) \texttt{select\_user\_story} --- user story $us$ included in the sprint.
+    \item $x_{tsk} \in \{0,1\}$: (\texttt{DV2}) \texttt{select\_task} --- task $tsk$ included in the sprint plan.
+    \item $y_{w,t} \in \{0,1\}$: (\texttt{DV3}) \texttt{assign\_worker\_to\_team} --- worker $w$ assigned to team $t$.
+    \item $\rho \in \{0,1\}$: (\texttt{DV10}) \texttt{allow\_remote\_team}.
+  \end{itemize}
+
+  \item \textbf{Integer/scalar choices}
+  \begin{itemize}
+    \item $L \in \{1,2,3,4\}$: (\texttt{DV4}) \texttt{sprint\_length\_weeks}.
+    \item $B_p \in [0,10{,}000{,}000]$: (\texttt{DV5}) \texttt{allocate\_project\_budget} for each $p\in\mathcal{P}$.
+    \item $N_t \in \{1,\dots,50\}$: (\texttt{DV6}) \texttt{team\_size} for each $t\in\mathcal{T}$.
+    \item $K \in \{1,\dots,100\}$: (\texttt{DV7}) \texttt{max\_parallel\_tasks}.
+    \item $V \in [0,200]$: (\texttt{DV8}) \texttt{velocity\_target}.
+    \item $\theta \in \{1,2,3,4,5\}$: (\texttt{DV9}) \texttt{priority\_threshold}.
+    \item $\omega \in [0,10]$: (\texttt{DV11}) \texttt{sprint\_goal\_weight}.
+  \end{itemize}
+\end{itemize}
+
+\bigskip
+\noindent\textbf{Core structural constraints (logic from relationships/attributes).}
+\begin{align}
+& \sum_{w\in\mathcal{W}} y_{w,t} \;=\; N_t && \forall\, t\in\mathcal{T} 
+&& \text{(team size equals assigned workers; uses R2)} \label{eq:team-size}\\[4pt]
+& \sum_{tsk\in\mathcal{TSK}} x_{tsk} \;\le\; K 
+&& \text{(cap concurrent/planned tasks; DV7)} \label{eq:task-cap}\\[4pt]
+& B_p \;\le\; b_p && \forall\, p\in\mathcal{P}
+&& \text{(allocated budget within project ceiling)} \label{eq:budget}\\[4pt]
+& \sum_{us\in\mathcal{US}} \text{sp}_{us}\, x_{us} \;\ge\; V 
+&& \text{(meet velocity target)} \label{eq:velocity}\\[4pt]
+& x_{us} \;\le\; \mathbf{1}\{\texttt{priority}(us)\ge \theta\} && \forall\, us\in\mathcal{US}
+&& \text{(priority threshold; see C8)} \label{eq:prio-us}\\[4pt]
+& x_{f} \;\le\; \mathbf{1}\{\texttt{priority}(f)\ge \theta\} && \forall\, f\in\mathcal{F}
+&& \text{(priority threshold for features)} \label{eq:prio-f}\\[4pt]
+& x_{tsk} \;\le\; \sum_{us:(us,tsk)\in \mathcal{E}^{US\text{-}TSK}} x_{us} && \forall\, tsk\in\mathcal{TSK}
+&& \text{(task only if its user story is selected; R10)} \label{eq:task-implies-story}\\[4pt]
+& \sum_{t\in\mathcal{T}} y_{w,t} \;\le\; 1 && \forall\, w\in\mathcal{W}
+&& \text{(worker to at most one team)} \label{eq:worker-unique}\\[4pt]
+& y_{w,t}=0 && \forall\, (w,t): \texttt{team\_status}(t)\neq\text{Active}\ \text{or}\ \texttt{status}(w)\neq\text{Active}
+&& \text{(C3 \& C5 hard gating)} \label{eq:active-gates}\\[4pt]
+& x_{tsk}=0 && \forall\, tsk: \texttt{status}(tsk)=\text{Blocked}
+&& \text{(C2 gating)} \label{eq:blocked-task}
+\end{align}
+
+\bigskip
+\noindent\textbf{Final scalarized objective (including soft preferences).}
+Let $\mathcal{G}^{max}=\{G0,G2,G4,G6,G7,G9,G10,G11\}$, $\mathcal{G}^{min}=\{G1,G3,G5,G8\}$ and $T_{Gi}$ as above. 
+Let $\mathcal{C}^{soft}=\{C1,C4,C6,C9,C11\}$ with preference terms $P_{Ck}$.
+Weights come from the CSVs. The model solves:
+\[
+\boxed{
+\max\; Z'' \;=\;
+\sum_{i\in\mathcal{G}^{max}} w^{(G)}_i\, T_{Gi}
+\;-\;
+\sum_{j\in\mathcal{G}^{min}} w^{(G)}_j\, T_{Gj}
+\;+\;
+\sum_{k\in\mathcal{C}^{soft}} w^{(C)}_{k}\, P_{Ck}
+}
+\]
+subject to \eqref{eq:team-size}--\eqref{eq:blocked-task}, domain bounds of Section 5, and entity/relationship gating described in Section 4.
+\end{document}

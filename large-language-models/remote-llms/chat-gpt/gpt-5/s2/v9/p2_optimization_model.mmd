@@ -1,0 +1,333 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\geometry{margin=1in}
+\setlist[itemize]{left=0pt,label=\textbullet,align=left}
+
+\title{SCRUM Domain Optimization Model\\\large From Entities, Relationships, Goals, Conditions, Decision Variables}
+\author{TruelyMostWanted}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+  \item $\mathcal{P}$ (Project): The product or initiative to be developed.
+  \item $\mathcal{T}$ (Team): Self-organized, cross-functional development team.
+  \item $\mathcal{W}$ (Worker/Employee): Individual team member working on the project. \emph{(Alias ``Employee'' in relationships)}
+  \item $\mathcal{F}$ (Feature): Mid-sized functionality.
+  \item $\mathcal{S}$ (Skill): Professional or social competence of a worker.
+  \item $\mathcal{R}$ (Role): Defined responsibilities within the Scrum team.
+  \item $\mathcal{PO}$ (ProductOwner): Responsible for product vision and Product Backlog.
+  \item $\mathcal{SM}$ (ScrumMaster): Supports the team in applying Scrum.
+  \item $\mathcal{PB}$ (ProductBacklog): Ordered list of all requirements.
+  \item $\mathcal{SP}$ (Sprint): Fixed time period for creating an increment.
+  \item $\mathcal{SPP}$ (SprintPlanning): Kick-off meeting for Sprint preparation.
+  \item $\mathcal{DS}$ (DailyScrum): Daily 15-minute team meeting.
+  \item $\mathcal{SR}$ (SprintReview): Presentation and acceptance of results.
+  \item $\mathcal{SRE}$ (SprintRetrospective): Retrospective for process improvement.
+  \item $\mathcal{SBL}$ (SprintBacklog): Selected backlog items + implementation plan.
+  \item $\mathcal{SG}$ (SprintGoal): Objective to be achieved within the sprint.
+  \item $\mathcal{E}$ (Epic): Large requirement that can be split into stories.
+  \item $\mathcal{US}$ (UserStory): Requirement from the perspective of a user.
+  \item $\mathcal{TSK}$ (Task): Smallest unit of work within a sprint.
+  \item $\mathcal{DEV}$ (DevelopmentSnapshot): Product at the end of a sprint.
+  \item $\mathcal{BL}$ (Blocker): Obstacle hindering progress.
+  \item $\mathcal{SH}$ (Stakeholder): Interested party in the product.
+  \item $\mathcal{VEL}$ (Velocity): Average amount of work per sprint.
+  \item $\mathcal{REP}$ (ReleasePlan): Plan for releasing specific features.
+  \item $\mathcal{RM}$ (Roadmap): Long-term planning across releases.
+  \item $\mathcal{SCB}$ (ScrumBoard): Visual representation of tasks during the sprint.
+  \item $\mathcal{FED}$ (FeatureDocumentation): Documentation for a specific feature.
+\end{itemize}
+
+\paragraph{Relationship-induced feasibility subsets (from Relationships.csv)}
+\begin{itemize}
+  \item $\mathcal{T}\!\to\!\mathcal{P}$: allowed team--project assignments (R1).
+  \item $\mathcal{W}\!\to\!\mathcal{T}$: allowed worker--team memberships (R2).
+  \item $\mathcal{W}\!\to\!\mathcal{S}$, $\mathcal{W}\!\to\!\mathcal{R}$: worker--skill and worker--role links (R3,R4).
+  \item $\mathcal{PO}\!\leftrightarrow\!\mathcal{PB}$: $\text{one-to-one}$ (R5).
+  \item $\mathcal{T}\!\leftrightarrow\!\mathcal{SM}$: $\text{one-to-one}$ (R6).
+  \item $\mathcal{PB}\!\to\!\mathcal{F}$, $\mathcal{PB}\!\to\!\mathcal{E}$: backlog contains features/epics (R7,R8).
+  \item $\mathcal{E}\!\to\!\mathcal{US}$: epic contains user stories (R9).
+  \item $\mathcal{US}\!\to\!\mathcal{TSK}$: user story consists of tasks (R10).
+  \item $\mathcal{US}\!\leftrightarrow\!\mathcal{SBL}$: user story assigned to sprint backlog (many-to-many) (R11). Feasible pair set $\mathcal{A}_{US,SBL}\subseteq \mathcal{US}\times\mathcal{SBL}$.
+  \item $\mathcal{SBL}\!\to\!\mathcal{SP}$: each sprint backlog belongs to one sprint (R12).
+  \item $\mathcal{SP}\!\to\!\mathcal{SG}$: each sprint pursues one goal (R13).
+  \item $\mathcal{SCB}\!\to\!\mathcal{TSK}$: board contains sprint tasks (R14).
+  \item $\mathcal{FED}\!\leftrightarrow\!\mathcal{F}$: documentation belongs to feature (R15).
+  \item $\mathcal{TSK}\!\leftrightarrow\!\mathcal{BL}$: tasks can be blocked by blockers (R16).
+  \item $\mathcal{SH}\!\to\!\mathcal{SR}$: stakeholders participate in sprint reviews (R17).
+  \item $\mathcal{SM}\!\to\!\mathcal{SRE}$: SM moderates retrospectives (R18).
+  \item $\mathcal{VEL}\!\leftrightarrow\!\mathcal{T}$: velocity refers to team (R19).
+  \item $\mathcal{REP}\!\to\!\mathcal{F}$: release plan includes features (R20). Feasible pair set $\mathcal{A}_{F,REP}\subseteq \mathcal{F}\times\mathcal{REP}$.
+  \item $\mathcal{REP}\!\to\!\mathcal{RM}$: release plan is part of roadmap (R21).
+  \item $\mathcal{SP}\!\to\!\mathcal{DEV}$: sprint generates development snapshot (R22).
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+  \item $p\in\mathcal{P}$, $t\in\mathcal{T}$, $w\in\mathcal{W}$, $f\in\mathcal{F}$, $s\in\mathcal{S}$, $r\in\mathcal{R}$.
+  \item $\text{po}\in\mathcal{PO}$, $\text{sm}\in\mathcal{SM}$, $\text{pb}\in\mathcal{PB}$, $sp\in\mathcal{SP}$, $spp\in\mathcal{SPP}$.
+  \item $ds\in\mathcal{DS}$, $sr\in\mathcal{SR}$, $sre\in\mathcal{SRE}$, $sbl\in\mathcal{SBL}$, $sg\in\mathcal{SG}$.
+  \item $e\in\mathcal{E}$, $us\in\mathcal{US}$, $tsk\in\mathcal{TSK}$, $dev\in\mathcal{DEV}$, $bl\in\mathcal{BL}$.
+  \item $sh\in\mathcal{SH}$, $v\in\mathcal{VEL}$, $rep\in\mathcal{REP}$, $rm\in\mathcal{RM}$, $scb\in\mathcal{SCB}$, $fed\in\mathcal{FED}$.
+\end{itemize}
+
+\paragraph{Parameters (selected attributes as numeric inputs)}
+For each referenced entity attribute in Goals/Conditions we assume given nonnegative parameters:
+\begin{itemize}
+  \item $\text{effort}_{tsk}$ (Task.effort), $\text{priority}_{f}$ (Feature.priority), $\text{severity}_{bl}$ (Blocker.severity).
+  \item $\overline{\text{storypts}}_{us}$ (UserStory.story\_points), $\text{attendees}_{sr}$ (SprintReview.attendees\_count).
+  \item $\text{milestones}_{rm}$ (Roadmap.milestones), $\text{entries}_{pb}$ (ProductBacklog.number\_of\_entries).
+  \item $\text{avgSP}_{v}$, $\text{maxV}_{v}$, $\text{minV}_{v}$ (Velocity.avg\_story\_points, max\_velocity, min\_velocity).
+  \item $\text{goalach}_{sg}$ (SprintGoal.achievement\_status), $\text{sat}_{sre}$ (SprintRetrospective.team\_satisfaction).
+  \item $\text{budgetCap}_{p}$ (cap for Project.budget), $\text{statusActive}_{p}\in\{0,1\}$ (Project.status).
+  \item $\text{numTasks}_{sbl}$, $\text{capEffort}_{sbl}$ (SprintBacklog.number\_of\_tasks, total\_effort).
+  \item $\text{cards}_{scb}$ (ScrumBoard.number\_of\_cards), $\text{prio}_{f}$ (Feature.priority).
+  \item $\text{open}_{bl}\in\{0,1\}$ (Blocker.status indicator ``open''), $\text{done}_{tsk}\in\{0,1\}$ (Task.status indicator ``done'').
+  \item $\text{avail}_{po}$ (ProductOwner.availability).
+\end{itemize}
+
+\paragraph{Incidence/helper sets}
+\begin{itemize}
+  \item $\mathcal{A}_{US,SBL}\subseteq \mathcal{US}\times\mathcal{SBL}$ (feasible user story $\leftrightarrow$ sprint backlog pairs).
+  \item $\mathcal{A}_{F,REP}\subseteq \mathcal{F}\times\mathcal{REP}$ (feasible feature $\leftrightarrow$ release plan pairs).
+  \item $\mathcal{B}(tsk)=\{bl\in\mathcal{BL}:\,(tsk,bl)\ \text{linked (R16)}\}$ (blockers of a task).
+\end{itemize}
+
+\section{3. Goals}
+We aggregate multiple (min/max) goals into a single weighted objective:
+\[
+\max \; Z \;=\; \sum_{g\in\mathcal{G}} \omega_g\, s_g \, G_g(\cdot),
+\]
+where $\omega_g>0$ is the weight from \texttt{Goals.csv}, $s_g=+1$ for GoalType = \texttt{max} and $s_g=-1$ for GoalType = \texttt{min}, and $G_g(\cdot)$ is the corresponding goal expression.
+
+\begin{itemize}
+  \item \textbf{G0 maximize\_total\_story\_points} (ID: G0)\newline
+  Logical: Maximize total planned story points of user stories selected into any sprint backlog.\newline
+  Mathematical:
+  \[
+    G_{0} \;=\; \sum_{(us,sbl)\in \mathcal{A}_{US,SBL}} \overline{\text{storypts}}_{us}\, x_{us,sbl}.
+  \]
+
+  \item \textbf{G1 minimize\_total\_task\_effort} (ID: G1)\newline
+  Logical: Minimize the aggregate estimated effort of tasks in scope.\newline
+  Mathematical:
+  \[
+    G_{1} \;=\; \sum_{tsk\in\mathcal{TSK}} \text{effort}_{tsk}.
+  \]
+
+  \item \textbf{G2 maximize\_sprint\_goal\_achievement} (ID: G2)\newline
+  Logical: Maximize reported achievement of sprint goals.\newline
+  Mathematical:
+  \[
+    G_{2} \;=\; \sum_{sg\in\mathcal{SG}} \text{goalach}_{sg}.
+  \]
+
+  \item \textbf{G3 minimize\_blocker\_severity} (ID: G3)\newline
+  Logical: Reduce severity of blockers impacting work.\newline
+  Mathematical:
+  \[
+    G_{3} \;=\; \sum_{bl\in\mathcal{BL}} \text{severity}_{bl}.
+  \]
+
+  \item \textbf{G4 maximize\_delivery\_of\_high\_priority\_features} (ID: G4)\newline
+  Logical: Favor inclusion of higher-priority features into releases.\newline
+  Mathematical:
+  \[
+    G_{4} \;=\; \sum_{(f,rep)\in \mathcal{A}_{F,REP}} \text{priority}_{f}\, y_{f,rep}.
+  \]
+
+  \item \textbf{G5 maximize\_velocity\_average\_story\_points} (ID: G5)\newline
+  Logical: Increase average velocity (story points) over observed sprints.\newline
+  Mathematical:
+  \[
+    G_{5} \;=\; \sum_{v\in\mathcal{VEL}} \text{avgSP}_{v}.
+  \]
+
+  \item \textbf{G6 minimize\_daily\_scrum\_time} (ID: G6)\newline
+  Logical: Keep the total scheduled Daily Scrum time low.\newline
+  Mathematical:
+  \[
+    G_{6} \;=\; \sum_{ds\in\mathcal{DS}} \text{durDS}_{ds},
+  \]
+  where $\text{durDS}_{ds}$ is the decision variable for Daily Scrum duration (see Section~5).
+
+  \item \textbf{G7 minimize\_wip\_in\_sprint\_backlog} (ID: G7)\newline
+  Logical: Reduce the number of tasks in each sprint backlog (proxy for WIP).\newline
+  Mathematical:
+  \[
+    G_{7} \;=\; \sum_{sbl\in\mathcal{SBL}} \text{numTasks}_{sbl}.
+  \]
+
+  \item \textbf{G8 maximize\_team\_satisfaction} (ID: G8)\newline
+  Logical: Maximize team satisfaction reported in retrospectives.\newline
+  Mathematical:
+  \[
+    G_{8} \;=\; \sum_{sre\in\mathcal{SRE}} \text{sat}_{sre}.
+  \]
+
+  \item \textbf{G9 minimize\_product\_backlog\_size} (ID: G9)\newline
+  Logical: Keep the number of entries in the product backlog lean.\newline
+  Mathematical:
+  \[
+    G_{9} \;=\; \sum_{pb\in\mathcal{PB}} \text{entries}_{pb}.
+  \]
+
+  \item \textbf{G10 maximize\_release\_feature\_coverage} (ID: G10)\newline
+  Logical: Maximize the number of features included across releases.\newline
+  Mathematical:
+  \[
+    G_{10} \;=\; \sum_{(f,rep)\in \mathcal{A}_{F,REP}} y_{f,rep}.
+  \]
+
+  \item \textbf{G11 maximize\_roadmap\_milestones} (ID: G11)\newline
+  Logical: Maximize the milestones realized on the roadmap.\newline
+  Mathematical:
+  \[
+    G_{11} \;=\; \sum_{rm\in\mathcal{RM}} \text{milestones}_{rm}.
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+All conditions apply simultaneously. When a condition naturally limits a decision variable it is stated as a hard constraint.
+
+\begin{itemize}
+  \item \textbf{C0 project\_status\_active\_only} (ID: C0)\newline
+  Logical: Only projects with active status are considered.\newline
+  Mathematical:
+  \[
+    \forall p\in\mathcal{P}:\ \text{statusActive}_{p}=1 \quad \text{(filter/feasibility)}.
+  \]
+
+  \item \textbf{C1 budget\_cannot\_exceed\_limit} (ID: C1)\newline
+  Logical: Allocated budget per project must not exceed the approved cap.\newline
+  Mathematical:
+  \[
+    \forall p\in\mathcal{P}:\ \ \text{budget}_{p} \;\le\; \text{budgetCap}_{p}.
+  \]
+
+  \item \textbf{C2 minimum\_team\_size} (ID: C2)\newline
+  Logical: Teams must meet a minimum effective size.\newline
+  Mathematical:
+  \[
+    \forall t\in\mathcal{T}:\ \ \text{teamsize}_{t} \;\ge\; \underline{n}^{\text{team}} \quad (\text{here }\underline{n}^{\text{team}}=3\text{ from DV11 bounds}).
+  \]
+
+  \item \textbf{C3 maximum\_daily\_scrum\_duration} (ID: C3)\newline
+  Logical: Daily Scrum duration should not exceed the target.\newline
+  Mathematical:
+  \[
+    \forall ds\in\mathcal{DS}:\ \ \text{durDS}_{ds} \;\le\; \overline{d}^{\text{DS}} \quad (\text{e.g., }\overline{d}^{\text{DS}}=30\text{ minutes from DV4}).
+  \]
+
+  \item \textbf{C4 po\_availability\_required} (ID: C4)\newline
+  Logical: Product Owner availability must be present during sprint.\newline
+  Mathematical:
+  \[
+    \forall \text{po}\in\mathcal{PO}:\ \ \text{avail}_{\text{po}} \;\ge\; \underline{a}^{\text{PO}} \quad \text{(feasibility threshold)}.
+  \]
+
+  \item \textbf{C5 scrum\_master\_experience\_required} (ID: C5)\newline
+  Logical: Scrum Master experience must meet a minimum.\newline
+  Mathematical:
+  \[
+    \forall \text{sm}\in\mathcal{SM}:\ \ \text{exp}_{\text{sm}} \;\ge\; \underline{e}^{\text{SM}} \quad \text{(feasibility threshold)}.
+  \]
+
+  \item \textbf{C6 limit\_wip\_on\_board} (ID: C6)\newline
+  Logical: Number of cards on Scrum Board must not exceed its WIP cap.\newline
+  Mathematical:
+  \[
+    \forall scb\in\mathcal{SCB}:\ \ \text{cards}_{scb} \;\le\; \text{wipcap}_{scb}.
+  \]
+
+  \item \textbf{C7 feature\_effort\_cap} (ID: C7)\newline
+  Logical: Do not pull features above an effort threshold.\newline
+  Mathematical:
+  \[
+    \forall f\in\mathcal{F}:\ \ \text{estEffort}_{f} \;\le\; \overline{E}^{\text{feat}} \quad \text{(feasibility threshold)}.
+  \]
+
+  \item \textbf{C8 sprint\_backlog\_effort\_cap} (ID: C8)\newline
+  Logical: Total planned effort in a sprint backlog must stay within its capacity.\newline
+  Mathematical (story-points proxy):
+  \[
+    \forall sbl\in\mathcal{SBL}:\ \ \sum_{\substack{us\in\mathcal{US}\\(us,sbl)\in\mathcal{A}_{US,SBL}}} \overline{\text{storypts}}_{us}\, x_{us,sbl} \;\le\; \text{capEffort}_{sbl}.
+  \]
+
+  \item \textbf{C9 min\_sprint\_review\_attendees} (ID: C9)\newline
+  Logical: Sprint Review must have at least a minimum number of attendees.\newline
+  Mathematical:
+  \[
+    \forall sr\in\mathcal{SR}:\ \ \text{attendees}_{sr} \;\ge\; \underline{A}^{\text{SR}}.
+  \]
+
+  \item \textbf{C10 min\_velocity\_floor} (ID: C10)\newline
+  Logical: Maintain a minimum team velocity across sprints.\newline
+  Mathematical:
+  \[
+    \forall v\in\mathcal{VEL}:\ \ \text{minV}_{v} \;\ge\; \underline{V}.
+  \]
+
+  \item \textbf{C11 blocker\_status\_cannot\_be\_open\_in\_done} (ID: C11)\newline
+  Logical: No open blockers are allowed on tasks marked ``done''.\newline
+  Mathematical (implication as linear constraint via big-$M$ indicator):
+  \[
+    \forall tsk\in\mathcal{TSK},\ \forall bl\in\mathcal{B}(tsk):\quad \text{done}_{tsk}=1 \ \Rightarrow\ \text{open}_{bl}=0.
+  \]
+  (In MILP one may encode $\text{open}_{bl}\le 1-\text{done}_{tsk}$.)
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+  \item \textbf{DV0 assign\_user\_story\_to\_sprint}:\newline
+  $x_{us,sbl}\in\{0,1\}$ for $(us,sbl)\in\mathcal{A}_{US,SBL}$ (assign user story to a sprint backlog).
+  \item \textbf{DV1 select\_feature\_for\_release}:\newline
+  $y_{f,rep}\in\{0,1\}$ for $(f,rep)\in\mathcal{A}_{F,REP}$ (include feature in a release plan).
+  \item \textbf{DV2 allocate\_worker\_to\_team}:\newline
+  $a_{w,t}\in\{0,1\}$ (assign worker to team for a sprint).
+  \item \textbf{DV3 set\_task\_priority\_level}:\newline
+  $\text{prioVar}_{tsk}\in\mathbb{Z}$ with $1\le \text{prioVar}_{tsk}\le 5$.
+  \item \textbf{DV4 schedule\_daily\_scrum\_duration}:\newline
+  $\text{durDS}_{ds}\in\mathbb{Z}$ with $10\le \text{durDS}_{ds}\le 30$ (minutes).
+  \item \textbf{DV5 budget\_allocation\_per\_project}:\newline
+  $\text{budget}_{p}\in\mathbb{R}_{+}$ with $0\le \text{budget}_{p}\le 1{,}000{,}000$.
+  \item \textbf{DV6 limit\_wip\_tasks\_per\_board}:\newline
+  $\text{wipcap}_{scb}\in\mathbb{Z}_{+}$ with $0\le \text{wipcap}_{scb}\le 200$.
+  \item \textbf{DV7 assign\_scrum\_master\_to\_team}:\newline
+  $z^{SM}_{\text{sm},t}\in\{0,1\}$ (Scrum Master to team).
+  \item \textbf{DV8 prioritize\_user\_story}:\newline
+  $\pi_{us}\in\mathbb{Z}_{+}$ with $1\le \pi_{us}\le 100$ (ordering rank).
+  \item \textbf{DV9 estimate\_story\_points}:\newline
+  $\widehat{\text{SP}}_{us}\in\mathbb{Z}_{+}$ with $1\le \widehat{\text{SP}}_{us}\le 13$ (planning estimate, if used in place of $\overline{\text{storypts}}_{us}$).
+  \item \textbf{DV10 set\_sprint\_length\_days}:\newline
+  $L_{sp}\in\mathbb{Z}_{+}$ with $7\le L_{sp}\le 28$ (days).
+  \item \textbf{DV11 set\_team\_size}:\newline
+  $\text{teamsize}_{t}\in\mathbb{Z}_{+}$ with $3\le \text{teamsize}_{t}\le 12$.
+\end{itemize}
+
+\paragraph{Common logical/domain constraints}
+\begin{itemize}
+  \item Each user story assigned at most once:
+  \[
+    \forall us\in\mathcal{US}:\quad \sum_{\substack{sbl\in\mathcal{SBL}\\(us,sbl)\in\mathcal{A}_{US,SBL}}} x_{us,sbl}\ \le\ 1.
+  \]
+  \item Feature selection respects release feasibility:
+  \[
+    \forall rep\in\mathcal{REP}:\quad \sum_{\substack{f\in\mathcal{F}\\(f,rep)\in\mathcal{A}_{F,REP}}} y_{f,rep}\ \le\ \overline{N}^{\text{feat}}_{rep}\quad (\text{optional capacity}).
+  \]
+  \item Unique Scrum Master per team (if required):
+  \[
+    \forall t\in\mathcal{T}:\quad \sum_{\text{sm}\in\mathcal{SM}} z^{SM}_{\text{sm},t}\ =\ 1.
+  \]
+\end{itemize}
+
+\end{document}

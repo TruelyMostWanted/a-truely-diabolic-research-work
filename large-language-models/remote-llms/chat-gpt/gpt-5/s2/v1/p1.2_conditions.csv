@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,must_match_active_projects,Only consider projects with active status,False,max,Project,status,2,1.0
+C1,cannot_match_blocked_tasks,Exclude tasks with status set to blocked,False,min,Task,status,0,1.0
+C2,must_match_available_workers,Assign work only to workers with availability above threshold,False,max,Worker,availability,2,1.2
+C3,must_match_certified_skills,Require certified skills where specified,False,max,Skill,certified,2,1.0
+C4,must_match_product_owner_availability,Ensure Product Owner is available during sprint,False,max,ProductOwner,availability,2,0.9
+C5,must_match_sprint_has_goal,Only run sprints that have a defined goal,False,max,Sprint,achievement_of_goal,2,1.1
+C6,cannot_match_low_priority_features,Do not plan features below minimum priority,True,min,Feature,priority,0,1.0
+C7,must_match_active_backlog,Backlog must be in active/ready status to pull items,False,max,ProductBacklog,status,2,1.0
+C8,must_match_sprint_backlog_effort_limit,Total sprint backlog effort must not exceed capacity,True,min,SprintBacklog,total_effort,2,1.4
+C9,cannot_match_severe_blockers,Exclude items blocked with high severity,True,min,Blocker,severity,0,1.3
+C10,must_match_review_feedback_documented,Require feedback documentation for each review,False,max,SprintReview,feedback_documentation,2,0.8
+C11,must_match_retro_actions_logged,Improvements must be captured as actions,False,max,SprintRetrospective,improvement_actions,2,0.8
+C12,must_match_team_size_bounds,Team size must be within allowed range,False,min,Team,team_size,2,1.0

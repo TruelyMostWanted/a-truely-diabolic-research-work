@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,active_projects_only,Select only projects with an active status,False,min,Project,status,2,1.0
+C1,team_within_size_limit,Ensure team size respects organizational limits,False,min,Team,team_size,2,1.0
+C2,workers_available_only,Assign only workers who are available,False,min,Worker,availability,2,1.0
+C3,exclude_resolved_blockers,Exclude blockers that are already resolved,False,min,Blocker,resolved_on,0,1.0
+C4,prefer_certified_skills,Prefer workers with certified skills for tasks,False,min,Skill,certified,1,0.6
+C5,high_priority_features_required,Include only features meeting priority threshold,False,min,Feature,priority,2,1.0
+C6,user_stories_ready_only,Plan only user stories in a ready status,False,min,UserStory,status,2,1.0
+C7,active_sprint_backlog_only,Use sprint backlogs that are currently active,False,min,SprintBacklog,status,2,1.0
+C8,prefer_recent_backlog_updates,Prefer product backlogs updated recently,False,min,ProductBacklog,last_updated,1,0.5
+C9,exclude_chore_tasks,Do not include tasks of type chore,False,min,Task,type,0,1.0
+C10,sprint_goal_must_exist,Only consider sprints with a defined objective,False,min,SprintGoal,objective_description,2,1.0
+C11,release_plan_planned_only,Work only from planned release plans,False,min,ReleasePlan,status,2,1.0

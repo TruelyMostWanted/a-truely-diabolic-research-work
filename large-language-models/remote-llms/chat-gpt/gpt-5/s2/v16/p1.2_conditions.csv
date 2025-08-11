@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_size_at_least_min,Team must meet a minimum size threshold,False,min,Team,team_size,2,1.0
+C1,worker_status_active_only,Only active workers considered for assignment,False,min,Worker,status,0,1.0
+C2,task_status_not_done,Exclude tasks already completed,False,min,Task,status,0,1.0
+C3,user_story_priority_at_least,Only consider stories with minimum priority,False,min,UserStory,priority,2,1.0
+C4,epic_status_in_progress_or_new,Only epics not closed are selectable,False,min,Epic,status,2,1.0
+C5,skill_certified_preferred,Prefer certified skills where applicable,False,max,Skill,certified,1,0.5
+C6,sprint_within_date_range,Sprint must fall within project dates,False,min,Sprint,start_date,2,1.0
+C7,backlog_status_active_only,Only active product backlogs are included,False,min,ProductBacklog,status,2,1.0
+C8,blocker_status_unresolved_only,Consider only unresolved blockers in risk calc,False,min,Blocker,status,2,1.0
+C9,scrum_master_experience_min,Require minimum Scrum Master experience,False,max,ScrumMaster,experience,2,1.0
+C10,release_plan_status_planned_or_active,Include planned/active release plans only,False,max,ReleasePlan,status,2,1.0
+C11,stakeholder_influence_capped,Cap high-influence stakeholder weighting,True,min,Stakeholder,influence_level,1,0.6

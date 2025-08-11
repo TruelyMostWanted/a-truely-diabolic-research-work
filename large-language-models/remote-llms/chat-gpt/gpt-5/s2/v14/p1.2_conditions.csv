@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,active_projects_only,"Include only projects with status = active.",False,min,Project,status,2,1.0
+C1,team_status_available,"Teams must have status = available.",False,min,Team,team_status,2,1.0
+C2,worker_status_active,"Workers must have status = active.",False,min,Worker,status,2,1.0
+C3,min_worker_availability,"Workers must meet a minimum availability threshold.",False,min,Worker,availability,2,1.0
+C4,user_story_ready,"User stories must be in status = ready.",False,min,UserStory,status,2,1.0
+C5,feature_priority_threshold,"Features must meet a minimum priority.",False,min,Feature,priority,2,1.0
+C6,sprint_in_progress_or_planned,"Sprints considered are in progress or planned.",False,min,Sprint,status,2,1.0
+C7,exclude_unresolved_blockers,"Exclude tasks blocked by blockers with status != resolved.",True,min,Blocker,status,0,1.0
+C8,prefer_dev_task_type,"Prefer tasks of type = development.",False,min,Task,type,1,0.5
+C9,backlog_status_refined,"Product backlog status must be refined.",False,min,ProductBacklog,status,2,1.0
+C10,release_plan_planned,"Release plans must be in status = planned.",False,min,ReleasePlan,status,2,1.0
+C11,roadmap_end_date_defined,"Roadmaps must have an end date set.",False,min,Roadmap,end_date,2,1.0

@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,maximize_active_sprint_only,Consider only active sprints when optimizing,False,max,Sprint,status,2,1.0
+C1,minimize_exceeded_budget_projects,Exclude projects that exceed budget,True,min,Project,budget,2,1.0
+C2,maximize_ready_user_stories,Only user stories ready per acceptance criteria,False,max,UserStory,acceptance_criteria,2,0.9
+C3,minimize_unavailable_workers,Exclude workers marked unavailable,True,min,Worker,availability,2,1.0
+C4,maximize_certified_skills,Prefer certified skills for assignments,True,max,Skill,certified,1,0.6
+C5,minimize_blocked_tasks,Tasks assigned should not be blocked,True,min,Task,status,2,1.0
+C6,maximize_product_backlog_health,Backlog must be in active status,False,max,ProductBacklog,status,2,0.8
+C7,minimize_low_priority_features,Avoid selecting low-priority features,True,min,Feature,priority,1,0.7
+C8,maximize_sprint_timebox_respect,Sprints must have valid end dates,False,max,Sprint,end_date,2,0.5
+C9,maximize_goal_documentation_presence,Ensure sprint goals have description,False,max,SprintGoal,objective_description,2,0.5
+C10,maximize_feature_documentation_linkage,Prefer features with linked documentation,True,max,FeatureDocumentation,linked_requirements,1,0.4
+C11,minimize_overloaded_teams,Teams should stay within size/capacity,True,min,Team,team_size,1,0.7

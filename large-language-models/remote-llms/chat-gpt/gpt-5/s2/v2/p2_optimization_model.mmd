@@ -1,0 +1,185 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,mathtools,enumerate}
+\usepackage[hidelinks]{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\title{SCRUM Domain Optimization Model}
+\author{Generated from Entities, Relationships, Goals, Conditions, Decision Variables}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+  \item $P$ --- set of \textbf{Projects} (\texttt{Project})
+  \item $T$ --- set of \textbf{Teams} (\texttt{Team})
+  \item $W$ --- set of \textbf{Workers} (\texttt{Worker})
+  \item $F$ --- set of \textbf{Features} (\texttt{Feature})
+  \item $S$ --- set of \textbf{Skills} (\texttt{Skill})
+  \item $R$ --- set of \textbf{Roles} (\texttt{Role})
+  \item $PO$ --- set of \textbf{Product Owners} (\texttt{ProductOwner})
+  \item $SM$ --- set of \textbf{Scrum Masters} (\texttt{ScrumMaster})
+  \item $PB$ --- set of \textbf{Product Backlogs} (\texttt{ProductBacklog})
+  \item $SP$ --- set of \textbf{Sprints} (\texttt{Sprint})
+  \item $SPP$ --- set of \textbf{Sprint Plannings} (\texttt{SprintPlanning})
+  \item $DS$ --- set of \textbf{Daily Scrums} (\texttt{DailyScrum})
+  \item $SR$ --- set of \textbf{Sprint Reviews} (\texttt{SprintReview})
+  \item $SRE$ --- set of \textbf{Sprint Retrospectives} (\texttt{SprintRetrospective})
+  \item $SBL$ --- set of \textbf{Sprint Backlogs} (\texttt{SprintBacklog})
+  \item $SG$ --- set of \textbf{Sprint Goals} (\texttt{SprintGoal})
+  \item $E$ --- set of \textbf{Epics} (\texttt{Epic})
+  \item $US$ --- set of \textbf{User Stories} (\texttt{UserStory})
+  \item $K$ --- set of \textbf{Tasks} (\texttt{Task})
+  \item $DEV$ --- set of \textbf{Development Snapshots} (\texttt{DevelopmentSnapshot})
+  \item $BL$ --- set of \textbf{Blockers} (\texttt{Blocker})
+  \item $SH$ --- set of \textbf{Stakeholders} (\texttt{Stakeholder})
+  \item $VEL$ --- set of \textbf{Velocity records} (\texttt{Velocity})
+  \item $REP$ --- set of \textbf{Release Plans} (\texttt{ReleasePlan})
+  \item $RM$ --- set of \textbf{Roadmaps} (\texttt{Roadmap})
+  \item $SCB$ --- set of \textbf{Scrum Boards} (\texttt{ScrumBoard})
+  \item $FED$ --- set of \textbf{Feature Documentations} (\texttt{FeatureDocumentation})
+  \item Relationship-induced subsets:
+    \begin{itemize}
+      \item $F(PB)$ --- features contained in a product backlog (R7).
+      \item $E(PB)$ --- epics contained in a product backlog (R8).
+      \item $US(e)$ --- user stories contained in epic $e$ (R9).
+      \item $K(u)$ --- tasks belonging to user story $u$ (R10).
+      \item $BL(k)$ --- blockers that block task $k$ (R16).
+    \end{itemize}
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+  \item Indices follow the initial letters of the sets: $p\!\in\!P$, $t\!\in\!T$, $w\!\in\!W$, $f\!\in\!F$, $s\!\in\!S$, $r\!\in\!R$, $po\!\in\!PO$, $sm\!\in\!SM$, $pb\!\in\!PB$, $\sigma\!\in\!SP$, $spp\!\in\!SPP$, $ds\!\in\!DS$, $sr\!\in\!SR$, $sre\!\in\!SRE$, $sbl\!\in\!SBL$, $g\!\in\!SG$, $e\!\in\!E$, $u\!\in\!US$, $k\!\in\!K$, $d\!\in\!DEV$, $b\!\in\!BL$, $sh\!\in\!SH$, $v\!\in\!VEL$, $rep\!\in\!REP$, $rm\!\in\!RM$, $scb\!\in\!SCB$, $fed\!\in\!FED$.
+  \item Attribute parameters (derived from Entities.csv; sample symbols used later):
+  \begin{itemize}
+    \item $sp_u$ := \texttt{story\_points} of user story $u$.
+    \item $\hat{e}_f$ := \texttt{estimated\_effort} of feature $f$.
+    \item $sev_b$ := \texttt{severity} of blocker $b$.
+    \item $prio^{US}_u$ := \texttt{priority} of user story $u$; $prio^{F}_f$ := \texttt{priority} of feature $f$.
+    \item $att^{SR}_{sr}$ := \texttt{attendees\_count} of sprint review $sr$.
+    \item $sat_{sre}$ := \texttt{team\_satisfaction} at retrospective $sre$.
+    \item $bud_p$ := \texttt{budget} of project $p$.
+    \item $v^{\max}_t$ := \texttt{max\_velocity} for team $t$ from $v\in VEL$ that refers to $t$ (R19).
+    \item $\overline{N}^{SBL}$ := capacity parameter for \texttt{number\_of\_tasks} in the current sprint backlog.
+    \item $\overline{E}^{SBL}$ := capacity parameter for \texttt{total\_effort} in the current sprint backlog.
+    \item $\overline{dur}^{DS}$, $\overline{dur}^{SPP}$, $\overline{dur}^{SR}$ := reasonable upper bounds on durations for Daily Scrum, Sprint Planning, and Sprint Review.
+    \item $avail_{po}$ := \texttt{availability} of Product Owner $po$; $exp_{sm}$ := \texttt{experience} of Scrum Master $sm$.
+  \end{itemize}
+\end{itemize}
+
+\section{3. Goals}
+\noindent\textit{Notation.} We employ decision variables from Section~5; where attributes are summed, selection variables gate inclusion. Each goal $G_i$ is presented with ID, name, logic, and its mathematical form.
+
+\begin{itemize}
+  \item \textbf{G0: maximize\_total\_story\_points}\\
+  Logic: Select user stories to maximize total story points in the sprint.\\
+  Math: $\displaystyle \max \sum_{u\in US} sp_u \cdot x^{US}_u$
+  \item \textbf{G1: minimize\_total\_task\_effort}\\
+  Logic: Minimize total estimated task effort included via selected user stories.\\
+  Math: $\displaystyle \min \sum_{u\in US} \sum_{k\in K(u)} e_k \cdot x^{US}_u$
+  \item \textbf{G2: minimize\_blocker\_severity\_sum}\\
+  Logic: Prefer plans that include fewer/severity-lower blockers on chosen tasks.\\
+  Math: $\displaystyle \min \sum_{u\in US}\sum_{k\in K(u)}\sum_{b\in BL(k)} sev_b \cdot x^{US}_u$
+  \item \textbf{G3: maximize\_sprint\_goal\_achievement}\\
+  Logic: Favor sprints planned to achieve the sprint goal; use proxy variable $z^{SG}\in[0,1]$.\\
+  Math: $\displaystyle \max \sum_{\sigma\in SP} z^{SG}_\sigma$
+  \item \textbf{G4: maximize\_team\_satisfaction}\\
+  Logic: Favor plans correlated with higher retrospective team satisfaction.\\
+  Math: $\displaystyle \max \sum_{sre\in SRE} sat_{sre}$
+  \item \textbf{G5: minimize\_project\_budget}\\
+  Logic: Minimize allocated budget across active projects.\\
+  Math: $\displaystyle \min \sum_{p\in P} B_p$ \quad(where $B_p$ is decision variable in Sec.~5)
+  \item \textbf{G6: maximize\_velocity\_max}\\
+  Logic: Encourage higher realized max velocity across teams.\\
+  Math: $\displaystyle \max \sum_{t\in T} v^{\max}_t$
+  \item \textbf{G7: maximize\_review\_attendees}\\
+  Logic: Increase feedback by targeting more review attendees.\\
+  Math: $\displaystyle \max \sum_{sr\in SR} A_{sr}$ \quad($A_{sr}$ decision variable)
+  \item \textbf{G8: minimize\_feature\_estimated\_effort}\\
+  Logic: Prefer smaller features for faster increments.\\
+  Math: $\displaystyle \min \sum_{f\in F} \hat{e}_f \cdot x^{F}_f$
+  \item \textbf{G9: minimize\_scrumboard\_cards}\\
+  Logic: Limit WIP by capping cards on boards.\\
+  Math: $\displaystyle \min \sum_{scb\in SCB} L_{scb}$ \quad($L_{scb}$ decision variable)
+  \item \textbf{G10: minimize\_daily\_scrum\_duration}\\
+  Logic: Keep the Daily Scrum short.\\
+  Math: $\displaystyle \min \sum_{ds\in DS} D^{DS}_{ds}$ \quad($D^{DS}_{ds}$ decision variable)
+  \item \textbf{G11: maximize\_skill\_level}\\
+  Logic: Prefer configurations that utilize higher skill levels.\\
+  Math: $\displaystyle \max \sum_{w\in W}\sum_{s\in S} lvl_{w,s}\cdot u_{w,s}$ \; (where $lvl_{w,s}$ is skill level; $u_{w,s}$ indicates use)
+\end{itemize}
+
+\paragraph{(Optional) Weighted scalarization for multi-objective optimization}
+Let weights $\omega_{G_i}$ be taken from the CSV \texttt{Weight} column. A single-objective scalarization is:
+\[
+\max\; \sum_{i\in\{G0,\dots,G11\}} \operatorname{sgn}(G_i)\,\omega_{G_i}\,\widetilde{f}_{G_i},
+\]
+where $\operatorname{sgn}(G_i)=+1$ for maximization goals and $-1$ for minimization goals, and $\widetilde{f}_{G_i}$ are normalized versions of the goal expressions.
+
+\section{4. Conditions}
+\noindent Each condition $C_i$ is stated with logic and a mathematical formulation. Bounds and thresholds correspond to CSV attributes or reasonable caps.
+
+\begin{itemize}
+  \item \textbf{C0: team\_size\_within\_limit}\\
+  Logic: Team size equals assigned workers and respects min/max.\\
+  Math: $\forall t\in T:\quad n_t=\sum_{w\in W} y_{w,t},\quad 3\le n_t \le 12$.
+  \item \textbf{C1: ensure\_worker\_availability}\\
+  Logic: A worker can be assigned to at most one team (timebox) and only if available.\\
+  Math: $\forall w\in W:\quad \sum_{t\in T} y_{w,t} \le 1,\;\; y_{w,t}\le avail_w\;\;\forall t$.
+  \item \textbf{C2: cap\_sprint\_backlog\_tasks}\\
+  Logic: Tasks induced by selected user stories fit the sprint backlog task cap.\\
+  Math: $\sum_{u\in US}\sum_{k\in K(u)} x^{US}_u \le \overline{N}^{SBL}$.
+  \item \textbf{C3: allow\_only\_active\_sprints}\\
+  Logic: Consider only sprints with acceptable status (filter).\\
+  Math: $\sigma\in SP_{\text{active}}\subseteq SP$.
+  \item \textbf{C4: limit\_total\_effort\_in\_sprint}\\
+  Logic: Sum of efforts for tasks of selected user stories within capacity.\\
+  Math: $\sum_{u\in US}\sum_{k\in K(u)} e_k \cdot x^{US}_u \le \overline{E}^{SBL}$.
+  \item \textbf{C5: reduce\_blocker\_severity}\\
+  Logic: Average blocker severity on selected tasks not above threshold $\Theta$.\\
+  Math: $\dfrac{\sum_{u}\sum_{k\in K(u)}\sum_{b\in BL(k)} sev_b \cdot x^{US}_u}{\sum_{u}\sum_{k\in K(u)} x^{US}_u + \varepsilon} \le \Theta$,\; with $\Theta$ decision DV10 and $\varepsilon>0$.
+  \item \textbf{C6: keep\_review\_duration\_reasonable}\\
+  Logic: Review duration bounded; attendees choice does not violate timebox.\\
+  Math: $\forall sr\in SR:\; dur^{SR}_{sr} \le \overline{dur}^{SR}$.
+  \item \textbf{C7: require\_po\_availability}\\
+  Logic: At least one Product Owner available for planning/review.\\
+  Math: $\sum_{po\in PO} \mathbf{1}[\,avail_{po}\ge \alpha_{PO}\,] \ge 1$.
+  \item \textbf{C8: require\_sm\_experience}\\
+  Logic: At least one Scrum Master meets experience threshold.\\
+  Math: $\sum_{sm\in SM} \mathbf{1}[\,exp_{sm}\ge \alpha_{SM}\,] \ge 1$.
+  \item \textbf{C9: keep\_planning\_duration\_within\_limit}\\
+  Logic: Sprint Planning sessions respect duration cap.\\
+  Math: $\forall spp\in SPP:\; D^{SPP}_{spp} \le \overline{dur}^{SPP}$.
+  \item \textbf{C10: prioritize\_user\_stories\_above\_threshold}\\
+  Logic: Only user stories with priority above threshold may be selected.\\
+  Math: $\forall u\in US:\; x^{US}_u \le \mathbf{1}[\,prio^{US}_u \ge \underline{\pi}^{US}\,]$.
+  \item \textbf{C11: limit\_feature\_priority\_spread}\\
+  Logic: Limit number of low-priority features entering near-term plan.\\
+  Math: $\sum_{f\in F:\, prio^{F}_f < \underline{\pi}^{F}} x^{F}_f \le \kappa$.
+\end{itemize}
+
+\section{5. DecisionVariables}
+\noindent Decision variables from \texttt{DecisionVariables.csv} are lifted to indexed forms in the natural sets.
+
+\begin{itemize}
+  \item \textbf{DV0: select\_feature} \; ($x^{F}_f$) --- include feature $f\in F$ in next release; $x^{F}_f\in\{0,1\}$.
+  \item \textbf{DV1: select\_user\_story} \; ($x^{US}_u$) --- include user story $u\in US$ in current sprint; $x^{US}_u\in\{0,1\}$.
+  \item \textbf{DV2: schedule\_sprint\_length} \; ($L_\sigma$) --- length (days) of sprint $\sigma\in SP$; $L_\sigma\in\mathbb{Z}$, $7\le L_\sigma\le 30$.
+  \item \textbf{DV3: allocate\_project\_budget} \; ($B_p$) --- budget allocated to project $p\in P$; $B_p\in\mathbb{R}_{\ge 0}$, $0\le B_p\le 10^6$.
+  \item \textbf{DV4: assign\_worker\_to\_team} \; ($y_{w,t}$) --- assignment of worker $w$ to team $t$; $y_{w,t}\in\{0,1\}$.
+  \item \textbf{DV5: set\_team\_size} \; ($n_t$) --- configured size of team $t$; $n_t\in\mathbb{Z}$, $3\le n_t\le 12$.
+  \item \textbf{DV6: set\_daily\_scrum\_duration} \; ($D^{DS}_{ds}$) --- minutes for daily scrum $ds$; $D^{DS}_{ds}\in\mathbb{Z}$, $10\le D^{DS}_{ds}\le 20$.
+  \item \textbf{DV7: choose\_review\_attendees} \; ($A_{sr}$) --- target attendees at review $sr$; $A_{sr}\in\mathbb{Z}_{\ge 0}$, $0\le A_{sr}\le 100$.
+  \item \textbf{DV8: set\_task\_effort} \; ($e_k$) --- effort units for task $k\in K$; $e_k\in\mathbb{Z}$, $1\le e_k\le 13$.
+  \item \textbf{DV9: choose\_scrum\_board\_wip\_limit} \; ($L_{scb}$) --- WIP limit on board $scb$; $L_{scb}\in\mathbb{Z}$, $1\le L_{scb}\le 50$.
+  \item \textbf{DV10: accept\_blocker\_risk\_threshold} \; ($\Theta$) --- acceptable average blocker severity; $\Theta\in\mathbb{Z}$, $0\le \Theta \le 5$.
+  \item \textbf{DV11: set\_story\_priority} \; ($\pi_u$) --- assigned priority for user story $u$; $\pi_u\in\mathbb{Z}$, $1\le \pi_u\le 5$.
+  \item \textit{Auxiliary variables used in goals/constraints:}\\
+  $z^{SG}_\sigma\in[0,1]$ proxy for sprint goal achievement; $u_{w,s}\in\{0,1\}$ indicates use of worker $w$'s skill $s$.
+\end{itemize}
+
+\end{document}
