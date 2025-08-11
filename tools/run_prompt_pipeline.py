@@ -100,7 +100,7 @@ for run_idx in range(1, args.run + 1):
         for strategy in strategies_to_run:
             print(f"\n🧭 Modell: {model_name}:{size} | Strategie: {strategy}")
 
-            strategy_file = LLM_INPUT_ROOT / f"{strategy}_prompts.md"
+            strategy_file = LLM_INPUT_ROOT / f"strategy{strategy[1:]}_prompts.md"
             prompts = load_prompts_from_md(strategy_file)
             print(f"📝 {len(prompts)} Prompts geladen ({strategy})")
 
