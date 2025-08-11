@@ -17,10 +17,11 @@ All output files of the LLMs are named as follow:
 - p2_development_scrum.csv
 - p3_nlp_pequirements.csv
 - p4_stress_pressure.csv
-- p6_goals_and_conditions.csv
-- p7_decision_vairables.csv
-- p9_optimization_problem.tex
-- p10_graph.mmd
+- p6.1_goals.csv
+- p6.2_conditions.csv
+- p6.3_decision_variables.csv
+- p7_optimization_problem.tex
+- p8_graph.mmd
 
 ## Strategy 2: 3-Prompt Input
 All output files of the LLMs are named as follows:
