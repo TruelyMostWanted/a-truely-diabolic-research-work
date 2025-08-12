@@ -1,0 +1,198 @@
+Einführngs-Folien-Infos:
+```
+Hintergrund und Motivation:
+• In Simulationen werden oft Submodelle benötigt, um weitere Informationen
+analytisch herzuleiten oder optimale Konfigurationen zu finden
+• Eine Methode sind Optimierungsprobleme wie Integer Programming (IP), die
+in ihrer Formulierung aufwändig und fehleranfällig sind.
+• Generative KI (z.B. ChatGPT) oder systematischere Ansätze können bei der
+Umwandlung natürlicher Sprache in formale Modelle unterstützen.
+• Zur Nutzung der Ergebnisse in Simulationsmodellen ist eine fest definierte und
+objektorientiert beschriebene Input- und Outputstruktur notwendig
+Ziel und Forschungsfrage:
+Wie zuverlässig, korrekt und nützlich sind Gen-AI-gestützte Methoden zur
+Spezifikation von IP-Problemen aus Textbeschreibungen?
+• Bewertung der Fähigkeit von KI, korrekte IP-Spezifikationen aus natürlichen Spracheingaben zu erzeugen
+• Entwicklung eines passenden Ein-/Ausgabeformats für strukturierte Nutzung der Modelle
+```
+
+Literaturliste:
+```
+Jaber, A., Younes, R., Lafon, P., & Khoder, J. (2024). A Review on Multi-Objective Mixed-Integer NonLinear Optimization Programming Methods. Eng, 5(3), 1961-1979.
+Wickert, T.I., Kummer Neto, A.F., Boniatti, M.M. et al. (2021) An integer programming approach for the
+physician rostering problem. Ann Oper Res 302, 363–390
+B. Yan, M. A. Bragin and P. B. Luh (2022) An Innovative Formulation Tightening Approach for JobShop Scheduling. IEEE Transactions on Automation Science & Engineering, vol. 19, no. 3, pp. 2526-2539
+Vierlboeck M, Nilchiani R, Blackburn M. (2025) Natural Language Processing to assess structure and
+complexity of system requirements. Systems Engineering 28: pp. 100–109.
+Gerstmayr, J., Manzl, P. & Pieber, M. (2024) Multibody Models Generated from Natural Language.
+Multibody Syst Dyn 62, 249–271
+Semeráth, O., & Varró, D. (2017). Evaluating Well-Formedness Constraints on Incomplete Models.
+Acta Cybernetica, 23(2), 687–713.
+S. Arulmohan, M. -J. Meurs and S. Mosser (2023) Extracting Domain Models from Textual
+Requirements in the Era of Large Language Models. 2023 ACM/IEEE Int. Conference on Model Driven
+Engineering Languages and Systems Companion (MODELS-C), Västerås, Sweden, pp. 580-587
+```
+
+SPRINGER-VORLAGE:
+https://www.springer.com/gp/computer-science/lncs/conference-proceedings-guidelines in LaTeX machen
+
+Hierzu ergaben sich die folgen Unter-Fragen:
+- Ist es möglich ein Domain-Model zu generieren?
+- Wie viele Prompts benötigt man zur Erstellung eines Domänen-Optimierungs-Modells?
+- Sind die Ergebnisse verwendbar? und vergleichbar?
+- Werden viele verschiedene Elemente genannt oder oftmals die gleichen? 
+- Ist es möglich den Output (das Optimierungs-Modell) zu bewerten? -> Ansatz: Strukturelle Integrität bewerten mittels Must-Match, May-Match und Cannot-Match Kriterien) etc...
+- In welchen Dateiformaten sollten die Daten des Optimierungsmodells gespeichert werden?
+- In welchem Dateiformat sollte die logische Formulierung gespeichert werden?
+- Was ist eine sinnvolle Graphen Repräsentation des Optimierungsmodells?
+- Wann ist es nicht mehr rentabel mit einem LLM ein Optimierungsmodell zu erstellen?
+
+
+VORGEHENSWEISE:
+
+1) Literatur-Recherche / Informationsgewinnung aus diversen Literaturen
+- Wissen sammeln über Optimierungsprobleme, Domain Models, Natural Language Processing, Constraints und Demands-Resources zur Stressentwicklung aus den folgenden Literaturen
+
+2) Offene Fragen an Large-Language-Models stellen
+- Was weiß KI über die verschiedenen Themen?
+
+3) Erste Erkenntnisse: Einzelne Übereinstimmungen mit Literaturen. Wichtige Wörter gefunden
+
+4) Überlegung: Klassifizierung durch Keyword-Analyse
+- Aus allen 10 Literaturen wurden bis zu 30 verschiedene Keywords jeweils herangezogen
+- Evaluierung ob im LLM-Output diese vorkommen -> Wissensbasis Check
+
+5) Erste Prompting Strategie (s0) für offenes Fragen
+```
+# Strategie 0: Offene Suche mit offenen Fragen nach Antworten, keine Limitierungen
+
+---
+
+## ROLLE FESTLEGEN
+
+#### Prompt 0: Rolle erzwingen
+Agiere im Nachfolgenden als Experte im Bereich von der Erstellung von Optimierungsproblemen. Du wirst offene Fragen und Anweisungen erhalten.
+
+---
+
+## WARM-UP PROMPTING 
+
+#### Prompt 1: Wissen über Optimierungsprobleme
+Liste Informationen über die verschiedenen Kategorien, Arten und Typen von Optimierungsproblemen.
+
+#### Prompt 2: Wissen über Softwareentwicklung mit SCRUM
+Was weißt du über Software Entwicklung mit SCRUM als agiler Methode? Liste mir alle Komponenten und Schritte dieser Methodik auf.
+
+#### Prompt 3: Wissen über Anforderungs-Management 
+Im Kontext von SCRUM: Analysiere wie man mittels Natürlicher Sprache Anforderungen für den Prozess der Software-Entwicklung extrahiert, designt und evaluiert werden können
+
+#### Prompt 4: Wissen über Stressentwicklung
+Welche Prozesse, Elemente und Faktoren existieren beim Entwickeln mit Scrum, die Personen zur kognitiven Belastung und Stressentwicklung bringen.
+
+#### Prompt 5: Typische Ziele und Nebenbedingungen in SCRUM
+In SCRUM: Was sind die typischen Ziele und Nebenbedingungen für ein Unternehmen, anhand dessen Entscheidungen getroffen werden können
+
+---
+
+## MODELLIERUNG
+
+#### Prompt 6: Entities und Relationen für ein Domänenmodell
+Lass uns nun ein Domänenmodel für ein Unternehmen das mit SCRUM arbeitet erstellen.
+Ich brauche 2 Tabellen: "Entities" mit Name,Beschreibung und 1-8 Attributen sowie eine Tabelle "Relationen" mit Name,Beschreibung,Entität1,Entität2 und auch den Kardinalitäten
+
+#### Prompt 7: Nenne Ziele und Nebenbedingungen
+Erstelle nun eine Liste von Zielen und Nebenbedingungen für dieses Modell. Weise diesen jeweils 1 von 3 Kriterien zu: Must-Match, May-Match und Cannot-Match
+
+#### Prompt 8: Entscheidungsvariablen definieren
+Erstelle nun Entscheidungsvariablen (boolean und numerisch)
+
+#### Prompt 9: Mathematische & Logische Repräsentation (LaTeX Datei?)
+Nutze ALLE BISHERIGEN DATEN und formuliere das Optimierungsproblen mathematisch bzw. logisch. 
+Erstelle eine LaTeX Datei und speichere dort: Mengen, Indices, Entscheidungsvariablen, Ziele und Nebenbedingunen.
+
+#### Prompt 10: Visualisierung durch geeignete Syntax (Mermaid.js Live Editor?)
+Verwandele das erstelle Domänen-Optimierungs-Modell nun in eine strukturelle Graphen-Repräsentation.
+Verwende dafür die Mermaid Live Editor Syntax.
+Der Graph MUSS die Entitäten, Attribute, Relationen, Ziele und Bedingungen enthalten
+```
+
+6) Erkenntnisse durch verschiedene LLMs
+--> Feststellung: Grundsätzlich Gemeinsamkeiten in Keywords
+- Output Menge(n) varieren stark
+- Entities Anzahl, Attribute Anzahl, Relationen Anzahl varieren jeweils
+- Goals, Conditions, DecisionVariables Anzahl varieren
+
+7) Strategie s0-2 entwickeln: Limitierungen einführen
+- z.B Entities: 6-14
+- z.B Attribute: 1-8
+….
+Erkenntnis: Outputs wurden bessern, Doppelungen von genannten Objekten sichtbar bei verschiedenen LLMs
+
+8) Strategie s1 entwickeln: Vorgabe von ER-Model Daten
+- Überlegung von geeigneten SCRUM Entitäten+Attributen (Ergebnis: 27 Entitäten mit je 1 bis 9 Attributen)
+- Überlegung von geeigneten SCRUM Relationen (Ergebnis: 22 Relationen)
+- Prompting Strategie von 0 beibehalten, jedoch konkretisieren der Output Formate
+--> INPUT: Entitäten, Relationen als CSV Dateien
+--> OUTPUT 1: Goals, Conditions, DecisionVariables als CSV
+--> OUTPUT 2: Optimierungsmodell als LaTeX
+--> OUTPUT 3: Graph als Mermaid.js Live Editor Syntax (Graph TD)
+
+9) Strategie s2 entwickelt: Weniger Prompt, gleicher Output?
+Ziel: In so wenigen Prompts wie möglich zum gleichen Output kommen
+Reduzierung von 11 bzw. 9 Prompts auf 3, 
+Verzichten auf das Warm-Up Prompting
+--> INPUT: Entitäten, Relationen als CSV Dateien
+--> OUTPUT 1: Goals, Conditions, DecisionVariables als CSV
+--> OUTPUT 2: Optimierungsmodell als LaTeX
+--> OUTPUT 3: Graph als Mermaid.js Live Editor Syntax (Graph TD)
+
+Erkenntnis: Klappt genauso wie s1, 5 bzw. 6 Prompts können effektiv eingespart werden (Verzicht auf Warm-Up)
+und Kontextgröße (Anzahl an vorherigen Nachrichten, die sich gemerkt werden müssen) wird verringert.
+
+Tests: Erste LLMs Lokal und Cloud-basiert
+
+Feststellung: Outputs varieren immernoch -> Benennung und Struktur müssen angepasst werden
+
+Zusatz: Anpassung von s2 ist erfolgt.
+Genauere Struktur- und Naming-Konventionen für Inputs und Outputs,
+so dass keine Inputs in irgendeiner Form falsch interpretiert werden können
+
+Type <-> CriteriaType
+Type war angedacht als "Goal" oder "condition"
+wurde gesetzt als { 2, 1, 0 } was dem { Must-Match, May-Match, Cannot-Match } der "CriteriaType" Spalte entspricht
+
+
+10) Strategie s3 entwickeln: One-Shot Prompt zur Erzeugung aller benötigten Outputs?
+Idee: Merge alle 3 Prompts in einen einzigen
+Frage: Input-Kontext (Token) groß genug? Output-Kontext (Token) im Rahmen maximaler Output Größe?
+
+Erste Tests: Funktionieren (bei Remote-LLMs)
+
+Genauere Tests bei Lokalen LLMs: To-Do
+
+11) GitHub Repository und Automatisierung für Test-Cases
+- Definieren Ordnerstruktur
+- Manuelle Tests in Repository eingepflegt 
+- Upload erster chat.json von Lokaler-LLM zur Bereitstellung von Daten-Schema
+- Erstellung von Python-Skript zur automatisierten Extrahierung von Output-Ergebnissen aus chat.json
+- Integration in GitHub Action, so dass bei Commit/Push automatisiert ausgeführt wird und Dateien gepusht werden durch GitHub-Bot
+- Mermaid Live Editor (.mmd) Graphen werden von GitHub erkannt und direkt im Repo angezeigt
+--> Vorteil: Wenn KI Syntaxbefehler begeht, direkt im Repo einsehbar
+- Ordnerstruktur erweitert um Inputs: Entities.csv, Relations.csv, Strategy0_prompts.md bis Strategy3_prompts.md
+- Automatisierte Keyword-Analyse mit Python-Skript (aktuell manuell)
+- (@TO-DO) PIPELINE: Automatisiertes Prompting `python run_prompt_pipeline.py --strategy s1 --run 10 --url http://localhost:11434/api/generate`
+- (@TO-DO) Timeouts für Prompts festlegen -> Maximale Grenze Lokal: (Aktuell) 10 Minunten / (Idee) 30 Minuten --> Ab wann ist es nicht mehr rentabel lokal mit einem LLM ein Optimierungsmodell zu generieren? 
+
+
+12) Vergleichbarkeit von Daten:
+- Wir betrachten ein Modell mit bestimmter Parameteranzahl (z.B. gemma3:27b)
+- Wir erstellen Datensätze für Goals, Conditions, DecisionVariables in mehreren Durchläufe v0 ... vn
+- Wir mergen alle CSV Dateien des gleichen Types (z.B. ./v0/Goals.csv bis /v10/Goals.csv) 
+- Erstellung einer all_goals.csv mit allen Goals aus allen Versuchen
+- Entfernung von Duplikaten aus all_goals.csv erzeugt eine unique_goals.csv im /gemma3/27b/ Ordner oberhalb
+- Auswertung: X viele Goals wurden erstellt (Anzahl in all_goals.csv) , Y viele sind verschieden (Anzahl in unique_goals.csv)
+- Berechnung: %-Zahl verschiedener Elemente | Doppelungen
+- Gleiche Idee bei Conditions und auch DecisionVariables.csv
+- Anwendung auf allen Modellen
+- Großer Merge aller unique_goals.csv mit allen verschiedenen Modellen "Lokal" und "Remote"
+Ergebnis: "every_unique_goal.csv" aus allen Models

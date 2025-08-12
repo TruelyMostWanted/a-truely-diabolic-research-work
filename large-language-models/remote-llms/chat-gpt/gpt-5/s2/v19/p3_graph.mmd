@@ -1,0 +1,172 @@
+graph TD
+
+%% Styles
+classDef entity fill:#1E90FF,stroke:#000,color:#fff
+classDef attribute fill:#ffffff,stroke:#000,color:#000
+classDef relation fill:#FFA500,stroke:#000,color:#000
+classDef goal fill:#228B22,stroke:#000,color:#fff
+classDef condition fill:#FF0000,stroke:#000,color:#fff
+classDef decision fill:#800080,stroke:#000,color:#fff
+
+%% Entities and Attributes (subset for readability)
+P[Project]:::entity
+P_id[id]:::attribute
+P_name[name]:::attribute
+P_budget[budget]:::attribute
+P_status[status]:::attribute
+P_start[project_start]:::attribute
+P_end[project_end]:::attribute
+P --> P_id
+P --> P_name
+P --> P_budget
+P --> P_status
+P --> P_start
+P --> P_end
+
+T[Team]:::entity
+T_id[id]:::attribute
+T_name[name]:::attribute
+T_size[team_size]:::attribute
+T_status[team_status]:::attribute
+T --> T_id
+T --> T_name
+T --> T_size
+T --> T_status
+
+W[Worker]:::entity
+W_id[id]:::attribute
+W_name[name]:::attribute
+W_availability[availability]:::attribute
+W_status[status]:::attribute
+W --> W_id
+W --> W_name
+W --> W_availability
+W --> W_status
+
+F[Feature]:::entity
+F_id[id]:::attribute
+F_title[title]:::attribute
+F_priority[priority]:::attribute
+F_effort[estimated_effort]:::attribute
+F --> F_id
+F --> F_title
+F --> F_priority
+F --> F_effort
+
+SBL[SprintBacklog]:::entity
+SBL_tasks[number_of_tasks]:::attribute
+SBL_effort[total_effort]:::attribute
+SBL --> SBL_tasks
+SBL --> SBL_effort
+
+SP[Sprint]:::entity
+SP_goal[achievement_of_goal]:::attribute
+SP --> SP_goal
+
+BL[Blocker]:::entity
+BL_severity[severity]:::attribute
+BL_status[status]:::attribute
+BL --> BL_severity
+BL --> BL_status
+
+VEL[Velocity]:::entity
+VEL_avg[avg._story_points]:::attribute
+VEL --> VEL_avg
+
+REP[ReleasePlan]:::entity
+REP_features[included_features]:::attribute
+REP --> REP_features
+
+SCB[ScrumBoard]:::entity
+SCB_cards[number_of_cards]:::attribute
+SCB --> SCB_cards
+
+SH[Stakeholder]:::entity
+SH_relevance[relevance_to_feature]:::attribute
+SH --> SH_relevance
+
+%% Relations
+R1[is_assigned_to_project]:::relation
+T --> R1 --> P
+
+R2[belongs_to_team]:::relation
+W --> R2 --> T
+
+R7[contains_feature]:::relation
+PB[ProductBacklog]:::entity
+F --- R7
+PB --> R7
+class PB entity
+
+%% Goals
+G0[maximize_average_velocity]:::goal --> VEL_avg
+G1[minimize_blocker_severity]:::goal --> BL_severity
+G2[minimize_feature_effort]:::goal --> F_effort
+G3[maximize_feature_priority]:::goal --> F_priority
+G4[minimize_sprint_backlog_total_effort]:::goal --> SBL_effort
+G5[maximize_sprint_goal_achievement]:::goal --> SP_goal
+G6[minimize_task_effort]:::goal --> TSK_effort[effort]:::attribute
+G7[maximize_worker_availability]:::goal --> W_availability
+G8[minimize_number_of_tasks]:::goal --> SBL_tasks
+G9[maximize_release_plan_coverage]:::goal --> REP_features
+G10[minimize_wip_on_board]:::goal --> SCB_cards
+G11[maximize_stakeholder_relevance]:::goal --> SH_relevance
+
+%% Conditions
+C0[limit_total_budget]:::condition --> P_budget
+C1[require_active_backlog]:::condition --> PB_status[status]:::attribute
+C2[require_high_priority_epics]:::condition --> E_priority[priority]:::attribute
+C3[exclude_resolved_blockers]:::condition --> BL_status
+C4[require_scrum_master_experience]:::condition --> SM_experience[experience]:::attribute
+C5[team_size_within_bounds]:::condition --> T_size
+C6[workers_must_be_active]:::condition --> W_status
+C7[limit_task_effort]:::condition --> TSK_effort
+C8[require_sprint_goal]:::condition --> SP_goal
+C9[cap_backlog_entries]:::condition --> PB_entries[number_of_entries]:::attribute
+C10[require_feature_documentation]:::condition --> FED_creation[creation_date]:::attribute
+C11[limit_sprint_planning_duration]:::condition --> SPP_duration[duration_(min)]:::attribute
+
+%% Decision Variables
+DV0[assign_team_to_project]:::decision --> T
+DV0 --> P
+DV1[assign_worker_to_team]:::decision --> W
+DV1 --> T
+DV2[assign_user_story_to_sprint_backlog]:::decision --> US[UserStory]:::entity
+DV2 --> SBL
+DV3[select_feature_for_release]:::decision --> F
+DV3 --> REP
+DV4[choose_scrum_master_for_team]:::decision --> SM[ScrumMaster]:::entity
+DV4 --> T
+DV5[choose_product_owner_for_backlog]:::decision --> PO[ProductOwner]:::entity
+DV5 --> PB
+DV6[prioritize_user_story]:::decision --> US
+DV7[allocate_budget_to_project]:::decision --> P_budget
+DV8[set_task_effort]:::decision --> TSK_effort
+DV9[set_sprint_number]:::decision --> SP
+DV10[set_team_size]:::decision --> T_size
+DV11[set_story_points]:::decision --> US_story_points[story_points]:::attribute
+
+%% Class assignments
+class P,T,W,F,SBL,SP,BL,VEL,REP,SCB,SH,PB,SM,PO,US entity
+class P_id,P_name,P_budget,P_status,P_start,P_end attribute
+class T_id,T_name,T_size,T_status attribute
+class W_id,W_name,W_availability,W_status attribute
+class F_id,F_title,F_priority,F_effort attribute
+class SBL_tasks,SBL_effort attribute
+class SP_goal attribute
+class BL_severity,BL_status attribute
+class VEL_avg attribute
+class REP_features attribute
+class SCB_cards attribute
+class SH_relevance attribute
+class PB_status,PB_entries attribute
+class E_priority attribute
+class SM_experience attribute
+class TSK_effort attribute
+class FED_creation attribute
+class SPP_duration attribute
+class US_story_points attribute
+class R1,R2,R7 relation
+class G0,G1,G2,G3,G4,G5,G6,G7,G8,G9,G10,G11 goal
+class C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11 condition
+class DV0,DV1,DV2,DV3,DV4,DV5,DV6,DV7,DV8,DV9,DV10,DV11 decision

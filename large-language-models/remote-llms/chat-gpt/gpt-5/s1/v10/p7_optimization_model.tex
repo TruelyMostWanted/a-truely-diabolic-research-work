@@ -1,0 +1,243 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+
+\title{SCRUM-Based Software Development Optimization Model}
+\author{Generated Assistant}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+This document formulates a mathematical optimization model using the previously defined domain model (\texttt{Entities.csv}, \texttt{Relationships.csv}) and the generated artifacts (\texttt{Goals.csv}, \texttt{Conditions.csv}, \texttt{DecisionVariables.csv}). It captures sets (\emph{entities}), indices, objectives, conditions (constraints), and decision variables relevant to planning and operating a SCRUM-driven software development organization. Entity attributes are exposed as parameters; e.g., \(\text{team\_size}(t)\) refers to the \texttt{Team.team\_size} attribute for team \(t \in T\).
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em,label=\(\triangleright\)]
+  \item \(\mathbf{P}\): Set of \textbf{Projects} (\texttt{Project}; attributes: \texttt{id, name, project\_start, project\_end, description, budget, status, target\_audience, priority}).
+  \item \(\mathbf{T}\): Set of \textbf{Teams} (\texttt{Team}; attributes: \texttt{id, name, team\_size, team\_start, team\_status, location, team\_type}).
+  \item \(\mathbf{W}\): Set of \textbf{Workers} (\texttt{Worker}; attributes: \texttt{id, name, first\_name, email, start\_date, status, availability}).
+  \item \(\mathbf{F}\): Set of \textbf{Features} (\texttt{Feature}; attributes: \texttt{id, title, description, status, priority, estimated\_effort}).
+  \item \(\mathbf{S}\): Set of \textbf{Skills} (\texttt{Skill}; attributes: \texttt{id, label, description, level, certified, category}).
+  \item \(\mathbf{R}\): Set of \textbf{Roles} (\texttt{Role}; attributes: \texttt{id, role\_name, description, area\_of\_responsibility}).
+  \item \(\mathbf{PO}\): Set of \textbf{Product Owners} (\texttt{ProductOwner}; attributes: \texttt{id, name, email, availability}).
+  \item \(\mathbf{SM}\): Set of \textbf{Scrum Masters} (\texttt{ScrumMaster}; attributes: \texttt{id, name, email, experience}).
+  \item \(\mathbf{PB}\): Set of \textbf{Product Backlogs} (\texttt{ProductBacklog}; attributes: \texttt{id, created\_on, last\_updated, number\_of\_entries, status}).
+  \item \(\mathbf{SP}\): Set of \textbf{Sprints} (\texttt{Sprint}; attributes: \texttt{id, sprint\_number, start\_date, end\_date, status, achievement\_of\_goal}).
+  \item \(\mathbf{SPP}\): Set of \textbf{Sprint Plannings} (\texttt{SprintPlanning}; attributes: \texttt{id, date, duration\_(min), moderation, outcome\_documentation}).
+  \item \(\mathbf{DS}\): Set of \textbf{Daily Scrums} (\texttt{DailyScrum}; attributes: \texttt{id, date, time, duration, moderation}).
+  \item \(\mathbf{SR}\): Set of \textbf{Sprint Reviews} (\texttt{SprintReview}; attributes: \texttt{id, date, duration, feedback\_documentation, attendees\_count}).
+  \item \(\mathbf{SRE}\): Set of \textbf{Sprint Retrospectives} (\texttt{SprintRetrospective}; attributes: \texttt{id, date, duration, improvement\_actions, team\_satisfaction, moderation}).
+  \item \(\mathbf{SBL}\): Set of \textbf{Sprint Backlogs} (\texttt{SprintBacklog}; attributes: \texttt{id, number\_of\_tasks, last\_updated, status, total\_effort}).
+  \item \(\mathbf{SG}\): Set of \textbf{Sprint Goals} (\texttt{SprintGoal}; attributes: \texttt{id, objective\_description, achievement\_status, benefit}).
+  \item \(\mathbf{EPC}\): Set of \textbf{Epics} (\texttt{Epic}; attributes: \texttt{id, title, description, priority, status, estimated\_effort}).
+  \item \(\mathbf{US}\): Set of \textbf{User Stories} (\texttt{UserStory}; attributes: \texttt{id, title, description, acceptance\_criteria, priority, story\_points, status}).
+  \item \(\mathbf{TSK}\): Set of \textbf{Tasks} (\texttt{Task}; attributes: \texttt{id, title, description, status, effort, type}).
+  \item \(\mathbf{DEV}\): Set of \textbf{Development Snapshots} (\texttt{DevelopmentSnapshot}; attributes: \texttt{id, version\_number, creation\_date, test\_status, deployment\_target, documentation}).
+  \item \(\mathbf{BL}\): Set of \textbf{Blockers} (\texttt{Blocker}; attributes: \texttt{id, title, description, severity, status, detected\_on, resolved\_on}).
+  \item \(\mathbf{SH}\): Set of \textbf{Stakeholders} (\texttt{Stakeholder}; attributes: \texttt{id, name, organization, role, email, area\_of\_interest, influence\_level, relevance\_to\_feature}).
+  \item \(\mathbf{VEL}\): Set of \textbf{Velocities} (\texttt{Velocity}; attributes: \texttt{id, number\_of\_sprints\_used, avg.\_story\_points, max\_velocity, min\_velocity, trend}).
+  \item \(\mathbf{REP}\): Set of \textbf{Release Plans} (\texttt{ReleasePlan}; attributes: \texttt{id, version, planned\_date, included\_features, status}).
+  \item \(\mathbf{RM}\): Set of \textbf{Roadmaps} (\texttt{Roadmap}; attributes: \texttt{id, start\_date, end\_date, milestones, objectives, versions}).
+  \item \(\mathbf{SCB}\): Set of \textbf{Scrum Boards} (\texttt{ScrumBoard}; attributes: \texttt{id, board\_type, columns, number\_of\_cards, last\_updated}).
+  \item \(\mathbf{FED}\): Set of \textbf{Feature Documentations} (\texttt{FeatureDocumentation}; attributes: \texttt{id, title, description, creation\_date, change\_log, linked\_requirements, author}).
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em,label=\(\triangleright\)]
+  \item \(p \in P\), \(t \in T\), \(w \in W\), \(f \in F\), \(s \in S\), \(r \in R\), \(po \in PO\), \(sm \in SM\), \(pb \in PB\),
+  \(sp \in SP\), \(spp \in SPP\), \(ds \in DS\), \(sr \in SR\), \(sre \in SRE\), \(sbl \in SBL\), \(sg \in SG\), \(e \in EPC\),
+  \(us \in US\), \(tsk \in TSK\), \(dev \in DEV\), \(bl \in BL\), \(sh \in SH\), \(v \in VEL\), \(rep \in REP\), \(rm \in RM\),
+  \(scb \in SCB\), \(fed \in FED\).
+\end{itemize}
+
+\paragraph{Selected Parameters (from attributes and relationships).}
+All attributes are available as parameters named by their attribute; e.g., \(\text{team\_size}(t)\), \(\text{number\_of\_entries}(pb)\), \(\text{story\_points}(us)\), \(\text{effort}(tsk)\), \(\text{max\_velocity}(v)\), \(\text{min\_velocity}(v)\), \(\text{severity}(bl)\), \(\text{achievement\_of\_goal}(sp)\), \(\text{estimated\_effort}(f)\), \(\text{priority}(e)\), \(\text{sprint\_number}(sp)\), \(\text{attendees\_count}(sr)\), \(\text{budget}(p)\), etc.
+We also use indicator parameters derived from statuses or text fields:
+\(\text{activeTeam}(t)\), \(\text{available}(w)\), \(\text{readyStory}(us)\),
+\(\text{blocked}(tsk)\), \(\text{recentPB}(pb)\), \(\text{goalDefined}(sp)\),
+\(\text{eligibleRelease}(f)\), \(\text{roadmapAligned}(f)\), \(\text{docExists}(f)\),
+\(\text{velocityBaselineOK}(v)\), \(\text{actionableEpic}(e)\),
+each in \(\{0,1\}\).
+Let \(c_{\text{effort}}\!>\!0\) denote cost per effort unit (used where needed).
+
+\section{3. Goals}
+Each goal \((\text{ID}, \text{Name})\) is shown with its mathematical form. We combine (as a weighted multi-objective) via scalarization:
+\[
+\max \ \sum_{g \in \mathcal{G}_{\max}} \omega_g \, Z_g \ - \ \sum_{h \in \mathcal{G}_{\min}} \omega_h \, Z_h,
+\]
+where \(Z_\bullet\) are the expressions below and weights \(\omega_\bullet\) are taken from \texttt{Goals.csv}.
+
+\begin{itemize}[leftmargin=2em,label=\(\triangleright\)]
+  \item \textbf{G0 maximize\_team\_capacity} (IsSum{=}True, GoalType{=}max):
+  \[
+  Z_{G0} \;=\; \sum_{t \in T} \text{team\_size}(t).
+  \]
+  \item \textbf{G1 minimize\_product\_backlog\_size} (IsSum{=}True, GoalType{=}min):
+  \[
+  Z_{G1} \;=\; \sum_{pb \in PB} \text{number\_of\_entries}(pb).
+  \]
+  \item \textbf{G2 minimize\_user\_story\_effort} (IsSum{=}True, GoalType{=}min):
+  \[
+  Z_{G2} \;=\; \sum_{us \in US} \text{story\_points}(us).
+  \]
+  \item \textbf{G3 minimize\_task\_effort} (IsSum{=}True, GoalType{=}min):
+  \[
+  Z_{G3} \;=\; \sum_{tsk \in TSK} \text{effort}(tsk).
+  \]
+  \item \textbf{G4 maximize\_velocity} (IsSum{=}True, GoalType{=}max):
+  \[
+  Z_{G4} \;=\; \sum_{v \in VEL} \text{max\_velocity}(v) \cdot \text{velocityBaselineOK}(v).
+  \]
+  \item \textbf{G5 minimize\_velocity\_variance} (IsSum{=}False, GoalType{=}min):
+  \[
+  Z_{G5} \;=\; \sum_{v \in VEL} \big(\text{max\_velocity}(v) - \text{min\_velocity}(v)\big) \cdot \text{velocityBaselineOK}(v).
+  \]
+  \item \textbf{G6 minimize\_blocker\_severity} (IsSum{=}True, GoalType{=}min):
+  \[
+  Z_{G6} \;=\; \sum_{bl \in BL} \text{severity}(bl).
+  \]
+  \item \textbf{G7 maximize\_sprint\_goal\_achievement} (IsSum{=}False, GoalType{=}max):
+  \[
+  Z_{G7} \;=\; \sum_{sp \in SP} \text{achievement\_of\_goal}(sp) \cdot \text{goalDefined}(sp).
+  \]
+  \item \textbf{G8 minimize\_feature\_effort} (IsSum{=}True, GoalType{=}min):
+  \[
+  Z_{G8} \;=\; \sum_{f \in F} \text{estimated\_effort}(f).
+  \]
+  \item \textbf{G9 maximize\_epic\_priority} (IsSum{=}True, GoalType{=}max):
+  \[
+  Z_{G9} \;=\; \sum_{e \in EPC} \text{priority}(e) \cdot \text{actionableEpic}(e).
+  \]
+  \item \textbf{G10 minimize\_cycle\_count} (IsSum{=}True, GoalType{=}min):
+  \[
+  Z_{G10} \;=\; \sum_{sp \in SP} \text{sprint\_number}(sp).
+  \]
+  \item \textbf{G11 maximize\_review\_participation} (IsSum{=}True, GoalType{=}max):
+  \[
+  Z_{G11} \;=\; \sum_{sr \in SR} \text{attendees\_count}(sr).
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+Each condition \((\text{ID}, \text{Name})\) is shown with its logical intent and mathematical form. CriteriaType \(=2\) denotes \emph{Must-Match} (hard constraints), \(=1\) \emph{May-Match} (soft, modeled via penalties/rewards), \(=0\) \emph{Cannot-Match} (exclusions). We use \(\lambda_C\) to denote the weight of a soft condition from \texttt{Conditions.csv}.
+
+\begin{itemize}[leftmargin=2em,label=\(\triangleright\)]
+  \item \textbf{C0 status\_must\_be\_active} (Must-Match):
+  \[
+  \forall t \in T:\ \text{activeTeam}(t)=1.
+  \]
+  (Data filter; only active teams considered in planning.)
+
+  \item \textbf{C1 project\_within\_budget} (Must-Match):
+  \[
+  \sum_{sbl \in SBL(p)} \text{total\_effort}_{sbl} \cdot c_{\text{effort}} \ \le\ \text{budget}(p),\quad \forall p \in P,
+  \]
+  where \(SBL(p)\) are sprint backlogs contributing to project \(p\).
+
+  \item \textbf{C2 worker\_must\_be\_available} (Must-Match):
+  \[
+  a_{w,t} \le \text{available}(w),\quad \forall w \in W,\, t \in T.
+  \]
+
+  \item \textbf{C3 user\_story\_must\_be\_ready} (Must-Match for inclusion in a sprint):
+  \[
+  x_{us,sp} \le \text{readyStory}(us),\quad \forall us \in US,\, sp \in SP.
+  \]
+
+  \item \textbf{C4 feature\_priority\_threshold} (May-Match; encourage high priority):
+  \[
+  \text{Penalty}_{C4} \;=\; \lambda_{C4}\!\!\sum_{f \in F}\! \big(\pi_{\min} - \text{priority}(f)\big)_+,
+  \]
+  where \((z)_+=\max\{0,z\}\) and \(\pi_{\min}\) is a chosen threshold. This penalty is subtracted in the objective.
+
+  \item \textbf{C5 task\_cannot\_be\_blocked} (Cannot-Match):
+  \[
+  h_{tsk} \le M \cdot \big(1-\text{blocked}(tsk)\big),\quad \forall tsk \in TSK,
+  \]
+  with a large constant \(M\) (e.g., \(M=80\)) and also \(h_{tsk}=0\) if \(\text{blocked}(tsk)=1\).
+
+  \item \textbf{C6 backlog\_recently\_updated} (May-Match; prefer recent backlogs):
+  \[
+  \text{Reward}_{C6} \;=\; \lambda_{C6}\!\!\sum_{pb \in PB}\! \text{recentPB}(pb),
+  \]
+  added to the objective.
+
+  \item \textbf{C7 sprint\_with\_defined\_goal} (Must-Match for any planned capacity):
+  \[
+  \sum_{t \in T} \text{cap}_{t,sp} \ \le\ M \cdot \text{goalDefined}(sp),\quad \forall sp \in SP.
+  \]
+
+  \item \textbf{C8 release\_must\_be\_planned} (Must-Match):
+  \[
+  y_f \le \text{eligibleRelease}(f),\quad \forall f \in F.
+  \]
+
+  \item \textbf{C9 roadmap\_alignment\_preferred} (May-Match):
+  \[
+  \text{Reward}_{C9} \;=\; \lambda_{C9}\!\!\sum_{f \in F}\! \text{roadmapAligned}(f),
+  \]
+  added to the objective.
+
+  \item \textbf{C10 documentation\_required} (May-Match; prefer documented features for release):
+  \[
+  \text{Penalty}_{C10} \;=\; \lambda_{C10}\!\!\sum_{f \in F}\! y_f \cdot \big(1-\text{docExists}(f)\big),
+  \]
+  subtracted in the objective.
+
+  \item \textbf{C11 velocity\_baseline\_sprints} (Must-Match for velocity use):
+  \[
+  \text{velocityBaselineOK}(v)=1 \ \Rightarrow\  v \text{ is used in } Z_{G4}, Z_{G5}; \text{ otherwise excluded}.
+  \]
+
+  \item \textbf{C12 epic\_status\_open\_or\_in\_progress} (Must-Match):
+  \[
+  \text{actionableEpic}(e)=1,\quad \forall e \in EPC.
+  \]
+\end{itemize}
+
+\section{5. DecisionVariables}
+The following variables (from \texttt{DecisionVariables.csv}) define the optimization decisions; bounds reflect the CSV domains.
+
+\begin{itemize}[leftmargin=2em,label=\(\triangleright\)]
+  \item \(\mathbf{DV0}\) \textbf{assign\_user\_story\_to\_sprint}: \(x_{us,sp} \in \{0,1\}\) — whether user story \(us\) is scheduled in sprint \(sp\).
+  \item \(\mathbf{DV1}\) \textbf{allocate\_worker\_to\_team}: \(a_{w,t} \in \{0,1\}\) — whether worker \(w\) is allocated to team \(t\).
+  \item \(\mathbf{DV2}\) \textbf{select\_feature\_for\_release}: \(y_f \in \{0,1\}\) — whether feature \(f\) is included in a release.
+  \item \(\mathbf{DV3}\) \textbf{task\_hours}: \(h_{tsk} \in \mathbb{R}_{\ge 0}\), \(0 \le h_{tsk} \le 80\) — hours assigned to task \(tsk\).
+  \item \(\mathbf{DV4}\) \textbf{set\_story\_points}: \(spAdj_{us} \in \mathbb{Z}\), \(1 \le spAdj_{us} \le 21\) — planned points for story \(us\).
+  \item \(\mathbf{DV5}\) \textbf{team\_capacity}: \(\text{cap}_{t,sp} \in \mathbb{Z}_{\ge 0}\), \(0 \le \text{cap}_{t,sp} \le 200\) — capacity (points) of team \(t\) in sprint \(sp\).
+  \item \(\mathbf{DV6}\) \textbf{deploy\_increment}: \(d_{dev} \in \{0,1\}\) — whether snapshot \(dev\) is deployed.
+  \item \(\mathbf{DV7}\) \textbf{prioritize\_epic\_rank}: \(r^{E}_{e} \in \mathbb{Z}\), \(1 \le r^{E}_{e} \le 100\) — rank of epic \(e\).
+  \item \(\mathbf{DV8}\) \textbf{feature\_priority\_rank}: \(r^{F}_{f} \in \mathbb{Z}\), \(1 \le r^{F}_{f} \le 500\) — rank of feature \(f\).
+  \item \(\mathbf{DV9}\) \textbf{activate\_blocker\_resolution}: \(z_{bl} \in \{0,1\}\) — whether to trigger blocker resolution for blocker \(bl\).
+  \item \(\mathbf{DV10}\) \textbf{set\_review\_attendees}: \(\text{att}_{sr} \in \mathbb{Z}_{\ge 0}\), \(0 \le \text{att}_{sr} \le 50\) — target attendees for sprint review \(sr\).
+  \item \(\mathbf{DV11}\) \textbf{set\_number\_of\_tasks}: \(\text{ntasks}_{sbl} \in \mathbb{Z}_{\ge 0}\), \(0 \le \text{ntasks}_{sbl} \le 500\) — tasks planned for sprint backlog \(sbl\).
+  \item \(\mathbf{DV12}\) \textbf{set\_total\_effort}: \(\text{total\_effort}_{sbl} \in \mathbb{R}_{\ge 0}\), \(0 \le \text{total\_effort}_{sbl} \le 1000\) — total planned effort for sprint backlog \(sbl\).
+\end{itemize}
+
+\paragraph{Typical Coupling/Flow Constraints (illustrative).}
+These align decisions with entities/relationships:
+\begin{align*}
+&\text{(Story effort fits capacity)}\quad
+\sum_{us \in US} spAdj_{us} \cdot x_{us,sp} \ \le \ \sum_{t \in T} \text{cap}_{t,sp}, && \forall sp \in SP.\\[4pt]
+&\text{(Team capacity upper bound by size)}\quad
+\text{cap}_{t,sp} \ \le \ \alpha \cdot \text{team\_size}(t), && \forall t \in T,\, sp \in SP,\ \alpha>0.\\[4pt]
+&\text{(Rank uniqueness examples)}\quad
+\sum_{e \in EPC} \mathbb{1}\{r^E_e = k\} \le 1,\quad
+\sum_{f \in F} \mathbb{1}\{r^F_f = k\} \le 1, && \forall k.
+\end{align*}
+
+\paragraph{Final Composite Objective.}
+Combine goals (Section 3) and soft-condition rewards/penalties (Section 4):
+\[
+\max\ \sum_{g \in \{G0,G4,G7,G9,G11\}} \omega_g Z_g
+\;-\; \sum_{h \in \{G1,G2,G3,G5,G6,G8,G10\}} \omega_h Z_h
+\;+\; \sum_{C \in \{C6,C9\}} \text{Reward}_C
+\;-\; \sum_{C \in \{C4,C10\}} \text{Penalty}_C.
+\]
+
+\end{document}

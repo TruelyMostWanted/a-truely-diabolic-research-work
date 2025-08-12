@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,must_match_user_story_status_ready,User stories must have status = 'Ready' before selection,False,min,UserStory,status,2,1.0
+C1,must_match_feature_status_refined,Features must have status = 'Refined' prior to sprint planning,False,min,Feature,status,2,1.0
+C2,cannot_match_task_type_unplanned,Exclude tasks with type = 'Unplanned',False,min,Task,type,0,1.5
+C3,must_match_sprint_status_active,Target sprint must have status = 'Active',False,min,Sprint,status,2,1.0
+C4,must_match_product_backlog_status_ordered,Product backlog must have status = 'Ordered',False,min,ProductBacklog,status,2,1.0
+C5,may_match_worker_availability_high,Prefer workers with availability >= 0.8,True,min,Worker,availability,1,0.8
+C6,must_match_team_type_cross_functional,Team type must be 'Cross-Functional',False,min,Team,team_type,2,1.0
+C7,cannot_match_blocker_severity_critical,Exclude blockers with severity = 'Critical' from planned scope,False,min,Blocker,severity,0,2.0
+C8,must_match_sprint_goal_achievement_status_aligned,Sprint goal achievement_status must be 'Aligned' with Product Goal,False,min,SprintGoal,achievement_status,2,1.0
+C9,may_match_sprint_review_attendees_sufficient,Prefer sprint reviews with attendees_count >= quorum,True,min,SprintReview,attendees_count,1,0.5
+C10,must_match_release_plan_status_approved,Release plan status must be 'Approved',False,min,ReleasePlan,status,2,1.0
+C11,may_match_velocity_trend_positive,Prefer velocity trend = 'Increasing',False,min,Velocity,trend,1,0.6

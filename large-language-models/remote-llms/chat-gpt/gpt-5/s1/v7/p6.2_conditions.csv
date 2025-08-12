@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,minimize_overbooked_workers,Constrain selection to avoid assigning unavailable workers,True,min,Worker,availability,2,1.0
+C1,minimize_out_of_scope_features,Exclude features not present in current product backlog,False,min,Feature,status,2,1.0
+C2,minimize_unready_user_stories,Only include stories that satisfy acceptance criteria readiness,False,min,UserStory,acceptance_criteria,2,1.0
+C3,minimize_inactive_projects,Ensure project status is active before scheduling sprints,False,min,Project,status,2,1.0
+C4,minimize_excessive_team_size_change,Limit rapid fluctuations in team size between sprints,True,min,Team,team_size,1,0.7
+C5,minimize_low_experience_scrum_master,Prefer retrospectives moderated by experienced Scrum Masters,False,min,ScrumMaster,experience,1,0.6
+C6,minimize_unplanned_release_items,Only include features listed in release plan,False,min,ReleasePlan,included_features,2,1.0
+C7,minimize_overcrowded_reviews,Keep review attendee count within effective bounds,True,min,SprintReview,attendees_count,1,0.5
+C8,minimize_expired_backlog_entries,Prioritize recently updated backlog items,True,min,ProductBacklog,last_updated,1,0.8
+C9,minimize_high_severity_open_blockers,Prevent tasks from starting when severe blockers are open,True,min,Blocker,status,2,1.0
+C10,minimize_low_quality_docs,Ensure feature documentation exists before release,False,min,FeatureDocumentation,documentation,2,1.0
+C11,minimize_roadmap_misalignment,Ensure release plans align with roadmap milestones/objectives,True,min,Roadmap,milestones,2,1.0

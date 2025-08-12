@@ -1,0 +1,362 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage[hidelinks]{hyperref}
+
+\title{SCRUM Domain Model -- Mathematical Optimization Formulation}
+\author{Generated for TruelyMostWanted}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em]
+  \item $\mathcal{P}$: Projects (\texttt{Project})
+  \item $\mathcal{T}$: Teams (\texttt{Team})
+  \item $\mathcal{W}$: Workers (\texttt{Worker})
+  \item $\calF$: Features (\texttt{Feature})
+  \item $\mathcal{K}$: Skills (\texttt{Skill})
+  \item $\mathcal{R}$: Roles (\texttt{Role})
+  \item $\mathcal{PO}$: Product Owners (\texttt{ProductOwner})
+  \item $\mathcal{SM}$: Scrum Masters (\texttt{ScrumMaster})
+  \item $\mathcal{PB}$: Product Backlogs (\texttt{ProductBacklog})
+  \item $\mathcal{SP}$: Sprints (\texttt{Sprint})
+  \item $\mathcal{SPP}$: Sprint Plannings (\texttt{SprintPlanning})
+  \item $\mathcal{DS}$: Daily Scrums (\texttt{DailyScrum})
+  \item $\mathcal{SR}$: Sprint Reviews (\texttt{SprintReview})
+  \item $\mathcal{SRE}$: Sprint Retrospectives (\texttt{SprintRetrospective})
+  \item $\mathcal{SBL}$: Sprint Backlogs (\texttt{SprintBacklog})
+  \item $\mathcal{SG}$: Sprint Goals (\texttt{SprintGoal})
+  \item $\mathcal{E}$: Epics (\texttt{Epic})
+  \item $\mathcal{US}$: User Stories (\texttt{UserStory})
+  \item $\mathcal{TSK}$: Tasks (\texttt{Task})
+  \item $\mathcal{DEV}$: Development Snapshots (\texttt{DevelopmentSnapshot})
+  \item $\mathcal{BL}$: Blockers (\texttt{Blocker})
+  \item $\mathcal{SH}$: Stakeholders (\texttt{Stakeholder})
+  \item $\mathcal{VEL}$: Velocities (\texttt{Velocity})
+  \item $\mathcal{REP}$: Release Plans (\texttt{ReleasePlan})
+  \item $\mathcal{RM}$: Roadmaps (\texttt{Roadmap})
+  \item $\mathcal{SCB}$: Scrum Boards (\texttt{ScrumBoard})
+  \item $\mathcal{FED}$: Feature Documentations (\texttt{FeatureDocumentation})
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em]
+  \item $p\in\mathcal{P}$ (from \texttt{P})
+  \item $t\in\mathcal{T}$ (from \texttt{T})
+  \item $w\in\mathcal{W}$ (from \texttt{W})
+  \item $f\in\calF$ (from \texttt{F})
+  \item $s\in\mathcal{SP}$ (from \texttt{SP})
+  \item $r\in\mathcal{R}$ (from \texttt{R})
+  \item $po\in\mathcal{PO}$ (from \texttt{PO})
+  \item $sm\in\mathcal{SM}$ (from \texttt{SM})
+  \item $pb\in\mathcal{PB}$ (from \texttt{PB})
+  \item $spp\in\mathcal{SPP}$ (from \texttt{SPP})
+  \item $ds\in\mathcal{DS}$ (from \texttt{DS})
+  \item $sr\in\mathcal{SR}$ (from \texttt{SR})
+  \item $sre\in\mathcal{SRE}$ (from \texttt{SRE})
+  \item $sbl\in\mathcal{SBL}$ (from \texttt{SBL})
+  \item $sg\in\mathcal{SG}$ (from \texttt{SG})
+  \item $e\in\mathcal{E}$ (from \texttt{E})
+  \item $us\in\mathcal{US}$ (from \texttt{US})
+  \item $tsk\in\mathcal{TSK}$ (from \texttt{TSK})
+  \item $dev\in\mathcal{DEV}$ (from \texttt{DEV})
+  \item $bl\in\mathcal{BL}$ (from \texttt{BL})
+  \item $sh\in\mathcal{SH}$ (from \texttt{SH})
+  \item $vel\in\mathcal{VEL}$ (from \texttt{VEL})
+  \item $rep\in\mathcal{REP}$ (from \texttt{REP})
+  \item $rm\in\mathcal{RM}$ (from \texttt{RM})
+  \item $scb\in\mathcal{SCB}$ (from \texttt{SCB})
+  \item $fed\in\mathcal{FED}$ (from \texttt{FED})
+\end{itemize}
+
+\section{3. Goals}
+\textbf{Notation (parameters used by goals).} When needed, we refer to attributes from \texttt{Entities.csv} as parameters:
+\begin{itemize}[leftmargin=2em]
+  \item $v^{\text{avg}}_{vel}$, $v^{\max}_{vel}$, $v^{\min}_{vel}$ from \texttt{Velocity} (\texttt{avg.\_story\_points}, \texttt{max\_velocity}, \texttt{min\_velocity}).
+  \item $B_p$ from \texttt{Project} (\texttt{budget}); $B^{\text{alloc}}_p$ is decision (see Sec.~5).
+  \item $\mathrm{eff}^{\text{base}}_{tsk}$ baseline task effort; $\hat{\mathrm{eff}}_{tsk}$ decision refinement (Sec.~5).
+  \item $\mathrm{sp}_{us}$ story points of a user story.
+  \item $g^{\text{ach}}_{sg}$ achievement status (numeric score) of a sprint goal.
+  \item $\mathrm{avail}_w$ availability of a worker.
+  \item $\pi^F_f$ priority of a feature.
+  \item $\mathrm{sev}_{bl}$ severity of a blocker.
+  \item $\mathrm{att}_{sr}$ attendees count of a sprint review.
+  \item $\mathrm{TotEff}_{sbl}$ total effort recorded for a sprint backlog.
+  \item Binary incidence parameters to reflect \texttt{Relationships.csv}: 
+    $\alpha_{us,sbl}\in\{0,1\}$ for $R11$ (\textit{is\_in\_sprint\_backlog}), 
+    $\beta_{sbl,s}\in\{0,1\}$ for $R12$, 
+    $\gamma_{tsk,bl}\in\{0,1\}$ for $R16$, 
+    $\delta_{vel,t}\in\{0,1\}$ for $R19$,
+    $\rho_{f,rep}\in\{0,1\}$ for $R20$,
+    $\eta_{e,pb}\in\{0,1\}$ for $R8$,
+    $\zeta_{us,e}\in\{0,1\}$ for $R9$,
+    $\kappa_{us,tsk}\in\{0,1\}$ for $R10$.
+\end{itemize}
+
+\textbf{Decision variables used by goals (see Sec.~5 for domains).}
+\[
+x_{t,p}\ (\text{DV0}),\ 
+y_{us,s}\ (\text{DV1}),\ 
+z_{tsk,w}\ (\text{DV2}),\ 
+r_{f,rep}\ (\text{DV3}),\ 
+b_{e,pb}\ (\text{DV4}),\ 
+a_s\ (\text{DV5}),\ 
+\pi_{us}\ (\text{DV6}),\ 
+B^{\text{alloc}}_p\ (\text{DV7}),\ 
+C_s\ (\text{DV8}),\ 
+\hat{\mathrm{eff}}_{tsk}\ (\text{DV9}),\ 
+m_{t,sm}\ (\text{DV10}),\ 
+i_{sh,sr}\ (\text{DV11}).
+\]
+
+\begin{itemize}[leftmargin=2em]
+  \item[G0] \textbf{maximize\_velocity\_avg\_story\_points} \\
+  Logical: Prefer teams/sprints with higher historical average velocity. \\
+  Mathematical (KPI-driven, linked to active sprints via $a_s$ and team via $\delta_{vel,t}$ and assignment $x_{t,p}$):
+  \[
+    \max \sum_{vel\in\mathcal{VEL}} v^{\text{avg}}_{vel}\;\Big(\sum_{t\in\mathcal{T}} \delta_{vel,t} \sum_{p\in\mathcal{P}} x_{t,p}\Big)\;\Big(\sum_{s\in\mathcal{SP}} a_s\Big)
+  \]
+
+  \item[G1] \textbf{maximize\_velocity\_max\_velocity} \\
+  Logical: Push historical peak velocity upward. \\
+  Mathematical:
+  \[
+    \max \sum_{vel\in\mathcal{VEL}} v^{\max}_{vel}\;\Big(\sum_{t} \delta_{vel,t}\sum_{p} x_{t,p}\Big)
+  \]
+
+  \item[G2] \textbf{minimize\_velocity\_min\_velocity} \\
+  Logical: Reduce low-end velocity dips. \\
+  Mathematical:
+  \[
+    \min \sum_{vel\in\mathcal{VEL}} v^{\min}_{vel}\;\Big(\sum_{t} \delta_{vel,t}\sum_{p} x_{t,p}\Big)
+  \]
+
+  \item[G3] \textbf{minimize\_project\_budget} \\
+  Logical: Keep total allocated project budget low. \\
+  Mathematical:
+  \[
+    \min \sum_{p\in\mathcal{P}} B^{\text{alloc}}_p
+  \]
+
+  \item[G4] \textbf{minimize\_task\_effort} \\
+  Logical: Minimize refined implementation effort for selected scope. \\
+  Mathematical (only tasks actually assigned are counted):
+  \[
+    \min \sum_{tsk\in\mathcal{TSK}} \hat{\mathrm{eff}}_{tsk}\;\Big(\sum_{w\in\mathcal{W}} z_{tsk,w}\Big)
+  \]
+
+  \item[G5] \textbf{maximize\_user\_story\_story\_points} \\
+  Logical: Maximize delivered story points by scheduling stories. \\
+  Mathematical:
+  \[
+    \max \sum_{us\in\mathcal{US}} \mathrm{sp}_{us}\;\Big(\sum_{s\in\mathcal{SP}} y_{us,s}\Big)
+  \]
+
+  \item[G6] \textbf{maximize\_sprint\_goal\_achievement} \\
+  Logical: Prefer plans where sprint goals are achieved (proxy by activating sprints). \\
+  Mathematical:
+  \[
+    \max \sum_{sg\in\mathcal{SG}} g^{\text{ach}}_{sg}\;\Big(\sum_{s\in\mathcal{SP}} a_s\Big)
+  \]
+
+  \item[G7] \textbf{maximize\_worker\_availability} \\
+  Logical: Prefer assigning tasks to more available workers. \\
+  Mathematical:
+  \[
+    \max \sum_{w\in\mathcal{W}} \mathrm{avail}_w \;\Big(\sum_{tsk\in\mathcal{TSK}} z_{tsk,w}\Big)
+  \]
+
+  \item[G8] \textbf{maximize\_feature\_priority} \\
+  Logical: Prefer including higher-priority features in release plans. \\
+  Mathematical:
+  \[
+    \max \sum_{rep\in\mathcal{REP}}\sum_{f\in\calF} \pi^F_f\; r_{f,rep}
+  \]
+
+  \item[G9] \textbf{minimize\_blocker\_severity} \\
+  Logical: Reduce overall severity exposure of blocked tasks. \\
+  Mathematical:
+  \[
+    \min \sum_{tsk\in\mathcal{TSK}}\sum_{bl\in\mathcal{BL}} \gamma_{tsk,bl}\,\mathrm{sev}_{bl}\;\Big(\sum_{w} z_{tsk,w}\Big)
+  \]
+
+  \item[G10] \textbf{maximize\_sprint\_review\_attendees} \\
+  Logical: Increase stakeholder engagement in reviews (proxy via invitations weighted by relevance if desired). \\
+  Mathematical (two variants; choose one):
+  \[
+    \max \sum_{sr\in\mathcal{SR}} \mathrm{att}_{sr}\quad \text{or}\quad \max \sum_{sr\in\mathcal{SR}}\sum_{sh\in\mathcal{SH}} i_{sh,sr}
+  \]
+
+  \item[G11] \textbf{minimize\_sprint\_total\_effort} \\
+  Logical: Keep sprint workload manageable. \\
+  Mathematical:
+  \[
+    \min \sum_{sbl\in\mathcal{SBL}} \mathrm{TotEff}_{sbl}
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+\textbf{Notation (parameters used by conditions).}
+\begin{itemize}[leftmargin=2em]
+  \item $\mathrm{ready}_{us}\in\{0,1\}$ indicates acceptable \texttt{status} for a user story (C0).
+  \item $\mathrm{effEst}_f\ge 0$ indicates presence of \texttt{estimated\_effort} for a feature (C1).
+  \item $\mathrm{blocked}_{tsk}\in\{0,1\}$ from \texttt{status} or $\exists bl:\gamma_{tsk,bl}=1$ (C2).
+  \item $\mathrm{dur}_{ds}$ in minutes for \texttt{DailyScrum} (C4).
+  \item $\mathrm{hasGoal}_s\in\{0,1\}$ indicates that sprint $s$ has an attached goal (C5 via $R13$).
+  \item $\mathrm{recent}_{pb}\in\{0,1\}$ indicates \texttt{last\_updated} within policy window (C6).
+  \item $\mathrm{active}_{sbl}\in\{0,1\}$ allowed values of \texttt{status} (C7).
+  \item $B^{\max}_p$ budget cap (from \texttt{Project.budget}) (C8).
+  \item $\mathrm{rel}_{sh}\in\{0,1,\ldots\}$ stakeholder relevance score (C9).
+  \item $\mathrm{start}_s<\mathrm{end}_s$ dates for sprint $s$ (C10).
+  \item $\mathrm{fbDoc}_{sr}\in\{0,1\}$ whether review has \texttt{feedback\_documentation} (C11).
+  \item Capacity feasibility linking: for each $s$, capacity $C_s$ (DV8) and story assignment $y_{us,s}$ with $\mathrm{sp}_{us}$.
+\end{itemize}
+
+\textbf{Feasibility/linking constraints from \texttt{Relationships.csv}.}
+\begin{align}
+&\text{(R1) Team $\to$ Project:}\quad \sum_{p\in\mathcal{P}} x_{t,p} \le 1 \quad \forall t\in\mathcal{T} \\
+&\text{(R11\&R12) US $\to$ SBL $\to$ Sprint:}\quad y_{us,s} \le \sum_{sbl} \alpha_{us,sbl}\,\beta_{sbl,s}\quad \forall us,s \\
+&\text{(R10) US consists of Tasks:}\quad \sum_{tsk} \kappa_{us,tsk} \ge 1 \quad \forall us \\
+&\text{(R20) ReleasePlan includes Features:}\quad r_{f,rep} \le 1 \quad \forall f,rep \\
+&\text{(R19) Velocity refers to Team (activation requires a team on a project):}\quad \sum_{t} \delta_{vel,t}\sum_{p} x_{t,p} \ge a_s \quad \forall vel,\ \forall s
+\end{align}
+
+\begin{itemize}[leftmargin=2em]
+  \item[C0] \textbf{require\_user\_story\_ready\_status} \\
+  Logical: Only ready stories may be scheduled. \\
+  Mathematical:
+  \[
+    y_{us,s} \le \mathrm{ready}_{us} \quad \forall us\in\mathcal{US},\ \forall s\in\mathcal{SP}
+  \]
+
+  \item[C1] \textbf{require\_feature\_defined\_effort} \\
+  Logical: Features must have an estimated effort to be selected for a release. \\
+  Mathematical:
+  \[
+    r_{f,rep} \le \mathbf{1}[\mathrm{effEst}_f>0] \quad \forall f\in\calF,\ \forall rep\in\mathcal{REP}
+  \]
+
+  \item[C2] \textbf{disallow\_blocked\_tasks} \\
+  Logical: Exclude currently blocked tasks from commitment. \\
+  Mathematical:
+  \[
+    \sum_{w} z_{tsk,w} \le 1-\mathrm{blocked}_{tsk} \quad \forall tsk\in\mathcal{TSK}
+  \]
+
+  \item[C3] \textbf{prefer\_high\_team\_availability} \\
+  Logical: Favor higher availability in assignment (soft constraint). \\
+  Mathematical (modeled as upper bound on load vs. availability):
+  \[
+    \sum_{tsk} z_{tsk,w}\,\hat{\mathrm{eff}}_{tsk} \le M\cdot \mathrm{avail}_w \quad \forall w\in\mathcal{W}
+  \]
+  with a sufficiently large $M$ or calibrated capacity units.
+
+  \item[C4] \textbf{limit\_daily\_scrum\_duration} \\
+  Logical: Daily must respect 15-minute timebox. \\
+  Mathematical:
+  \[
+    \mathrm{dur}_{ds} \le 15 \quad \forall ds\in\mathcal{DS}
+  \]
+
+  \item[C5] \textbf{ensure\_sprint\_with\_goal} \\
+  Logical: Each active sprint has a defined goal. \\
+  Mathematical:
+  \[
+    a_s \le \mathrm{hasGoal}_s \quad \forall s\in\mathcal{SP}
+  \]
+
+  \item[C6] \textbf{require\_backlog\_currency} \\
+  Logical: Backlog must be recently updated before planning. \\
+  Mathematical (activation of any story from $pb$ implies recency):
+  \[
+    \sum_{us,s} y_{us,s} \le U\cdot \sum_{pb} \mathrm{recent}_{pb} \quad (U\ \text{big-M})
+  \]
+
+  \item[C7] \textbf{limit\_sprint\_backlog\_status} \\
+  Logical: Only active/planned sprint backlogs may be used. \\
+  Mathematical:
+  \[
+    \sum_{us} y_{us,s} \le U\cdot \sum_{sbl} \mathrm{active}_{sbl}\,\beta_{sbl,s} \quad \forall s
+  \]
+
+  \item[C8] \textbf{guard\_budget\_threshold} \\
+  Logical: Allocation must not exceed project budget cap. \\
+  Mathematical:
+  \[
+    B^{\text{alloc}}_p \le B^{\max}_p \quad \forall p\in\mathcal{P}
+  \]
+
+  \item[C9] \textbf{require\_stakeholder\_relevance} \\
+  Logical: Invite only stakeholders relevant to presented features/reviews. \\
+  Mathematical (threshold $\tau$):
+  \[
+    i_{sh,sr} \le \mathbf{1}[\mathrm{rel}_{sh}\ge \tau] \quad \forall sh\in\mathcal{SH},\ \forall sr\in\mathcal{SR}
+  \]
+
+  \item[C10] \textbf{ensure\_sprint\_dates\_valid} \\
+  Logical: Sprint start must precede end date. \\
+  Mathematical (data validation):
+  \[
+    \mathrm{start}_s < \mathrm{end}_s \quad \forall s\in\mathcal{SP}
+  \]
+
+  \item[C11] \textbf{prefer\_review\_feedback\_captured} \\
+  Logical: Favor reviews with documented feedback (soft feasibility). \\
+  Mathematical (link invitations to documentation):
+  \[
+    \sum_{sh} i_{sh,sr} \le U\cdot \mathrm{fbDoc}_{sr} \quad \forall sr\in\mathcal{SR}
+  \]
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=2em]
+  \item[DV0] \textbf{assign\_team\_to\_project} \quad $x_{t,p}\in\{0,1\}$ \\
+  Whether team $t$ is assigned to project $p$ (maps to $R1$).
+
+  \item[DV1] \textbf{assign\_user\_story\_to\_sprint} \quad $y_{us,s}\in\{0,1\}$ \\
+  Whether user story $us$ is scheduled in sprint $s$ (uses $R11$, $R12$).
+
+  \item[DV2] \textbf{assign\_task\_to\_worker} \quad $z_{tsk,w}\in\{0,1\}$ \\
+  Whether task $tsk$ is assigned to worker $w$.
+
+  \item[DV3] \textbf{select\_feature\_for\_release} \quad $r_{f,rep}\in\{0,1\}$ \\
+  Whether feature $f$ is included in release plan $rep$ (uses $R20$ and $R21$ for roadmap context).
+
+  \item[DV4] \textbf{select\_epic\_for\_backlog} \quad $b_{e,pb}\in\{0,1\}$ \\
+  Whether epic $e$ is included in product backlog $pb$ (uses $R8$).
+
+  \item[DV5] \textbf{activate\_sprint} \quad $a_s\in\{0,1\}$ \\
+  Whether sprint $s$ is active in the plan (links to $R13$ and $R22$).
+
+  \item[DV6] \textbf{prioritize\_user\_story\_rank} \quad $\pi_{us}\in\mathbb{Z},\ 1\le \pi_{us}\le 100$ \\
+  Rank assigned to a user story $us$ (use with ordering constraints if desired).
+
+  \item[DV7] \textbf{allocate\_budget\_to\_project} \quad $B^{\text{alloc}}_p\in\mathbb{R}_{\ge 0}$ \\
+  Allocated budget amount to project $p$ with $0\le B^{\text{alloc}}_p\le 10^8$.
+
+  \item[DV8] \textbf{set\_sprint\_capacity\_points} \quad $C_s\in\mathbb{Z}_{\ge 0}$ \\
+  Capacity (story points) planned for sprint $s$, $0\le C_s\le 1000$.
+
+  \item[DV9] \textbf{set\_task\_effort\_refinement} \quad $\hat{\mathrm{eff}}_{tsk}\in\mathbb{Z}_{\ge 0}$ \\
+  Refined effort estimate for task $tsk$, $0\le \hat{\mathrm{eff}}_{tsk}\le 100$.
+
+  \item[DV10] \textbf{choose\_scrum\_master\_for\_team} \quad $m_{t,sm}\in\{0,1\}$ \\
+  Whether Scrum Master $sm$ is linked to team $t$ (uses $R6$ and $R18$).
+
+  \item[DV11] \textbf{invite\_stakeholder\_to\_review} \quad $i_{sh,sr}\in\{0,1\}$ \\
+  Whether stakeholder $sh$ is invited to Sprint Review $sr$ (uses $R17$).
+\end{itemize}
+
+\bigskip
+\noindent\textbf{Typical capacity coupling (illustrative, optional):}
+\[
+  \sum_{us\in\mathcal{US}} \mathrm{sp}_{us}\,y_{us,s} \le C_s \quad \forall s\in\mathcal{SP}
+\]
+
+\end{document}

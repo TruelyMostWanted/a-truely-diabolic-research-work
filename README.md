@@ -11,16 +11,19 @@ remote-llms/chatgpt/4o/s1/v1
 The chat history will always be named: 
 chat.json
 
-## Strategy 1 (s1): 10-Prompt Input
+## Strategy 1 (s1): 9-Prompts Input
 All output files of the LLMs are named as follow:
+- p0 **DOES NOT** generate any file(s)
 - p1_optimization_problem.csv
 - p2_development_scrum.csv
 - p3_nlp_pequirements.csv
 - p4_stress_pressure.csv
-- p6_goals_and_conditions.csv
-- p7_decision_vairables.csv
-- p9_optimization_problem.tex
-- p10_graph.mmd
+- p5 **DOES NOT** generate any file(s)
+- p6.1_goals.csv
+- p6.2_conditions.csv
+- p6.3_decision_variables.csv
+- p7_optimization_problem.tex
+- p8_graph.mmd
 
 ## Strategy 2: 3-Prompt Input
 All output files of the LLMs are named as follows:

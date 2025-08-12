@@ -1,0 +1,464 @@
+graph TD
+%% =========================
+%% SCRUM Domain Optimization Graph (TD)
+%% Entities=blue, Attributes=white, Relations=orange, Goals=green, Conditions=red, Decision Variables=purple
+%% =========================
+
+%% ======== Class Definitions ========
+classDef entity fill:#CDE5FF,stroke:#1E64B7,color:#0B2B50,stroke-width:1px;
+classDef attr fill:#FFFFFF,stroke:#888,color:#111,stroke-width:1px;
+classDef relation fill:#FFE5CC,stroke:#C25B00,color:#4A2A00,stroke-width:1px;
+classDef goal fill:#D5F5E3,stroke:#1D8348,color:#145A32,stroke-width:1px;
+classDef cond fill:#FFE5E5,stroke:#B03A2E,color:#78281F,stroke-width:1px;
+classDef dv fill:#EAD9FF,stroke:#6C2EB9,color:#3C1E6E,stroke-width:1px;
+
+%% ======== Entities (E0..E26) ========
+E_Project["Project (P)"]:::entity
+E_Team["Team (T)"]:::entity
+E_Worker["Worker (W)"]:::entity
+E_Feature["Feature (F)"]:::entity
+E_Skill["Skill (S)"]:::entity
+E_Role["Role (R)"]:::entity
+E_PO["ProductOwner (PO)"]:::entity
+E_SM["ScrumMaster (SM)"]:::entity
+E_PB["ProductBacklog (PB)"]:::entity
+E_Sprint["Sprint (SP)"]:::entity
+E_SprintPlanning["SprintPlanning (SPP)"]:::entity
+E_DailyScrum["DailyScrum (DS)"]:::entity
+E_SprintReview["SprintReview (SR)"]:::entity
+E_SprintRetro["SprintRetrospective (SRE)"]:::entity
+E_SprintBacklog["SprintBacklog (SBL)"]:::entity
+E_SprintGoal["SprintGoal (SG)"]:::entity
+E_Epic["Epic (E)"]:::entity
+E_UserStory["UserStory (US)"]:::entity
+E_Task["Task (TSK)"]:::entity
+E_DevSnap["DevelopmentSnapshot (DEV)"]:::entity
+E_Blocker["Blocker (BL)"]:::entity
+E_Stakeholder["Stakeholder (SH)"]:::entity
+E_Velocity["Velocity (VEL)"]:::entity
+E_ReleasePlan["ReleasePlan (REP)"]:::entity
+E_Roadmap["Roadmap (RM)"]:::entity
+E_ScrumBoard["ScrumBoard (SCB)"]:::entity
+E_FeatureDoc["FeatureDocumentation (FED)"]:::entity
+
+%% ======== Attributes (attach around entities; repeat where helpful) ========
+
+%% Project
+A_P_id["id"]:::attr --> E_Project
+A_P_name["name"]:::attr --> E_Project
+A_P_start["project_start"]:::attr --> E_Project
+A_P_end["project_end"]:::attr --> E_Project
+A_P_desc["description"]:::attr --> E_Project
+A_P_budget["budget"]:::attr --> E_Project
+A_P_status["status"]:::attr --> E_Project
+A_P_target["target_audience"]:::attr --> E_Project
+A_P_priority["priority"]:::attr --> E_Project
+
+%% Team
+A_T_id["id"]:::attr --> E_Team
+A_T_name["name"]:::attr --> E_Team
+A_T_size["team_size"]:::attr --> E_Team
+A_T_start["team_start"]:::attr --> E_Team
+A_T_status["team_status"]:::attr --> E_Team
+A_T_loc["location"]:::attr --> E_Team
+A_T_type["team_type"]:::attr --> E_Team
+
+%% Worker
+A_W_id["id"]:::attr --> E_Worker
+A_W_name["name"]:::attr --> E_Worker
+A_W_first["first_name"]:::attr --> E_Worker
+A_W_email["email"]:::attr --> E_Worker
+A_W_start["start_date"]:::attr --> E_Worker
+A_W_status["status"]:::attr --> E_Worker
+A_W_avail["availability"]:::attr --> E_Worker
+
+%% Feature
+A_F_id["id"]:::attr --> E_Feature
+A_F_title["title"]:::attr --> E_Feature
+A_F_desc["description"]:::attr --> E_Feature
+A_F_status["status"]:::attr --> E_Feature
+A_F_priority["priority"]:::attr --> E_Feature
+A_F_eff["estimated_effort"]:::attr --> E_Feature
+
+%% Skill
+A_S_id["id"]:::attr --> E_Skill
+A_S_label["label"]:::attr --> E_Skill
+A_S_desc["description"]:::attr --> E_Skill
+A_S_level["level"]:::attr --> E_Skill
+A_S_cert["certified"]:::attr --> E_Skill
+A_S_cat["category"]:::attr --> E_Skill
+
+%% Role
+A_R_id["id"]:::attr --> E_Role
+A_R_name["role_name"]:::attr --> E_Role
+A_R_desc["description"]:::attr --> E_Role
+A_R_area["area_of_responsibility"]:::attr --> E_Role
+
+%% Product Owner
+A_PO_id["id"]:::attr --> E_PO
+A_PO_name["name"]:::attr --> E_PO
+A_PO_email["email"]:::attr --> E_PO
+A_PO_avail["availability"]:::attr --> E_PO
+
+%% Scrum Master
+A_SM_id["id"]:::attr --> E_SM
+A_SM_name["name"]:::attr --> E_SM
+A_SM_email["email"]:::attr --> E_SM
+A_SM_exp["experience"]:::attr --> E_SM
+
+%% Product Backlog
+A_PB_id["id"]:::attr --> E_PB
+A_PB_created["created_on"]:::attr --> E_PB
+A_PB_updated["last_updated"]:::attr --> E_PB
+A_PB_count["number_of_entries"]:::attr --> E_PB
+A_PB_status["status"]:::attr --> E_PB
+
+%% Sprint
+A_SP_id["id"]:::attr --> E_Sprint
+A_SP_no["sprint_number"]:::attr --> E_Sprint
+A_SP_start["start_date"]:::attr --> E_Sprint
+A_SP_end["end_date"]:::attr --> E_Sprint
+A_SP_status["status"]:::attr --> E_Sprint
+A_SP_goalAch["achievement_of_goal"]:::attr --> E_Sprint
+
+%% Sprint Planning
+A_SPP_id["id"]:::attr --> E_SprintPlanning
+A_SPP_date["date"]:::attr --> E_SprintPlanning
+A_SPP_dur["duration_(min)"]:::attr --> E_SprintPlanning
+A_SPP_mod["moderation"]:::attr --> E_SprintPlanning
+A_SPP_out["outcome_documentation"]:::attr --> E_SprintPlanning
+
+%% Daily Scrum
+A_DS_id["id"]:::attr --> E_DailyScrum
+A_DS_date["date"]:::attr --> E_DailyScrum
+A_DS_time["time"]:::attr --> E_DailyScrum
+A_DS_dur["duration"]:::attr --> E_DailyScrum
+A_DS_mod["moderation"]:::attr --> E_DailyScrum
+
+%% Sprint Review
+A_SR_id["id"]:::attr --> E_SprintReview
+A_SR_date["date"]:::attr --> E_SprintReview
+A_SR_dur["duration"]:::attr --> E_SprintReview
+A_SR_fb["feedback_documentation"]:::attr --> E_SprintReview
+A_SR_att["attendees_count"]:::attr --> E_SprintReview
+
+%% Sprint Retrospective
+A_SRE_id["id"]:::attr --> E_SprintRetro
+A_SRE_date["date"]:::attr --> E_SprintRetro
+A_SRE_dur["duration"]:::attr --> E_SprintRetro
+A_SRE_actions["improvement_actions"]:::attr --> E_SprintRetro
+A_SRE_sat["team_satisfaction"]:::attr --> E_SprintRetro
+A_SRE_mod["moderation"]:::attr --> E_SprintRetro
+
+%% Sprint Backlog
+A_SBL_id["id"]:::attr --> E_SprintBacklog
+A_SBL_tasks["number_of_tasks"]:::attr --> E_SprintBacklog
+A_SBL_updated["last_updated"]:::attr --> E_SprintBacklog
+A_SBL_status["status"]:::attr --> E_SprintBacklog
+A_SBL_eff["total_effort"]:::attr --> E_SprintBacklog
+
+%% Sprint Goal
+A_SG_id["id"]:::attr --> E_SprintGoal
+A_SG_obj["objective_description"]:::attr --> E_SprintGoal
+A_SG_ach["achievement_status"]:::attr --> E_SprintGoal
+A_SG_benefit["benefit"]:::attr --> E_SprintGoal
+
+%% Epic
+A_E_id["id"]:::attr --> E_Epic
+A_E_title["title"]:::attr --> E_Epic
+A_E_desc["description"]:::attr --> E_Epic
+A_E_prio["priority"]:::attr --> E_Epic
+A_E_status["status"]:::attr --> E_Epic
+A_E_eff["estimated_effort"]:::attr --> E_Epic
+
+%% User Story
+A_US_id["id"]:::attr --> E_UserStory
+A_US_title["title"]:::attr --> E_UserStory
+A_US_desc["description"]:::attr --> E_UserStory
+A_US_ac["acceptance_criteria"]:::attr --> E_UserStory
+A_US_prio["priority"]:::attr --> E_UserStory
+A_US_sp["story_points"]:::attr --> E_UserStory
+A_US_status["status"]:::attr --> E_UserStory
+
+%% Task
+A_TSK_id["id"]:::attr --> E_Task
+A_TSK_title["title"]:::attr --> E_Task
+A_TSK_desc["description"]:::attr --> E_Task
+A_TSK_status["status"]:::attr --> E_Task
+A_TSK_eff["effort"]:::attr --> E_Task
+A_TSK_type["type"]:::attr --> E_Task
+
+%% Dev Snapshot
+A_DEV_id["id"]:::attr --> E_DevSnap
+A_DEV_ver["version_number"]:::attr --> E_DevSnap
+A_DEV_date["creation_date"]:::attr --> E_DevSnap
+A_DEV_test["test_status"]:::attr --> E_DevSnap
+A_DEV_target["deployment_target"]:::attr --> E_DevSnap
+A_DEV_doc["documentation"]:::attr --> E_DevSnap
+
+%% Blocker
+A_BL_id["id"]:::attr --> E_Blocker
+A_BL_title["title"]:::attr --> E_Blocker
+A_BL_desc["description"]:::attr --> E_Blocker
+A_BL_sev["severity"]:::attr --> E_Blocker
+A_BL_status["status"]:::attr --> E_Blocker
+A_BL_det["detected_on"]:::attr --> E_Blocker
+A_BL_res["resolved_on"]:::attr --> E_Blocker
+
+%% Stakeholder
+A_SH_id["id"]:::attr --> E_Stakeholder
+A_SH_name["name"]:::attr --> E_Stakeholder
+A_SH_org["organization"]:::attr --> E_Stakeholder
+A_SH_role["role"]:::attr --> E_Stakeholder
+A_SH_email["email"]:::attr --> E_Stakeholder
+A_SH_area["area_of_interest"]:::attr --> E_Stakeholder
+A_SH_inf["influence_level"]:::attr --> E_Stakeholder
+A_SH_rel["relevance_to_feature"]:::attr --> E_Stakeholder
+
+%% Velocity
+A_VEL_id["id"]:::attr --> E_Velocity
+A_VEL_n["number_of_sprints_used"]:::attr --> E_Velocity
+A_VEL_avg["avg._story_points"]:::attr --> E_Velocity
+A_VEL_max["max_velocity"]:::attr --> E_Velocity
+A_VEL_min["min_velocity"]:::attr --> E_Velocity
+A_VEL_trend["trend"]:::attr --> E_Velocity
+
+%% Release Plan
+A_REP_id["id"]:::attr --> E_ReleasePlan
+A_REP_ver["version"]:::attr --> E_ReleasePlan
+A_REP_date["planned_date"]:::attr --> E_ReleasePlan
+A_REP_feat["included_features"]:::attr --> E_ReleasePlan
+A_REP_status["status"]:::attr --> E_ReleasePlan
+
+%% Roadmap
+A_RM_id["id"]:::attr --> E_Roadmap
+A_RM_start["start_date"]:::attr --> E_Roadmap
+A_RM_end["end_date"]:::attr --> E_Roadmap
+A_RM_mil["milestones"]:::attr --> E_Roadmap
+A_RM_obj["objectives"]:::attr --> E_Roadmap
+A_RM_ver["versions"]:::attr --> E_Roadmap
+
+%% Scrum Board
+A_SCB_id["id"]:::attr --> E_ScrumBoard
+A_SCB_type["board_type"]:::attr --> E_ScrumBoard
+A_SCB_cols["columns_(todo/done...)"]:::attr --> E_ScrumBoard
+A_SCB_cards["number_of_cards"]:::attr --> E_ScrumBoard
+A_SCB_updated["last_updated"]:::attr --> E_ScrumBoard
+
+%% Feature Documentation
+A_FED_id["id"]:::attr --> E_FeatureDoc
+A_FED_title["title"]:::attr --> E_FeatureDoc
+A_FED_desc["description"]:::attr --> E_FeatureDoc
+A_FED_created["creation_date"]:::attr --> E_FeatureDoc
+A_FED_changelog["change_log"]:::attr --> E_FeatureDoc
+A_FED_linked["linked_requirements"]:::attr --> E_FeatureDoc
+A_FED_author["author"]:::attr --> E_FeatureDoc
+
+%% ======== Relationships (R1..R22) ========
+R1["R1: is_assigned_to_project"]:::relation
+E_Team --> R1 --> E_Project
+
+R2["R2: belongs_to_team"]:::relation
+%% Map 'Employee' to Worker
+E_Worker --> R2 --> E_Team
+
+R3["R3: has_skill"]:::relation
+E_Worker --> R3 --> E_Skill
+
+R4["R4: takes_on_role"]:::relation
+E_Worker --> R4 --> E_Role
+
+R5["R5: manages_backlog"]:::relation
+E_PO --> R5 --> E_PB
+
+R6["R6: is_supported_by"]:::relation
+E_Team --> R6 --> E_SM
+
+R7["R7: contains_feature"]:::relation
+E_PB --> R7 --> E_Feature
+
+R8["R8: contains_epic"]:::relation
+E_PB --> R8 --> E_Epic
+
+R9["R9: contains_user_story"]:::relation
+E_Epic --> R9 --> E_UserStory
+
+R10["R10: consists_of_tasks"]:::relation
+E_UserStory --> R10 --> E_Task
+
+R11["R11: is_in_sprint_backlog"]:::relation
+E_UserStory --> R11 --> E_SprintBacklog
+
+R12["R12: belongs_to_sprint"]:::relation
+E_SprintBacklog --> R12 --> E_Sprint
+
+R13["R13: pursues_goal"]:::relation
+E_Sprint --> R13 --> E_SprintGoal
+
+R14["R14: contains_tasks"]:::relation
+E_ScrumBoard --> R14 --> E_Task
+
+R15["R15: documents_feature"]:::relation
+E_FeatureDoc --> R15 --> E_Feature
+
+R16["R16: is_blocked_by"]:::relation
+E_Task --> R16 --> E_Blocker
+
+R17["R17: participates_in"]:::relation
+E_Stakeholder --> R17 --> E_SprintReview
+
+R18["R18: moderates_retrospective"]:::relation
+E_SM --> R18 --> E_SprintRetro
+
+R19["R19: refers_to_team"]:::relation
+E_Velocity --> R19 --> E_Team
+
+R20["R20: plans_release"]:::relation
+E_ReleasePlan --> R20 --> E_Feature
+
+R21["R21: is_part_of_roadmap"]:::relation
+E_ReleasePlan --> R21 --> E_Roadmap
+
+R22["R22: generates_snapshot"]:::relation
+E_Sprint --> R22 --> E_DevSnap
+
+%% ======== Goals (G0..G11) ========
+G0["G0 maximize_velocity_points"]:::goal
+G0 --> A_VEL_avg
+G0 --> E_Sprint
+
+G1["G1 maximize_goal_achievement_rate"]:::goal
+G1 --> A_SP_goalAch
+
+G2["G2 minimize_open_blockers"]:::goal
+G2 --> E_Blocker
+G2 --> A_BL_status
+
+G3["G3 minimize_feature_effort"]:::goal
+G3 --> A_F_eff
+
+G4["G4 maximize_story_points_completed"]:::goal
+G4 --> A_US_sp
+G4 --> E_SprintBacklog
+
+G5["G5 minimize_task_effort"]:::goal
+G5 --> A_TSK_eff
+
+G6["G6 maximize_team_utilization"]:::goal
+G6 --> A_W_avail
+G6 --> E_Team
+
+G7["G7 minimize_least_velocity_gap"]:::goal
+G7 --> A_VEL_min
+G7 --> A_VEL_avg
+
+G8["G8 maximize_priority_delivery"]:::goal
+G8 --> A_F_priority
+
+G9["G9 minimize_backlog_wip"]:::goal
+G9 --> A_SBL_status
+
+G10["G10 maximize_review_attendance"]:::goal
+G10 --> A_SR_att
+
+G11["G11 maximize_test_status_pass"]:::goal
+G11 --> A_DEV_test
+
+%% ======== Conditions (C0..C11) ========
+C0["C0 sprint_within_dates"]:::cond
+C0 --> A_SP_start
+C0 --> A_SP_end
+
+C1["C1 sprint_end_after_start"]:::cond
+C1 --> A_SP_start
+C1 --> A_SP_end
+
+C2["C2 stories_have_acceptance_criteria"]:::cond
+C2 --> A_US_ac
+
+C3["C3 stories_within_priority_bounds"]:::cond
+C3 --> A_US_prio
+
+C4["C4 tasks_have_type"]:::cond
+C4 --> A_TSK_type
+
+C5["C5 blockers_resolved_before_done"]:::cond
+C5 --> A_BL_status
+C5 --> A_TSK_status
+
+C6["C6 team_size_capacity_check"]:::cond
+C6 --> A_T_size
+C6 --> A_W_avail
+C6 --> A_SBL_eff
+
+C7["C7 sprint_backlog_effort_limit"]:::cond
+C7 --> A_SBL_eff
+
+C8["C8 release_plan_has_status"]:::cond
+C8 --> A_REP_status
+
+C9["C9 deployment_target_allowed"]:::cond
+C9 --> A_DEV_target
+
+C10["C10 velocity_reference_team"]:::cond
+C10 --> E_Velocity
+C10 --> E_Team
+
+C11["C11 product_backlog_is_active"]:::cond
+C11 --> A_PB_status
+
+%% ======== Decision Variables (DV0..DV11) and links to relevant Entities ========
+DV0["DV0 select_feature"]:::dv
+DV0 --> E_Feature
+DV0 --> E_ReleasePlan
+
+DV1["DV1 assign_user_story_to_sprint"]:::dv
+DV1 --> E_UserStory
+DV1 --> E_Sprint
+
+DV2["DV2 allocate_task_to_worker"]:::dv
+DV2 --> E_Task
+DV2 --> E_Worker
+
+DV3["DV3 set_task_priority_weight"]:::dv
+DV3 --> E_Task
+
+DV4["DV4 choose_deployment_target"]:::dv
+DV4 --> E_DevSnap
+DV4 --> A_DEV_target
+
+DV5["DV5 enable_blocker_resolution"]:::dv
+DV5 --> E_Blocker
+DV5 --> E_Task
+
+DV6["DV6 select_epic_for_breakdown"]:::dv
+DV6 --> E_Epic
+DV6 --> E_UserStory
+
+DV7["DV7 team_capacity_buffer_percent"]:::dv
+DV7 --> E_Team
+DV7 --> E_Sprint
+
+DV8["DV8 choose_review_attendees_quota"]:::dv
+DV8 --> E_SprintReview
+DV8 --> A_SR_att
+
+DV9["DV9 select_tests_for_snapshot"]:::dv
+DV9 --> E_DevSnap
+DV9 --> A_DEV_test
+
+DV10["DV10 limit_sprint_wip"]:::dv
+DV10 --> E_ScrumBoard
+DV10 --> E_SprintBacklog
+
+DV11["DV11 choose_release_version"]:::dv
+DV11 --> E_ReleasePlan
+
+%% ======== Extra helpful cross-links (optional duplicates to keep edges shorter) ========
+%% Repeat some attributes near multiple nodes as allowed
+A_US_sp2["story_points"]:::attr --> E_Sprint
+G4 --> A_US_sp2
+A_VEL_avg2["avg._story_points"]:::attr --> E_Sprint
+G0 --> A_VEL_avg2
+A_TSK_eff2["effort"]:::attr --> E_SprintBacklog
+C7 --> A_TSK_eff2

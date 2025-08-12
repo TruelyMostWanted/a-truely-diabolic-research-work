@@ -1,0 +1,254 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue}
+
+\title{Integrated SCRUM Planning Optimization Model\\\large Derived from Entities, Relationships, Goals, Conditions, and Decision Variables}
+\author{Prepared for: TruelyMostWanted}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% =============================================================================
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em]
+  \item $\mathcal{P}$ (\textbf{Project}, index $p$): set of projects.
+  \item $\mathcal{T}$ (\textbf{Team}, index $t$): set of teams.
+  \item $\mathcal{W}$ (\textbf{Worker}, index $w$): set of individual workers.
+  \item $\mathcal{F}$ (\textbf{Feature}, index $f$): set of features.
+  \item $\mathcal{S}$ (\textbf{Skill}, index $s$): set of skills.
+  \item $\mathcal{R}$ (\textbf{Role}, index $r$): set of roles.
+  \item $\mathcal{PO}$ (\textbf{ProductOwner}, index $po$): set of Product Owners.
+  \item $\mathcal{SM}$ (\textbf{ScrumMaster}, index $sm$): set of Scrum Masters.
+  \item $\mathcal{PB}$ (\textbf{ProductBacklog}, index $pb$): set of product backlogs.
+  \item $\mathcal{SP}$ (\textbf{Sprint}, index $sp$): set of sprints.
+  \item $\mathcal{SPP}$ (\textbf{SprintPlanning}, index $spp$): set of sprint plannings.
+  \item $\mathcal{DS}$ (\textbf{DailyScrum}, index $ds$): set of daily scrums.
+  \item $\mathcal{SR}$ (\textbf{SprintReview}, index $sr$): set of sprint reviews.
+  \item $\mathcal{SRE}$ (\textbf{SprintRetrospective}, index $sre$): set of sprint retrospectives.
+  \item $\mathcal{SBL}$ (\textbf{SprintBacklog}, index $sbl$): set of sprint backlogs.
+  \item $\mathcal{SG}$ (\textbf{SprintGoal}, index $sg$): set of sprint goals.
+  \item $\mathcal{E}$ (\textbf{Epic}, index $e$): set of epics.
+  \item $\mathcal{US}$ (\textbf{UserStory}, index $us$): set of user stories.
+  \item $\mathcal{TSK}$ (\textbf{Task}, index $tsk$): set of tasks.
+  \item $\mathcal{DEV}$ (\textbf{DevelopmentSnapshot}, index $dev$): set of development snapshots.
+  \item $\mathcal{BL}$ (\textbf{Blocker}, index $bl$): set of blockers.
+  \item $\mathcal{SH}$ (\textbf{Stakeholder}, index $sh$): set of stakeholders.
+  \item $\mathcal{VEL}$ (\textbf{Velocity}, index $vel$): set of team velocity records.
+  \item $\mathcal{REP}$ (\textbf{ReleasePlan}, index $rep$): set of release plans.
+  \item $\mathcal{RM}$ (\textbf{Roadmap}, index $rm$): set of roadmaps.
+  \item $\mathcal{SCB}$ (\textbf{ScrumBoard}, index $scb$): set of scrum boards.
+  \item $\mathcal{FED}$ (\textbf{FeatureDocumentation}, index $fed$): set of feature documentation entries.
+\end{itemize}
+
+\paragraph{Parameters from attributes (illustrative, all derived from \texttt{Entities.csv}):}
+\begin{itemize}[leftmargin=2em]
+  \item $budget_p \in \mathbb{R}_{\ge 0}$ (\textbf{Project.budget}), $p\in\mathcal{P}$.
+  \item $availability_w \in [0,1]$ (\textbf{Worker.availability}), $w\in\mathcal{W}$.
+  \item $priority_f \in \mathbb{Z}_{\ge 0}$, $effort^{F}_f \in \mathbb{R}_{\ge 0}$ (\textbf{Feature.priority}, \textbf{Feature.estimated\_effort}), $f\in\mathcal{F}$.
+  \item $achieved_{sp} \in \{0,1\}$ (\textbf{Sprint.achievement\_of\_goal}), $sp\in\mathcal{SP}$.
+  \item $velAvg_t \in \mathbb{R}_{\ge 0}$ (\textbf{Velocity.avg.\_story\_points}), $t\in\mathcal{T}$ (linked via \textbf{R19}).
+  \item $severity_{bl} \in \mathbb{R}_{\ge 0}$ (\textbf{Blocker.severity}), $bl\in\mathcal{BL}$.
+  \item $spoints_{us} \in \mathbb{Z}_{\ge 0}$ (\textbf{UserStory.story\_points}), $us\in\mathcal{US}$.
+  \item $effort^{TSK}_{tsk} \in \mathbb{R}_{\ge 0}$ (\textbf{Task.effort}), $tsk\in\mathcal{TSK}$.
+  \item $size_t \in \mathbb{Z}_{\ge 1}$ (\textbf{Team.team\_size}), $t\in\mathcal{T}$.
+  \item $rel_{sh,f} \in \mathbb{R}_{\ge 0}$ (\textbf{Stakeholder.relevance\_to\_feature}), $(sh,f)\in\mathcal{SH}\times\mathcal{F}$.
+  \item $planDate_{rep} \in \mathbb{R}_{\ge 0}$ (\textbf{ReleasePlan.planned\_date}), $rep\in\mathcal{REP}$.
+  \item Status/flags (0/1): $activeProject_p$, $readyTeam_t$, $hasAC_{us}$, $activeSprint_{sp}$, $openPB_{pb}$, $docLinked_f$, etc.
+\end{itemize}
+
+\paragraph{Relationship incidence parameters (from \texttt{Relationships.csv}):}
+\begin{itemize}[leftmargin=2em]
+  \item $A^{TP}_{t,p}\in\{0,1\}$ (\textbf{R1} team $t$ can be assigned to project $p$).
+  \item $A^{WT}_{w,t}\in\{0,1\}$ (\textbf{R2} worker $w$ belongs to team $t$). (\emph{Note: \texttt{Employee} $\equiv$ \texttt{Worker}.})
+  \item $A^{WS}_{w,s}\in\{0,1\}$ (\textbf{R3} worker $w$ has skill $s$).
+  \item $A^{WR}_{w,r}\in\{0,1\}$ (\textbf{R4} worker $w$ takes on role $r$).
+  \item $A^{PO\text{-}PB}_{po,pb}\in\{0,1\}$ (\textbf{R5}), $A^{T\text{-}SM}_{t,sm}\in\{0,1\}$ (\textbf{R6}).
+  \item $A^{PB\text{-}F}_{pb,f}\in\{0,1\}$ (\textbf{R7}), $A^{PB\text{-}E}_{pb,e}\in\{0,1\}$ (\textbf{R8}).
+  \item $A^{E\text{-}US}_{e,us}\in\{0,1\}$ (\textbf{R9}), $A^{US\text{-}TSK}_{us,tsk}\in\{0,1\}$ (\textbf{R10}).
+  \item $A^{US\text{-}SBL}_{us,sbl}\in\{0,1\}$ (\textbf{R11}), $A^{SBL\text{-}SP}_{sbl,sp}\in\{0,1\}$ (\textbf{R12}).
+  \item $A^{SP\text{-}SG}_{sp,sg}\in\{0,1\}$ (\textbf{R13}), $A^{SCB\text{-}TSK}_{scb,tsk}\in\{0,1\}$ (\textbf{R14}).
+  \item $A^{FED\text{-}F}_{fed,f}\in\{0,1\}$ (\textbf{R15}), $A^{TSK\text{-}BL}_{tsk,bl}\in\{0,1\}$ (\textbf{R16}).
+  \item $A^{SH\text{-}SR}_{sh,sr}\in\{0,1\}$ (\textbf{R17}), $A^{SM\text{-}SRE}_{sm,sre}\in\{0,1\}$ (\textbf{R18}).
+  \item $A^{VEL\text{-}T}_{vel,t}\in\{0,1\}$ (\textbf{R19}), $A^{REP\text{-}F}_{rep,f}\in\{0,1\}$ (\textbf{R20}).
+  \item $A^{REP\text{-}RM}_{rep,rm}\in\{0,1\}$ (\textbf{R21}), $A^{SP\text{-}DEV}_{sp,dev}\in\{0,1\}$ (\textbf{R22}).
+\end{itemize}
+
+% =============================================================================
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em]
+  \item $p\in\mathcal{P}$,\; $t\in\mathcal{T}$,\; $w\in\mathcal{W}$,\; $f\in\mathcal{F}$,\; $s\in\mathcal{S}$,\; $r\in\mathcal{R}$,\; $po\in\mathcal{PO}$,\; $sm\in\mathcal{SM}$,
+  \item $pb\in\mathcal{PB}$,\; $sp\in\mathcal{SP}$,\; $spp\in\mathcal{SPP}$,\; $ds\in\mathcal{DS}$,\; $sr\in\mathcal{SR}$,\; $sre\in\mathcal{SRE}$,
+  \item $sbl\in\mathcal{SBL}$,\; $sg\in\mathcal{SG}$,\; $e\in\mathcal{E}$,\; $us\in\mathcal{US}$,\; $tsk\in\mathcal{TSK}$,\; $dev\in\mathcal{DEV}$,
+  \item $bl\in\mathcal{BL}$,\; $sh\in\mathcal{SH}$,\; $vel\in\mathcal{VEL}$,\; $rep\in\mathcal{REP}$,\; $rm\in\mathcal{RM}$,\; $scb\in\mathcal{SCB}$,\; $fed\in\mathcal{FED}$.
+\end{itemize}
+
+% =============================================================================
+\section{3. Goals}
+\noindent We combine all goal terms via a weighted scalarization. Let $\mathcal{G}$ be the set of goal IDs $G0,\dots,G11$ with weights $w_g$ from \texttt{Goals.csv}. The overall single-objective form is:
+\[
+\max \ \Phi \;=\; \sum_{g\in\mathcal{G}} w_g \cdot \Gamma_g,
+\]
+where each $\Gamma_g$ is defined below; for originally ``minimize'' goals we use a negative sign so that higher $\Gamma_g$ is better.
+
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{\texttt{G0 minimize\_project\_budget}} \\
+    \textit{Logic:} Reduce total allocated budget. \quad
+    \textit{Math:} $\Gamma_{G0} = - \sum_{p\in\mathcal{P}} B_p$, where $B_p$ is decision DV4. 
+
+  \item \textbf{\texttt{G1 maximize\_worker\_availability}} \\
+    \textit{Logic:} Prefer plans leveraging available workers. \quad
+    \textit{Math:} $\Gamma_{G1} = \sum_{w\in\mathcal{W}} availability_w$.
+
+  \item \textbf{\texttt{G2 maximize\_feature\_priority}} \\
+    \textit{Logic:} Select high-priority features into active sprints. \quad
+    \textit{Math:} $\Gamma_{G2} = \sum_{f\in\mathcal{F}}\sum_{sp\in\mathcal{SP}} priority_f \cdot y_{f,sp}$, where $y_{f,sp}$ encodes DV1 for feature--sprint selection.
+
+  \item \textbf{\texttt{G3 minimize\_feature\_estimated\_effort}} \\
+    \textit{Logic:} Prefer features requiring less effort. \quad
+    \textit{Math:} $\Gamma_{G3} = - \sum_{f\in\mathcal{F}}\sum_{sp\in\mathcal{SP}} effort^{F}_f \cdot y_{f,sp}$.
+
+  \item \textbf{\texttt{G4 maximize\_sprint\_goal\_achievement}} \\
+    \textit{Logic:} Favor plans with achieved sprint goals. \quad
+    \textit{Math:} $\Gamma_{G4} = \sum_{sp\in\mathcal{SP}} achieved_{sp}$.
+
+  \item \textbf{\texttt{G5 maximize\_velocity\_avg\_story\_points}} \\
+    \textit{Logic:} Prefer teams with higher historical velocity. \quad
+    \textit{Math:} $\Gamma_{G5} = \sum_{t\in\mathcal{T}} velAvg_t$.
+
+  \item \textbf{\texttt{G6 minimize\_blocker\_severity}} \\
+    \textit{Logic:} Reduce overall blocker impact. \quad
+    \textit{Math:} $\Gamma_{G6} = - \sum_{bl\in\mathcal{BL}} severity_{bl}$.
+
+  \item \textbf{\texttt{G7 maximize\_user\_story\_story\_points}} \\
+    \textit{Logic:} Deliver more story points. \quad
+    \textit{Math:} $\Gamma_{G7} = \sum_{sp\in\mathcal{SP}} C_{sp}$, where $C_{sp}$ is DV5 (commitment in sprint $sp$).
+
+  \item \textbf{\texttt{G8 minimize\_task\_effort}} \\
+    \textit{Logic:} Reduce effort on tasks in progress. \quad
+    \textit{Math:} $\Gamma_{G8} = - \sum_{tsk\in\mathcal{TSK}} effort^{TSK}_{tsk}\cdot u_{tsk}$, where $u_{tsk}$ is DV3.
+
+  \item \textbf{\texttt{G9 maximize\_team\_size\_utilization}} \\
+    \textit{Logic:} Utilize larger teams effectively on projects. \quad
+    \textit{Math:} $\Gamma_{G9} = \sum_{t\in\mathcal{T}}\sum_{p\in\mathcal{P}} size_t \cdot x_{t,p}$, where $x_{t,p}$ is DV0.
+
+  \item \textbf{\texttt{G10 maximize\_stakeholder\_relevance\_to\_feature}} \\
+    \textit{Logic:} Emphasize features most relevant to stakeholders. \quad
+    \textit{Math:} $\Gamma_{G10} = \sum_{sh\in\mathcal{SH}}\sum_{f\in\mathcal{F}}\sum_{sp\in\mathcal{SP}} rel_{sh,f}\cdot y_{f,sp}$.
+
+  \item \textbf{\texttt{G11 minimize\_time\_to\_release}} \\
+    \textit{Logic:} Accelerate release plans. \quad
+    \textit{Math:} $\Gamma_{G11} = - \sum_{rep\in\mathcal{REP}} planDate_{rep}$.
+\end{itemize}
+
+% =============================================================================
+\section{4. Conditions}
+\noindent All conditions combine logical gating with linear constraints; \texttt{CriteriaType} $\in\{2,1,0\}$ maps to Must-/May-/Cannot-Match. The items C0--C11 come directly from \texttt{Conditions.csv}. We additionally enforce structural conditions implied by \texttt{Relationships.csv} (R1--R22).
+
+\subsection*{C0--C11 from \texttt{Conditions.csv}}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{\texttt{C0 enforce\_active\_projects}} (Must-Match) \\
+    \textit{Logic:} Assign teams only to active projects. \\
+    \textit{Math:}\; $\forall t\in\mathcal{T},\; \forall p\in\mathcal{P}:\; x_{t,p} \le A^{TP}_{t,p}\cdot activeProject_p$.
+
+  \item \textbf{\texttt{C1 require\_team\_status\_ready}} (Must-Match) \\
+    \textit{Logic:} Only ready teams can be assigned. \\
+    \textit{Math:}\; $\forall t,p:\; x_{t,p} \le readyTeam_t$.
+
+  \item \textbf{\texttt{C2 exclude\_unavailable\_workers}} (Cannot-Match) \\
+    \textit{Logic:} Workers with zero availability cannot be allocated. \\
+    \textit{Math:}\; $\forall w,us:\; z_{w,us} \le \mathbf{1}[\,availability_w>0\,]$.
+
+  \item \textbf{\texttt{C3 prefer\_certified\_skills}} (May-Match) \\
+    \textit{Logic:} Encourage certified skill coverage for stories. \\
+    \textit{Math:}\; Let $cert_w = \sum_{s} A^{WS}_{w,s}\cdot certified_s$. For each sprint $sp$: $\sum_{us}\sum_{w} z_{w,us} \cdot cert_w \;\ge\; \kappa_{sp}$ (soft: can be relaxed/penalized).
+
+  \item \textbf{\texttt{C4 limit\_high\_severity\_blockers}} (Must-Match) \\
+    \textit{Logic:} Cap blocker impact/effort reserved. \\
+    \textit{Math:}\; $\sum_{tsk}\sum_{bl} A^{TSK\text{-}BL}_{tsk,bl}\cdot severity_{bl}\cdot u_{tsk} \;\le\; W$ (where $W$ is DV10).
+
+  \item \textbf{\texttt{C5 require\_user\_story\_acceptance\_criteria}} (Must-Match) \\
+    \textit{Logic:} Only stories with acceptance criteria may receive allocation. \\
+    \textit{Math:}\; $\forall w,us:\; z_{w,us} \le hasAC_{us}$.
+
+  \item \textbf{\texttt{C6 prefer\_high\_team\_type\_fit}} (May-Match) \\
+    \textit{Logic:} Favor team--project type fit. \\
+    \textit{Math:}\; $\sum_{t,p} fit_{t,p}\cdot x_{t,p} \;\ge\; \phi$ (soft threshold; $fit_{t,p}\in[0,1]$).
+
+  \item \textbf{\texttt{C7 require\_sprint\_status\_active}} (Must-Match) \\
+    \textit{Logic:} Only active sprints may accept features. \\
+    \textit{Math:}\; $\forall f,sp:\; y_{f,sp} \le activeSprint_{sp}$.
+
+  \item \textbf{\texttt{C8 prefer\_positive\_trend\_velocity}} (May-Match) \\
+    \textit{Logic:} Prefer teams with improving trend. \\
+    \textit{Math:}\; $\sum_{t} trend_t \cdot \sum_{p} x_{t,p} \;\ge\; 0$ (soft; $trend_t\in\mathbb{R}$ from \textbf{VEL.trend}).
+
+  \item \textbf{\texttt{C9 require\_backlog\_status\_open}} (Must-Match) \\
+    \textit{Logic:} Features must come from an open Product Backlog. \\
+    \textit{Math:}\; $\forall f,sp:\; y_{f,sp} \le \sum_{pb} A^{PB\text{-}F}_{pb,f}\cdot openPB_{pb}$.
+
+  \item \textbf{\texttt{C10 limit\_scrum\_board\_wip}} (Must-Match) \\
+    \textit{Logic:} Cap number of cards (WIP) on the board. \\
+    \textit{Math:}\; $\sum_{tsk} u_{tsk} \;\le\; K$ (where $K$ is DV11).
+
+  \item \textbf{\texttt{C11 require\_feature\_documentation\_linked}} (Must-Match) \\
+    \textit{Logic:} Only features with linked documentation can be selected. \\
+    \textit{Math:}\; $\forall f,sp:\; y_{f,sp} \le docLinked_f$ (e.g., $docLinked_f=\max_{fed} A^{FED\text{-}F}_{fed,f}\cdot \mathbf{1}[linked\_requirements]$).
+\end{itemize}
+
+\subsection*{Structural constraints from \texttt{Relationships.csv} (R1--R22)}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{R1 Team $\to$ Project (1:N)}: each team belongs to exactly one project: \quad $\forall t:\; \sum_{p} x_{t,p}=1$ and $x_{t,p}\le A^{TP}_{t,p}$.
+  \item \textbf{R2 Worker $\to$ Team (N:1)}: each worker has exactly one home team: \quad $\forall w:\; \sum_{t} A^{WT}_{w,t}=1$.
+  \item \textbf{R3 Worker--Skill (N:M)}: skill availability parameterized by $A^{WS}_{w,s}$ (used in C3).
+  \item \textbf{R4 Worker--Role (N:M)}: role coverage via $A^{WR}_{w,r}$ as feasibility/input.
+  \item \textbf{R5 PO manages PB (1:1)}: unique mapping input $A^{PO\text{-}PB}_{po,pb}$; ensure $\sum_{po} A^{PO\text{-}PB}_{po,pb}=1=\sum_{pb} A^{PO\text{-}PB}_{po,pb}$.
+  \item \textbf{R6 Team supported by SM (1:1)}: unique mapping input $A^{T\text{-}SM}_{t,sm}$.
+  \item \textbf{R7 PB contains Feature (1:N)}: selection only from containing PB (\textit{enforced in C9}).
+  \item \textbf{R8 PB contains Epic (1:N)}: feasibility for epic--story relations.
+  \item \textbf{R9 Epic contains UserStory (1:N)}: $\forall us:\; \sum_{e} A^{E\text{-}US}_{e,us}=1$.
+  \item \textbf{R10 UserStory consists of Tasks (1:N)}: task coverage via $A^{US\text{-}TSK}_{us,tsk}$.
+  \item \textbf{R11 UserStory in SprintBacklog (N:M)} \& \textbf{R12 SBL belongs to Sprint (1:1)}: if $y_{f,sp}=1$ for some $us$ of $f$, then $\exists sbl$ with $A^{US\text{-}SBL}_{us,sbl}A^{SBL\text{-}SP}_{sbl,sp}=1$ (modelled via gating).
+  \item \textbf{R13 Sprint pursues Goal (1:1)}: for each $sp$ there is a unique $sg$; consistency used by parameter $achieved_{sp}$.
+  \item \textbf{R14 ScrumBoard contains Tasks (1:N)}: $\sum_{tsk} A^{SCB\text{-}TSK}_{scb,tsk} \le K$ for each $scb$ (WIP cap aligns with C10).
+  \item \textbf{R15 FED documents Feature (1:1)}: $docLinked_f = \max_{fed} A^{FED\text{-}F}_{fed,f}$ (used in C11).
+  \item \textbf{R16 Task blocked by Blocker (N:M)}: accounted in C4 via $A^{TSK\text{-}BL}_{tsk,bl}$.
+  \item \textbf{R17 Stakeholder participates in SR (N:M)}: engagement parameter $A^{SH\text{-}SR}_{sh,sr}$; supports goal G10 context.
+  \item \textbf{R18 SM moderates Retrospective (1:N)}: feasibility input $A^{SM\text{-}SRE}_{sm,sre}$.
+  \item \textbf{R19 Velocity refers to Team (1:1)}: $velAvg_t = \sum_{vel} A^{VEL\text{-}T}_{vel,t}\cdot avgSP_{vel}$.
+  \item \textbf{R20 ReleasePlan includes Feature (1:N)}: coupling of $rep$ and $f$ via $A^{REP\text{-}F}_{rep,f}$ (context for G11).
+  \item \textbf{R21 ReleasePlan part of Roadmap (N:1)}: feasibility $A^{REP\text{-}RM}_{rep,rm}$.
+  \item \textbf{R22 Sprint generates Snapshot (1:1)}: traceability $A^{SP\text{-}DEV}_{sp,dev}$.
+\end{itemize}
+
+\paragraph{Capacity, commitment, and linking constraints (illustrative):}
+\begin{itemize}[leftmargin=2em]
+  \item Worker capacity with buffer: $\forall w,sp:\; \sum_{us} z_{w,us}\cdot spoints_{us} \;\le\; availability_w \cdot (1-\beta)\cdot Cap_w$ (DV8 $\beta$, given $Cap_w$).
+  \item Commitment consistency: $\forall sp:\; \sum_{us} spoints_{us}\cdot q_{us,sp} \;\le\; C_{sp}$, where $q_{us,sp}\in\{0,1\}$ indicates story scheduled in sprint $sp$ and can be linearized via $z_{w,us}$ (aux.\ variable; standard big-$M$ linking if introduced).
+\end{itemize}
+
+% =============================================================================
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{\texttt{DV0 assign\_team\_to\_project}}: $x_{t,p}\in\{0,1\}$ for $(t,p)\in\mathcal{T}\times\mathcal{P}$.
+  \item \textbf{\texttt{DV1 select\_feature\_for\_sprint}}: $y_{f,sp}\in\{0,1\}$ for $(f,sp)\in\mathcal{F}\times\mathcal{SP}$.
+  \item \textbf{\texttt{DV2 allocate\_worker\_to\_story}}: $z_{w,us}\in\{0,1\}$ for $(w,us)\in\mathcal{W}\times\mathcal{US}$.
+  \item \textbf{\texttt{DV3 set\_task\_in\_progress}}: $u_{tsk}\in\{0,1\}$ for $tsk\in\mathcal{TSK}$.
+  \item \textbf{\texttt{DV4 budget\_allocation\_project}}: $B_p\in\mathbb{R}_{\ge 0}$ with $0\le B_p\le \overline{B}_p$ for $p\in\mathcal{P}$.
+  \item \textbf{\texttt{DV5 story\_points\_commitment}}: $C_{sp}\in\mathbb{Z}_{\ge 0}$ with $0\le C_{sp}\le \overline{C}$ for $sp\in\mathcal{SP}$.
+  \item \textbf{\texttt{DV6 max\_parallel\_tasks\_per\_worker}}: $M\in\mathbb{Z}_{\ge 0}$ with $0\le M\le 20$ (global cap). \\
+        Constraint: $\forall w:\; \sum_{tsk} assign_{w,tsk} \le M$ if a per-task assignment variable $assign_{w,tsk}$ is used.
+  \item \textbf{\texttt{DV7 sprint\_length\_days}}: $L\in\{7,10,14,21,28\}$.
+  \item \textbf{\texttt{DV8 capacity\_buffer\_percentage}}: $\beta\in[0,1]$.
+  \item \textbf{\texttt{DV9 priority\_threshold\_feature}}: $\theta\in\mathbb{Z}_{\ge 0}$; gating $\forall f,sp:\; y_{f,sp}\le \mathbf{1}[\,priority_f\ge\theta\,]$.
+  \item \textbf{\texttt{DV10 limit\_blocker\_workaround\_effort}}: $W\in\mathbb{R}_{\ge 0}$ (used in C4).
+  \item \textbf{\texttt{DV11 max\_cards\_on\_scrum\_board}}: $K\in\mathbb{Z}_{\ge 0}$ (used in C10).
+\end{itemize}
+
+\end{document}

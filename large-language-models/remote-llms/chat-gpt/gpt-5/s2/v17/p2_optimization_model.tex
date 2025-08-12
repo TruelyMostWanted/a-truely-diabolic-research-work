@@ -1,0 +1,270 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{SCRUM Company Optimization Model\\(Based on Entities, Relationships, Goals, Conditions, Decision Variables)}
+\author{Generated for: TruelyMostWanted}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+We denote each entity as a finite set whose elements are instances of that entity.
+\begin{itemize}[leftmargin=2.2em]
+  \item $P$ --- \textbf{Project}
+  \item $T$ --- \textbf{Team}
+  \item $W$ --- \textbf{Worker}
+  \item $F$ --- \textbf{Feature}
+  \item $S$ --- \textbf{Skill}
+  \item $R$ --- \textbf{Role}
+  \item $PO$ --- \textbf{ProductOwner}
+  \item $SM$ --- \textbf{ScrumMaster}
+  \item $PB$ --- \textbf{ProductBacklog}
+  \item $SP$ --- \textbf{Sprint}
+  \item $SPP$ --- \textbf{SprintPlanning}
+  \item $DS$ --- \textbf{DailyScrum}
+  \item $SR$ --- \textbf{SprintReview}
+  \item $SRE$ --- \textbf{SprintRetrospective}
+  \item $SBL$ --- \textbf{SprintBacklog}
+  \item $SG$ --- \textbf{SprintGoal}
+  \item $E$ --- \textbf{Epic}
+  \item $US$ --- \textbf{UserStory}
+  \item $TSK$ --- \textbf{Task}
+  \item $DEV$ --- \textbf{DevelopmentSnapshot}
+  \item $BL$ --- \textbf{Blocker}
+  \item $SH$ --- \textbf{Stakeholder}
+  \item $VEL$ --- \textbf{Velocity}
+  \item $REP$ --- \textbf{ReleasePlan}
+  \item $RM$ --- \textbf{Roadmap}
+  \item $SCB$ --- \textbf{ScrumBoard}
+  \item $FED$ --- \textbf{FeatureDocumentation}
+\end{itemize}
+
+\section{2. Indices}
+We use the following index symbols to refer to set elements:
+\begin{itemize}[leftmargin=2.2em]
+  \item $p \in P$ (project), $t \in T$ (team), $w \in W$ (worker)
+  \item $f \in F$ (feature), $s \in S$ (skill), $r \in R$ (role)
+  \item $po \in PO$ (product owner), $sm \in SM$ (scrum master)
+  \item $pb \in PB$ (product backlog), $sp \in SP$ (sprint)
+  \item $spp \in SPP$ (sprint planning), $ds \in DS$ (daily scrum)
+  \item $sr \in SR$ (sprint review), $sre \in SRE$ (retrospective)
+  \item $sbl \in SBL$ (sprint backlog), $sg \in SG$ (sprint goal)
+  \item $e \in E$ (epic), $us \in US$ (user story)
+  \item $tsk \in TSK$ (task), $dev \in DEV$ (dev snapshot)
+  \item $bl \in BL$ (blocker), $sh \in SH$ (stakeholder)
+  \item $vel \in VEL$ (velocity observation), $rep \in REP$ (release plan)
+  \item $rm \in RM$ (roadmap), $scb \in SCB$ (scrum board), $fed \in FED$ (feature doc)
+\end{itemize}
+
+\paragraph{Decision Variables (names from CSV DV0--DV11).}
+\begin{align*}
+&x^{TP}_{t,p} \in \{0,1\} &&\text{DV0: assign\_team\_to\_project} \\
+&x^{WT}_{w,t} \in \{0,1\} &&\text{DV1: assign\_worker\_to\_team} \\
+&x^{USSP}_{us,sp} \in \{0,1\} &&\text{DV2: assign\_story\_to\_sprint} \\
+&x^{TSKSBL}_{tsk,sbl} \in \{0,1\} &&\text{DV3: plan\_task\_in\_sprint\_backlog} \\
+&x^{FREP}_{f,rep} \in \{0,1\} &&\text{DV4: select\_feature\_in\_release} \\
+&x^{POPB}_{po,pb} \in \{0,1\} &&\text{DV5: choose\_product\_owner\_for\_backlog} \\
+&x^{SMT}_{sm,t} \in \{0,1\} &&\text{DV6: choose\_scrum\_master\_for\_team} \\
+&\pi^{US}_{us} \in \{1,\dots,5\} &&\text{DV7: set\_story\_priority} \\
+&\hat{e}^{TSK}_{tsk} \in \{1,\dots,40\} &&\text{DV8: set\_task\_effort (planned)} \\
+&cap^{TSP}_{t,sp} \in \{0,\dots,1000\} &&\text{DV9: set\_team\_capacity} \\
+&b^{P}_{p} \in [0,10^6] &&\text{DV10: allocate\_project\_budget} \\
+&\tau^{DS}_{t,ds} \in [0,24] &&\text{DV11: schedule\_daily\_scrum\_time}
+\end{align*}
+
+\paragraph{Parameters (from Entities' attributes and Relationships).}
+All parameters are given/estimated from data:
+\begin{itemize}[leftmargin=2.2em]
+  \item From \textbf{Velocity}: $\mathrm{avgSP}_{vel}$, $\mathrm{minVel}_{vel}$, $\mathrm{maxVel}_{vel}$, $\mathrm{trend}_{vel}$; mapping $M^{VEL\to T}_{vel,t}\in\{0,1\}$ (R19).
+  \item From \textbf{Task}: baseline effort $e^{TSK}_{tsk}$; blockers incidence $B_{tsk,bl}\in\{0,1\}$ (R16).
+  \item From \textbf{Blocker}: $\mathrm{sev}_{bl}$; critical indicator $c_{bl}\in\{0,1\}$.
+  \item From \textbf{ScrumBoard}: $\mathrm{cards}_{scb}$; tasks-on-board mapping $M^{SCB\to TSK}_{scb,tsk}\in\{0,1\}$ (R14).
+  \item From \textbf{UserStory}: story points $\mathrm{spoints}_{us}$, priority $prio^{US}_{us}$, acceptance readiness $accOK_{us}\in\{0,1\}$.
+  \item From \textbf{Feature}: priority $prio^{F}_{f}$, estimated effort $estEff^{F}_{f}$.
+  \item From \textbf{SprintGoal}: achievement status $\mathrm{ach}_{sg}$; sprint--goal map $M^{SP\leftrightarrow SG}_{sp,sg}\in\{0,1\}$ (R13).
+  \item From \textbf{DailyScrum}, \textbf{SprintPlanning}, \textbf{SprintReview}: durations $\mathrm{dur}^{DS}_{ds}$, $\mathrm{dur}^{SPP}_{spp}$, attendees $\mathrm{att}^{SR}_{sr}$.
+  \item Status/readiness flags: $activeSP_{sp}\in\{0,1\}$, $goalDefined_{sp}\in\{0,1\}$, $readyPB_{pb}\in\{0,1\}$, $readyREP_{rep}\in\{0,1\}$.
+  \item Capacities: team size cap $cap^{T}_{t}$; worker availability $avail_{w}\in[0,1]$.
+  \item Relationship link parameters used for logical consistency:
+    \begin{itemize}
+      \item $M^{SBL\to SP}_{sbl,sp}\in\{0,1\}$ (R12), $M^{US\to SBL}_{us,sbl}\in\{0,1\}$ (R11),
+      \item $M^{PO\to PB}_{po,pb}\in\{0,1\}$ (R5), $M^{SM\to T}_{sm,t}\in\{0,1\}$ (R6),
+      \item $M^{F\to REP}_{f,rep}\in\{0,1\}$ (R20), $M^{REP\to RM}_{rep,rm}\in\{0,1\}$ (R21),
+      \item $M^{T\to P}_{t,p}\in\{0,1\}$ (R1).
+    \end{itemize}
+\end{itemize}
+
+\section{3. Goals}
+We aggregate all goal contributions $\phi_g$ with CSV weights $w_g$ and directions $dir_g\in\{+1 \text{ for ``max''}, -1 \text{ for ``min''}\}$:
+\[
+\max \ \sum_{g\in \mathcal{G}} dir_g \cdot w_g \cdot \phi_g
+\]
+Each item shows (ID, name), its logic, and its mathematical term $\phi_g$.
+
+\begin{itemize}[leftmargin=2.2em]
+
+  \item \textbf{G0: maximize\_team\_velocity} \\
+  \emph{Logic:} Prefer teams with higher average story points per sprint. \\
+  \emph{Math:} $\displaystyle \phi_{G0}=\sum_{vel\in VEL}\mathrm{avgSP}_{vel}$ \quad (used with $dir=+1$, $w=1.0$)
+
+  \item \textbf{G1: maximize\_min\_velocity} \\
+  \emph{Logic:} Improve the worst-case (minimum) observed team velocity. \\
+  \emph{Math:} Introduce $z^{\min vel}\in\mathbb{R}$ with $z^{\min vel}\le \mathrm{minVel}_{vel}\ \forall vel$; then $\phi_{G1}=z^{\min vel}$ \quad ($dir=+1$, $w=0.8$)
+
+  \item \textbf{G2: maximize\_max\_velocity} \\
+  \emph{Logic:} Favor teams capable of higher peak velocity. \\
+  \emph{Math:} $\displaystyle \phi_{G2}=\sum_{vel\in VEL}\mathrm{maxVel}_{vel}$ \quad ($dir=+1$, $w=0.6$)
+
+  \item \textbf{G3: minimize\_task\_effort} \\
+  \emph{Logic:} Prefer plans with lower total planned task effort. \\
+  \emph{Math:} $\displaystyle \phi_{G3}=\sum_{tsk\in TSK}\hat{e}^{TSK}_{tsk}$ \quad ($dir=-1$, $w=1.0$)
+
+  \item \textbf{G4: minimize\_blocker\_severity} \\
+  \emph{Logic:} Penalize scheduling tasks that are blocked, proportional to blocker severity. \\
+  \emph{Math:} $\displaystyle \phi_{G4}=\sum_{tsk\in TSK}\sum_{sbl\in SBL}\sum_{bl\in BL} \mathrm{sev}_{bl}\, B_{tsk,bl}\, x^{TSKSBL}_{tsk,sbl}$ \quad ($dir=-1$, $w=1.0$)
+
+  \item \textbf{G5: minimize\_number\_of\_cards} \\
+  \emph{Logic:} Reduce WIP by limiting cards on Scrum boards. \\
+  \emph{Math:} $\displaystyle \phi_{G5}=\sum_{scb\in SCB}\mathrm{cards}_{scb}$ \quad ($dir=-1$, $w=0.7$)
+
+  \item \textbf{G6: maximize\_story\_points} \\
+  \emph{Logic:} Deliver more story points by scheduling stories into sprints. \\
+  \emph{Math:} $\displaystyle \phi_{G6}=\sum_{us\in US}\sum_{sp\in SP}\mathrm{spoints}_{us}\, x^{USSP}_{us,sp}$ \quad ($dir=+1$, $w=1.0$)
+
+  \item \textbf{G7: maximize\_feature\_priority} \\
+  \emph{Logic:} Prefer selecting high-priority features into releases. \\
+  \emph{Math:} $\displaystyle \phi_{G7}=\sum_{f\in F}\sum_{rep\in REP} prio^{F}_{f}\, x^{FREP}_{f,rep}$ \quad ($dir=+1$, $w=0.9$)
+
+  \item \textbf{G8: maximize\_sprint\_goal\_achievement} \\
+  \emph{Logic:} Favor sprints with higher goal achievement. \\
+  \emph{Math:} $\displaystyle \phi_{G8}=\sum_{sp\in SP}\sum_{sg\in SG} \mathrm{ach}_{sg}\, M^{SP\leftrightarrow SG}_{sp,sg}$ \quad ($dir=+1$, $w=1.0$)
+
+  \item \textbf{G9: minimize\_daily\_scrum\_duration} \\
+  \emph{Logic:} Keep daily meetings short (subject to feasibility). \\
+  \emph{Math:} $\displaystyle \phi_{G9}=\sum_{ds\in DS}\mathrm{dur}^{DS}_{ds}$ \quad ($dir=-1$, $w=0.3$)
+
+  \item \textbf{G10: minimize\_sprint\_planning\_duration} \\
+  \emph{Logic:} Reduce planning overhead. \\
+  \emph{Math:} $\displaystyle \phi_{G10}=\sum_{spp\in SPP}\mathrm{dur}^{SPP}_{spp}$ \quad ($dir=-1$, $w=0.4$)
+
+  \item \textbf{G11: maximize\_review\_attendance} \\
+  \emph{Logic:} Encourage stakeholder participation in reviews. \\
+  \emph{Math:} $\displaystyle \phi_{G11}=\sum_{sr\in SR}\mathrm{att}^{SR}_{sr}$ \quad ($dir=+1$, $w=0.5$)
+\end{itemize}
+
+\section{4. Conditions}
+Each condition gives a logical statement (``must/may/cannot match'') and a mathematical formulation. ``May'' conditions are modeled as soft preferences that can be incorporated into the objective as additional terms with their CSV weights; ``must'' and ``cannot'' are hard constraints.
+
+\begin{itemize}[leftmargin=2.2em]
+
+  \item \textbf{C0: must\_match\_active\_sprint\_status} \\
+  \emph{Logic (Must, CriteriaType 2):} Only active/planned sprints may receive user stories. \\
+  \emph{Math:} $\displaystyle x^{USSP}_{us,sp} \le activeSP_{sp}\quad \forall us\in US,\, sp\in SP.$
+
+  \item \textbf{C1: must\_match\_ordered\_backlog\_status} \\
+  \emph{Logic (Must):} Product Backlog must be ready/ordered if a PO manages it. \\
+  \emph{Math:} $\displaystyle x^{POPB}_{po,pb} \le readyPB_{pb}\quad \forall po\in PO,\, pb\in PB.$
+
+  \item \textbf{C2: must\_match\_worker\_availability} \\
+  \emph{Logic (Must):} A worker's assignments must respect availability. \\
+  \emph{Math:} $\displaystyle \sum_{t\in T} x^{WT}_{w,t} \le avail_{w}\quad \forall w\in W.$
+
+  \item \textbf{C3: cannot\_match\_critical\_blocker\_severity} \\
+  \emph{Logic (Cannot, CriteriaType 0):} Tasks with a critical blocker cannot be planned. \\
+  \emph{Math:} Let $crit_{tsk}=\min\{1,\sum_{bl} c_{bl}B_{tsk,bl}\}$. Then
+  \[
+  x^{TSKSBL}_{tsk,sbl} \le 1-crit_{tsk}\quad \forall tsk\in TSK,\, sbl\in SBL.
+  \]
+
+  \item \textbf{C4: may\_match\_high\_stakeholder\_influence} \\
+  \emph{Logic (May):} Prefer reviews with influential stakeholders. \\
+  \emph{Soft Math term:} $\displaystyle \Psi_{C4}=\sum_{sr\in SR}\sum_{sh\in SH} influence_{sh}\cdot attend_{sh,sr}$, added with weight $0.6$ (maximize).
+
+  \item \textbf{C5: must\_match\_team\_size\_capacity} \\
+  \emph{Logic (Must):} Team headcount cannot exceed capacity. \\
+  \emph{Math:} $\displaystyle \sum_{w\in W} x^{WT}_{w,t} \le cap^{T}_{t}\quad \forall t\in T.$
+
+  \item \textbf{C6: may\_match\_low\_feature\_effort} \\
+  \emph{Logic (May):} Prefer lower-effort features in releases. \\
+  \emph{Soft Math term (minimize):} $\displaystyle \Psi_{C6}=\sum_{f,rep} estEff^{F}_{f}\, x^{FREP}_{f,rep}$ with weight $0.7$.
+
+  \item \textbf{C7: must\_match\_user\_story\_acceptance\_criteria} \\
+  \emph{Logic (Must):} Only ready stories (acceptance criteria OK) can be scheduled. \\
+  \emph{Math:} $\displaystyle \sum_{sp\in SP} x^{USSP}_{us,sp} \le accOK_{us}\quad \forall us\in US.$
+
+  \item \textbf{C8: must\_match\_release\_plan\_status} \\
+  \emph{Logic (Must):} Only ready release plans may include features. \\
+  \emph{Math:} $\displaystyle x^{FREP}_{f,rep} \le readyREP_{rep}\quad \forall f\in F,\, rep\in REP.$
+
+  \item \textbf{C9: may\_match\_high\_story\_priority} \\
+  \emph{Logic (May):} Prefer higher-priority stories when scheduling. \\
+  \emph{Soft Math term (maximize):} $\displaystyle \Psi_{C9}=\sum_{us,sp} prio^{US}_{us}\, x^{USSP}_{us,sp}$ with weight $0.8$.
+
+  \item \textbf{C10: must\_match\_sprint\_goal\_defined} \\
+  \emph{Logic (Must):} An active sprint must have a defined goal. \\
+  \emph{Math:} $\displaystyle activeSP_{sp} \le goalDefined_{sp}\quad \forall sp\in SP.$
+
+  \item \textbf{C11: may\_match\_positive\_velocity\_trend} \\
+  \emph{Logic (May):} Prefer teams with positive velocity trends. \\
+  \emph{Soft Math term (maximize):} $\displaystyle \Psi_{C11}=\sum_{vel\in VEL}\mathrm{trend}_{vel}$ with weight $0.5$.
+\end{itemize}
+
+\paragraph{Relationship-consistency constraints (from Relationships.csv).}
+These encode the semantics of R1, R5--R7, R11--R14, R19--R22 using the decision variables and link parameters:
+\begin{align}
+&\text{R1: } x^{TP}_{t,p} \le M^{T\to P}_{t,p} && \forall t,p \label{r1}\\
+&\text{R5: } x^{POPB}_{po,pb} \le M^{PO\to PB}_{po,pb} && \forall po,pb \label{r5}\\
+&\text{R6: } x^{SMT}_{sm,t} \le M^{SM\to T}_{sm,t} && \forall sm,t \label{r6}\\
+&\text{R7/R8: features/epics belong to PB (selection consistency)} && \nonumber\\
+&\quad \sum_{rep} x^{FREP}_{f,rep} \le \sum_{pb} inPB^{F}_{f,pb} && \forall f \label{r7}\\
+&\text{R11/R12: story in SBL of a sprint if scheduled to that sprint:}\nonumber\\
+&\quad x^{USSP}_{us,sp} \le \sum_{sbl\in SBL} M^{US\to SBL}_{us,sbl}\, M^{SBL\to SP}_{sbl,sp} && \forall us,sp \label{r11}\\
+&\text{R14: tasks on the ScrumBoard mirror SBL planning:}\nonumber\\
+&\quad \sum_{scb} M^{SCB\to TSK}_{scb,tsk} \ge \sum_{sbl} x^{TSKSBL}_{tsk,sbl} && \forall tsk \label{r14}\\
+&\text{R19: velocity refers to a team (activate if team exists):}\nonumber\\
+&\quad \sum_{p} x^{TP}_{t,p} \ge \sum_{vel} M^{VEL\to T}_{vel,t}\cdot y_t,\ \ y_t\in\{0,1\} && \forall t \label{r19}\\
+&\text{R20/R21: features in releases and releases in roadmap:}\nonumber\\
+&\quad x^{FREP}_{f,rep} \le \sum_{rm} M^{REP\to RM}_{rep,rm} && \forall f,rep \label{r20}\\
+&\text{R22: sprint generates a snapshot (coverage constraint):}\nonumber\\
+&\quad \sum_{dev} gen^{SP\to DEV}_{sp,dev} \ge activeSP_{sp} && \forall sp \label{r22}
+\end{align}
+(Parameters $inPB^{F}_{f,pb}$, $gen^{SP\to DEV}_{sp,dev}\in\{0,1\}$ indicate entity link existence.)
+
+\paragraph{Capacity \& coupling examples.}
+\begin{align}
+&\sum_{us} \mathrm{spoints}_{us}\, x^{USSP}_{us,sp} \le \sum_{t} cap^{TSP}_{t,sp} && \forall sp \label{cap1}\\
+&\hat{e}^{TSK}_{tsk} \ge e^{TSK}_{tsk} && \forall tsk \label{eff1}
+\end{align}
+
+\section{5. DecisionVariables}
+The following list mirrors DecisionVariables.csv (ID, name, domain):
+\begin{itemize}[leftmargin=2.2em]
+  \item \textbf{DV0 assign\_team\_to\_project:} $x^{TP}_{t,p}\in\{0,1\}$
+  \item \textbf{DV1 assign\_worker\_to\_team:} $x^{WT}_{w,t}\in\{0,1\}$
+  \item \textbf{DV2 assign\_story\_to\_sprint:} $x^{USSP}_{us,sp}\in\{0,1\}$
+  \item \textbf{DV3 plan\_task\_in\_sprint\_backlog:} $x^{TSKSBL}_{tsk,sbl}\in\{0,1\}$
+  \item \textbf{DV4 select\_feature\_in\_release:} $x^{FREP}_{f,rep}\in\{0,1\}$
+  \item \textbf{DV5 choose\_product\_owner\_for\_backlog:} $x^{POPB}_{po,pb}\in\{0,1\}$
+  \item \textbf{DV6 choose\_scrum\_master\_for\_team:} $x^{SMT}_{sm,t}\in\{0,1\}$
+  \item \textbf{DV7 set\_story\_priority:} $\pi^{US}_{us}\in\{1,2,3,4,5\}$
+  \item \textbf{DV8 set\_task\_effort:} $\hat{e}^{TSK}_{tsk}\in\{1,\dots,40\}$
+  \item \textbf{DV9 set\_team\_capacity:} $cap^{TSP}_{t,sp}\in\{0,\dots,1000\}$
+  \item \textbf{DV10 allocate\_project\_budget:} $b^{P}_{p}\in[0,1{,}000{,}000]$
+  \item \textbf{DV11 schedule\_daily\_scrum\_time:} $\tau^{DS}_{t,ds}\in[0,24]$
+\end{itemize}
+
+\paragraph{Composite objective including ``May'' conditions (optional).}
+If soft conditions are included, the final objective becomes
+\[
+\max\ \sum_{g} dir_g\,w_g\,\phi_g
+\;+\; \sum_{C\in\{\text{May}\}} dir_C\,w_C\,\Psi_C,
+\]
+with $dir_C=+1$ for maximize-type, $dir_C=-1$ for minimize-type soft conditions.
+
+\end{document}

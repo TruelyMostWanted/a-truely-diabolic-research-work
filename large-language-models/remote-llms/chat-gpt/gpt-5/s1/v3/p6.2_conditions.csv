@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,must_match_active_product_backlog,Product Backlog must be active/maintained,False,min,ProductBacklog,status,2,1.0
+C1,must_match_worker_availability,Workers assigned must be available,False,min,Worker,availability,2,1.0
+C2,cannot_match_task_done_outside_sprint,Tasks marked done must belong to a sprint backlog,False,min,Task,status,0,1.0
+C3,must_match_ci_test_passed,Only increments with passed tests are releasable,False,min,DevelopmentSnapshot,test_status,2,1.0
+C4,must_match_sprint_goal_defined,Each sprint must have a defined goal,False,min,SprintGoal,objective_description,2,1.0
+C5,may_match_high_influence_stakeholders,Prefer involving high-influence stakeholders in reviews,True,max,Stakeholder,influence_level,1,0.6
+C6,must_match_feature_effort_cap,Selected features must respect an effort cap per sprint,True,min,Feature,estimated_effort,2,1.0
+C7,must_match_story_points_capacity,Sum of story points must not exceed capacity,True,min,UserStory,story_points,2,1.0
+C8,must_match_sprint_backlog_committed,Sprint backlog must be in committed status before start,False,min,SprintBacklog,status,2,1.0
+C9,may_match_positive_retrospective_trend,Prefer sprints with improving team satisfaction,True,max,SprintRetrospective,team_satisfaction,1,0.5
+C10,must_match_team_size_bounds,Team size must remain within agreed bounds,False,min,Team,team_size,2,1.0
+C11,cannot_match_open_blockers_at_release,No open blockers at release time,False,min,Blocker,status,0,1.0
+C12,may_match_review_feedback_documented,Prefer reviews with documented feedback,False,max,SprintReview,feedback_documentation,1,0.4

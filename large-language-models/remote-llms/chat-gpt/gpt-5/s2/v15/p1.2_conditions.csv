@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,min_team_size,Ensure teams meet minimum size,True,min,Team,team_size,2,1.0
+C1,max_team_size,Keep teams below upper size bound,True,max,Team,team_size,2,1.0
+C2,worker_must_be_available,Only available workers are assignable,False,max,Worker,availability,2,1.0
+C3,story_points_cap_per_sprint,Limit total story points per sprint backlog,True,max,UserStory,story_points,2,1.0
+C4,task_effort_cap_per_sprint,Limit total task effort in sprint,True,max,Task,effort,2,1.0
+C5,feature_priority_floor,Prioritize higher value features,False,min,Feature,priority,1,0.8
+C6,epic_effort_ceiling,Control epic estimated effort,True,max,Epic,estimated_effort,1,0.7
+C7,sprint_within_dates,Sprints must fit planned calendar,False,min,Sprint,start_date,2,0.9
+C8,sprint_end_before_release,End date should precede planned release,False,min,Sprint,end_date,2,0.9
+C9,backlog_status_active,Only active product backlog considered,False,max,ProductBacklog,status,2,1.0
+C10,blocker_status_must_be_open_for_penalty,Only open blockers affect scoring,False,max,Blocker,status,2,1.0
+C11,skill_level_requirement,Required skill level for assignments,True,max,Skill,level,2,1.0

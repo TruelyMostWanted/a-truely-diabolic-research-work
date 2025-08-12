@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,project_status_active_only,Only consider projects with active status,False,max,Project,status,2,1.0
+C1,budget_cannot_exceed_limit,Project budget must not exceed the approved cap,False,min,Project,budget,2,1.0
+C2,minimum_team_size,Teams must meet a minimum effective team size,False,min,Team,team_size,2,1.0
+C3,maximum_daily_scrum_duration,Daily Scrum duration should not exceed target,False,max,DailyScrum,duration,2,1.0
+C4,po_availability_required,Product Owner availability required during sprint,False,max,ProductOwner,availability,2,0.9
+C5,scrum_master_experience_required,Minimum Scrum Master experience required,False,max,ScrumMaster,experience,2,0.8
+C6,limit_wip_on_board,Cap number of cards on the Scrum board,False,max,ScrumBoard,number_of_cards,2,0.8
+C7,feature_effort_cap,Do not pull features above an effort threshold,False,max,Feature,estimated_effort,2,1.0
+C8,sprint_backlog_effort_cap,Total sprint backlog effort must stay within capacity,True,max,SprintBacklog,total_effort,2,1.0
+C9,min_sprint_review_attendees,Sprint Review must have a minimum number of attendees,False,min,SprintReview,attendees_count,2,0.7
+C10,min_velocity_floor,Maintain a minimum team velocity across sprints,False,min,Velocity,min_velocity,2,0.9
+C11,blocker_status_cannot_be_open_in_done,No open blockers allowed on done tasks,False,min,Blocker,status,0,1.0

@@ -1,0 +1,576 @@
+graph TD
+  %% ========= STYLES =========
+  classDef entity fill:#cfe8ff,stroke:#2b6cb0,stroke-width:1px,color:#1a365d;
+  classDef attribute fill:#ffffff,stroke:#4a5568,stroke-width:1px,color:#1a202c;
+  classDef relation fill:#ffd7a8,stroke:#c05621,stroke-width:1px,color:#7b341e;
+  classDef goal fill:#d4f8d4,stroke:#2f855a,stroke-width:1px,color:#22543d;
+  classDef condition fill:#ffd6d6,stroke:#c53030,stroke-width:1px,color:#742a2a;
+  classDef dv fill:#e6d5ff,stroke:#6b46c1,stroke-width:1px,color:#44337a;
+  linkStyle default stroke:#555,stroke-width:1.2px;
+
+  %% ========= ENTITIES & ATTRIBUTES =========
+  subgraph E0[Project]
+    direction TB
+    E0N((Project))
+    E0A0[id]
+    E0A1[name]
+    E0A2[project_start]
+    E0A3[project_end]
+    E0A4[description]
+    E0A5[budget]
+    E0A6[status]
+    E0A7[target_audience]
+    E0A8[priority]
+    E0N --- E0A0 & E0N --- E0A1 & E0N --- E0A2 & E0N --- E0A3 & E0N --- E0A4
+    E0N --- E0A5 & E0N --- E0A6 & E0N --- E0A7 & E0N --- E0A8
+  end
+  class E0N entity; class E0A0,E0A1,E0A2,E0A3,E0A4,E0A5,E0A6,E0A7,E0A8 attribute;
+
+  subgraph E1[Team]
+    direction TB
+    E1N((Team))
+    E1A0[id]
+    E1A1[name]
+    E1A2[team_size]
+    E1A3[team_start]
+    E1A4[team_status]
+    E1A5[location]
+    E1A6[team_type]
+    E1N --- E1A0 & E1N --- E1A1 & E1N --- E1A2 & E1N --- E1A3 & E1N --- E1A4
+    E1N --- E1A5 & E1N --- E1A6
+  end
+  class E1N entity; class E1A0,E1A1,E1A2,E1A3,E1A4,E1A5,E1A6 attribute;
+
+  subgraph E2[Worker]
+    direction TB
+    E2N((Worker))
+    E2A0[id]
+    E2A1[name]
+    E2A2[first_name]
+    E2A3[email]
+    E2A4[start_date]
+    E2A5[status]
+    E2A6[availability]
+    E2N --- E2A0 & E2N --- E2A1 & E2N --- E2A2 & E2N --- E2A3
+    E2N --- E2A4 & E2N --- E2A5 & E2N --- E2A6
+  end
+  class E2N entity; class E2A0,E2A1,E2A2,E2A3,E2A4,E2A5,E2A6 attribute;
+
+  subgraph E3[Feature]
+    direction TB
+    E3N((Feature))
+    E3A0[id]
+    E3A1[title]
+    E3A2[description]
+    E3A3[status]
+    E3A4[priority]
+    E3A5[estimated_effort]
+    E3N --- E3A0 & E3N --- E3A1 & E3N --- E3A2 & E3N --- E3A3 & E3N --- E3A4 & E3N --- E3A5
+  end
+  class E3N entity; class E3A0,E3A1,E3A2,E3A3,E3A4,E3A5 attribute;
+
+  subgraph E4[Skill]
+    direction TB
+    E4N((Skill))
+    E4A0[id]
+    E4A1[label]
+    E4A2[description]
+    E4A3[level]
+    E4A4[certified]
+    E4A5[category]
+    E4N --- E4A0 & E4N --- E4A1 & E4N --- E4A2 & E4N --- E4A3 & E4N --- E4A4 & E4N --- E4A5
+  end
+  class E4N entity; class E4A0,E4A1,E4A2,E4A3,E4A4,E4A5 attribute;
+
+  subgraph E5[Role]
+    direction TB
+    E5N((Role))
+    E5A0[id]
+    E5A1[role_name]
+    E5A2[description]
+    E5A3[area_of_responsibility]
+    E5N --- E5A0 & E5N --- E5A1 & E5N --- E5A2 & E5N --- E5A3
+  end
+  class E5N entity; class E5A0,E5A1,E5A2,E5A3 attribute;
+
+  subgraph E6[ProductOwner]
+    direction TB
+    E6N((ProductOwner))
+    E6A0[id]
+    E6A1[name]
+    E6A2[email]
+    E6A3[availability]
+    E6N --- E6A0 & E6N --- E6A1 & E6N --- E6A2 & E6N --- E6A3
+  end
+  class E6N entity; class E6A0,E6A1,E6A2,E6A3 attribute;
+
+  subgraph E7[ScrumMaster]
+    direction TB
+    E7N((ScrumMaster))
+    E7A0[id]
+    E7A1[name]
+    E7A2[email]
+    E7A3[experience]
+    E7N --- E7A0 & E7N --- E7A1 & E7N --- E7A2 & E7N --- E7A3
+  end
+  class E7N entity; class E7A0,E7A1,E7A2,E7A3 attribute;
+
+  subgraph E8[ProductBacklog]
+    direction TB
+    E8N((ProductBacklog))
+    E8A0[id]
+    E8A1[created_on]
+    E8A2[last_updated]
+    E8A3[number_of_entries]
+    E8A4[status]
+    E8N --- E8A0 & E8N --- E8A1 & E8N --- E8A2 & E8N --- E8A3 & E8N --- E8A4
+  end
+  class E8N entity; class E8A0,E8A1,E8A2,E8A3,E8A4 attribute;
+
+  subgraph E9[Sprint]
+    direction TB
+    E9N((Sprint))
+    E9A0[id]
+    E9A1[sprint_number]
+    E9A2[start_date]
+    E9A3[end_date]
+    E9A4[status]
+    E9A5[achievement_of_goal]
+    E9N --- E9A0 & E9N --- E9A1 & E9N --- E9A2 & E9N --- E9A3 & E9N --- E9A4 & E9N --- E9A5
+  end
+  class E9N entity; class E9A0,E9A1,E9A2,E9A3,E9A4,E9A5 attribute;
+
+  subgraph E10[SprintPlanning]
+    direction TB
+    E10N((SprintPlanning))
+    E10A0[id]
+    E10A1[date]
+    E10A2[duration_(min)]
+    E10A3[moderation]
+    E10A4[outcome_documentation]
+    E10N --- E10A0 & E10N --- E10A1 & E10N --- E10A2 & E10N --- E10A3 & E10N --- E10A4
+  end
+  class E10N entity; class E10A0,E10A1,E10A2,E10A3,E10A4 attribute;
+
+  subgraph E11[DailyScrum]
+    direction TB
+    E11N((DailyScrum))
+    E11A0[id]
+    E11A1[date]
+    E11A2[time]
+    E11A3[duration]
+    E11A4[moderation]
+    E11N --- E11A0 & E11N --- E11A1 & E11N --- E11A2 & E11N --- E11A3 & E11N --- E11A4
+  end
+  class E11N entity; class E11A0,E11A1,E11A2,E11A3,E11A4 attribute;
+
+  subgraph E12[SprintReview]
+    direction TB
+    E12N((SprintReview))
+    E12A0[id]
+    E12A1[date]
+    E12A2[duration]
+    E12A3[feedback_documentation]
+    E12A4[attendees_count]
+    E12N --- E12A0 & E12N --- E12A1 & E12N --- E12A2 & E12N --- E12A3 & E12N --- E12A4
+  end
+  class E12N entity; class E12A0,E12A1,E12A2,E12A3,E12A4 attribute;
+
+  subgraph E13[SprintRetrospective]
+    direction TB
+    E13N((SprintRetrospective))
+    E13A0[id]
+    E13A1[date]
+    E13A2[duration]
+    E13A3[improvement_actions]
+    E13A4[team_satisfaction]
+    E13A5[moderation]
+    E13N --- E13A0 & E13N --- E13A1 & E13N --- E13A2 & E13N --- E13A3 & E13N --- E13A4 & E13N --- E13A5
+  end
+  class E13N entity; class E13A0,E13A1,E13A2,E13A3,E13A4,E13A5 attribute;
+
+  subgraph E14[SprintBacklog]
+    direction TB
+    E14N((SprintBacklog))
+    E14A0[id]
+    E14A1[number_of_tasks]
+    E14A2[last_updated]
+    E14A3[status]
+    E14A4[total_effort]
+    E14N --- E14A0 & E14N --- E14A1 & E14N --- E14A2 & E14N --- E14A3 & E14N --- E14A4
+  end
+  class E14N entity; class E14A0,E14A1,E14A2,E14A3,E14A4 attribute;
+
+  subgraph E15[SprintGoal]
+    direction TB
+    E15N((SprintGoal))
+    E15A0[id]
+    E15A1[objective_description]
+    E15A2[achievement_status]
+    E15A3[benefit]
+    E15N --- E15A0 & E15N --- E15A1 & E15N --- E15A2 & E15N --- E15A3
+  end
+  class E15N entity; class E15A0,E15A1,E15A2,E15A3 attribute;
+
+  subgraph E16[Epic]
+    direction TB
+    E16N((Epic))
+    E16A0[id]
+    E16A1[title]
+    E16A2[description]
+    E16A3[priority]
+    E16A4[status]
+    E16A5[estimated_effort]
+    E16N --- E16A0 & E16N --- E16A1 & E16N --- E16A2 & E16N --- E16A3 & E16N --- E16A4 & E16N --- E16A5
+  end
+  class E16N entity; class E16A0,E16A1,E16A2,E16A3,E16A4,E16A5 attribute;
+
+  subgraph E17[UserStory]
+    direction TB
+    E17N((UserStory))
+    E17A0[id]
+    E17A1[title]
+    E17A2[description]
+    E17A3[acceptance_criteria]
+    E17A4[priority]
+    E17A5[story_points]
+    E17A6[status]
+    E17N --- E17A0 & E17N --- E17A1 & E17N --- E17A2 & E17N --- E17A3 & E17N --- E17A4 & E17N --- E17A5 & E17N --- E17A6
+  end
+  class E17N entity; class E17A0,E17A1,E17A2,E17A3,E17A4,E17A5,E17A6 attribute;
+
+  subgraph E18[Task]
+    direction TB
+    E18N((Task))
+    E18A0[id]
+    E18A1[title]
+    E18A2[description]
+    E18A3[status]
+    E18A4[effort]
+    E18A5[type]
+    E18N --- E18A0 & E18N --- E18A1 & E18N --- E18A2 & E18N --- E18A3 & E18N --- E18A4 & E18N --- E18A5
+  end
+  class E18N entity; class E18A0,E18A1,E18A2,E18A3,E18A4,E18A5 attribute;
+
+  subgraph E19[DevelopmentSnapshot]
+    direction TB
+    E19N((DevelopmentSnapshot))
+    E19A0[id]
+    E19A1[version_number]
+    E19A2[creation_date]
+    E19A3[test_status]
+    E19A4[deployment_target]
+    E19A5[documentation]
+    E19N --- E19A0 & E19N --- E19A1 & E19N --- E19A2 & E19N --- E19A3 & E19N --- E19A4 & E19N --- E19A5
+  end
+  class E19N entity; class E19A0,E19A1,E19A2,E19A3,E19A4,E19A5 attribute;
+
+  subgraph E20[Blocker]
+    direction TB
+    E20N((Blocker))
+    E20A0[id]
+    E20A1[title]
+    E20A2[description]
+    E20A3[severity]
+    E20A4[status]
+    E20A5[detected_on]
+    E20A6[resolved_on]
+    E20N --- E20A0 & E20N --- E20A1 & E20N --- E20A2 & E20N --- E20A3 & E20N --- E20A4 & E20N --- E20A5 & E20N --- E20A6
+  end
+  class E20N entity; class E20A0,E20A1,E20A2,E20A3,E20A4,E20A5,E20A6 attribute;
+
+  subgraph E21[Stakeholder]
+    direction TB
+    E21N((Stakeholder))
+    E21A0[id]
+    E21A1[name]
+    E21A2[organization]
+    E21A3[role]
+    E21A4[email]
+    E21A5[area_of_interest]
+    E21A6[influence_level]
+    E21A7[relevance_to_feature]
+    E21N --- E21A0 & E21N --- E21A1 & E21N --- E21A2 & E21N --- E21A3 & E21N --- E21A4 & E21N --- E21A5 & E21N --- E21A6 & E21N --- E21A7
+  end
+  class E21N entity; class E21A0,E21A1,E21A2,E21A3,E21A4,E21A5,E21A6,E21A7 attribute;
+
+  subgraph E22[Velocity]
+    direction TB
+    E22N((Velocity))
+    E22A0[id]
+    E22A1[number_of_sprints_used]
+    E22A2[avg._story_points]
+    E22A3[max_velocity]
+    E22A4[min_velocity]
+    E22A5[trend]
+    E22N --- E22A0 & E22N --- E22A1 & E22N --- E22A2 & E22N --- E22A3 & E22N --- E22A4 & E22N --- E22A5
+  end
+  class E22N entity; class E22A0,E22A1,E22A2,E22A3,E22A4,E22A5 attribute;
+
+  subgraph E23[ReleasePlan]
+    direction TB
+    E23N((ReleasePlan))
+    E23A0[id]
+    E23A1[version]
+    E23A2[planned_date]
+    E23A3[included_features]
+    E23A4[status]
+    E23N --- E23A0 & E23N --- E23A1 & E23N --- E23A2 & E23N --- E23A3 & E23N --- E23A4
+  end
+  class E23N entity; class E23A0,E23A1,E23A2,E23A3,E23A4 attribute;
+
+  subgraph E24[Roadmap]
+    direction TB
+    E24N((Roadmap))
+    E24A0[id]
+    E24A1[start_date]
+    E24A2[end_date]
+    E24A3[milestones]
+    E24A4[objectives]
+    E24A5[versions]
+    E24N --- E24A0 & E24N --- E24A1 & E24N --- E24A2 & E24N --- E24A3 & E24N --- E24A4 & E24N --- E24A5
+  end
+  class E24N entity; class E24A0,E24A1,E24A2,E24A3,E24A4,E24A5 attribute;
+
+  subgraph E25[ScrumBoard]
+    direction TB
+    E25N((ScrumBoard))
+    E25A0[id]
+    E25A1[board_type]
+    E25A2[columns_(todo/done...)]
+    E25A3[number_of_cards]
+    E25A4[last_updated]
+    E25N --- E25A0 & E25N --- E25A1 & E25N --- E25A2 & E25N --- E25A3 & E25N --- E25A4
+  end
+  class E25N entity; class E25A0,E25A1,E25A2,E25A3,E25A4 attribute;
+
+  subgraph E26[FeatureDocumentation]
+    direction TB
+    E26N((FeatureDocumentation))
+    E26A0[id]
+    E26A1[title]
+    E26A2[description]
+    E26A3[creation_date]
+    E26A4[change_log]
+    E26A5[linked_requirements]
+    E26A6[author]
+    E26N --- E26A0 & E26N --- E26A1 & E26N --- E26A2 & E26N --- E26A3 & E26N --- E26A4 & E26N --- E26A5 & E26N --- E26A6
+  end
+  class E26N entity; class E26A0,E26A1,E26A2,E26A3,E26A4,E26A5,E26A6 attribute;
+
+  %% ========= RELATIONS =========
+  R1[[R1: is_assigned_to_project]]:::relation
+  E1N --> R1 --> E0N
+
+  R2[[R2: belongs_to_team]]:::relation
+  E2N --> R2 --> E1N
+
+  R3[[R3: has_skill]]:::relation
+  E2N --> R3 --> E4N
+
+  R4[[R4: takes_on_role]]:::relation
+  E2N --> R4 --> E5N
+
+  R5[[R5: manages_backlog]]:::relation
+  E6N --> R5 --> E8N
+
+  R6[[R6: is_supported_by]]:::relation
+  E1N --> R6 --> E7N
+
+  R7[[R7: contains_feature]]:::relation
+  E8N --> R7 --> E3N
+
+  R8[[R8: contains_epic]]:::relation
+  E8N --> R8 --> E16N
+
+  R9[[R9: contains_user_story]]:::relation
+  E16N --> R9 --> E17N
+
+  R10[[R10: consists_of_tasks]]:::relation
+  E17N --> R10 --> E18N
+
+  R11[[R11: is_in_sprint_backlog]]:::relation
+  E17N --> R11 --> E14N
+
+  R12[[R12: belongs_to_sprint]]:::relation
+  E14N --> R12 --> E9N
+
+  R13[[R13: pursues_goal]]:::relation
+  E9N --> R13 --> E15N
+
+  R14[[R14: contains_tasks]]:::relation
+  E25N --> R14 --> E18N
+
+  R15[[R15: documents_feature]]:::relation
+  E26N --> R15 --> E3N
+
+  R16[[R16: is_blocked_by]]:::relation
+  E18N --> R16 --> E20N
+
+  R17[[R17: participates_in]]:::relation
+  E21N --> R17 --> E12N
+
+  R18[[R18: moderates_retrospective]]:::relation
+  E7N --> R18 --> E13N
+
+  R19[[R19: refers_to_team]]:::relation
+  E22N --> R19 --> E1N
+
+  R20[[R20: plans_release]]:::relation
+  E23N --> R20 --> E3N
+
+  R21[[R21: is_part_of_roadmap]]:::relation
+  E23N --> R21 --> E24N
+
+  R22[[R22: generates_snapshot]]:::relation
+  E9N --> R22 --> E19N
+
+  %% ========= GOALS (green) CONNECTED TO ENTITY/ATTRIBUTES =========
+  G0[[G0 maximize_velocity]]:::goal
+  G0 --- E22A3
+  G0 --- E22N
+
+  G1[[G1 minimize_backlog_size]]:::goal
+  G1 --- E8A3
+  G1 --- E8N
+
+  G2[[G2 minimize_total_task_effort]]:::goal
+  G2 --- E18A4
+  G2 --- E18N
+
+  G3[[G3 maximize_story_points]]:::goal
+  G3 --- E17A5
+  G3 --- E17N
+
+  G4[[G4 maximize_team_availability]]:::goal
+  G4 --- E2A6
+  G4 --- E2N
+
+  G5[[G5 minimize_blocker_severity]]:::goal
+  G5 --- E20A3
+  G5 --- E20N
+
+  G6[[G6 maximize_skill_level_alignment]]:::goal
+  G6 --- E4A3
+  G6 --- E4A4
+  G6 --- E4N
+  G6 --- E2N
+
+  G7[[G7 minimize_planning_time]]:::goal
+  G7 --- E10A2
+  G7 --- E10N
+
+  G8[[G8 minimize_meeting_overhead]]:::goal
+  G8 --- E11A3
+  G8 --- E11N
+
+  G9[[G9 maximize_review_engagement]]:::goal
+  G9 --- E12A4
+  G9 --- E12N
+
+  G10[[G10 maximize_team_satisfaction]]:::goal
+  G10 --- E13A4
+  G10 --- E13N
+
+  G11[[G11 minimize_project_budget_use]]:::goal
+  G11 --- E0A5
+  G11 --- E0N
+
+  %% ========= CONDITIONS (red) CONNECTED TO ENTITY/ATTRIBUTES =========
+  C0[[C0 team_size_at_least_min]]:::condition
+  C0 --- E1A2
+  C0 --- E1N
+
+  C1[[C1 worker_status_active_only]]:::condition
+  C1 --- E2A5
+  C1 --- E2N
+
+  C2[[C2 task_status_not_done]]:::condition
+  C2 --- E18A3
+  C2 --- E18N
+
+  C3[[C3 user_story_priority_at_least]]:::condition
+  C3 --- E17A4
+  C3 --- E17N
+
+  C4[[C4 epic_status_in_progress_or_new]]:::condition
+  C4 --- E16A4
+  C4 --- E16N
+
+  C5[[C5 skill_certified_preferred]]:::condition
+  C5 --- E4A4
+  C5 --- E4N
+
+  C6[[C6 sprint_within_date_range]]:::condition
+  C6 --- E9A2
+  C6 --- E9A3
+  C6 --- E0A2
+  C6 --- E0A3
+
+  C7[[C7 backlog_status_active_only]]:::condition
+  C7 --- E8A4
+  C7 --- E8N
+
+  C8[[C8 blocker_status_unresolved_only]]:::condition
+  C8 --- E20A4
+  C8 --- E20N
+
+  C9[[C9 scrum_master_experience_min]]:::condition
+  C9 --- E7A3
+  C9 --- E7N
+
+  C10[[C10 release_plan_status_planned_or_active]]:::condition
+  C10 --- E23A4
+  C10 --- E23N
+
+  C11[[C11 stakeholder_influence_capped]]:::condition
+  C11 --- E21A6
+  C11 --- E21N
+  C11 --- E12N
+
+  %% ========= DECISION VARIABLES (purple) CONNECTED TO RELEVANT ENTITIES =========
+  DV0[[DV0 select_user_story]]:::dv
+  DV0 --- E17N
+
+  DV1[[DV1 assign_worker_to_task]]:::dv
+  DV1 --- E2N
+  DV1 --- E18N
+
+  DV2[[DV2 choose_feature_for_release]]:::dv
+  DV2 --- E3N
+  DV2 --- E23N
+
+  DV3[[DV3 set_sprint_length_days]]:::dv
+  DV3 --- E9N
+
+  DV4[[DV4 allocate_budget_to_project]]:::dv
+  DV4 --- E0N
+  DV4 --- E0A5
+
+  DV5[[DV5 set_team_size]]:::dv
+  DV5 --- E1N
+  DV5 --- E1A2
+  DV5 --- E9N
+
+  DV6[[DV6 set_max_tasks_per_worker]]:::dv
+  DV6 --- E18N
+  DV6 --- E2N
+
+  DV7[[DV7 assign_scrum_master_to_team]]:::dv
+  DV7 --- E7N
+  DV7 --- E1N
+
+  DV8[[DV8 allow_overtime]]:::dv
+  DV8 --- E2N
+
+  DV9[[DV9 set_review_attendees_target]]:::dv
+  DV9 --- E12N
+  DV9 --- E12A4
+
+  DV10[[DV10 set_velocity_target]]:::dv
+  DV10 --- E22N
+  DV10 --- E22A3
+
+  DV11[[DV11 prioritize_epic_level]]:::dv
+  DV11 --- E16N
+  DV11 --- E16A3

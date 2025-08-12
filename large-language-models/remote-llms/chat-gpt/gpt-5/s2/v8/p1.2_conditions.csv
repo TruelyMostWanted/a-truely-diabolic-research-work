@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,require_feature_status,Only consider features with acceptable status,False,min,Feature,status,2,1.0
+C1,cannot_use_blocked_tasks,Exclude tasks with blocked status,False,min,Task,status,0,1.0
+C2,require_task_type,Only include tasks of allowed type,False,min,Task,type,2,1.0
+C3,prefer_high_priority_user_stories,Prefer higher priority user stories,False,max,UserStory,priority,1,0.6
+C4,cap_project_budget,Prefer projects within budget cap,True,min,Project,budget,1,0.9
+C5,limit_review_duration,Prefer sprint reviews within timebox,False,min,SprintReview,duration,1,0.5
+C6,require_team_type,Team must be of required type,False,max,Team,team_type,2,1.0
+C7,cannot_assign_unavailable_worker,Exclude workers with zero availability,False,min,Worker,availability,0,1.0
+C8,require_board_type,Use only the specified scrum board type,False,max,ScrumBoard,board_type,2,1.0
+C9,prefer_positive_velocity_trend,Prefer teams with improving velocity trend,False,max,Velocity,trend,1,0.7
+C10,require_product_backlog_status,Backlog must be in acceptable status,False,min,ProductBacklog,status,2,1.0
+C11,prefer_release_planned_date,Prefer nearer planned release dates,False,min,ReleasePlan,planned_date,1,0.6

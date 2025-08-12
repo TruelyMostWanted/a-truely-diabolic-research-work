@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,must_match_active_sprint_status,Only consider sprints that are currently active or planned,False,min,Sprint,status,2,1.0
+C1,must_match_ordered_backlog_status,Product Backlog must be in an ordered/ready state,False,min,ProductBacklog,status,2,1.0
+C2,must_match_worker_availability,Workers assigned must meet availability requirements,True,max,Worker,availability,2,1.0
+C3,cannot_match_critical_blocker_severity,Exclude tasks blocked by critical severity blockers,True,min,Blocker,severity,0,1.0
+C4,may_match_high_stakeholder_influence,Prefer items with highly influential stakeholders,True,max,Stakeholder,influence_level,1,0.6
+C5,must_match_team_size_capacity,Team size must be within capacity limits for a sprint,False,min,Team,team_size,2,1.0
+C6,may_match_low_feature_effort,Prefer features with lower estimated effort,True,min,Feature,estimated_effort,1,0.7
+C7,must_match_user_story_acceptance_criteria,User stories must have clear acceptance criteria,False,max,UserStory,acceptance_criteria,2,1.0
+C8,must_match_release_plan_status,Only include features from release plans marked ready,False,min,ReleasePlan,status,2,1.0
+C9,may_match_high_story_priority,Prefer higher-priority user stories,True,max,UserStory,priority,1,0.8
+C10,must_match_sprint_goal_defined,Sprints must have a defined objective description,False,max,SprintGoal,objective_description,2,1.0
+C11,may_match_positive_velocity_trend,Prefer teams with positive velocity trends,False,max,Velocity,trend,1,0.5

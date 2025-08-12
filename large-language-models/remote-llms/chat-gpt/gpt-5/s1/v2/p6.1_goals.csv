@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,maximize_team_velocity,"Maximize average story points delivered per sprint.",True,max,Velocity,avg._story_points,1,1.0
+G1,minimize_cycle_time,"Minimize average time from sprint start to DevelopmentSnapshot creation date.",False,min,DevelopmentSnapshot,creation_date,1,1.0
+G2,minimize_open_blockers,"Minimize the count of unresolved blockers.",True,min,Blocker,status,2,1.0
+G3,maximize_sprint_goal_achievement,"Maximize the share of sprints that achieved their goal.",True,max,Sprint,achievement_of_goal,2,1.0
+G4,minimize_total_effort,"Minimize total estimated effort across SprintBacklog.",True,min,SprintBacklog,total_effort,1,0.8
+G5,maximize_feature_priority_delivered,"Maximize delivered priority weight of Features included in ReleasePlan.",True,max,Feature,priority,1,1.2
+G6,minimize_technical_debt_proxy,"Minimize tasks with high rework risk (proxy via Task type/effort).",True,min,Task,effort,1,0.7
+G7,maximize_stakeholder_satisfaction_proxy,"Maximize Sprint Review attendance as a proxy for stakeholder engagement.",True,max,SprintReview,attendees_count,1,0.6
+G8,minimize_requirement_ambiguity_proxy,"Minimize User Stories with vague acceptance criteria (proxy via story points/criteria presence).",True,min,UserStory,acceptance_criteria,2,1.0
+G9,maximize_resource_availability,"Maximize available capacity of Workers.",True,max,Worker,availability,1,0.9
+G10,minimize_budget_usage,"Minimize total project budget consumption for planned scope.",True,min,Project,budget,1,1.0
+G11,maximize_roadmap_progress,"Maximize number of milestones achieved within Roadmap interval.",True,max,Roadmap,milestones,1,0.8
+G12,maximize_feature_throughput,"Maximize number of Features per DevelopmentSnapshot version.",True,max,DevelopmentSnapshot,version_number,1,0.5

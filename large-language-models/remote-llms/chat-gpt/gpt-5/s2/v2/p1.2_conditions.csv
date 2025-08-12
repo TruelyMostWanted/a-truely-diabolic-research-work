@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_size_within_limit,Keep team size within acceptable bounds,False,min,Team,team_size,2,1.0
+C1,ensure_worker_availability,Ensure workers assigned have sufficient availability,True,max,Worker,availability,2,1.0
+C2,cap_sprint_backlog_tasks,Cap the number of tasks per sprint backlog,False,min,SprintBacklog,number_of_tasks,2,1.0
+C3,allow_only_active_sprints,Only consider sprints with acceptable status,False,max,Sprint,status,2,1.0
+C4,limit_total_effort_in_sprint,Limit total effort scheduled in a sprint backlog,False,min,SprintBacklog,total_effort,2,1.0
+C5,reduce_blocker_severity,Keep average blocker severity low across tasks,True,min,Blocker,severity,2,1.0
+C6,keep_review_duration_reasonable,Ensure sprint review duration remains reasonable,False,min,SprintReview,duration,1,0.5
+C7,require_po_availability,Require Product Owner availability for planning and reviews,False,max,ProductOwner,availability,2,1.0
+C8,require_sm_experience,Require sufficient Scrum Master experience,False,max,ScrumMaster,experience,1,0.7
+C9,keep_planning_duration_within_limit,Keep sprint planning within a timebox,False,min,SprintPlanning,duration_(min),2,1.0
+C10,prioritize_user_stories_above_threshold,Ensure selected user stories meet a priority threshold,True,max,UserStory,priority,1,0.8
+C11,limit_feature_priority_spread,Limit very low-priority features from entering near-term plan,True,min,Feature,priority,1,0.6

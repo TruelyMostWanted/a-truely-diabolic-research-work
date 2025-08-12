@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,must_have_certified_skills,Only consider skills that are certified,False,max,Skill,certified,2,1.0
+C1,prefer_high_feature_status,Prefer features with advanced/ready status,False,max,Feature,status,1,0.5
+C2,exclude_blocked_tasks,Exclude tasks currently blocked,False,min,Task,status,0,1.0
+C3,must_have_team_status_active,Teams must be in active status,False,max,Team,team_status,2,1.0
+C4,prefer_product_backlog_status_ready,Prefer product backlogs in ready state,False,max,ProductBacklog,status,1,0.6
+C5,must_have_worker_status_active,Workers must be active,False,max,Worker,status,2,1.0
+C6,prefer_team_type_cross_functional,Prefer cross-functional teams,False,max,Team,team_type,1,0.4
+C7,must_have_sprint_status_active,Sprints considered must be active,False,max,Sprint,status,2,1.0
+C8,exclude_low_priority_user_stories,Do not include very low-priority stories,False,min,UserStory,priority,0,1.0
+C9,prefer_high_benefit_sprint_goal,Prefer sprint goals with higher benefit,False,max,SprintGoal,benefit,1,0.7
+C10,must_have_skill_category_required,Only use skills from required categories,False,max,Skill,category,2,1.0
+C11,prefer_location_remote,Prefer teams that operate remotely,False,max,Team,location,1,0.3

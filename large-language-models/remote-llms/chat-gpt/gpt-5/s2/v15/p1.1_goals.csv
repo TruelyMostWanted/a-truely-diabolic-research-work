@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,maximize_team_velocity,Increase average story points delivered,True,max,Velocity,avg._story_points,1,1.0
+G1,maximize_peak_velocity,Increase maximum observed velocity,False,max,Velocity,max_velocity,1,0.8
+G2,minimize_velocity_variation,Reduce gap between max and min velocity proxying stability,True,min,Velocity,min_velocity,1,0.6
+G3,minimize_open_blocker_severity,Reduce cumulative blocker severity,True,min,Blocker,severity,2,1.0
+G4,minimize_blocker_age,Reduce time between detected and resolved dates proxy via detected_on,False,min,Blocker,detected_on,1,0.4
+G5,maximize_sprint_goal_achievement,Increase rate of achieved sprint goals,True,max,Sprint,achievement_of_goal,2,1.0
+G6,minimize_sprint_overrun,Reduce late sprint end dates proxy via end_date,False,min,Sprint,end_date,1,0.3
+G7,maximize_feature_throughput,Increase completed feature status count proxy via status,True,max,Feature,status,1,0.7
+G8,minimize_story_points_in_progress,Reduce total story points of in-progress stories proxy via story_points,True,min,UserStory,story_points,1,0.9
+G9,maximize_team_utilization,Increase available worker capacity,True,max,Worker,availability,2,0.9
+G10,minimize_task_effort,Reduce total implementation effort,True,min,Task,effort,1,1.0
+G11,maximize_release_readiness,Increase share of features planned for next release proxy via status,True,max,ReleasePlan,status,1,0.5

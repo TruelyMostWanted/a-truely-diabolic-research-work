@@ -1,0 +1,324 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{SCRUM Domain Optimization Model}
+\author{Generated from Entities, Relationships, Goals, Conditions, Decision Variables}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% ------------------------------------------------------------------
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em]
+  \item Project set $\mathcal{P}$ (Entities.csv: E0 \texttt{Project}, SetName \texttt{P}, Index $p$): product or initiative.
+  \item Team set $\mathcal{T}$ (E1 \texttt{Team}, \texttt{T}, $t$): self-organized, cross-functional team.
+  \item Worker set $\mathcal{W}$ (E2 \texttt{Worker}, \texttt{W}, $w$): individual team members.
+  \item Feature set $\mathcal{F}$ (E3 \texttt{Feature}, \texttt{F}, $f$): mid-sized functionality.
+  \item Skill set $\mathcal{S}$ (E4 \texttt{Skill}, \texttt{S}, $s$): worker competences.
+  \item Role set $\mathcal{R}$ (E5 \texttt{Role}, \texttt{R}, $r$): responsibilities within Scrum team.
+  \item Product Owner set $\mathcal{PO}$ (E6 \texttt{ProductOwner}, \texttt{PO}, $po$).
+  \item Scrum Master set $\mathcal{SM}$ (E7 \texttt{ScrumMaster}, \texttt{SM}, $sm$).
+  \item Product Backlog set $\mathcal{PB}$ (E8 \texttt{ProductBacklog}, \texttt{PB}, $pb$).
+  \item Sprint set $\mathcal{SP}$ (E9 \texttt{Sprint}, \texttt{SP}, $sp$).
+  \item Sprint Planning set $\mathcal{SPP}$ (E10 \texttt{SprintPlanning}, \texttt{SPP}, $spp$).
+  \item Daily Scrum set $\mathcal{DS}$ (E11 \texttt{DailyScrum}, \texttt{DS}, $ds$).
+  \item Sprint Review set $\mathcal{SR}$ (E12 \texttt{SprintReview}, \texttt{SR}, $sr$).
+  \item Sprint Retrospective set $\mathcal{SRE}$ (E13 \texttt{SprintRetrospective}, \texttt{SRE}, $sre$).
+  \item Sprint Backlog set $\mathcal{SBL}$ (E14 \texttt{SprintBacklog}, \texttt{SBL}, $sbl$).
+  \item Sprint Goal set $\mathcal{SG}$ (E15 \texttt{SprintGoal}, \texttt{SG}, $sg$).
+  \item Epic set $\mathcal{E}$ (E16 \texttt{Epic}, \texttt{E}, $e$).
+  \item User Story set $\mathcal{US}$ (E17 \texttt{UserStory}, \texttt{US}, $u$).
+  \item Task set $\mathcal{TSK}$ (E18 \texttt{Task}, \texttt{TSK}, $k$).
+  \item Development Snapshot set $\mathcal{DEV}$ (E19 \texttt{DevelopmentSnapshot}, \texttt{DEV}, $dv$).
+  \item Blocker set $\mathcal{BL}$ (E20 \texttt{Blocker}, \texttt{BL}, $b$).
+  \item Stakeholder set $\mathcal{SH}$ (E21 \texttt{Stakeholder}, \texttt{SH}, $h$).
+  \item Velocity set $\mathcal{VEL}$ (E22 \texttt{Velocity}, \texttt{VEL}, $v$).
+  \item Release Plan set $\mathcal{REP}$ (E23 \texttt{ReleasePlan}, \texttt{REP}, $rp$).
+  \item Roadmap set $\mathcal{RM}$ (E24 \texttt{Roadmap}, \texttt{RM}, $rm$).
+  \item Scrum Board set $\mathcal{SCB}$ (E25 \texttt{ScrumBoard}, \texttt{SCB}, $scb$).
+  \item Feature Documentation set $\mathcal{FED}$ (E26 \texttt{FeatureDocumentation}, \texttt{FED}, $fd$).
+
+  \item \textbf{Relationship incidence sets (from Relationships.csv R1--R22):}
+  \begin{itemize}
+     \item $A^{\mathrm{proj}} \subseteq \mathcal{T}\times\mathcal{P}$ (R1 \texttt{is\_assigned\_to\_project})
+     \item $B^{\mathrm{team}} \subseteq \mathcal{W}\times\mathcal{T}$ (R2 \texttt{belongs\_to\_team})
+     \item $H^{\mathrm{skill}} \subseteq \mathcal{W}\times\mathcal{S}$ (R3 \texttt{has\_skill})
+     \item $T^{\mathrm{role}} \subseteq \mathcal{W}\times\mathcal{R}$ (R4 \texttt{takes\_on\_role})
+     \item $M^{\mathrm{backlog}} \subseteq \mathcal{PO}\times\mathcal{PB}$ (R5 \texttt{manages\_backlog})
+     \item $U^{\mathrm{support}} \subseteq \mathcal{T}\times\mathcal{SM}$ (R6 \texttt{is\_supported\_by})
+     \item $C^{\mathrm{feat}} \subseteq \mathcal{PB}\times\mathcal{F}$ (R7 \texttt{contains\_feature})
+     \item $C^{\mathrm{epic}} \subseteq \mathcal{PB}\times\mathcal{E}$ (R8 \texttt{contains\_epic})
+     \item $C^{\mathrm{us}} \subseteq \mathcal{E}\times\mathcal{US}$ (R9 \texttt{contains\_user\_story})
+     \item $C^{\mathrm{tsk}} \subseteq \mathcal{US}\times\mathcal{TSK}$ (R10 \texttt{consists\_of\_tasks})
+     \item $I^{\mathrm{inSBL}} \subseteq \mathcal{US}\times\mathcal{SBL}$ (R11 \texttt{is\_in\_sprint\_backlog})
+     \item $B^{\mathrm{sbl\_sp}} \subseteq \mathcal{SBL}\times\mathcal{SP}$ (R12 \texttt{belongs\_to\_sprint})
+     \item $G^{\mathrm{goal}} \subseteq \mathcal{SP}\times\mathcal{SG}$ (R13 \texttt{pursues\_goal})
+     \item $Q^{\mathrm{board}} \subseteq \mathcal{SCB}\times\mathcal{TSK}$ (R14 \texttt{contains\_tasks})
+     \item $D^{\mathrm{fed}} \subseteq \mathcal{FED}\times\mathcal{F}$ (R15 \texttt{documents\_feature})
+     \item $X^{\mathrm{blocked}} \subseteq \mathcal{TSK}\times\mathcal{BL}$ (R16 \texttt{is\_blocked\_by})
+     \item $P^{\mathrm{review}} \subseteq \mathcal{SH}\times\mathcal{SR}$ (R17 \texttt{participates\_in})
+     \item $R^{\mathrm{retromod}} \subseteq \mathcal{SM}\times\mathcal{SRE}$ (R18 \texttt{moderates\_retrospective})
+     \item $V^{\mathrm{team}} \subseteq \mathcal{VEL}\times\mathcal{T}$ (R19 \texttt{refers\_to\_team})
+     \item $L^{\mathrm{release}} \subseteq \mathcal{REP}\times\mathcal{F}$ (R20 \texttt{plans\_release})
+     \item $Z^{\mathrm{road}} \subseteq \mathcal{REP}\times\mathcal{RM}$ (R21 \texttt{is\_part\_of\_roadmap})
+     \item $Y^{\mathrm{snap}} \subseteq \mathcal{SP}\times\mathcal{DEV}$ (R22 \texttt{generates\_snapshot})
+  \end{itemize}
+\end{itemize}
+
+% ------------------------------------------------------------------
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em]
+  \item $p\in\mathcal{P}$, $t\in\mathcal{T}$, $w\in\mathcal{W}$, $f\in\mathcal{F}$, $s\in\mathcal{S}$, $r\in\mathcal{R}$, $po\in\mathcal{PO}$, $sm\in\mathcal{SM}$,
+  $pb\in\mathcal{PB}$, $sp\in\mathcal{SP}$, $spp\in\mathcal{SPP}$, $ds\in\mathcal{DS}$, $sr\in\mathcal{SR}$, $sre\in\mathcal{SRE}$,
+  $sbl\in\mathcal{SBL}$, $sg\in\mathcal{SG}$, $e\in\mathcal{E}$, $u\in\mathcal{US}$, $k\in\mathcal{TSK}$, $dv\in\mathcal{DEV}$, $b\in\mathcal{BL}$,
+  $h\in\mathcal{SH}$, $v\in\mathcal{VEL}$, $rp\in\mathcal{REP}$, $rm\in\mathcal{RM}$, $scb\in\mathcal{SCB}$, $fd\in\mathcal{FED}$.
+\end{itemize}
+
+\paragraph{Attribute parameters (from Entities.csv).}
+For any entity $X$ and its attribute \texttt{attr}, we denote the parameter value as $\mathrm{attr}(x)$, e.g., $\mathrm{budget}(p)$, $\mathrm{team\_size}(t)$, $\mathrm{story\_points}(u)$, $\mathrm{effort}(k)$, $\mathrm{max\_velocity}(t)$, etc. Non-numeric attributes are handled via indicator parameters, e.g., $\mathrm{isActiveStatus}(sp)\in\{0,1\}$, $\mathrm{isCrossFunctional}(t)\in\{0,1\}$, $\mathrm{hasFeedback}(sr)\in\{0,1\}$, and so on.
+
+\paragraph{Relationship helpers.}
+Write $C^{\mathrm{tsk}}(u)$ for the set $\{k\in\mathcal{TSK}:(u,k)\in C^{\mathrm{tsk}}\}$, and similarly for other incidence sets.
+
+% ------------------------------------------------------------------
+\section{3. Goals}
+\begin{itemize}[leftmargin=2em]
+
+  \item \textbf{G0} \texttt{maximize\_team\_velocity} \\
+  \emph{Logic:} Maximize recorded maximum velocity across teams. \\
+  \emph{Math:}
+  \[
+    \max \; \sum_{t\in\mathcal{T}} 1.0\cdot \mathrm{max\_velocity}(t)
+  \]
+
+  \item \textbf{G1} \texttt{minimize\_open\_blocker\_severity} \\
+  \emph{Logic:} Minimize the sum of severities of open blockers. \\
+  \emph{Math:}
+  \[
+    \min \; \sum_{b\in\mathcal{BL}} 1.0\cdot \mathrm{severity}(b)\cdot \mathrm{isOpen}(b)
+  \]
+
+  \item \textbf{G2} \texttt{minimize\_total\_task\_effort} \\
+  \emph{Logic:} Minimize planned effort over all tasks. \\
+  \emph{Math:}
+  \[
+    \min \; \sum_{k\in\mathcal{TSK}} 1.0\cdot \mathrm{eff\_plan}(k)
+    \quad\text{with }\mathrm{eff\_plan}(k)=\text{DV8 } \mathrm{set\_task\_effort}(k)
+  \]
+
+  \item \textbf{G3} \texttt{maximize\_story\_points\_completed} \\
+  \emph{Logic:} Maximize delivered story points of user stories placed into sprints. \\
+  \emph{Math:}
+  \[
+    \max \; \sum_{u\in\mathcal{US}}\sum_{sp\in\mathcal{SP}} 1.0\cdot \mathrm{pts}(u)\cdot y_{u,sp}
+    \quad\text{with }\mathrm{pts}(u)=\text{DV7 } \mathrm{set\_story\_points}(u),\; y_{u,sp}=\text{DV1 }
+  \]
+
+  \item \textbf{G4} \texttt{maximize\_sprint\_goal\_achievement} \\
+  \emph{Logic:} Maximize achievement targets for all sprints. \\
+  \emph{Math:}
+  \[
+    \max \; \sum_{sp\in\mathcal{SP}} 1.0\cdot g_{sp}
+    \quad\text{with } g_{sp}=\text{DV5 } \mathrm{set\_sprint\_goal\_target}(sp)
+  \]
+
+  \item \textbf{G5} \texttt{minimize\_feature\_estimated\_effort} \\
+  \emph{Logic:} Minimize total estimated effort of selected features. \\
+  \emph{Math:}
+  \[
+    \min \; \sum_{f\in\mathcal{F}} 1.0\cdot \mathrm{estimated\_effort}(f)\cdot x_f
+    \quad\text{with } x_f=\text{DV0 } \mathrm{select\_feature}(f)
+  \]
+
+  \item \textbf{G6} \texttt{minimize\_project\_budget\_usage} \\
+  \emph{Logic:} Minimize allocated budget across projects. \\
+  \emph{Math:}
+  \[
+    \min \; \sum_{p\in\mathcal{P}} 1.0\cdot b_p
+    \quad\text{with } b_p=\text{DV3 } \mathrm{allocate\_budget\_to\_project}(p)
+  \]
+
+  \item \textbf{G7} \texttt{maximize\_team\_satisfaction} \\
+  \emph{Logic:} Maximize retrospective team satisfaction. \\
+  \emph{Math:}
+  \[
+    \max \; \sum_{sre\in\mathcal{SRE}} 1.0\cdot \mathrm{team\_satisfaction}(sre)
+  \]
+
+  \item \textbf{G8} \texttt{maximize\_stakeholder\_relevance} \\
+  \emph{Logic:} Maximize relevance of participating stakeholders (e.g., those linked to reviews). \\
+  \emph{Math:}
+  \[
+    \max \; \sum_{(h,sr)\in P^{\mathrm{review}}} 1.0\cdot \mathrm{relevance\_to\_feature}(h)
+  \]
+
+  \item \textbf{G9} \texttt{minimize\_sprint\_backlog\_total\_effort} \\
+  \emph{Logic:} Minimize total effort capacity assigned to sprint backlogs. \\
+  \emph{Math:}
+  \[
+    \min \; \sum_{sbl\in\mathcal{SBL}} 1.0\cdot c_{sbl}
+    \quad\text{with } c_{sbl}=\text{DV12 } \mathrm{set\_sprint\_backlog\_effort\_cap}(sbl)
+  \]
+
+  \item \textbf{G10} \texttt{maximize\_review\_attendance} \\
+  \emph{Logic:} Maximize attendance targets for sprint reviews. \\
+  \emph{Math:}
+  \[
+    \max \; \sum_{sr\in\mathcal{SR}} 1.0\cdot a_{sr}
+    \quad\text{with } a_{sr}=\text{DV10 } \mathrm{set\_review\_attendance\_target}(sr)
+  \]
+
+  \item \textbf{G11} \texttt{minimize\_product\_backlog\_entries} \\
+  \emph{Logic:} Minimize number of items in all product backlogs. \\
+  \emph{Math:}
+  \[
+    \min \; \sum_{pb\in\mathcal{PB}} 1.0\cdot \mathrm{number\_of\_entries}(pb)
+  \]
+\end{itemize}
+
+% ------------------------------------------------------------------
+\section{4. Conditions}
+\begin{itemize}[leftmargin=2em]
+
+  \item \textbf{C0} \texttt{team\_size\_within\_limit} \\
+  \emph{Logic:} Team size must be within allowed bounds. \\
+  \emph{Math:}
+  \[
+    3 \le s_t \le 15 \quad\forall t\in\mathcal{T}
+    \quad\text{with } s_t=\text{DV4 } \mathrm{set\_team\_size}(t)
+  \]
+
+  \item \textbf{C1} \texttt{team\_type\_is\_cross\_functional} \\
+  \emph{Logic:} Selected teams must be cross-functional. \\
+  \emph{Math:}
+  \[
+    \mathrm{isCrossFunctional}(t)=1 \quad\forall t\in\mathcal{T}
+  \]
+
+  \item \textbf{C2} \texttt{worker\_availability\_above\_threshold} \\
+  \emph{Logic:} Workers must meet minimum availability to be assigned tasks. \\
+  \emph{Math:}
+  \[
+    \sum_{k\in\mathcal{TSK}} a_{k,w} \le \mathrm{availability}(w) \quad \forall w\in\mathcal{W},
+    \quad a_{k,w}=\text{DV2 } \mathrm{assign\_task\_to\_worker}(k,w)
+  \]
+
+  \item \textbf{C3} \texttt{sprint\_status\_is\_planned\_or\_active} \\
+  \emph{Logic:} Only planned or active sprints are eligible to receive work. \\
+  \emph{Math:}
+  \[
+    \mathrm{isPlannedOrActive}(sp)=1 \;\Rightarrow\; \sum_{u\in\mathcal{US}} y_{u,sp} \ge 0, \quad
+    \mathrm{isPlannedOrActive}(sp)=0 \;\Rightarrow\; y_{u,sp}=0 \;\forall u
+  \]
+
+  \item \textbf{C4} \texttt{user\_story\_status\_not\_done} \\
+  \emph{Logic:} Stories marked done are not reconsidered/assigned. \\
+  \emph{Math:}
+  \[
+    \mathrm{isDone}(u)=1 \;\Rightarrow\; \sum_{sp\in\mathcal{SP}} y_{u,sp}=0 \quad\forall u\in\mathcal{US}
+  \]
+
+  \item \textbf{C5} \texttt{task\_type\_is\_valid} \\
+  \emph{Logic:} Tasks must be of allowed types (e.g., development, test). \\
+  \emph{Math:}
+  \[
+    \mathrm{isAllowedType}(k)=1 \quad\forall k\in\mathcal{TSK}
+  \]
+
+  \item \textbf{C6} \texttt{blocker\_status\_must\_be\_resolved} \\
+  \emph{Logic:} Any blocker linked to a completed task must be resolved and under the maximum allowed severity. \\
+  \emph{Math:}
+  \[
+    \begin{aligned}
+    &\mathrm{isDone}(k)=1 \;\wedge\; (k,b)\in X^{\mathrm{blocked}} \;\Rightarrow\; \mathrm{isResolved}(b)=1 \\
+    &\mathrm{severity}(b)\le \mathrm{sev\_max} \quad \forall b\in\mathcal{BL},\quad \mathrm{sev\_max}=\text{DV9}
+    \end{aligned}
+  \]
+
+  \item \textbf{C7} \texttt{feature\_priority\_meets\_minimum} \\
+  \emph{Logic:} Selected features must meet a minimum priority. \\
+  \emph{Math:}
+  \[
+    x_f=1 \;\Rightarrow\; \mathrm{priority}(f)\ge \pi_{\min} \quad\forall f\in\mathcal{F},\; x_f=\text{DV0},\;
+    \pi_{\min}\in\{1,\dots,5\}
+  \]
+
+  \item \textbf{C8} \texttt{project\_budget\_under\_cap} \\
+  \emph{Logic:} Allocated budget may not exceed the project budget cap. \\
+  \emph{Math:}
+  \[
+    0 \le b_p \le \mathrm{budget}(p) \quad\forall p\in\mathcal{P},\quad b_p=\text{DV3}
+  \]
+
+  \item \textbf{C9} \texttt{sprint\_goal\_must\_be\_defined} \\
+  \emph{Logic:} Each sprint has a defined (non-empty) objective. \\
+  \emph{Math:}
+  \[
+    (sp,sg)\in G^{\mathrm{goal}} \;\Rightarrow\; \mathrm{isDefinedObjective}(sg)=1 \quad\forall sp\in\mathcal{SP}
+  \]
+
+  \item \textbf{C10} \texttt{review\_feedback\_documented} \\
+  \emph{Logic:} Sprint reviews must include feedback documentation. \\
+  \emph{Math:}
+  \[
+    \mathrm{hasFeedback}(sr)=1 \quad\forall sr\in\mathcal{SR}
+  \]
+
+  \item \textbf{C11} \texttt{retrospective\_has\_moderation} \\
+  \emph{Logic:} Retrospectives are moderated (by some Scrum Master). \\
+  \emph{Math:}
+  \[
+    \exists\, sm\in\mathcal{SM}:\; (sm,sre)\in R^{\mathrm{retromod}} \quad\forall sre\in\mathcal{SRE}
+  \]
+
+  \item \textbf{C12} \texttt{velocity\_min\_threshold} \\
+  \emph{Logic:} Each team must meet a minimum velocity threshold. \\
+  \emph{Math:}
+  \[
+    \mathrm{max\_velocity}(t)\;\ge\; \nu^{\min}_t \quad\forall t\in\mathcal{T},
+    \qquad \nu^{\min}_t=\text{DV11 } \mathrm{set\_min\_velocity\_threshold}(t)
+  \]
+
+  \item \textbf{Linking/consistency constraints (using relationships).}
+  \begin{itemize}
+    \item If a story is assigned to a sprint, then that story must be in the sprint's backlog:
+    \[
+       y_{u,sp}=1 \Rightarrow \exists\, sbl\in\mathcal{SBL}:\; (u,sbl)\in I^{\mathrm{inSBL}} \wedge (sbl,sp)\in B^{\mathrm{sbl\_sp}}
+    \]
+    \item Effort capacity cap per sprint backlog:
+    \[
+       \sum_{u:(u,sbl)\in I^{\mathrm{inSBL}}}\; \sum_{k\in C^{\mathrm{tsk}}(u)} \mathrm{eff\_plan}(k) \;\le\; c_{sbl}
+       \quad \forall sbl\in\mathcal{SBL},\quad c_{sbl}=\text{DV12}
+    \]
+    \item Each task assigned to a worker belongs to some story:
+    \[
+       a_{k,w}=1 \Rightarrow \exists\, u\in\mathcal{US}:\; (u,k)\in C^{\mathrm{tsk}} \qquad \forall k,w
+    \]
+  \end{itemize}
+\end{itemize}
+
+% ------------------------------------------------------------------
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{DV0} \texttt{select\_feature}:\; $x_f\in\{0,1\}$ for each $f\in\mathcal{F}$ (Binary). Domain $\{0,1\}$, Min 0, Max 1.
+  \item \textbf{DV1} \texttt{assign\_user\_story\_to\_sprint}:\; $y_{u,sp}\in\{0,1\}$ for each $(u,sp)\in\mathcal{US}\times\mathcal{SP}$ (Binary). Domain $\{0,1\}$, Min 0, Max 1.
+  \item \textbf{DV2} \texttt{assign\_task\_to\_worker}:\; $a_{k,w}\in\{0,1\}$ for each $(k,w)\in\mathcal{TSK}\times\mathcal{W}$ (Binary). Domain $\{0,1\}$, Min 0, Max 1.
+  \item \textbf{DV3} \texttt{allocate\_budget\_to\_project}:\; $b_p\in\mathbb{R}_{\ge 0}$ for $p\in\mathcal{P}$. Domain $\mathbb{R}$, Min 0, Max $10^6$ (cap).
+  \item \textbf{DV4} \texttt{set\_team\_size}:\; $s_t\in\mathbb{Z}$ for $t\in\mathcal{T}$. Domain $\mathbb{Z}$, Min 3, Max 15.
+  \item \textbf{DV5} \texttt{set\_sprint\_goal\_target}:\; $g_{sp}\in\mathbb{Z}$ for $sp\in\mathcal{SP}$. Domain $\mathbb{Z}$, Min 0, Max 100.
+  \item \textbf{DV6} \texttt{prioritize\_feature}:\; $\mathrm{pr}_f\in\mathbb{Z}$ for $f\in\mathcal{F}$. Domain $\mathbb{Z}$, Min 1, Max 5.
+  \item \textbf{DV7} \texttt{set\_story\_points}:\; $\mathrm{pts}(u)\in\mathbb{Z}$ for $u\in\mathcal{US}$. Domain $\mathbb{Z}$, Min 1, Max 13.
+  \item \textbf{DV8} \texttt{set\_task\_effort}:\; $\mathrm{eff\_plan}(k)\in\mathbb{Z}$ for $k\in\mathcal{TSK}$. Domain $\mathbb{Z}$, Min 1, Max 16.
+  \item \textbf{DV9} \texttt{set\_max\_blocker\_severity\_allowed}:\; $\mathrm{sev\_max}\in\mathbb{Z}$. Domain $\mathbb{Z}$, Min 0, Max 10.
+  \item \textbf{DV10} \texttt{set\_review\_attendance\_target}:\; $a_{sr}\in\mathbb{Z}$ for $sr\in\mathcal{SR}$. Domain $\mathbb{Z}$, Min 0, Max 200.
+  \item \textbf{DV11} \texttt{set\_min\_velocity\_threshold}:\; $\nu^{\min}_t\in\mathbb{Z}$ for $t\in\mathcal{T}$. Domain $\mathbb{Z}$, Min 0, Max 200.
+  \item \textbf{DV12} \texttt{set\_sprint\_backlog\_effort\_cap}:\; $c_{sbl}\in\mathbb{Z}$ for $sbl\in\mathcal{SBL}$. Domain $\mathbb{Z}$, Min 0, Max 1000.
+\end{itemize}
+
+\end{document}
