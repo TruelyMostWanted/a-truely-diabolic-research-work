@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,sprint_within_dates,"Sprints must have valid date range",False,min,Sprint,start_date,2,1.0
+C1,sprint_end_after_start,"Sprint end date must be after start",False,min,Sprint,end_date,2,1.0
+C2,stories_have_acceptance_criteria,"User stories must include acceptance criteria",True,min,UserStory,acceptance_criteria,2,1.0
+C3,stories_within_priority_bounds,"User story priority within agreed range",True,min,UserStory,priority,2,1.0
+C4,tasks_have_type,"Tasks must have an assigned type",True,min,Task,type,2,1.0
+C5,blockers_resolved_before_done,"Tasks cannot be done while blocked",True,min,Blocker,status,0,1.0
+C6,team_size_capacity_check,"Team size must support planned workload",False,min,Team,team_size,1,0.8
+C7,sprint_backlog_effort_limit,"Sprint backlog total effort under capacity",True,min,SprintBacklog,total_effort,2,1.0
+C8,release_plan_has_status,"Release plan must have valid status",False,min,ReleasePlan,status,2,1.0
+C9,deployment_target_allowed,"Snapshot deployment target must be permitted",True,min,DevelopmentSnapshot,deployment_target,2,1.0
+C10,velocity_reference_team,"Velocity must refer to one team",False,min,Velocity,number_of_sprints_used,2,1.0
+C11,product_backlog_is_active,"Product backlog must be in active status",False,min,ProductBacklog,status,2,1.0

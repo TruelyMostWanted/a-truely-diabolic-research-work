@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,minimize_overallocated_workers,"Keep worker allocation within availability",True,min,Worker,availability,2,1.0
+C1,minimize_unachieved_sprint_goals,"Favor sprints that achieve their goals",True,min,Sprint,achievement_of_goal,2,1.0
+C2,maximize_certified_skill_coverage,"Prefer certified skills for critical tasks",True,max,Skill,certified,1,0.9
+C3,minimize_low_experience_scrum_master_use,"Discourage assigning very low experience Scrum Masters",True,min,ScrumMaster,experience,1,0.7
+C4,maximize_ready_user_stories,"Prefer user stories with acceptable status",True,max,UserStory,status,2,1.0
+C5,minimize_blocked_tasks,"Reduce count of tasks currently blocked",True,min,Task,status,2,1.0
+C6,maximize_active_team_status,"Prioritize teams with active status",True,max,Team,team_status,1,0.8
+C7,minimize_past_due_release_plans,"Avoid release plans beyond planned_date",True,min,ReleasePlan,planned_date,2,1.0
+C8,maximize_high_benefit_sprint_goals,"Prefer sprint goals with higher stated benefit",True,max,SprintGoal,benefit,1,0.6
+C9,minimize_outdated_backlog,"Prefer product backlogs with recent last_updated",True,min,ProductBacklog,last_updated,1,0.6
+C10,maximize_tested_snapshots,"Favor snapshots with successful test status",True,max,DevelopmentSnapshot,test_status,2,1.0
+C11,minimize_unresolved_blockers_age,"Prefer blockers with resolved_on set or recent detected_on",True,min,Blocker,detected_on,1,0.5

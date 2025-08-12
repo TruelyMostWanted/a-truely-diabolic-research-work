@@ -1,0 +1,262 @@
+graph TD
+
+%% ============================
+%% Styles
+%% ============================
+classDef entity fill:#4A90E2,stroke:#333,stroke-width:1px,color:white;
+classDef attribute fill:#ffffff,stroke:#333,stroke-width:1px,color:black;
+classDef relation fill:#FFA500,stroke:#333,stroke-width:1px,color:black;
+classDef goal fill:#4CAF50,stroke:#333,stroke-width:1px,color:white;
+classDef condition fill:#E53935,stroke:#333,stroke-width:1px,color:white;
+classDef decision fill:#9C27B0,stroke:#333,stroke-width:1px,color:white;
+
+%% ============================
+%% Entities and Attributes
+%% ============================
+P[Project]:::entity
+P_id[id]:::attribute
+P_budget[budget]:::attribute
+P_status[status]:::attribute
+P_priority[priority]:::attribute
+
+T[Team]:::entity
+T_team_size[team_size]:::attribute
+
+W[Worker]:::entity
+W_availability[availability]:::attribute
+
+F[Feature]:::entity
+F_priority[priority]:::attribute
+F_estimated_effort[estimated_effort]:::attribute
+
+S[Skill]:::entity
+S_certified[certified]:::attribute
+
+PO[ProductOwner]:::entity
+PO_availability[availability]:::attribute
+
+PB[ProductBacklog]:::entity
+PB_last_updated[last_updated]:::attribute
+PB_status[status]:::attribute
+
+SP[Sprint]:::entity
+SP_achievement_of_goal[achievement_of_goal]:::attribute
+
+SPP[SprintPlanning]:::entity
+SPP_duration[duration_(min)]:::attribute
+
+SR[SprintReview]:::entity
+SR_attendees_count[attendees_count]:::attribute
+SR_feedback_documentation[feedback_documentation]:::attribute
+
+SRE[SprintRetrospective]:::entity
+SRE_improvement_actions[improvement_actions]:::attribute
+
+SBL[SprintBacklog]:::entity
+SBL_total_effort[total_effort]:::attribute
+
+US[UserStory]:::entity
+US_story_points[story_points]:::attribute
+
+TSK[Task]:::entity
+TSK_effort[effort]:::attribute
+TSK_status[status]:::attribute
+
+BL[Blocker]:::entity
+BL_severity[severity]:::attribute
+
+SH[Stakeholder]:::entity
+SH_relevance_to_feature[relevance_to_feature]:::attribute
+
+VEL[Velocity]:::entity
+VEL_avg_story_points[avg._story_points]:::attribute
+
+SCB[ScrumBoard]:::entity
+SCB_number_of_cards[number_of_cards]:::attribute
+
+%% ============================
+%% Relations
+%% ============================
+R1[is_assigned_to_project]:::relation
+R2[belongs_to_team]:::relation
+R3[has_skill]:::relation
+R4[takes_on_role]:::relation
+R5[manages_backlog]:::relation
+R7[contains_feature]:::relation
+R8[contains_epic]:::relation
+R9[contains_user_story]:::relation
+R10[consists_of_tasks]:::relation
+R11[is_in_sprint_backlog]:::relation
+R12[belongs_to_sprint]:::relation
+R13[pursues_goal]:::relation
+R14[contains_tasks]:::relation
+R16[is_blocked_by]:::relation
+
+%% ============================
+%% Goals
+%% ============================
+G0[minimize_total_budget]:::goal
+G1[maximize_worker_availability]:::goal
+G2[maximize_story_throughput]:::goal
+G3[minimize_open_blocker_severity]:::goal
+G4[maximize_feature_priority]:::goal
+G5[minimize_total_task_effort]:::goal
+G6[maximize_team_velocity]:::goal
+G7[maximize_stakeholder_relevance]:::goal
+G8[maximize_sprint_goal_achievement]:::goal
+G9[minimize_meeting_time]:::goal
+G10[maximize_review_attendance]:::goal
+G11[minimize_wip_on_board]:::goal
+G12[maximize_backlog_freshness]:::goal
+
+%% ============================
+%% Conditions
+%% ============================
+C0[must_match_active_projects]:::condition
+C1[cannot_match_blocked_tasks]:::condition
+C2[must_match_available_workers]:::condition
+C3[must_match_certified_skills]:::condition
+C4[must_match_product_owner_availability]:::condition
+C5[must_match_sprint_has_goal]:::condition
+C6[cannot_match_low_priority_features]:::condition
+C7[must_match_active_backlog]:::condition
+C8[must_match_sprint_backlog_effort_limit]:::condition
+C9[cannot_match_severe_blockers]:::condition
+C10[must_match_review_feedback_documented]:::condition
+C11[must_match_retro_actions_logged]:::condition
+C12[must_match_team_size_bounds]:::condition
+
+%% ============================
+%% Decision Variables
+%% ============================
+DV0[assign_user_story_to_sprint]:::decision
+DV1[select_feature_for_release]:::decision
+DV2[allocate_task_to_worker]:::decision
+DV3[set_sprint_number]:::decision
+DV4[set_story_points_for_user_story]:::decision
+DV5[set_task_effort_hours]:::decision
+DV6[choose_board_column]:::decision
+DV7[schedule_sprint_start_offset]:::decision
+DV8[decide_blocker_resolution_flag]:::decision
+DV9[set_team_size]:::decision
+DV10[set_velocity_target_story_points]:::decision
+DV11[plan_review_attendees_target]:::decision
+DV12[pick_roadmap_milestone_sequence]:::decision
+
+%% ============================
+%% Entity-Attribute Connections
+%% ============================
+P --> P_id
+P --> P_budget
+P --> P_status
+P --> P_priority
+
+T --> T_team_size
+
+W --> W_availability
+
+F --> F_priority
+F --> F_estimated_effort
+
+S --> S_certified
+
+PO --> PO_availability
+
+PB --> PB_last_updated
+PB --> PB_status
+
+SP --> SP_achievement_of_goal
+
+SPP --> SPP_duration
+
+SR --> SR_attendees_count
+SR --> SR_feedback_documentation
+
+SRE --> SRE_improvement_actions
+
+SBL --> SBL_total_effort
+
+US --> US_story_points
+
+TSK --> TSK_effort
+TSK --> TSK_status
+
+BL --> BL_severity
+
+SH --> SH_relevance_to_feature
+
+VEL --> VEL_avg_story_points
+
+SCB --> SCB_number_of_cards
+
+%% ============================
+%% Entity-Relation Connections
+%% ============================
+T --- R1 --- P
+W --- R2 --- T
+W --- R3 --- S
+W --- R4 --- F
+PO --- R5 --- PB
+PB --- R7 --- F
+PB --- R8 --- US
+F --- R9 --- US
+US --- R10 --- TSK
+US --- R11 --- SBL
+SBL --- R12 --- SP
+SP --- R13 --- F
+SCB --- R14 --- TSK
+TSK --- R16 --- BL
+
+%% ============================
+%% Goals to Entity/Attributes
+%% ============================
+G0 --- P_budget
+G1 --- W_availability
+G2 --- US_story_points
+G3 --- BL_severity
+G4 --- F_priority
+G5 --- TSK_effort
+G6 --- VEL_avg_story_points
+G7 --- SH_relevance_to_feature
+G8 --- SP_achievement_of_goal
+G9 --- SPP_duration
+G10 --- SR_attendees_count
+G11 --- SCB_number_of_cards
+G12 --- PB_last_updated
+
+%% ============================
+%% Conditions to Entity/Attributes
+%% ============================
+C0 --- P_status
+C1 --- TSK_status
+C2 --- W_availability
+C3 --- S_certified
+C4 --- PO_availability
+C5 --- SP_achievement_of_goal
+C6 --- F_priority
+C7 --- PB_status
+C8 --- SBL_total_effort
+C9 --- BL_severity
+C10 --- SR_feedback_documentation
+C11 --- SRE_improvement_actions
+C12 --- T_team_size
+
+%% ============================
+%% Decision Variables to Entities
+%% ============================
+DV0 --- US
+DV0 --- SP
+DV1 --- F
+DV1 --- PB
+DV2 --- TSK
+DV2 --- W
+DV3 --- SP
+DV4 --- US
+DV5 --- TSK
+DV6 --- SCB
+DV7 --- SP
+DV8 --- BL
+DV9 --- T
+DV10 --- VEL
+DV11 --- SR
+DV12 --- PB

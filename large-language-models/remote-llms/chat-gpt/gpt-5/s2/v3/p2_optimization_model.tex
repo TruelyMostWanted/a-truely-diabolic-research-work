@@ -1,0 +1,246 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black}
+
+\title{SCRUM Domain Optimization Model}
+\author{Generated from Entities, Relationships, Goals, Conditions, Decision Variables}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Notation Prelude (Relationships as Incidence Sets \& Parameters)}
+To use \emph{all} CSV inputs coherently, we introduce incidence sets (from \texttt{Relationships.csv}) and parameters (from \texttt{Entities.csv} attributes). Whenever an entity attribute is needed, we denote it by a parameter named after the attribute, indexed by the entity's index (see Sections 1--2). For example, \(\text{story\_points}_{us}\) for a user story \(us\in\mathcal{US}\), \(\text{effort}_{tsk}\) for a task \(tsk\in\mathcal{TSK}\), \(\text{budget}_{p}\) for a project \(p\in\mathcal{P}\), etc.
+
+\medskip
+\noindent\textbf{Incidence Sets from \texttt{Relationships.csv}:}
+\begin{itemize}[leftmargin=2em]
+  \item \(A^{\mathrm{TP}}\subseteq \mathcal{T}\times\mathcal{P}\) (R1: is\_assigned\_to\_project)
+  \item \(A^{\mathrm{WT}}\subseteq \mathcal{W}\times\mathcal{T}\) (R2: belongs\_to\_team) \emph{(Employee interpreted as Worker)}
+  \item \(A^{\mathrm{WS}}\subseteq \mathcal{W}\times\mathcal{S}\) (R3: has\_skill)
+  \item \(A^{\mathrm{WR}}\subseteq \mathcal{W}\times\mathcal{R}\) (R4: takes\_on\_role)
+  \item \(A^{\mathrm{PO,PB}}\subseteq \mathcal{PO}\times\mathcal{PB}\) (R5: manages\_backlog)
+  \item \(A^{\mathrm{T,SM}}\subseteq \mathcal{T}\times\mathcal{SM}\) (R6: is\_supported\_by)
+  \item \(A^{\mathrm{PB,F}}\subseteq \mathcal{PB}\times\mathcal{F}\) (R7: contains\_feature)
+  \item \(A^{\mathrm{PB,E}}\subseteq \mathcal{PB}\times\mathcal{E}\) (R8: contains\_epic)
+  \item \(A^{\mathrm{E,US}}\subseteq \mathcal{E}\times\mathcal{US}\) (R9: contains\_user\_story)
+  \item \(A^{\mathrm{US,TSK}}\subseteq \mathcal{US}\times\mathcal{TSK}\) (R10: consists\_of\_tasks)
+  \item \(A^{\mathrm{US,SBL}}\subseteq \mathcal{US}\times\mathcal{SBL}\) (R11: is\_in\_sprint\_backlog)
+  \item \(A^{\mathrm{SBL,SP}}\subseteq \mathcal{SBL}\times\mathcal{SP}\) (R12: belongs\_to\_sprint)
+  \item \(A^{\mathrm{SP,SG}}\subseteq \mathcal{SP}\times\mathcal{SG}\) (R13: pursues\_goal)
+  \item \(A^{\mathrm{SCB,TSK}}\subseteq \mathcal{SCB}\times\mathcal{TSK}\) (R14: contains\_tasks)
+  \item \(A^{\mathrm{FED,F}}\subseteq \mathcal{FED}\times\mathcal{F}\) (R15: documents\_feature)
+  \item \(A^{\mathrm{TSK,BL}}\subseteq \mathcal{TSK}\times\mathcal{BL}\) (R16: is\_blocked\_by)
+  \item \(A^{\mathrm{SH,SR}}\subseteq \mathcal{SH}\times\mathcal{SR}\) (R17: participates\_in)
+  \item \(A^{\mathrm{SM,SRE}}\subseteq \mathcal{SM}\times\mathcal{SRE}\) (R18: moderates\_retrospective)
+  \item \(A^{\mathrm{VEL,T}}\subseteq \mathcal{VEL}\times\mathcal{T}\) (R19: refers\_to\_team)
+  \item \(A^{\mathrm{REP,F}}\subseteq \mathcal{REP}\times\mathcal{F}\) (R20: plans\_release)
+  \item \(A^{\mathrm{REP,RM}}\subseteq \mathcal{REP}\times\mathcal{RM}\) (R21: is\_part\_of\_roadmap)
+  \item \(A^{\mathrm{SP,DEV}}\subseteq \mathcal{SP}\times\mathcal{DEV}\) (R22: generates\_snapshot)
+\end{itemize}
+
+\newpage
+\section{1. Sets (Entities)}
+We define one set per entity (from \texttt{Entities.csv}). The mnemonic in parentheses is the entity's \texttt{SetName}.
+\begin{itemize}[leftmargin=2em]
+  \item \(\mathcal{P}\) (P): Projects
+  \item \(\mathcal{T}\) (T): Teams
+  \item \(\mathcal{W}\) (W): Workers
+  \item \(\mathcal{F}\) (F): Features
+  \item \(\mathcal{S}\) (S): Skills
+  \item \(\mathcal{R}\) (R): Roles
+  \item \(\mathcal{PO}\) (PO): Product Owners
+  \item \(\mathcal{SM}\) (SM): Scrum Masters
+  \item \(\mathcal{PB}\) (PB): Product Backlogs
+  \item \(\mathcal{SP}\) (SP): Sprints
+  \item \(\mathcal{SPP}\) (SPP): Sprint Plannings
+  \item \(\mathcal{DS}\) (DS): Daily Scrums
+  \item \(\mathcal{SR}\) (SR): Sprint Reviews
+  \item \(\mathcal{SRE}\) (SRE): Sprint Retrospectives
+  \item \(\mathcal{SBL}\) (SBL): Sprint Backlogs
+  \item \(\mathcal{SG}\) (SG): Sprint Goals
+  \item \(\mathcal{E}\) (E): Epics
+  \item \(\mathcal{US}\) (US): User Stories
+  \item \(\mathcal{TSK}\) (TSK): Tasks
+  \item \(\mathcal{DEV}\) (DEV): Development Snapshots
+  \item \(\mathcal{BL}\) (BL): Blockers
+  \item \(\mathcal{SH}\) (SH): Stakeholders
+  \item \(\mathcal{VEL}\) (VEL): Velocity records
+  \item \(\mathcal{REP}\) (REP): Release Plans
+  \item \(\mathcal{RM}\) (RM): Roadmaps
+  \item \(\mathcal{SCB}\) (SCB): Scrum Boards
+  \item \(\mathcal{FED}\) (FED): Feature Documentations
+\end{itemize}
+
+\section{2. Indices}
+Index symbols (from \texttt{Entities.csv} \texttt{Index} column) and their domains:
+\begin{itemize}[leftmargin=2em]
+  \item \(p\in\mathcal{P}\), \(t\in\mathcal{T}\), \(w\in\mathcal{W}\), \(f\in\mathcal{F}\), \(s\in\mathcal{S}\), \(r\in\mathcal{R}\)
+  \item \(po\in\mathcal{PO}\), \(sm\in\mathcal{SM}\), \(pb\in\mathcal{PB}\), \(sp\in\mathcal{SP}\), \(spp\in\mathcal{SPP}\)
+  \item \(ds\in\mathcal{DS}\), \(sr\in\mathcal{SR}\), \(sre\in\mathcal{SRE}\), \(sbl\in\mathcal{SBL}\), \(sg\in\mathcal{SG}\)
+  \item \(e\in\mathcal{E}\), \(us\in\mathcal{US}\), \(tsk\in\mathcal{TSK}\), \(dev\in\mathcal{DEV}\), \(bl\in\mathcal{BL}\)
+  \item \(sh\in\mathcal{SH}\), \(vel\in\mathcal{VEL}\), \(rep\in\mathcal{REP}\), \(rm\in\mathcal{RM}\), \(scb\in\mathcal{SCB}\), \(fed\in\mathcal{FED}\)
+\end{itemize}
+
+\section{3. Goals}
+Each goal item shows \textbf{(ID, snake\_case name)} followed by its logical intent and mathematical form. Weights from \texttt{Goals.csv} appear as \(\omega_{\cdot}\). CriteriaType \(\in\{2\text{ (must)},1\text{ (may)},0\text{ (cannot)}\}\) acts as a filter on eligible items.
+
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{G0 maximize\_total\_story\_points} \ (Criteria: 1, \(\omega=1.0\)). \\
+  \emph{Logic:} Prefer selecting user stories with higher \(\text{story\_points}\) into sprints. \\
+  \emph{Math:} \(\displaystyle \max \ \omega\,\sum_{us\in\mathcal{US}}\sum_{sp\in\mathcal{SP}} z_{us,sp}\cdot \text{story\_points}_{us}\)
+  
+  \item \textbf{G1 minimize\_total\_task\_effort} \ (Criteria: 2, \(\omega=1.0\)). \\
+  \emph{Logic:} Reduce the aggregate planned effort of tasks. \\
+  \emph{Math:} \(\displaystyle \min \ \omega\,\sum_{tsk\in\mathcal{TSK}} \text{effort}_{tsk}\)
+
+  \item \textbf{G2 maximize\_velocity\_average} \ (Criteria: 1, \(\omega=1.0\)). \\
+  \emph{Logic:} Increase average velocity (story points per sprint) per team. \\
+  \emph{Math:} \(\displaystyle \max \ \omega\,\sum_{vel\in\mathcal{VEL}} \overline{v}_{vel}\)
+
+  \item \textbf{G3 maximize\_velocity\_peak} \ (Criteria: 1, \(\omega=0.8\)). \\
+  \emph{Logic:} Prefer configurations correlating with higher observed peak velocity. \\
+  \emph{Math:} \(\displaystyle \max \ \omega\,\sum_{vel\in\mathcal{VEL}} v^{\max}_{vel}\)
+
+  \item \textbf{G4 maximize\_velocity\_trend} \ (Criteria: 1, \(\omega=0.6\)). \\
+  \emph{Logic:} Encourage positive velocity trend over time. \\
+  \emph{Math:} \(\displaystyle \max \ \omega\,\sum_{vel\in\mathcal{VEL}} \text{trend}_{vel}\)
+
+  \item \textbf{G5 minimize\_blocker\_severity\_sum} \ (Criteria: 2, \(\omega=1.0\)). \\
+  \emph{Logic:} Reduce cumulative severity of \emph{open} blockers only. \\
+  \emph{Math:} \(\displaystyle \min \ \omega\,\sum_{bl\in\mathcal{BL}^{open}} \text{severity}_{bl}\) \quad with \(\mathcal{BL}^{open}=\{bl\in\mathcal{BL}:\text{status}_{bl}\neq\text{resolved}\}\)
+
+  \item \textbf{G6 minimize\_project\_budget} \ (Criteria: 1, \(\omega=1.0\)). \\
+  \emph{Logic:} Minimize approved budget across projects. \\
+  \emph{Math:} \(\displaystyle \min \ \omega\,\sum_{p\in\mathcal{P}} A_p\) \quad (DV12)
+
+  \item \textbf{G7 maximize\_team\_size\_utilization} \ (Criteria: 1, \(\omega=0.7\)). \\
+  \emph{Logic:} Favor higher effective capacity (via team size). \\
+  \emph{Math:} \(\displaystyle \max \ \omega\,\sum_{t\in\mathcal{T}} \text{team\_size}_{t}\)
+
+  \item \textbf{G8 maximize\_sprint\_goal\_achievement} \ (Criteria: 2, \(\omega=1.0\)). \\
+  \emph{Logic:} Maximize achievement score recorded on sprints. \\
+  \emph{Math:} \(\displaystyle \max \ \omega\,\sum_{sp\in\mathcal{SP}} \text{achievement\_of\_goal}_{sp}\)
+
+  \item \textbf{G9 maximize\_review\_attendance} \ (Criteria: 1, \(\omega=0.5\)). \\
+  \emph{Logic:} Increase stakeholder attendance in sprint reviews. \\
+  \emph{Math:} \(\displaystyle \max \ \omega\,\sum_{sr\in\mathcal{SR}} \text{attendees\_count}_{sr}\)
+
+  \item \textbf{G10 minimize\_daily\_scrum\_duration} \ (Criteria: 1, \(\omega=0.3\)). \\
+  \emph{Logic:} Keep daily scrums short (10--15 minutes). \\
+  \emph{Math:} \(\displaystyle \min \ \omega\,\sum_{ds\in\mathcal{DS}} m_{ds}\) \quad (DV11)
+
+  \item \textbf{G11 maximize\_board\_throughput} \ (Criteria: 1, \(\omega=0.4\)). \\
+  \emph{Logic:} Prefer higher number of cards processed on Scrum boards. \\
+  \emph{Math:} \(\displaystyle \max \ \omega\,\sum_{scb\in\mathcal{SCB}} \text{number\_of\_cards}_{scb}\)
+\end{itemize}
+
+\section{4. Conditions}
+Each condition item shows \textbf{(ID, snake\_case name)} with logical and mathematical expressions. CriteriaType drives filtering; where applicable we define filtered subsets (Must: restrict domain; May: soft preference; Cannot: exclusion). We also incorporate relationship-based consistency.
+
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{C0 active\_projects\_only} \ (Must, weight 1.0). \\
+  \emph{Logic:} Consider only active projects. \\
+  \emph{Math:} \(\mathcal{P}^{act}=\{p\in\mathcal{P}:\text{status}_{p}=\text{active}\}\); replace \(\mathcal{P}\) by \(\mathcal{P}^{act}\) in budget/assignment sums.
+
+  \item \textbf{C1 exclude\_resolved\_blockers} \ (Cannot, weight 1.0). \\
+  \emph{Logic:} Ignore resolved blockers in penalties/goals. \\
+  \emph{Math:} \(\mathcal{BL}^{open}=\{bl\in\mathcal{BL}:\text{status}_{bl}\neq\text{resolved}\}\).
+
+  \item \textbf{C2 user\_stories\_with\_acceptance\_criteria} \ (Must, weight 1.0). \\
+  \emph{Logic:} Schedule only user stories that specify acceptance criteria. \\
+  \emph{Math:} For any \(us\) with \(z_{us,sp}=1\): \(\text{acceptance\_criteria}_{us}\neq\emptyset\).
+
+  \item \textbf{C3 focus\_on\_development\_tasks} \ (May, weight 0.6). \\
+  \emph{Logic:} Prefer tasks with \(\text{type}=\text{development}\). \\
+  \emph{Math (soft):} Add \(-0.6\sum_{tsk}\mathbf{1}[\text{type}_{tsk}=\text{development}]\) to the objective.
+
+  \item \textbf{C4 active\_sprints\_only} \ (Must, weight 1.0). \\
+  \emph{Logic:} Only active sprints eligible for scheduling. \\
+  \emph{Math:} If \(z_{us,sp}=1\) then \(\text{status}_{sp}=\text{active}\).
+
+  \item \textbf{C5 prefer\_certified\_skills} \ (May, weight 0.7). \\
+  \emph{Logic:} Prefer workers with certified skills on assigned work. \\
+  \emph{Math (soft):} \(-0.7\sum_{(w,s)\in A^{\mathrm{WS}}}\mathbf{1}[\text{certified}_{s}=\text{true}]\).
+
+  \item \textbf{C6 roles\_with\_defined\_responsibility} \ (Must, weight 0.9). \\
+  \emph{Logic:} Any worker-role assignment requires specified responsibility. \\
+  \emph{Math:} \(\forall (w,r)\in A^{\mathrm{WR}}:\ \text{area\_of\_responsibility}_{r}\neq\emptyset\).
+
+  \item \textbf{C7 exclude\_inactive\_workers} \ (Cannot, weight 1.0). \\
+  \emph{Logic:} Inactive workers cannot be assigned to teams. \\
+  \emph{Math:} \(\forall (w,t)\in A^{\mathrm{WT}}:\ \text{status}_{w}\neq\text{inactive}\).
+
+  \item \textbf{C8 goal\_achievement\_reported} \ (Must, weight 0.9). \\
+  \emph{Logic:} Sprint goals must report achievement status. \\
+  \emph{Math:} \(\forall (sp,sg)\in A^{\mathrm{SP,SG}}:\ \text{achievement\_status}_{sg}\in\{\text{achieved},\text{partial},\text{missed}\}\).
+
+  \item \textbf{C9 prefer\_current\_backlog} \ (May, weight 0.5). \\
+  \emph{Logic:} Prefer product backlogs with manageable \(\text{status}\) (e.g., current). \\
+  \emph{Math (soft):} \(-0.5\sum_{pb\in\mathcal{PB}}\mathbf{1}[\text{status}_{pb}=\text{current}]\).
+
+  \item \textbf{C10 epics\_with\_valid\_status} \ (Must, weight 0.8). \\
+  \emph{Logic:} Only epics with a valid status can be scheduled into backlogs/sprints via their stories. \\
+  \emph{Math:} If \((e,us)\in A^{\mathrm{E,US}}\) and \(z_{us,sp}=1\) then \(\text{status}_{e}\in\{\text{proposed},\text{approved},\text{in\_progress}\}\).
+
+  \item \textbf{C11 exclude\_blocked\_tasks} \ (Cannot, weight 1.0). \\
+  \emph{Logic:} Tasks with blocking blockers cannot be scheduled/executed. \\
+  \emph{Math:} If \((us,tsk)\in A^{\mathrm{US,TSK}}\) and \((tsk,bl)\in A^{\mathrm{TSK,BL}}\) with \(\text{status}_{bl}\neq\text{resolved}\), then \(tsk\) cannot be started (e.g., effort allocation \(a_{tsk}=0\)).
+\end{itemize}
+
+\section{5. DecisionVariables}
+Decision variables (from \texttt{DecisionVariables.csv}) including domains and bounds:
+
+\begin{itemize}[leftmargin=2em]
+  \item \(\mathbf{DV0}\) \texttt{assign\_team\_to\_project}: \(x_{t,p}\in\{0,1\}\) (binary), for \((t,p)\in\mathcal{T}\times\mathcal{P}\). Bounds: \(0\le x_{t,p}\le 1\). (R1 consistency: \(x_{t,p}=1\Rightarrow (t,p)\in A^{\mathrm{TP}}\))
+  \item \(\mathbf{DV1}\) \texttt{assign\_worker\_to\_team}: \(y_{w,t}\in\{0,1\}\) (binary), for \((w,t)\in\mathcal{W}\times\mathcal{T}\). Bounds: \(0\le y_{w,t}\le 1\). (R2)
+  \item \(\mathbf{DV2}\) \texttt{assign\_user\_story\_to\_sprint}: \(z_{us,sp}\in\{0,1\}\) (binary), linking via \(A^{\mathrm{US,SBL}}\) and \(A^{\mathrm{SBL,SP}}\). Bounds: \(0\le z_{us,sp}\le 1\).
+  \item \(\mathbf{DV3}\) \texttt{select\_feature\_for\_release}: \(u_{f,rep}\in\{0,1\}\) (binary), \((f,rep)\in\mathcal{F}\times\mathcal{REP}\). Bounds: \(0\le u_{f,rep}\le 1\). (R20)
+  \item \(\mathbf{DV4}\) \texttt{select\_epic\_for\_backlog}: \(v_{e,pb}\in\{0,1\}\) (binary), \((e,pb)\in\mathcal{E}\times\mathcal{PB}\). Bounds: \(0\le v_{e,pb}\le 1\). (R8)
+  \item \(\mathbf{DV5}\) \texttt{plan\_sprint\_length\_days}: \(\ell_{sp}\in\mathbb{Z}\), \(7\le \ell_{sp}\le 30\).
+  \item \(\mathbf{DV6}\) \texttt{allocate\_task\_effort\_hours}: \(a_{tsk}\in\mathbb{Z}\), \(1\le a_{tsk}\le 80\).
+  \item \(\mathbf{DV7}\) \texttt{set\_team\_size}: \(n_{t}\in\mathbb{Z}\), \(3\le n_{t}\le 11\).
+  \item \(\mathbf{DV8}\) \texttt{set\_story\_points}: \(s_{us}\in\mathbb{Z}\), \(1\le s_{us}\le 13\).
+  \item \(\mathbf{DV9}\) \texttt{set\_blocker\_severity}: \(bsev_{bl}\in\mathbb{Z}\), \(1\le bsev_{bl}\le 5\).
+  \item \(\mathbf{DV10}\) \texttt{set\_scrum\_board\_column\_count}: \(c^{col}_{scb}\in\mathbb{Z}\), \(2\le c^{col}_{scb}\le 7\).
+  \item \(\mathbf{DV11}\) \texttt{schedule\_daily\_scrum\_minutes}: \(m_{ds}\in\mathbb{Z}\), \(10\le m_{ds}\le 15\).
+  \item \(\mathbf{DV12}\) \texttt{approve\_budget\_per\_project}: \(A_{p}\in\mathbb{R}_{\ge 0}\), \(0\le A_{p}\le 1{,}000{,}000\).
+\end{itemize}
+
+\subsection*{Canonical Combined Objective}
+If a single scalar objective is required, combine goal components with their weights (maximization form; convert minimizing terms by sign):
+\[
+\max \quad
+\underbrace{\omega_{G0}\sum_{us,sp} z_{us,sp}\,\text{story\_points}_{us}}_{\text{G0}} 
+- \underbrace{\omega_{G1}\sum_{tsk} \text{effort}_{tsk}}_{\text{G1}}
++ \omega_{G2}\sum_{vel}\overline{v}_{vel}
++ \omega_{G3}\sum_{vel}v^{\max}_{vel}
++ \omega_{G4}\sum_{vel}\text{trend}_{vel}
+- \omega_{G5}\sum_{bl\in\mathcal{BL}^{open}} \text{severity}_{bl}
+- \omega_{G6}\sum_{p} A_{p}
++ \omega_{G7}\sum_{t}\text{team\_size}_{t}
++ \omega_{G8}\sum_{sp}\text{achievement\_of\_goal}_{sp}
++ \omega_{G9}\sum_{sr}\text{attendees\_count}_{sr}
+- \omega_{G10}\sum_{ds} m_{ds}
++ \omega_{G11}\sum_{scb}\text{number\_of\_cards}_{scb}.
+\]
+Soft ``May'' conditions (C3, C5, C9) can be embedded as additional positive bonuses or penalties on the objective, as shown in Section 4.
+
+\subsection*{Selected Structural Constraints (Consistency \& Relationships)}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{Team--Project assignment} (R1): \(x_{t,p}=0\) if \((t,p)\notin A^{\mathrm{TP}}\).
+  \item \textbf{Worker--Team assignment} (R2): \(y_{w,t}=0\) if \((w,t)\notin A^{\mathrm{WT}}\); and (C7) \(y_{w,t}=0\) if \(\text{status}_{w}=\text{inactive}\).
+  \item \textbf{Story--Sprint link} (R11--R12): \(z_{us,sp}\le \sum_{sbl:(us,sbl)\in A^{\mathrm{US,SBL}}}\mathbf{1}[(sbl,sp)\in A^{\mathrm{SBL,SP}}]\).
+  \item \textbf{Acceptance criteria} (C2): \(z_{us,sp}\le \mathbf{1}[\text{acceptance\_criteria}_{us}\neq\emptyset]\).
+  \item \textbf{Active sprints only} (C4): \(z_{us,sp}\le \mathbf{1}[\text{status}_{sp}=\text{active}]\).
+  \item \textbf{Epic status validity} (C10): \(z_{us,sp}\le \mathbf{1}[\text{status}_{e}\in\{\text{proposed},\text{approved},\text{in\_progress}\}]\) for any \(e\) with \((e,us)\in A^{\mathrm{E,US}}\).
+  \item \textbf{Blocked tasks excluded} (C11): For any \((us,tsk)\in A^{\mathrm{US,TSK}}\), if \(\exists bl:(tsk,bl)\in A^{\mathrm{TSK,BL}}\) with \(\text{status}_{bl}\neq\text{resolved}\), then \(a_{tsk}=0\).
+\end{itemize}
+
+\end{document}

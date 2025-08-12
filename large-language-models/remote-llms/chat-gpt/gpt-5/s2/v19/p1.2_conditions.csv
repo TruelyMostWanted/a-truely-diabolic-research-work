@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,limit_total_budget,Project budget must not exceed the cap,True,max,Project,budget,2,1.0
+C1,require_active_backlog,Product Backlog must be in an active/usable state,False,max,ProductBacklog,status,2,1.0
+C2,require_high_priority_epics,Selected epics must meet a minimum priority,True,max,Epic,priority,2,0.9
+C3,exclude_resolved_blockers,Resolved blockers must not count as active scope,False,min,Blocker,status,0,1.0
+C4,require_scrum_master_experience,Scrum Master needs minimum experience level,False,max,ScrumMaster,experience,2,0.8
+C5,team_size_within_bounds,Team size should remain within acceptable limits,False,max,Team,team_size,1,0.7
+C6,workers_must_be_active,Only active workers are assignable,False,max,Worker,status,2,1.0
+C7,limit_task_effort,Each task effort should not exceed the threshold,False,max,Task,effort,1,0.85
+C8,require_sprint_goal,Each sprint must define a goal,False,max,SprintGoal,objective_description,2,1.0
+C9,cap_backlog_entries,Backlog must not exceed maximum entries,True,max,ProductBacklog,number_of_entries,1,0.75
+C10,require_feature_documentation,Features must have documentation created,False,max,FeatureDocumentation,creation_date,2,0.6
+C11,limit_sprint_planning_duration,Sprint Planning duration must stay within timebox,False,max,SprintPlanning,duration_(min),1,0.5

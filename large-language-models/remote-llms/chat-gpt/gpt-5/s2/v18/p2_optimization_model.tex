@@ -1,0 +1,175 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\geometry{margin=1in}
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=black}
+
+\title{SCRUM Domain Optimization Model}
+\author{Generated from Entities, Relationships, Goals, Conditions, Decision Variables}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\tableofcontents
+\clearpage
+
+% -----------------------------------------------------
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em,itemsep=0.25em]
+  \item $\mathcal{P}$ (Project): product or initiative to be developed.
+  \item $\mathcal{T}$ (Team): self-organized, cross-functional development team.
+  \item $\mathcal{W}$ (Worker): individual team member working on the project.
+  \item $\mathcal{F}$ (Feature): mid-sized functionality.
+  \item $\mathcal{S}$ (Skill): competence of a worker.
+  \item $\mathcal{R}$ (Role): defined responsibilities within the Scrum team.
+  \item $\mathcal{PO}$ (ProductOwner): responsible for product vision and Product Backlog.
+  \item $\mathcal{SM}$ (ScrumMaster): supports team in applying Scrum.
+  \item $\mathcal{PB}$ (ProductBacklog): ordered list of all requirements.
+  \item $\mathcal{SP}$ (Sprint): fixed time-box to create an increment.
+  \item $\mathcal{SPP}$ (SprintPlanning): sprint planning meeting.
+  \item $\mathcal{DS}$ (DailyScrum): daily 15-minute meeting.
+  \item $\mathcal{SR}$ (SprintReview): presentation and acceptance of results.
+  \item $\mathcal{SRE}$ (SprintRetrospective): retrospective for improvement.
+  \item $\mathcal{SBL}$ (SprintBacklog): selected backlog items + implementation plan.
+  \item $\mathcal{SG}$ (SprintGoal): objective to be achieved in the sprint.
+  \item $\mathcal{E}$ (Epic): large requirement split into stories.
+  \item $\mathcal{US}$ (UserStory): requirement from a user perspective.
+  \item $\mathcal{TSK}$ (Task): smallest unit of work.
+  \item $\mathcal{DEV}$ (DevelopmentSnapshot): product state at sprint end.
+  \item $\mathcal{BL}$ (Blocker): obstacle hindering progress.
+  \item $\mathcal{SH}$ (Stakeholder): interested party in the product.
+  \item $\mathcal{VEL}$ (Velocity): average amount of work per sprint.
+  \item $\mathcal{REP}$ (ReleasePlan): plan for releasing specific features.
+  \item $\mathcal{RM}$ (Roadmap): long-term planning across releases.
+  \item $\mathcal{SCB}$ (ScrumBoard): visual board of sprint tasks.
+  \item $\mathcal{FED}$ (FeatureDocumentation): documentation for a specific feature.
+\end{itemize}
+
+% -----------------------------------------------------
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em,itemsep=0.25em]
+  \item $p \in \mathcal{P}$, $t \in \mathcal{T}$, $w \in \mathcal{W}$, $f \in \mathcal{F}$, $s \in \mathcal{S}$, $r \in \mathcal{R}$,
+        $po \in \mathcal{PO}$, $sm \in \mathcal{SM}$, $pb \in \mathcal{PB}$, $sp \in \mathcal{SP}$,
+        $spp \in \mathcal{SPP}$, $ds \in \mathcal{DS}$, $sr \in \mathcal{SR}$, $sre \in \mathcal{SRE}$,
+        $sbl \in \mathcal{SBL}$, $sg \in \mathcal{SG}$, $e \in \mathcal{E}$, $u \in \mathcal{US}$, $\tau \in \mathcal{TSK}$,
+        $dev \in \mathcal{DEV}$, $b \in \mathcal{BL}$, $sh \in \mathcal{SH}$, $v \in \mathcal{VEL}$, $rp \in \mathcal{REP}$,
+        $rm \in \mathcal{RM}$, $scb \in \mathcal{SCB}$, $fd \in \mathcal{FED}$.
+\end{itemize}
+
+\paragraph{Data Parameters (derived from attributes and relationships).}
+Where needed, categorical attributes (e.g., \texttt{status}) are represented by numeric indicator parameters derived from the CSVs:
+\begin{itemize}[leftmargin=2em,itemsep=0.25em]
+  \item $s^{\text{done}}_{u} \in \{0,1\}$ (\texttt{UserStory.status} == done), $\text{sp}_{u}\in\mathbb{Z}_{\ge0}$ (\texttt{UserStory.story\_points}).
+  \item $e\!f\!f_{\tau} \in \mathbb{R}_{\ge0}$ (\texttt{Task.effort}), $is\_not\_done_f \in \{0,1\}$ (\texttt{Feature.status} $\neq$ done).
+  \item $avail_{w} \in [0,1]$ (\texttt{Worker.availability}), $sev_{b} \in \mathbb{R}_{\ge0}$ (\texttt{Blocker.severity}).
+  \item $cost_{f} \in \mathbb{R}_{\ge0}$ (proxy from \texttt{Feature.estimated\_effort} and unit cost).
+  \item $rel_{sh,f} \in \mathbb{R}_{\ge0}$ (from \texttt{Stakeholder.relevance\_to\_feature}).
+  \item $align_{f} \in \mathbb{R}_{\ge0}$ (alignment to \texttt{Roadmap.objectives}).
+  \item $fbq_{sp} \in \mathbb{R}_{\ge0}$ (quality of \texttt{SprintReview.feedback\_documentation} for sprint $sp$).
+\end{itemize}
+Relationship-incidence parameters (from Relationships.csv):
+\begin{itemize}[leftmargin=2em,itemsep=0.25em]
+  \item $R^{US\text{-}TSK}_{u,\tau}\in\{0,1\}$ (R10: story $u$ consists of task $\tau$).
+  \item $R^{PB\text{-}US}_{pb,u}\in\{0,1\}$ and $R^{PB\text{-}F}_{pb,f}\in\{0,1\}$ (R7, R11 via epic/story expansion).
+  \item $R^{SBL\text{-}US}_{sbl,u}\in\{0,1\}$ (R11), $R^{SP\text{-}SBL}_{sp,sbl}\in\{0,1\}$ (R12), $R^{SP\text{-}SG}_{sp,sg}\in\{0,1\}$ (R13).
+  \item $R^{REP\text{-}F}_{rp,f}\in\{0,1\}$ (R20), $R^{REP\text{-}RM}_{rp,rm}\in\{0,1\}$ (R21).
+  \item $R^{FED\text{-}F}_{fd,f}\in\{0,1\}$ (R15).
+\end{itemize}
+
+% -----------------------------------------------------
+\section{3. Goals}
+For each goal $Gk$ we show (i) ID and snake\_case name, (ii) logical intent, and (iii) mathematical form. We use weights $w_k>0$ from the CSV (default $1.0$ where unspecified). A single scalar objective can be built by a weighted sum of goals of type ``max'' (added) and type ``min'' (subtracted), or treated as separate scenarios.
+
+\begin{itemize}[leftmargin=2em,itemsep=0.85em]
+  \item \textbf{G0 maximize\_completed\_user\_stories} (max): prioritize completed stories for the sprint.\\
+  $\displaystyle \max \; w_0 \sum_{u\in\mathcal{US}} s^{\text{done}}_{u}\, x^{US}_{u}$
+  \item \textbf{G1 minimize\_open\_blockers} (min): reduce impact of unresolved blockers.\\
+  $\displaystyle \min \; w_1 \sum_{b\in\mathcal{BL}} sev_b \,\bigl(1 - x^{BL}_{b}\bigr)$
+  \item \textbf{G2 maximize\_velocity\_trend} (max): proxy by maximizing story points planned.\\
+  $\displaystyle \max \; w_2 \sum_{u\in\mathcal{US}} \text{sp}_{u}\, x^{US}_{u}$
+  \item \textbf{G3 minimize\_total\_task\_effort} (min): limit total selected task effort.\\
+  $\displaystyle \min \; w_3 \sum_{\tau\in\mathcal{TSK}} e\!f\!f_{\tau}\, x^{TSK}_{\tau}$
+  \item \textbf{G4 maximize\_sprint\_goal\_achievement} (max): favor sprints that meet their goals.\\
+  $\displaystyle \max \; w_4 \sum_{sp\in\mathcal{SP}} x^{SG}_{sp}$
+  \item \textbf{G5 minimize\_feature\_cycle\_time} (min): proxy by avoiding not-done features in release.\\
+  $\displaystyle \min \; w_5 \sum_{f\in\mathcal{F}} is\_not\_done_f \, x^{FR}_{f}$
+  \item \textbf{G6 maximize\_team\_availability} (max): maximize available capacity assigned to teams.\\
+  $\displaystyle \max \; w_6 \sum_{w\in\mathcal{W}}\sum_{t\in\mathcal{T}} avail_w \, x^{WT}_{w,t}$
+  \item \textbf{G7 minimize\_budget\_spend} (min): proxy by minimizing cost of selected features.\\
+  $\displaystyle \min \; w_7 \sum_{f\in\mathcal{F}} cost_f \, x^{FR}_{f}$
+  \item \textbf{G8 maximize\_stakeholder\_relevance\_coverage} (max): select features valued by stakeholders.\\
+  $\displaystyle \max \; w_8 \sum_{sh\in\mathcal{SH}}\sum_{f\in\mathcal{F}} rel_{sh,f}\, x^{FR}_{f}$
+  \item \textbf{G9 maximize\_review\_feedback\_documentation} (max): encourage high-quality reviews (proxy via goal achievement).\\
+  $\displaystyle \max \; w_9 \sum_{sp\in\mathcal{SP}} fbq_{sp}\, x^{SG}_{sp}$
+  \item \textbf{G10 minimize\_blocker\_severity\_exposure} (min): further penalize severe unresolved blockers.\\
+  $\displaystyle \min \; w_{10} \sum_{b\in\mathcal{BL}} sev_b \,\bigl(1 - x^{BL}_{b}\bigr)$
+  \item \textbf{G11 maximize\_roadmap\_objectives\_alignment} (max): prefer features aligned to roadmap.\\
+  $\displaystyle \max \; w_{11} \sum_{f\in\mathcal{F}} align_f \, x^{FR}_{f}$
+\end{itemize}
+
+% -----------------------------------------------------
+\section{4. Conditions}
+Each condition $Ck$ is modeled as a constraint. (Logical descriptions reflect the CSV names; mathematical forms use the decision variables and relationship incidence.)
+
+\begin{itemize}[leftmargin=2em,itemsep=1.0em]
+  \item \textbf{C0 minimize\_unscheduled\_tasks:} selected tasks must belong to a selected user story.\\
+  $\forall \tau\in\mathcal{TSK}:\quad x^{TSK}_{\tau} \;\le\; \sum_{u\in\mathcal{US}} R^{US\text{-}TSK}_{u,\tau}\, x^{US}_{u}$
+  \item \textbf{C1 minimize\_unassigned\_worker\_roles:} if a worker is assigned to any team, at least one role must be taken.\\
+  $\forall w\in\mathcal{W}:\quad \sum_{r\in\mathcal{R}} x^{WR}_{w,r} \;\ge\; \min\!\left\{1,\; \sum_{t\in\mathcal{T}} x^{WT}_{w,t}\right\}$
+  \item \textbf{C2 minimize\_unplanned\_epics:} planning a story implies its epic is represented in a product backlog.\\
+  $\forall u\in\mathcal{US}:\quad x^{US}_{u} \;\le\; \sum_{pb\in\mathcal{PB}} R^{PB\text{-}US}_{pb,u}$
+  \item \textbf{C3 minimize\_story\_without\_acceptance\_criteria:} only stories with acceptance criteria may be selected.\\
+  $\forall u\in\mathcal{US}:\quad x^{US}_{u} \;\le\; \mathbf{1}\{\texttt{acceptance\_criteria}(u)\neq\emptyset\}$
+  \item \textbf{C4 minimize\_sprint\_without\_goal:} a sprint marked achieved must reference a sprint goal.\\
+  $\forall sp\in\mathcal{SP}:\quad x^{SG}_{sp} \;\le\; \sum_{sg\in\mathcal{SG}} R^{SP\text{-}SG}_{sp,sg}$
+  \item \textbf{C5 minimize\_exceeded\_sprint\_duration:} (feasibility check) end date after start date (data validity).\\
+  $\forall sp\in\mathcal{SP}:\quad \texttt{end\_date}(sp)\;-\;\texttt{start\_date}(sp)\;\ge\;0$
+  \item \textbf{C6 minimize\_overallocated\_team\_size:} assigned workers cannot exceed team capacity $Cap_t$.\\
+  $\forall t\in\mathcal{T}:\quad \sum_{w\in\mathcal{W}} x^{WT}_{w,t} \;\le\; Cap_t$
+  \item \textbf{C7 minimize\_missing\_feature\_docs:} if a feature is selected for release, it must have documentation.\\
+  $\forall f\in\mathcal{F}:\quad x^{FR}_{f} \;\le\; \sum_{fd\in\mathcal{FED}} R^{FED\text{-}F}_{fd,f}$
+  \item \textbf{C8 minimize\_stale\_backlog:} only user stories in a recently updated backlog may be planned.\\
+  $\forall u\in\mathcal{US}:\quad x^{US}_{u} \;\le\; \sum_{pb\in\mathcal{PB}} R^{PB\text{-}US}_{pb,u}\cdot \mathbf{1}\{\texttt{last\_updated}(pb)\ge \Delta\}$
+  \item \textbf{C9 minimize\_unmoderated\_events:} (policy) retrospectives must be moderated if sprint goal is achieved.\\
+  $\forall sp\in\mathcal{SP}:\quad x^{SG}_{sp} \;\le\; \mathbf{1}\{\exists\, sre\in\mathcal{SRE}\ \text{with}\ \texttt{moderation}(sre)=\text{true}\}$
+  \item \textbf{C10 minimize\_unestimated\_stories:} only estimated stories may be planned.\\
+  $\forall u\in\mathcal{US}:\quad x^{US}_{u} \;\le\; \mathbf{1}\{\text{sp}_{u} > 0\}$
+  \item \textbf{C11 minimize\_untracked\_velocity:} velocity targets require historical basis $minSprints$.\\
+  $\sum_{u\in\mathcal{US}} \text{sp}_{u}\, x^{US}_{u} \;\le\; \left(\sum_{v\in\mathcal{VEL}} \mathbf{1}\{\texttt{number\_of\_sprints\_used}(v)\ge minSprints\}\right)\cdot V_{\max}$
+\end{itemize}
+
+% -----------------------------------------------------
+\section{5. DecisionVariables}
+We adopt the previously defined decision variables and domains.
+
+\begin{itemize}[leftmargin=2em,itemsep=0.6em]
+  \item $x^{TP}_{t,p} \in \{0,1\}$ \textbf{(DV0 assign\_team\_to\_project)}: team $t$ is assigned to project $p$.
+  \item $x^{WT}_{w,t} \in \{0,1\}$ \textbf{(DV1 assign\_worker\_to\_team)}: worker $w$ belongs to team $t$.
+  \item $x^{WR}_{w,r} \in \{0,1\}$ \textbf{(DV2 assign\_worker\_role)}: worker $w$ takes role $r$.
+  \item $x^{WS}_{w,s} \in \{0,1\}$ \textbf{(DV3 assign\_worker\_skill)}: worker $w$ has skill $s$ (operational use for staffing).
+  \item $x^{FR}_{f} \in \{0,1\}$ \textbf{(DV4 select\_feature\_for\_release)}: feature $f$ is included in a release plan.
+  \item $x^{US}_{u} \in \{0,1\}$ \textbf{(DV5 place\_story\_in\_sprint)}: user story $u$ is assigned to a (current) sprint backlog.
+  \item $x^{TSK}_{\tau} \in \{0,1\}$ \textbf{(DV6 select\_task\_for\_sprint)}: task $\tau$ is included in the sprint plan/board.
+  \item $x^{BL}_{b} \in \{0,1\}$ \textbf{(DV7 close\_blocker)}: blocker $b$ is resolved (closed) within the sprint.
+  \item $x^{SG}_{sp} \in \{0,1\}$ \textbf{(DV8 set\_sprint\_goal\_achieved)}: sprint $sp$ achieves its goal.
+  \item $y^{Bud}_{p,f} \in [0,1]$ \textbf{(DV9 allocate\_budget\_to\_feature)}: share of project $p$ budget allocated to feature $f$.
+  \item $x^{POB}_{po,pb} \in \{0,1\}$ \textbf{(DV10 assign\_product\_owner\_to\_backlog)}: PO $po$ manages backlog $pb$.
+  \item $x^{SM}_{sm,t} \in \{0,1\}$ \textbf{(DV11 assign\_scrum\_master\_to\_team)}: Scrum Master $sm$ supports team $t$.
+\end{itemize}
+
+\paragraph{Linking (illustrative) constraints.} Typical couplings between decisions and budget:
+\begin{align*}
+&\text{Budget per project:} && \forall p\in\mathcal{P}:\quad \sum_{f\in\mathcal{F}} cost_f\, y^{Bud}_{p,f} \;\le\; \texttt{budget}(p) \\
+&\text{Release-selection consistency:} && \forall f\in\mathcal{F}:\quad x^{FR}_{f} \;\le\; \sum_{p\in\mathcal{P}} y^{Bud}_{p,f}
+\end{align*}
+
+\paragraph{Composite objective (optional).}
+If a single-objective scalarization is desired, maximize
+\[
+\max\;\; \sum_{k\in\{0,2,4,6,8,9,11\}} w_k \cdot \text{Goal}_k \;-\; \sum_{k\in\{1,3,5,7,10\}} w_k \cdot \text{Goal}_k,
+\]
+where each $\text{Goal}_k$ corresponds to the expressions enumerated in Section~3.
+\end{document}

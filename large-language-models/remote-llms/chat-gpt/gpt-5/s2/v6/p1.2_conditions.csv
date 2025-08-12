@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,require_user_story_ready_status,Only include user stories with acceptable status for planning,False,min,UserStory,status,2,1.0
+C1,require_feature_defined_effort,Only consider features with estimated effort present,False,min,Feature,estimated_effort,2,1.0
+C2,disallow_blocked_tasks,Exclude tasks currently blocked from commitment,True,min,Task,status,0,1.0
+C3,prefer_high_team_availability,Favor teams with higher availability when assigning work,True,max,Worker,availability,1,1.0
+C4,limit_daily_scrum_duration,Daily events must respect the 15-minute timebox,False,min,DailyScrum,duration,2,1.0
+C5,ensure_sprint_with_goal,Each sprint must have a defined goal,False,min,SprintGoal,objective_description,2,1.0
+C6,require_backlog_currency,Backlog must be recently updated before planning,False,min,ProductBacklog,last_updated,2,1.0
+C7,limit_sprint_backlog_status,Only plan items into active or planned sprint backlogs,True,min,SprintBacklog,status,2,1.0
+C8,guard_budget_threshold,Project selection must respect budget cap,True,min,Project,budget,2,1.0
+C9,require_stakeholder_relevance,Invite stakeholders relevant to presented features,True,max,Stakeholder,relevance_to_feature,2,1.0
+C10,ensure_sprint_dates_valid,Sprint start must precede end date,False,min,Sprint,start_date,2,1.0
+C11,prefer_review_feedback_captured,Favor reviews with documented feedback,True,max,SprintReview,feedback_documentation,1,1.0

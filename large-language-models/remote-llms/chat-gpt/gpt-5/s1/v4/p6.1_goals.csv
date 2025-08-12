@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,maximize_team_velocity,"Maximize average delivered story points across historical sprints",True,max,Velocity,avg._story_points,1,1.0
+G1,minimize_total_estimated_effort,"Minimize total estimated effort of selected features in scope",True,min,Feature,estimated_effort,2,1.0
+G2,maximize_user_story_priority_coverage,"Maximize sum of priorities of implemented user stories",True,max,UserStory,priority,1,0.8
+G3,minimize_open_blocker_severity,"Minimize cumulative severity of unresolved blockers",True,min,Blocker,severity,2,1.0
+G4,maximize_sprint_goal_achievement,"Maximize sprints marked as achieving their goal",True,max,Sprint,achievement_of_goal,1,0.7
+G5,minimize_cycle_tasks_effort,"Minimize total task effort in current sprint while meeting goals",True,min,Task,effort,2,1.0
+G6,maximize_feature_priority,"Maximize delivery of high-priority features",True,max,Feature,priority,1,0.9
+G7,minimize_wip_status_pressure,"Minimize count of in-progress items to reduce WIP",True,min,Task,status,1,0.3
+G8,maximize_backlog_freshness,"Maximize recency of backlog updates",False,max,ProductBacklog,last_updated,1,0.4
+G9,minimize_release_slippage,"Minimize difference to planned release dates",False,min,ReleasePlan,planned_date,2,0.6
+G10,maximize_team_utilization,"Maximize available capacity actually used",True,max,Worker,availability,1,0.5
+G11,minimize_sprint_duration_variance,"Minimize variance around desired sprint duration",False,min,Sprint,end_date,1,0.2

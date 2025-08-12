@@ -1,0 +1,274 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{SCRUM Domain Optimization Model\\\large Based on Entities, Relationships, Goals, Conditions, and Decision Variables}
+\author{Generated for TruelyMostWanted}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em]
+  \item $P$ := set of \textbf{Project} (Entity: \emph{Project}, attrs: id, name, project\_start, project\_end, description, \textbf{budget}, status, target\_audience, priority).
+  \item $T$ := set of \textbf{Team} (Entity: \emph{Team}, attrs: id, name, \textbf{team\_size}, team\_start, \textbf{team\_status}, location, team\_type).
+  \item $W$ := set of \textbf{Worker} (Entity: \emph{Worker}, attrs: id, name, first\_name, email, start\_date, status, \textbf{availability}).
+  \item $F$ := set of \textbf{Feature} (Entity: \emph{Feature}, attrs: id, title, description, status, \textbf{priority}, estimated\_effort).
+  \item $S$ := set of \textbf{Skill} (Entity: \emph{Skill}, attrs: id, label, description, level, \textbf{certified}, category).
+  \item $R$ := set of \textbf{Role} (Entity: \emph{Role}, attrs: id, role\_name, description, area\_of\_responsibility).
+  \item $PO$ := set of \textbf{ProductOwner} (Entity: \emph{ProductOwner}, attrs: id, name, email, \textbf{availability}).
+  \item $SM$ := set of \textbf{ScrumMaster} (Entity: \emph{ScrumMaster}, attrs: id, name, email, \textbf{experience}).
+  \item $PB$ := set of \textbf{ProductBacklog} (Entity: \emph{ProductBacklog}, attrs: id, created\_on, \textbf{last\_updated}, \textbf{number\_of\_entries}, status).
+  \item $SP$ := set of \textbf{Sprint} (Entity: \emph{Sprint}, attrs: id, sprint\_number, start\_date, end\_date, \textbf{status}, \textbf{achievement\_of\_goal}).
+  \item $SPP$ := set of \textbf{SprintPlanning} (Entity: \emph{SprintPlanning}, attrs: id, date, duration\_(min), moderation, outcome\_documentation).
+  \item $DS$ := set of \textbf{DailyScrum} (Entity: \emph{DailyScrum}, attrs: id, date, time, duration, moderation).
+  \item $SR$ := set of \textbf{SprintReview} (Entity: \emph{SprintReview}, attrs: id, date, duration, feedback\_documentation, \textbf{attendees\_count}).
+  \item $SRE$ := set of \textbf{SprintRetrospective} (Entity: \emph{SprintRetrospective}, attrs: id, date, duration, improvement\_actions, team\_satisfaction, moderation).
+  \item $SBL$ := set of \textbf{SprintBacklog} (Entity: \emph{SprintBacklog}, attrs: id, number\_of\_tasks, last\_updated, status, \textbf{total\_effort}).
+  \item $SG$ := set of \textbf{SprintGoal} (Entity: \emph{SprintGoal}, attrs: id, objective\_description, \textbf{achievement\_status}, \textbf{benefit}).
+  \item $E$ := set of \textbf{Epic} (Entity: \emph{Epic}, attrs: id, title, description, \textbf{priority}, status, estimated\_effort).
+  \item $US$ := set of \textbf{UserStory} (Entity: \emph{UserStory}, attrs: id, title, description, acceptance\_criteria, \textbf{priority}, \textbf{story\_points}, \textbf{status}).
+  \item $TSK$ := set of \textbf{Task} (Entity: \emph{Task}, attrs: id, title, description, \textbf{status}, \textbf{effort}, type).
+  \item $DEV$ := set of \textbf{DevelopmentSnapshot} (Entity: \emph{DevelopmentSnapshot}, attrs: id, version\_number, creation\_date, \textbf{test\_status}, deployment\_target, documentation).
+  \item $BL$ := set of \textbf{Blocker} (Entity: \emph{Blocker}, attrs: id, title, description, \textbf{severity}, status, detected\_on, resolved\_on).
+  \item $SH$ := set of \textbf{Stakeholder} (Entity: \emph{Stakeholder}, attrs: id, name, organization, role, email, area\_of\_interest, influence\_level, relevance\_to\_feature).
+  \item $VEL$ := set of \textbf{Velocity} (Entity: \emph{Velocity}, attrs: id, number\_of\_sprints\_used, avg.\_story\_points, max\_velocity, min\_velocity, \textbf{trend}).
+  \item $REP$ := set of \textbf{ReleasePlan} (Entity: \emph{ReleasePlan}, attrs: id, version, planned\_date, included\_features, status).
+  \item $RM$ := set of \textbf{Roadmap} (Entity: \emph{Roadmap}, attrs: id, start\_date, end\_date, milestones, objectives, versions).
+  \item $SCB$ := set of \textbf{ScrumBoard} (Entity: \emph{ScrumBoard}, attrs: id, board\_type, columns\_(todo/done\ldots), number\_of\_cards, last\_updated).
+  \item $FED$ := set of \textbf{FeatureDocumentation} (Entity: \emph{FeatureDocumentation}, attrs: id, title, description, creation\_date, change\_log, linked\_requirements, author).
+\end{itemize}
+
+\paragraph{Relationship-derived incidence sets}
+\begin{itemize}[leftmargin=2em,itemsep=0.2em]
+  \item $A^{T,P}\subseteq T\times P$ (\emph{is\_assigned\_to\_project}, R1).
+  \item $A^{W,T}\subseteq W\times T$ (\emph{belongs\_to\_team}, R2).
+  \item $A^{W,S}\subseteq W\times S$ (\emph{has\_skill}, R3).
+  \item $A^{W,R}\subseteq W\times R$ (\emph{takes\_on\_role}, R4).
+  \item $A^{PO,PB}\subseteq PO\times PB$ (\emph{manages\_backlog}, R5).
+  \item $A^{T,SM}\subseteq T\times SM$ (\emph{is\_supported\_by}, R6).
+  \item $A^{PB,F}\subseteq PB\times F$ (\emph{contains\_feature}, R7).
+  \item $A^{PB,E}\subseteq PB\times E$ (\emph{contains\_epic}, R8).
+  \item $A^{E,US}\subseteq E\times US$ (\emph{contains\_user\_story}, R9).
+  \item $A^{US,TSK}\subseteq US\times TSK$ (\emph{consists\_of\_tasks}, R10).
+  \item $A^{US,SBL}\subseteq US\times SBL$ (\emph{is\_in\_sprint\_backlog}, R11).
+  \item $A^{SBL,SP}\subseteq SBL\times SP$ (\emph{belongs\_to\_sprint}, R12).
+  \item $A^{SP,SG}\subseteq SP\times SG$ (\emph{pursues\_goal}, R13).
+  \item $A^{SCB,TSK}\subseteq SCB\times TSK$ (\emph{contains\_tasks}, R14).
+  \item $A^{FED,F}\subseteq FED\times F$ (\emph{documents\_feature}, R15).
+  \item $A^{TSK,BL}\subseteq TSK\times BL$ (\emph{is\_blocked\_by}, R16).
+  \item $A^{SH,SR}\subseteq SH\times SR$ (\emph{participates\_in}, R17).
+  \item $A^{SM,SRE}\subseteq SM\times SRE$ (\emph{moderates\_retrospective}, R18).
+  \item $A^{VEL,T}\subseteq VEL\times T$ (\emph{refers\_to\_team}, R19).
+  \item $A^{REP,F}\subseteq REP\times F$ (\emph{plans\_release}, R20).
+  \item $A^{REP,RM}\subseteq REP\times RM$ (\emph{is\_part\_of\_roadmap}, R21).
+  \item $A^{SP,DEV}\subseteq SP\times DEV$ (\emph{generates\_snapshot}, R22).
+\end{itemize}
+
+\paragraph{Parameters (from entity attributes)}
+\begin{itemize}[leftmargin=2em,itemsep=0.2em]
+  \item $budget_p\in\mathbb{R}_{\ge 0}$, $p\in P$.
+  \item $teamSize_t\in\mathbb{Z}_{\ge 0}$, $t\in T$.
+  \item $avail_w\in\mathbb{R}_{\ge 0}$, $w\in W$.
+  \item $prio^F_f\in\mathbb{Z}_{\ge 0}$, $f\in F$; $prio^{US}_{u}\in\mathbb{Z}_{\ge 0}$, $u\in US$.
+  \item $spoints_u\in\mathbb{Z}_{\ge 0}$, $u\in US$.
+  \item $effort^{attr}_{k}\in\mathbb{Z}_{\ge 0}$, $k\in TSK$ (task attribute if treated as parameter).
+  \item $severity_b\in\mathbb{Z}_{\ge 0}$, $b\in BL$.
+  \item $attend_{r}\in\mathbb{Z}_{\ge 0}$, $r\in SR$.
+  \item $trend_{v}\in\mathbb{R}$, $v\in VEL$.
+  \item $benefit_{g}\in\mathbb{R}_{\ge 0}$, $g\in SG$.
+  \item $totalEff_{sbl}\in\mathbb{Z}_{\ge 0}$, $sbl\in SBL$.
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em]
+  \item $p\in P$; $t\in T$; $w\in W$; $f\in F$; $s\in S$; $r\in R$; $po\in PO$; $sm\in SM$; $pb\in PB$; $sp\in SP$; $spp\in SPP$; $ds\in DS$; $sr\in SR$; $sre\in SRE$; $sbl\in SBL$; $sg\in SG$; $e\in E$; $u\in US$; $k\in TSK$; $d\in DEV$; $b\in BL$; $sh\in SH$; $v\in VEL$; $rep\in REP$; $rm\in RM$; $scb\in SCB$; $fed\in FED$.
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}[leftmargin=2em]
+
+  \item \textbf{G0 maximize\_team\_capacity} (IsSum=True, GoalType=max). Logical: \emph{Prefer assignments that bring more team capacity to projects}. \\
+  Mathematical:
+  \[
+    \max \quad \sum_{(t,p)\in T\times P} teamSize_t \cdot x_{t,p}
+  \]
+
+  \item \textbf{G1 minimize\_project\_budget} (IsSum=True, GoalType=min). Logical: \emph{Prefer cheaper projects among assigned ones}. \\
+  Mathematical:
+  \[
+    \min \quad \sum_{(t,p)\in T\times P} budget_p \cdot x_{t,p}
+  \]
+
+  \item \textbf{G2 maximize\_story\_points\_planned} (IsSum=True, GoalType=max). Logical: \emph{Select user stories to maximize planned throughput}. \\
+  Mathematical:
+  \[
+    \max \quad \sum_{u\in US} spoints_u \cdot y_u
+  \]
+
+  \item \textbf{G3 minimize\_open\_blocker\_severity} (IsSum=True, GoalType=min). Logical: \emph{Reduce exposure to severe blockers on assigned tasks}. \\
+  Mathematical:
+  \[
+    \min \quad \sum_{w\in W}\sum_{k\in TSK}\sum_{b:(k,b)\in A^{TSK,BL}} severity_b \cdot z_{k,w}
+  \]
+
+  \item \textbf{G4 maximize\_velocity\_trend} (IsSum=True, GoalType=max). Logical: \emph{Prefer teams with positive velocity trend to be assigned}. \\
+  Mathematical:
+  \[
+    \max \quad \sum_{(v,t)\in A^{VEL,T}}\sum_{p\in P} trend_v \cdot x_{t,p}
+  \]
+
+  \item \textbf{G5 minimize\_task\_effort} (IsSum=True, GoalType=min). Logical: \emph{Prefer lower estimated effort when setting task estimates}. \\
+  Mathematical:
+  \[
+    \min \quad \sum_{k\in TSK} \widehat{effort}_k
+  \]
+
+  \item \textbf{G6 maximize\_feature\_priority\_covered} (IsSum=True, GoalType=max). Logical: \emph{Include high-priority features in release planning}. \\
+  Mathematical:
+  \[
+    \max \quad \sum_{f\in F} prio^F_f \cdot q_f
+  \]
+
+  \item \textbf{G7 minimize\_cycle\_time\_proxy} (IsSum=False, GoalType=min). Logical: \emph{Use planned sprint duration as a cycle-time proxy}. \\
+  Mathematical:
+  \[
+    \min \quad sLen
+  \]
+
+  \item \textbf{G8 maximize\_team\_availability} (IsSum=True, GoalType=max). Logical: \emph{Allocate work to leverage available capacity}. \\
+  Mathematical:
+  \[
+    \max \quad \sum_{w\in W} \sum_{k\in TSK} avail_w \cdot z_{k,w}
+  \]
+
+  \item \textbf{G9 minimize\_sprint\_backlog\_total\_effort} (IsSum=True, GoalType=min). Logical: \emph{Prefer smaller sprint backlog effort}. \\
+  Mathematical (as proxy via selected stories):
+  \[
+    \min \quad \sum_{u\in US} spoints_u \cdot y_u
+  \]
+
+  \item \textbf{G10 maximize\_review\_attendance} (IsSum=True, GoalType=max). Logical: \emph{Prefer plans associated with higher Sprint Review attendance}. \\
+  Mathematical (parameter-only objective for reference):
+  \[
+    \max \quad \sum_{sr\in SR} attend_{sr}
+  \]
+
+  \item \textbf{G11 minimize\_number\_of\_backlog\_entries} (IsSum=True, GoalType=min). Logical: \emph{Timebox backlog size through a planning cap}. \\
+  Mathematical:
+  \[
+    \min \quad cap^{PB}
+  \]
+
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}[leftmargin=2em]
+
+  \item \textbf{C0 minimize\_overallocated\_workers}. Logical: \emph{Assigned task effort must not exceed worker availability}. \\
+  Mathematical (capacity):
+  \[
+    \forall w\in W:\quad \sum_{k\in TSK} \widehat{effort}_k \, z_{k,w} \;\le\; avail_w
+  \]
+
+  \item \textbf{C1 minimize\_unachieved\_sprint\_goals}. Logical: \emph{Select sprint goals likely to be achieved}. \\
+  Mathematical (benefit threshold):
+  \[
+    \sum_{sg\in SG} benefit_{sg}\, g_{sg} \;\ge\; \beta,\quad \beta\ge 0\ \text{(planning parameter)}
+  \]
+
+  \item \textbf{C2 maximize\_certified\_skill\_coverage}. Logical: \emph{Favor certified skills for critical tasks}. \\
+  Mathematical (coverage proxy):
+  \[
+    \sum_{(w,s)\in A^{W,S}} certified_s \;\ge\; \gamma \quad \text{(planning target $\gamma$)}
+  \]
+
+  \item \textbf{C3 minimize\_low\_experience\_scrum\_master\_use}. Logical: \emph{Discourage assignment of very low-experience Scrum Masters}. \\
+  Mathematical (experience floor if assigned):
+  \[
+    \forall t\in T:\ \sum_{sm\in SM} m_{sm,t} \le 1,\qquad \sum_{sm\in SM} exp_{sm}\, m_{sm,t} \;\ge\; \underline{exp}\,\sum_{sm} m_{sm,t}
+  \]
+
+  \item \textbf{C4 maximize\_ready\_user\_stories}. Logical: \emph{Only READY stories may be selected}. \\
+  Mathematical (readiness filter):
+  \[
+    \forall u\in US:\ y_u \;\le\; \mathbf{1}[status^{US}_u=\text{READY}]
+  \]
+
+  \item \textbf{C5 minimize\_blocked\_tasks}. Logical: \emph{Avoid assigning tasks that are currently blocked}. \\
+  Mathematical (blocking filter):
+  \[
+    \forall k\in TSK:\ \left(\exists b:(k,b)\in A^{TSK,BL}\right) \Rightarrow \sum_{w\in W} z_{k,w} = 0
+  \]
+
+  \item \textbf{C6 maximize\_active\_team\_status}. Logical: \emph{Only active teams can be assigned to projects}. \\
+  Mathematical:
+  \[
+    \forall (t,p)\in T\times P:\ x_{t,p} \;\le\; \mathbf{1}[team\_status_t=\text{ACTIVE}]
+  \]
+
+  \item \textbf{C7 minimize\_past\_due\_release\_plans}. Logical: \emph{Do not plan inclusions beyond planned release date}. \\
+  Mathematical:
+  \[
+    \forall f\in F:\ q_f \;\le\; \mathbf{1}[\text{today}\le planned\_date(rep(f))]
+  \]
+
+  \item \textbf{C8 maximize\_high\_benefit\_sprint\_goals}. Logical: \emph{If selecting a sprint goal, enforce minimum benefit}. \\
+  Mathematical:
+  \[
+    \forall sg\in SG:\ g_{sg} \;\le\; \mathbf{1}[\,benefit_{sg}\ge \underline{b}\,]
+  \]
+
+  \item \textbf{C9 minimize\_outdated\_backlog}. Logical: \emph{Backlogs must be recently updated if used}. \\
+  Mathematical:
+  \[
+    \forall pb\in PB:\ o_{po,pb} \;\le\; \mathbf{1}[\,\text{now}-last\_updated_{pb}\le \Delta\,],\quad \forall po\in PO
+  \]
+
+  \item \textbf{C10 maximize\_tested\_snapshots}. Logical: \emph{Only snapshots with successful tests are considered done}. \\
+  Mathematical:
+  \[
+    \forall (sp,d)\in A^{SP,DEV}:\ \mathbf{1}[test\_status_d=\text{PASSED}] = 1
+  \]
+
+  \item \textbf{C11 minimize\_unresolved\_blockers\_age}. Logical: \emph{Tasks with old, unresolved blockers should not be assigned}. \\
+  Mathematical:
+  \[
+    \forall k\in TSK:\ \left(\exists b:(k,b)\in A^{TSK,BL}\ \wedge\ resolved\_on_b=\varnothing\ \wedge\ \text{age}_b>\overline{a}\right) \Rightarrow \sum_{w\in W} z_{k,w}=0
+  \]
+
+  \item \textbf{Structural constraints from relationships (samples)}:
+  \[
+    \forall t\in T:\ \sum_{p\in P} x_{t,p} \le 1 \quad (\text{each team to at most one project})
+  \]
+  \[
+    \forall k\in TSK:\ \sum_{w\in W} z_{k,w} \le 1 \quad (\text{a task assigned to at most one worker})
+  \]
+  \[
+    \sum_{u\in US} y_u \le cap^{PB} \quad (\text{backlog cap})
+  \]
+
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{DV0 assign\_team\_to\_project} ($x_{t,p}$): binary, domain $\{0,1\}$, $0\le x_{t,p}\le 1$.
+  \item \textbf{DV1 select\_user\_story\_for\_sprint} ($y_u$): binary, domain $\{0,1\}$, $0\le y_u\le 1$.
+  \item \textbf{DV2 allocate\_task\_to\_worker} ($z_{k,w}$): binary, domain $\{0,1\}$, $0\le z_{k,w}\le 1$.
+  \item \textbf{DV3 set\_sprint\_duration\_days} ($sLen$): integer, domain $\{7,10,14,21,28\}$, $7\le sLen\le 28$.
+  \item \textbf{DV4 choose\_scrum\_master\_for\_team} ($m_{sm,t}$): binary, domain $\{0,1\}$.
+  \item \textbf{DV5 prioritize\_feature\_rank} ($r^{rank}_f$): integer rank, domain $\{1,\dots,100\}$, $1\le r^{rank}_f\le 100$.
+  \item \textbf{DV6 select\_epic\_for\_backlog} ($e^{sel}_e$): binary, domain $\{0,1\}$.
+  \item \textbf{DV7 plan\_release\_includes\_feature} ($q_f$): binary, domain $\{0,1\}$.
+  \item \textbf{DV8 set\_task\_effort\_estimate} ($\widehat{effort}_k$): integer, domain $\{1,\dots,100\}$, $1\le \widehat{effort}_k\le 100$.
+  \item \textbf{DV9 assign\_product\_owner\_to\_backlog} ($o_{po,pb}$): binary, domain $\{0,1\}$.
+  \item \textbf{DV10 choose\_sprint\_goal} ($g_{sg}$): binary, domain $\{0,1\}$.
+  \item \textbf{DV11 limit\_max\_backlog\_entries} ($cap^{PB}$): integer cap, domain $\{10,\dots,1000\}$, $10\le cap^{PB}\le 1000$.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,max_tasks_per_sprint,"Constrain total number of tasks planned per sprint backlog.",True,min,SprintBacklog,number_of_tasks,2,1.0
+C1,max_features_per_release,"Limit number of features included in a single release to control scope.",True,min,ReleasePlan,included_features,2,1.0
+C2,min_team_availability,"Require minimum availability for key roles before planning work.",False,max,ProductOwner,availability,2,1.0
+C3,min_scrum_master_experience,"Require a minimum Scrum Master experience threshold for complex sprints.",False,max,ScrumMaster,experience,2,0.8
+C4,max_blocker_severity,"No sprint may proceed if any blocker exceeds severity threshold.",True,min,Blocker,severity,2,1.0
+C5,max_total_feature_effort,"Cap cumulative estimated effort of features planned in the release.",True,min,Feature,estimated_effort,2,1.0
+C6,max_task_effort,"Disallow tasks that exceed an effort ceiling to keep work items small.",False,min,Task,effort,2,0.9
+C7,min_story_points_mix,"Ensure minimum average story points to avoid underutilization.",True,max,UserStory,story_points,1,0.5
+C8,max_backlog_size,"Keep product backlog size within manageable bounds.",True,min,ProductBacklog,number_of_entries,1,0.6
+C9,max_review_duration,"Keep sprint review within timebox to protect team energy.",False,min,SprintReview,duration,2,0.7
+C10,max_daily_scrum_duration,"Daily Scrum must respect the 15-minute timebox.",False,min,DailyScrum,duration,2,1.0
+C11,min_team_size,"Ensure minimum team size for cross-functional capacity.",False,max,Team,team_size,2,0.8
+C12,max_tasks_on_board,"Limit WIP by capping number of cards on the scrum board.",True,min,ScrumBoard,number_of_cards,2,1.0
