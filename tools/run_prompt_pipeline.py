@@ -1,155 +1,201 @@
 import os
 import sys
+import re
 import json
 import time
 import argparse
 import requests
-import markdown
-import datetime
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import datetime, timezone
 
-# -------------------------
-# Load .env
-# -------------------------
+# =========================
+# .env laden
+# =========================
 load_dotenv()
 
-# -------------------------
+# =========================
 # CLI Argumente
-# -------------------------
-parser = argparse.ArgumentParser(description="Run prompt pipeline for LLM testing.")
-parser.add_argument("--strategy", type=str, help="Strategie (z.B. s1, s2) – ohne Angabe werden alle Strategien ausgeführt.")
-parser.add_argument("--url", type=str, help="API URL (z.B. http://localhost:11434/api/generate)")
-parser.add_argument("--api_key", type=str, help="API Key für Authentifizierung (optional, kann auch als Umgebungsvariable gesetzt werden).")
-parser.add_argument("--run", type=int, default=1, help="Wie oft die Strategie durchlaufen werden soll (Default=1).")
+# =========================
+parser = argparse.ArgumentParser(description="Run prompt pipeline for local Ollama models.")
+parser.add_argument("--strategy", type=str,
+                    help="Strategie (z.B. s1, s2). Ohne Angabe werden alle Strategien aus input/ ausgeführt.")
+parser.add_argument("--url", type=str, help="Ollama API URL, z.B. http://localhost:11434/api/generate")
+parser.add_argument("--api_key", type=str, help="API Key (für Ollama nicht nötig; optional).")
+parser.add_argument("--run", type=int, default=1, help="Wieviele Wiederholungen pro Strategie (Default=1).")
 args = parser.parse_args()
 
-# -------------------------
-# Basis-Pfade aus .env
-# -------------------------
+# =========================
+# Pfade aus .env
+# =========================
 LLM_ROOT = Path(os.getenv("LLM_ROOT", "../large-language-models")).resolve()
 LLM_INPUT_ROOT = Path(os.getenv("LLM_INPUT_ROOT", "../input")).resolve()
 
-# -------------------------
-# URL und API Key
-# -------------------------
+# =========================
+# API Konfiguration
+# =========================
 API_URL = args.url or os.getenv("LLM_API_URL")
 if not API_URL:
     print("❌ Keine API-URL angegeben. Nutze --url oder setze LLM_API_URL in .env")
     sys.exit(1)
+API_KEY = args.api_key or os.getenv("LLM_API_KEY")  # i. d. R. nicht nötig für Ollama
 
-API_KEY = args.api_key or os.getenv("LLM_API_KEY")
+# =========================
+# Utils
+# =========================
+SIZE_REGEX = re.compile(r"^\d+(?:\.\d+)?b$", re.IGNORECASE)  # 8b, 24b, 7.2b, 14b, ...
+EXCLUDE_TOP = {"analyse", "remote-llms"}  # oberste Ordner, die wir ignorieren
 
-# -------------------------
-# Hilfsfunktionen
-# -------------------------
+def utc_stamp() -> str:
+    return datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+
 def load_prompts_from_md(strategy_file: Path):
     """Lädt Prompts aus einer .md-Datei, getrennt durch '---'."""
     if not strategy_file.exists():
         print(f"❌ Prompt-Datei nicht gefunden: {strategy_file}")
         return []
-    with open(strategy_file, "r", encoding="utf-8") as f:
-        content = f.read()
-    prompts = [p.strip() for p in content.split("---") if p.strip()]
-    return prompts
+    content = strategy_file.read_text(encoding="utf-8")
+    return [p.strip() for p in content.split("---") if p.strip()]
 
-def send_prompt(prompt_text: str):
-    """Sendet einen Prompt an die API und gibt die Antwort zurück."""
+def discover_local_ollama_models(llm_root: Path):
+    """
+    Erwartete Struktur:
+      large-language-models/
+        local-llm/
+          <model>/
+            <size>/            # size muss wie 8b/24b/7.2b aussehen
+            sX/ vX/ ...        # werden ignoriert
+    Rückgabe: Liste (size_dir_path, ollama_model, size, pretty)
+    """
+    results = []
+    for top in llm_root.iterdir():
+        if not top.is_dir():
+            continue
+        if top.name in EXCLUDE_TOP:
+            continue
+        if top.name != "local-llm":
+            continue
+
+        for model_dir in top.iterdir():
+            if not model_dir.is_dir():
+                continue
+            model_name = model_dir.name
+
+            for possible_size in model_dir.iterdir():
+                if not possible_size.is_dir():
+                    continue
+
+                size_name = possible_size.name
+                # Nur "echte" Größen wie 8b, 24b, 7.2b zulassen
+                if not SIZE_REGEX.match(size_name):
+                    # z. B. s1, v1, strategy0, etc. überspringen
+                    continue
+
+                # Jetzt sind wir bei .../local-llm/<model>/<size>
+                ollama_model = f"{model_name}:{size_name}"
+                pretty = f"{model_name}:{size_name}"
+                results.append((possible_size, ollama_model, size_name, pretty))
+
+    return results
+
+def send_prompt_ollama(prompt_text: str, ollama_model: str, api_url: str):
+    """Sendet Prompt an Ollama /api/generate und gibt die Text-Antwort zurück (oder dict mit 'error')."""
     headers = {}
     if API_KEY:
-        headers["Authorization"] = f"Bearer {API_KEY}"
+        headers["Authorization"] = f"Bearer {API_KEY}"  # von Ollama i. d. R. ignoriert
 
+    payload = {
+        "model": ollama_model,
+        "prompt": prompt_text,
+        "stream": False
+    }
     try:
-        resp = requests.post(API_URL, headers=headers, json={"model": "default", "prompt": prompt_text})
+        resp = requests.post(api_url, headers=headers, json=payload, timeout=1800)
         resp.raise_for_status()
-        return resp.json()
-    except Exception as e:
+        data = resp.json()
+        return data.get("response", "")
+    except requests.RequestException as e:
         return {"error": str(e)}
 
-def get_model_dirs():
-    """Liest alle model/size-Verzeichnisse."""
-    model_dirs = []
-    for root, dirs, files in os.walk(LLM_ROOT):
-        parts = Path(root).parts
-        if len(parts) >= 2 and parts[-2] != "large-language-models":
-            # erwartet: .../<modell>/<size>
-            model = parts[-2]
-            size = parts[-1]
-            if not size.startswith("s") and not size.startswith("v"):  # Nur Größen-Ebene
-                model_dirs.append((Path(root), model, size))
-    return model_dirs
+def next_version_dir(strategy_dir: Path) -> Path:
+    """Ermittelt die nächste 'vX'-Version als Ordner."""
+    strategy_dir.mkdir(parents=True, exist_ok=True)
+    versions = [d for d in strategy_dir.iterdir() if d.is_dir() and d.name.startswith("v")]
+    next_v = f"v{len(versions) + 1}"
+    out = strategy_dir / next_v
+    out.mkdir(parents=True, exist_ok=True)
+    return out
 
-# -------------------------
-# Pipeline
-# -------------------------
-model_dirs = get_model_dirs()
-print(f"🔎 Gefundene Modelle/Größen: {len(model_dirs)}")
+# =========================
+# Modelle finden (nur local-llm/<model>/<size>)
+# =========================
+model_entries = discover_local_ollama_models(LLM_ROOT)
+print(f"🔎 Gefundene lokale Ollama-Modelle: {len(model_entries)}")
 
-strategies_to_run = []
+# Strategien bestimmen
 if args.strategy:
     strategies_to_run = [args.strategy]
 else:
-    # Alle strategyX_prompts.md im Input-Ordner finden
-    for file in LLM_INPUT_ROOT.glob("strategy*_prompts.md"):
-        strategies_to_run.append(file.stem.split("_")[0])
+    # alle strategyX_prompts.md im input/ finden → sX-Liste
+    s_list = []
+    for p in LLM_INPUT_ROOT.glob("strategy*_prompts.md"):
+        num = p.stem.replace("strategy", "").replace("_prompts", "")
+        if num.isdigit():
+            s_list.append(f"s{num}")
+    strategies_to_run = sorted(set(s_list))
 
 for run_idx in range(1, args.run + 1):
     print(f"\n🔁 Run {run_idx}/{args.run}")
 
-    for model_path, model_name, size in model_dirs:
+    for size_dir, ollama_model, size, pretty in model_entries:
         for strategy in strategies_to_run:
-            print(f"\n🧭 Modell: {model_name}:{size} | Strategie: {strategy}")
+            print(f"\n🧭 Modell: {pretty} | Strategie: {strategy}")
 
+            # s2 → strategy2_prompts.md
             strategy_file = LLM_INPUT_ROOT / f"strategy{strategy[1:]}_prompts.md"
             prompts = load_prompts_from_md(strategy_file)
             print(f"📝 {len(prompts)} Prompts geladen ({strategy})")
 
-            # Nächste freie Versionsnummer finden
-            strategy_path = model_path / strategy
-            strategy_path.mkdir(parents=True, exist_ok=True)
-            version_dirs = [d for d in strategy_path.iterdir() if d.is_dir() and d.name.startswith("v")]
-            next_version = f"v{len(version_dirs)+1}"
+            # Ziel: .../<model>/<size>/<strategy>/vX/
+            strategy_path = size_dir / strategy
+            out_dir = next_version_dir(strategy_path)
 
-            # Ausgabeordner
-            timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%S")
-            output_dir = strategy_path / next_version
-            output_dir.mkdir(parents=True, exist_ok=True)
-            print(f"🗂️  Ausgabe: {output_dir} (Timestamp: {timestamp})")
+            ts = utc_stamp()
+            print(f"🗂️  Ausgabe: {out_dir} (Timestamp: {ts})")
 
             chat_history = []
-            stats = []
+            stats_rows = []
 
             for idx, prompt in enumerate(prompts):
                 print(f"  ➤ Prompt {idx} senden …")
-                start_time = time.time()
-                result = send_prompt(prompt)
-                elapsed = time.time() - start_time
-                if "error" in result:
+                t0 = time.time()
+                result = send_prompt_ollama(prompt, ollama_model, API_URL)
+                elapsed = time.time() - t0
+
+                if isinstance(result, dict) and "error" in result:
                     print(f"    ❌ Fehler: {result['error']}")
+                    answer_text = ""
+                    err_text = result["error"]
                 else:
                     print(f"    ✓ Antwort ({elapsed:.2f}s)")
+                    answer_text = result
+                    err_text = ""
 
-                chat_history.append({
-                    "role": "user",
-                    "content": prompt
-                })
-                chat_history.append({
-                    "role": "assistant",
-                    "content": result
-                })
-                stats.append({"prompt_index": idx, "time": elapsed, "error": result.get("error")})
+                chat_history.append({"role": "user", "content": prompt})
+                chat_history.append({"role": "assistant", "content": answer_text})
+                stats_rows.append({"prompt_index": idx, "time": round(elapsed, 3), "error": err_text})
 
-            # Speichern
-            chat_file = output_dir / f"chat_{timestamp}.json"
-            stats_file = output_dir / f"stats_{timestamp}.csv"
+            # Dateien speichern
+            chat_file = out_dir / f"chat_{ts}.json"
+            stats_file = out_dir / f"stats_{ts}.csv"
 
             with open(chat_file, "w", encoding="utf-8") as f:
                 json.dump({
-                    "model": model_name,
+                    "model": ollama_model.split(":")[0],
                     "size": size,
                     "strategy": strategy,
-                    "version": next_version,
-                    "timestamp": datetime.datetime.utcnow().isoformat(),
+                    "version_dir": out_dir.name,
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
                     "chat": chat_history
                 }, f, ensure_ascii=False, indent=2)
 
@@ -157,172 +203,7 @@ for run_idx in range(1, args.run + 1):
             with open(stats_file, "w", encoding="utf-8", newline="") as f:
                 writer = csv.DictWriter(f, fieldnames=["prompt_index", "time", "error"])
                 writer.writeheader()
-                writer.writerows(stats)
-
-            print(f"💾 Chat gespeichert: {chat_file}")
-            print(f"📊 Statistik gespeichert: {stats_file}")
-
-print("\n✅ Pipeline abgeschlossen.")
-import os
-import sys
-import json
-import time
-import argparse
-import requests
-import markdown
-import datetime
-from pathlib import Path
-from dotenv import load_dotenv
-
-# -------------------------
-# Load .env
-# -------------------------
-load_dotenv()
-
-# -------------------------
-# CLI Argumente
-# -------------------------
-parser = argparse.ArgumentParser(description="Run prompt pipeline for LLM testing.")
-parser.add_argument("--strategy", type=str, help="Strategie (z.B. s1, s2) – ohne Angabe werden alle Strategien ausgeführt.")
-parser.add_argument("--url", type=str, help="API URL (z.B. http://localhost:11434/api/generate)")
-parser.add_argument("--api_key", type=str, help="API Key für Authentifizierung (optional, kann auch als Umgebungsvariable gesetzt werden).")
-parser.add_argument("--run", type=int, default=1, help="Wie oft die Strategie durchlaufen werden soll (Default=1).")
-args = parser.parse_args()
-
-# -------------------------
-# Basis-Pfade aus .env
-# -------------------------
-LLM_ROOT = Path(os.getenv("LLM_ROOT", "../large-language-models")).resolve()
-LLM_INPUT_ROOT = Path(os.getenv("LLM_INPUT_ROOT", "../input")).resolve()
-
-# -------------------------
-# URL und API Key
-# -------------------------
-API_URL = args.url or os.getenv("LLM_API_URL")
-if not API_URL:
-    print("❌ Keine API-URL angegeben. Nutze --url oder setze LLM_API_URL in .env")
-    sys.exit(1)
-
-API_KEY = args.api_key or os.getenv("LLM_API_KEY")
-
-# -------------------------
-# Hilfsfunktionen
-# -------------------------
-def load_prompts_from_md(strategy_file: Path):
-    """Lädt Prompts aus einer .md-Datei, getrennt durch '---'."""
-    if not strategy_file.exists():
-        print(f"❌ Prompt-Datei nicht gefunden: {strategy_file}")
-        return []
-    with open(strategy_file, "r", encoding="utf-8") as f:
-        content = f.read()
-    prompts = [p.strip() for p in content.split("---") if p.strip()]
-    return prompts
-
-def send_prompt(prompt_text: str):
-    """Sendet einen Prompt an die API und gibt die Antwort zurück."""
-    headers = {}
-    if API_KEY:
-        headers["Authorization"] = f"Bearer {API_KEY}"
-
-    try:
-        resp = requests.post(API_URL, headers=headers, json={"model": "default", "prompt": prompt_text})
-        resp.raise_for_status()
-        return resp.json()
-    except Exception as e:
-        return {"error": str(e)}
-
-def get_model_dirs():
-    """Liest alle model/size-Verzeichnisse."""
-    model_dirs = []
-    for root, dirs, files in os.walk(LLM_ROOT):
-        parts = Path(root).parts
-        if len(parts) >= 2 and parts[-2] != "large-language-models":
-            # erwartet: .../<modell>/<size>
-            model = parts[-2]
-            size = parts[-1]
-            if not size.startswith("s") and not size.startswith("v"):  # Nur Größen-Ebene
-                model_dirs.append((Path(root), model, size))
-    return model_dirs
-
-# -------------------------
-# Pipeline
-# -------------------------
-model_dirs = get_model_dirs()
-print(f"🔎 Gefundene Modelle/Größen: {len(model_dirs)}")
-
-strategies_to_run = []
-if args.strategy:
-    strategies_to_run = [args.strategy]
-else:
-    # Alle strategyX_prompts.md im Input-Ordner finden
-    for file in LLM_INPUT_ROOT.glob("strategy*_prompts.md"):
-        strategies_to_run.append(file.stem.split("_")[0])
-
-for run_idx in range(1, args.run + 1):
-    print(f"\n🔁 Run {run_idx}/{args.run}")
-
-    for model_path, model_name, size in model_dirs:
-        for strategy in strategies_to_run:
-            print(f"\n🧭 Modell: {model_name}:{size} | Strategie: {strategy}")
-
-            strategy_file = LLM_INPUT_ROOT / f"{strategy}_prompts.md"
-            prompts = load_prompts_from_md(strategy_file)
-            print(f"📝 {len(prompts)} Prompts geladen ({strategy})")
-
-            # Nächste freie Versionsnummer finden
-            strategy_path = model_path / strategy
-            strategy_path.mkdir(parents=True, exist_ok=True)
-            version_dirs = [d for d in strategy_path.iterdir() if d.is_dir() and d.name.startswith("v")]
-            next_version = f"v{len(version_dirs)+1}"
-
-            # Ausgabeordner
-            timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%S")
-            output_dir = strategy_path / next_version
-            output_dir.mkdir(parents=True, exist_ok=True)
-            print(f"🗂️  Ausgabe: {output_dir} (Timestamp: {timestamp})")
-
-            chat_history = []
-            stats = []
-
-            for idx, prompt in enumerate(prompts):
-                print(f"  ➤ Prompt {idx} senden …")
-                start_time = time.time()
-                result = send_prompt(prompt)
-                elapsed = time.time() - start_time
-                if "error" in result:
-                    print(f"    ❌ Fehler: {result['error']}")
-                else:
-                    print(f"    ✓ Antwort ({elapsed:.2f}s)")
-
-                chat_history.append({
-                    "role": "user",
-                    "content": prompt
-                })
-                chat_history.append({
-                    "role": "assistant",
-                    "content": result
-                })
-                stats.append({"prompt_index": idx, "time": elapsed, "error": result.get("error")})
-
-            # Speichern
-            chat_file = output_dir / f"chat_{timestamp}.json"
-            stats_file = output_dir / f"stats_{timestamp}.csv"
-
-            with open(chat_file, "w", encoding="utf-8") as f:
-                json.dump({
-                    "model": model_name,
-                    "size": size,
-                    "strategy": strategy,
-                    "version": next_version,
-                    "timestamp": datetime.datetime.utcnow().isoformat(),
-                    "chat": chat_history
-                }, f, ensure_ascii=False, indent=2)
-
-            import csv
-            with open(stats_file, "w", encoding="utf-8", newline="") as f:
-                writer = csv.DictWriter(f, fieldnames=["prompt_index", "time", "error"])
-                writer.writeheader()
-                writer.writerows(stats)
+                writer.writerows(stats_rows)
 
             print(f"💾 Chat gespeichert: {chat_file}")
             print(f"📊 Statistik gespeichert: {stats_file}")
