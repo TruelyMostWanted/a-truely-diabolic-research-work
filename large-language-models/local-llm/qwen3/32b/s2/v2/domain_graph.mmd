@@ -1,0 +1,67 @@
+graph TD
+    classDef entity fill:#87CEEB,stroke:#333,fill-opacity:0.8;
+    classDef attribute fill:#ffffff,stroke:#333,fill-opacity:0.8;
+    classDef relation fill:#FFA500,stroke:#333,fill-opacity:0.8;
+    classDef goal fill:#90EE90,stroke:#333,fill-opacity:0.8;
+    classDef condition fill:#FF6347,stroke:#333,fill-opacity:0.8;
+    classDef decision fill:#DA70D6,stroke:#333,fill-opacity:0.8;
+
+    %% Entities
+    E1[Customer]:::entity
+    E2[Product]:::entity
+    E3[Order]:::entity
+    E4[Supplier]:::entity
+
+    %% Attributes
+    A1[Name]:::attribute
+    A2[Email]:::attribute
+    A3[Price]:::attribute
+    A4[Description]:::attribute
+    A5[OrderDate]:::attribute
+    A6[TotalAmount]:::attribute
+    A7[StockLevel]:::attribute
+
+    %% Relations
+    R1[Purchases]:::relation
+    R2[Contains]:::relation
+    R3[Supplies]:::relation
+
+    %% Goals
+    G1[Maximize Sales]:::goal
+    G2[Minimize Customer Acquisition Cost]:::goal
+
+    %% Conditions
+    C1[Price must be positive]:::condition
+    C2[OrderDate must be in the past]:::condition
+
+    %% Decision Variables
+    D1[DiscountRate]:::decision
+    D2[MarketingBudget]:::decision
+
+    %% Connections
+    E1 --> A1
+    E1 --> A2
+    E2 --> A3
+    E2 --> A4
+    E3 --> A5
+    E3 --> A6
+    E4 --> A7
+
+    E1 --> R1
+    E2 --> R1
+    E3 --> R2
+    E2 --> R2
+    E4 --> R3
+    E2 --> R3
+
+    G1 --> E1
+    G2 --> E1
+    C1 --> A3
+    C2 --> A5
+
+    D1 --> E1
+    D2 --> E1
+
+    %% Optional layout hints for readability
+    A1 -->|hidden| E1
+    A3 -->|hidden| E2

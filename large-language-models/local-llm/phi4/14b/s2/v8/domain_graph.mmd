@@ -1,0 +1,38 @@
+graph TD
+
+    %% Entities in blue
+    subgraph "Entities"
+        E1([Entity1]):::entity
+        E2([Entity2]):::entity
+        E3([Entity3]):::entity
+    end
+    
+    %% Attributes in white, around entities
+    A1([Attribute1]):::attribute --> E1
+    A2([Attribute2]):::attribute --> E1
+    A3([Attribute3]):::attribute --> E2
+    A4([Attribute4]):::attribute --> E3
+    
+    %% Relations in orange between entities
+    R1([Relation1]):::relation -->|connects| E1 & E2
+    R2([Relation2]):::relation -->|connects| E2 & E3
+    
+    %% Goals in green connected to entities/attributes
+    G1([Goal1]):::goal --> E1
+    G2([Goal2]):::goal --> A4
+    
+    %% Conditions in red connected to entities/attributes
+    C1([Condition1]):::condition --> E2
+    C2([Condition2]):::condition --> A3
+    
+    %% Decision Variables in purple connected to relevant entities
+    DV1([DecisionVariable1]):::decision --> E1
+    DV2([DecisionVariable2]):::decision --> E3
+
+%% Styles
+classDef entity fill:#blue,stroke:#333,stroke-width:2px;
+classDef attribute fill:#white,stroke:#333,stroke-width:2px;
+classDef relation fill:#orange,stroke:#333,stroke-width:2px;
+classDef goal fill:#green,stroke:#333,stroke-width:2px;
+classDef condition fill:#red,stroke:#333,stroke-width:2px;
+classDef decision fill:#purple,stroke:#333,stroke-width:2px;

@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref}
+\usepackage{tocloft} %For customizing Table of Contents
+
+% Customize Table of Contents appearance
+\renewcommand{\cfttoctitlefont}{\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsubsecfont}{\itshape}
+
+
+\title{Optimization Model for Resource Allocation}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+    \item \textbf{Resources:} $R = \{R_1, R_2, ..., R_{10}\}$ (e.g., Budget, Personnel, Equipment)
+    \item \textbf{Activities:} $A = \{A_1, A_2, ..., A_{20}\}$ (e.g., Research, Development, Marketing)
+    \item \textbf{Projects:} $P = \{P_1, P_2, ..., P_{5}\}$ (e.g., Project Alpha, Project Beta)
+    \item \textbf{Departments:} $D = \{D_1, D_2, ..., D_{3}\}$ (e.g., Engineering, Sales, Operations)
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+    \item $i$: Index for Resources ($i \in R$)
+    \item $j$: Index for Activities ($j \in A$)
+    \item $k$: Index for Projects ($k \in P$)
+    \item $l$: Index for Departments ($l \in D$)
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}
+    \item \textbf{Goal ID: G1, Name: Maximize Overall Project Success}
+        \begin{align*}
+        \text{Maximize } \sum_{k \in P} w_k \cdot s_k
+        \end{align*}
+        Where: $w_k$ = Weight of project $k$, $s_k$ = Success score of project $k$.
+
+    \item \textbf{Goal ID: G2, Name: Minimize Total Cost}
+        \begin{align*}
+        \text{Minimize } \sum_{i \in R} c_i \cdot x_i
+        \end{align*}
+        Where: $c_i$ = Cost of resource $i$, $x_i$ = Amount of resource $i$ used.
+
+    \item \textbf{Goal ID: G3, Name: Maximize Return on Investment (ROI)}
+        \begin{align*}
+        \text{Maximize } \frac{\sum_{k \in P} \text{Revenue}_k - \sum_{i \in R} c_i \cdot x_i}{\sum_{i \in R} c_i \cdot x_i}
+        \end{align*}
+        Where: $\text{Revenue}_k$ = Revenue from project $k$.
+
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+    \item \textbf{Condition ID: C1, Name: Resource Availability}
+        \begin{align*}
+        \sum_{j \in A} u_{i,j} \cdot y_{i,j} \le \text{Availability}_i \quad \forall i \in R
+        \end{align*}
+        Where: $u_{i,j}$ = Usage of resource $i$ in activity $j$,  $y_{i,j}$ = Boolean variable indicating if activity $j$ uses resource $i$, and $\text{Availability}_i$ = total available quantity of resource i.
+
+    \item \textbf{Condition ID: C2, Name: Activity Dependency}
+        \begin{align*}
+        y_{j_1,j_2} = 1 \text{ if activity } j_1 \text{ must precede } j_2
+        \end{align*}
+        Where $y_{j_1,j_2}$ is a binary variable representing the precedence relation between activities $j_1$ and $j_2$.
+
+    \item \textbf{Condition ID: C3, Name: Budget Constraint}
+        \begin{align*}
+        \sum_{i \in R} c_i \cdot x_i \le \text{Total Budget}
+        \end{align*}
+        Where: $\text{Total Budget}$ = Total available budget.
+
+\end{itemize}
+
+\section{5. Decision Variables}
+\begin{itemize}
+    \item $x_i$: Amount of resource $i$ allocated (Continuous, $x_i \ge 0$).
+    \item $y_{i,j}$: Binary variable: 1 if resource $i$ is used in activity $j$, 0 otherwise.
+    \item $z_k$:  Integer variable: Level of effort allocated to project $k$ (e.g., 1-5, representing low to high effort).
+    \item $s_k$: Success score of project $k$ (Continuous, between 0 and 1).  This might be a function of $z_k$ (e.g.  $s_k = f(z_k)$).
+\end{itemize}
+
+\end{document}

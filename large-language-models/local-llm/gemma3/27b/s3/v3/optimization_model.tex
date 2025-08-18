@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\title{Optimization Model for Scrum Software Development}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+This document outlines an optimization model for software development using the Scrum framework. The model aims to maximize value delivery while considering various constraints and priorities.  The model utilizes a set of goals, conditions, and decision variables to achieve optimal resource allocation and project execution.
+
+\section{Sets (Entities)}
+
+The following sets represent the entities involved in the optimization model:
+
+\begin{itemize}
+    \item \textbf{Projects}: Represents the software projects being developed.
+    \item \textbf{Teams}: Represents the development teams.
+    \item \textbf{Workers}: Represents the individual team members.
+    \item \textbf{Features}: Represents the functionalities being implemented.
+    \item \textbf{User Stories}: Represents the requirements from the user's perspective.
+    \item \textbf{Tasks}: Represents the smallest units of work within a sprint.
+\end{itemize}
+
+\section{Indices}
+
+Indices are used to denote the specific elements within each set.  For example, $i$ represents an index for projects, $j$ represents an index for teams, and so on.
+
+\section{Goals}
+
+The optimization model seeks to achieve the following goals:
+
+\begin{itemize}
+    \item \textbf{Maximize Team Velocity (G0)}: $\max \sum_{j} \text{team\_size}_j$
+    \item \textbf{Minimize Project Cost (G1)}: $\min \sum_{i} \text{budget}_i$
+    \item \textbf{Maximize Feature Priority (G2)}: $\max \sum_{f} \text{priority}_f$
+\end{itemize}
+
+\section{Conditions}
+
+The optimization model is subject to the following conditions:
+
+\begin{itemize}
+    \item \textbf{Feature Priority High (C0)}: $\text{priority}_f \ge 3$
+    \item \textbf{Worker Status Active (C1)}: $\text{status}_w = \text{Active}$
+\end{itemize}
+
+\section{DecisionVariables}
+
+The following are the decision variables that will be used:
+
+\begin{itemize}
+    \item \textbf{Team Size (DV0)}: The number of team members assigned to a project.
+    \item \textbf{Budget Allocation (DV1)}: The amount of budget allocated to a project.
+\end{itemize}
+
+\end{document}

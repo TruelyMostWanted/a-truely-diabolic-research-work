@@ -1,0 +1,109 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Entity 1
+    \item Entity 2
+    \item Entity 3
+    \item Entity 4
+    \item Entity 5
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item Index 1
+    \item Index 2
+    \item Index 3
+    \item Index 4
+    \item Index 5
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{Goal ID: G1} \\
+          \textbf{Name: Maximize Profit} \\
+          \textbf{Mathematical Representation:} $\max \sum_{i \in I} \sum_{j \in J} c_{ij} x_{ij}$
+
+    \item \textbf{Goal ID: G2} \\
+          \textbf{Name: Minimize Cost} \\
+          \textbf{Mathematical Representation:} $\min \sum_{i \in I} \sum_{j \in J} c'_{ij} x_{ij}$
+
+    \item \textbf{Goal ID: G3} \\
+          \textbf{Name: Resource Utilization} \\
+          \textbf{Mathematical Representation:} $\max \sum_{k \in K} r_k y_k$
+
+    \item \textbf{Goal ID: G4} \\
+          \textbf{Name: Customer Satisfaction} \\
+          \textbf{Mathematical Representation:} $\max \sum_{l \in L} s_l z_l$
+
+    \item \textbf{Goal ID: G5} \\
+          \textbf{Name: Sustainability} \\
+          \textbf{Mathematical Representation:} $\min \sum_{m \in M} e_m w_m$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{Condition ID: C1} \\
+          \textbf{Name: Capacity Constraint} \\
+          \textbf{Logical Representation:} For each resource, the total usage does not exceed its capacity. \\
+          \textbf{Mathematical Representation:} $\sum_{i \in I} a_{ik} x_{i} \leq b_k \quad \forall k \in K$
+
+    \item \textbf{Condition ID: C2} \\
+          \textbf{Name: Demand Constraint} \\
+          \textbf{Logical Representation:} The total supply meets or exceeds the demand. \\
+          \textbf{Mathematical Representation:} $\sum_{j \in J} x_{ij} \geq d_j \quad \forall i \in I$
+
+    \item \textbf{Condition ID: C3} \\
+          \textbf{Name: Binary Constraint} \\
+          \textbf{Logical Representation:} Certain variables must be binary. \\
+          \textbf{Mathematical Representation:} $x_{ij} \in \{0, 1\} \quad \forall i \in I, j \in J$
+
+    \item \textbf{Condition ID: C4} \\
+          \textbf{Name: Non-Negativity Constraint} \\
+          \textbf{Logical Representation:} Certain variables must be non-negative. \\
+          \textbf{Mathematical Representation:} $x_{ij} \geq 0 \quad \forall i \in I, j \in J$
+
+    \item \textbf{Condition ID: C5} \\
+          \textbf{Name: Time Constraint} \\
+          \textbf{Logical Representation:} Operations must be completed within a specified time frame. \\
+          \textbf{Mathematical Representation:} $t_{ij} \leq T \quad \forall i \in I, j \in J$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{Decision Variable ID: DV1} \\
+          \textbf{Name: Production Quantity} \\
+          \textbf{Description:} Quantity of product $i$ produced at facility $j$.
+
+    \item \textbf{Decision Variable ID: DV2} \\
+          \textbf{Name: Resource Allocation} \\
+          \textbf{Description:} Amount of resource $k$ allocated to activity $i$.
+
+    \item \textbf{Decision Variable ID: DV3} \\
+          \textbf{Name: Customer Satisfaction Level} \\
+          \textbf{Description:} Level of satisfaction for customer $l$.
+
+    \item \textbf{Decision Variable ID: DV4} \\
+          \textbf{Name: Sustainability Metric} \\
+          \textbf{Description:} Sustainability metric for activity $m$.
+
+    \item \textbf{Decision Variable ID: DV5} \\
+          \textbf{Name: Time Allocation} \\
+          \textbf{Description:} Time allocated to task $i$ at location $j$.
+\end{itemize}
+
+\end{document}

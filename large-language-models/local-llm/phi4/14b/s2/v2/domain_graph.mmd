@@ -1,0 +1,62 @@
+graph TD
+
+  classDef entity fill:#ADD8E6,stroke:#000;
+  classDef attribute fill:#FFFFFF,stroke:#000;
+  classDef relation fill:#FFA500,stroke:#000;
+  classDef goal fill:#90EE90,stroke:#000;
+  classDef condition fill:#FF6347,stroke:#000;
+  classDef decisionVariable fill:#9370DB,stroke:#000;
+
+  subgraph Entities
+    E1[E1]:::entity
+    E2[E2]:::entity
+  end
+
+  subgraph Attributes
+    A1[A1]:::attribute
+    A2[A2]:::attribute
+    A3[A3]:::attribute
+  end
+  
+  subgraph Relations
+    R1[R1]:::relation
+    R2[R2]:::relation
+  end
+
+  subgraph Goals
+    G1[G1]:::goal
+    G2[G2]:::goal
+  end
+  
+  subgraph Conditions
+    C1[C1]:::condition
+    C2[C2]:::condition
+  end
+  
+  subgraph DecisionVariables
+    DV1[DV1]:::decisionVariable
+    DV2[DV2]:::decisionVariable
+  end
+
+  // Connect Entities with their Attributes
+  E1 -.-> A1
+  E1 -.-> A2
+  E2 -.-> A3
+
+  // Connect Entities with their Relations
+  E1 --> R1
+  E2 --> R2
+
+  // Connect Goals with Entity/Attributes
+  G1 -.-> E1
+  G1 -.-> A1
+  G2 -.-> E2
+
+  // Connect Conditions with Entity/Attributes
+  C1 -.-> E1
+  C1 -.-> A2
+  C2 -.-> E2
+
+  // Connect DecisionVariables with their relevant Entities
+  DV1 --> E1
+  DV2 --> E2

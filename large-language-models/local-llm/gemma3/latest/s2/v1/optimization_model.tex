@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+    \item EntityID: E1 (ComponentA)
+    \item EntityName: ComponentA
+    \item EntityID: E2 (ComponentB)
+    \item EntityName: ComponentB
+    \item EntityID: E3 (ComponentC)
+    \item EntityName: ComponentC
+    \item EntityID: E4 (Process1)
+    \item EntityName: Process1
+    \item EntityID: E5 (Process2)
+    \item EntityName: Process2
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+  \item i: Represents a specific entity or decision variable.
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}
+    \item GoalID: G1 (MaximizeOutput)
+        \item Name: MaximizeOutput
+        \item LogicalRepresentation: Minimize Cost
+        \item MathematicalRepresentation: Cost <= (Sum(x_i * DecisionVariable_i))
+    \item GoalID: G2 (Minimize Downtime)
+        \item Name: Minimize Downtime
+        \item LogicalRepresentation: Maintain Performance
+        \item MathematicalRepresentation: Performance >= Threshold
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+    \item ConditionID: C1 (HighPerformance)
+        \item GoalID: G1 (MaximizeOutput)
+        \item Name: HighPerformance
+        \item LogicalRepresentation: Output >= 100
+        \item MathematicalRepresentation: Output >= 100
+    \item ConditionID: C2 (LowCost)
+        \item GoalID: G1 (MaximizeOutput)
+        \item Name: LowCost
+        \item LogicalRepresentation: Cost <= 50
+        \item MathematicalRepresentation: Cost <= 50
+    \item ConditionID: C3 (StableOperation)
+        \item GoalID: G2 (Minimize Downtime)
+        \item Name: StableOperation
+        \item LogicalRepresentation: Downtime <= 10
+        \item MathematicalRepresentation: Downtime <= 10
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+    \item DecisionVariableID: V1 (x1)
+        \item GoalID: G1 (MaximizeOutput)
+        \item Name: x1
+        \item MathematicalRepresentation: x1
+    \item DecisionVariableID: V2 (x2)
+        \item GoalID: G1 (MaximizeOutput)
+        \item Name: x2
+        \item MathematicalRepresentation: x2
+    \item DecisionVariableID: V3 (x3)
+        \item GoalID: G1 (MaximizeOutput)
+        \item Name: x3
+        \item MathematicalRepresentation: x3
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,129 @@
+graph TD
+    classDef Entity fill:#87CEEB, color:black;
+    classDef Attribute fill:#ffffff, color:black;
+    classDef Relation fill:#FFA500, color:black;
+    classDef Goal fill:#32CD32, color:black;
+    classDef Condition fill:#FF0000, color:black;
+    classDef DecisionVariable fill:#800080, color:black;
+
+    %% Entities
+    E_Project[Project]:::Entity
+    E_Resource[Resource]:::Entity
+    E_Task[Task]:::Entity
+    E_Assignment[Assignment]:::Entity
+
+    %% Attributes
+    A_ProjectID[ProjectID]:::Attribute
+    A_Name[Name]:::Attribute
+    A_StartDate[StartDate]:::Attribute
+    A_EndDate[EndDate]:::Attribute
+    A_Budget[Budget]:::Attribute
+
+    A_ResourceID[ResourceID]:::Attribute
+    A_Resource_Availability[Availability]:::Attribute
+    A_Resource_Capacity[Capacity]:::Attribute
+    A_Utilization[Utilization]:::Attribute
+
+    A_TaskID[TaskID]:::Attribute
+    A_Task_Duration[Duration]:::Attribute
+    A_Task_StartDate[StartDate]:::Attribute
+    A_Task_EndDate[EndDate]:::Attribute
+    A_Task_Delay[Delay]:::Attribute
+
+    A_AssignmentID[AssignmentID]:::Attribute
+    A_ResourceID_Assignment[ResourceID]:::Attribute
+    A_TaskID_Assignment[TaskID]:::Attribute
+
+    %% Relations
+    R_Project_Has_Task[Has]:::Relation
+    R_Task_BelongsTo_Project[BelongsTo]:::Relation
+    R_Resource_Assigned_Task[Assigned]:::Relation
+    R_Task_Assigned_Resource[AssignedTo]:::Relation
+    R_Resource_Has_Assignment[Has]:::Relation
+    R_Assignment_BelongsTo_Resource[BelongsTo]:::Relation
+    R_Task_Has_Assignment[Has]:::Relation
+    R_Assignment_BelongsTo_Task[BelongsTo]:::Relation
+
+    %% Goals
+    G_Minimize_Project_Cost[Minimize Project Cost]:::Goal
+    G_Meet_Project_Deadline[Meet Project Deadline]:::Goal
+    G_Minimize_Resource_Utilization[Minimize Resource Utilization]:::Goal
+    G_Maximize_Resource_Utilization[Maximize Resource Utilization]:::Goal
+    G_Minimize_Task_Delay[Minimize Task Delay]:::Goal
+    G_Minimize_Project_Risk[Minimize Project Risk]:::Goal
+
+    %% Conditions
+    C_Resource_Availability[Resource Availability]:::Condition
+    C_Task_Duration[Task Duration]:::Condition
+    C_Resource_Capacity[Resource Capacity]:::Condition
+    C_Task_Dependency[Task Dependency]:::Condition
+    C_Budget_Constraint[Budget Constraint]:::Condition
+    C_Project_Start_Date[Project Start Date]:::Condition
+    C_Project_End_Date[Project End Date]:::Condition
+    C_Task_Start_Date[Task Start Date]:::Condition
+    C_Task_End_Date[Task End Date]:::Condition
+
+    %% Decision Variables
+    DV_Task_Assignment[Task Assignment]:::DecisionVariable
+    DV_Resource_Allocation[Resource Allocation]:::DecisionVariable
+    DV_Task_Scheduling[Task Scheduling]:::DecisionVariable
+    DV_Resource_Utilization[Resource Utilization]:::DecisionVariable
+    DV_Project_Budget[Project Budget]:::DecisionVariable
+
+    %% Entity-Attribute Connections
+    E_Project --> A_ProjectID
+    E_Project --> A_Name
+    E_Project --> A_StartDate
+    E_Project --> A_EndDate
+    E_Project --> A_Budget
+
+    E_Resource --> A_ResourceID
+    E_Resource --> A_Resource_Availability
+    E_Resource --> A_Resource_Capacity
+    E_Resource --> A_Utilization
+
+    E_Task --> A_TaskID
+    E_Task --> A_Task_Duration
+    E_Task --> A_Task_StartDate
+    E_Task --> A_Task_EndDate
+    E_Task --> A_Task_Delay
+
+    E_Assignment --> A_AssignmentID
+    E_Assignment --> A_ResourceID_Assignment
+    E_Assignment --> A_TaskID_Assignment
+
+    %% Entity-Relation Connections
+    E_Project --> R_Project_Has_Task --> E_Task
+    E_Task --> R_Task_BelongsTo_Project --> E_Project
+    E_Resource --> R_Resource_Assigned_Task --> E_Task
+    E_Task --> R_Task_Assigned_Resource --> E_Resource
+    E_Resource --> R_Resource_Has_Assignment --> E_Assignment
+    E_Assignment --> R_Assignment_BelongsTo_Resource --> E_Resource
+    E_Task --> R_Task_Has_Assignment --> E_Assignment
+    E_Assignment --> R_Assignment_BelongsTo_Task --> E_Task
+
+    %% Goal Connections
+    G_Minimize_Project_Cost --> A_Budget
+    G_Meet_Project_Deadline --> A_EndDate
+    G_Minimize_Resource_Utilization --> A_Utilization
+    G_Maximize_Resource_Utilization --> A_Utilization
+    G_Minimize_Task_Delay --> A_Task_Delay
+    G_Minimize_Project_Risk --> E_Project
+
+    %% Condition Connections
+    C_Resource_Availability --> A_Resource_Availability
+    C_Task_Duration --> A_Task_Duration
+    C_Resource_Capacity --> A_Resource_Capacity
+    C_Task_Dependency --> E_Task
+    C_Budget_Constraint --> A_Budget
+    C_Project_Start_Date --> A_StartDate
+    C_Project_End_Date --> A_EndDate
+    C_Task_Start_Date --> A_Task_StartDate
+    C_Task_End_Date --> A_Task_EndDate
+
+    %% Decision Variable Connections
+    DV_Task_Assignment --> E_Task
+    DV_Resource_Allocation --> E_Resource
+    DV_Task_Scheduling --> E_Task
+    DV_Resource_Utilization --> E_Resource
+    DV_Project_Budget --> E_Project

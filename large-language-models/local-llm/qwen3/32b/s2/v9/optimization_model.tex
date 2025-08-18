@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{datetime}
+\usepackage{hyperref}
+
+\title{Optimization Model Formulation}
+\author{John Doe}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Products $P = \{p_1, p_2, \dots, p_n\}$: Set of products to be manufactured.
+    \item Plants $F = \{f_1, f_2, \dots, f_m\}$: Set of manufacturing plants.
+    \item Markets $M = \{m_1, m_2, \dots, m_k\}$: Set of target markets.
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $i \in P$: Index for products.
+    \item $j \in F$: Index for plants.
+    \item $k \in M$: Index for markets.
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{ID: G1} \textbf{Goal Name: Maximize Total Profit} \\
+    \textbf{Mathematical Representation:} \\
+    $$
+    \text{Maximize} \quad \sum_{i \in P} \sum_{j \in F} \sum_{k \in M} (r_{ik} - c_{ij}) \cdot x_{ijk}
+    $$ \\
+    Where: \\
+    - $r_{ik}$: Revenue per unit of product $i$ in market $k$. \\
+    - $c_{ij}$: Cost per unit of producing product $i$ at plant $j$. \\
+    - $x_{ijk}$: Quantity of product $i$ produced at plant $j$ and shipped to market $k$.
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{ID: C1} \textbf{Condition Name: Plant Production Capacity} \\
+    \textbf{Logical Representation:} \\
+    For each plant $j \in F$ and product $i \in P$: \\
+    $$
+    \sum_{k \in M} x_{ijk} \leq C_{ij} \quad \forall i,j
+    $$ \\
+    Where $C_{ij}$: Maximum production capacity of product $i$ at plant $j$.
+
+    \item \textbf{ID: C2} \textbf{Condition Name: Market Demand Satisfaction} \\
+    \textbf{Logical Representation:} \\
+    For each market $k \in M$ and product $i \in P$: \\
+    $$
+    \sum_{j \in F} x_{ijk} \geq D_{ik} \quad \forall i,k
+    $$ \\
+    Where $D_{ik}$: Minimum demand for product $i$ in market $k$.
+
+    \item \textbf{ID: C3} \textbf{Condition Name: Non-Negativity} \\
+    \textbf{Logical Representation:} \\
+    $$
+    x_{ijk} \geq 0 \quad \forall i,j,k
+    $$
+\end{itemize}
+
+\section{DecisionVariables}
+\begin{itemize}
+    \item \textbf{ID: DV1} \textbf{Variable Name: Production-Shipment Quantity} \\
+    \textbf{Definition:} \\
+    $x_{ijk}$: Quantity of product $i$ produced at plant $j$ and shipped to market $k$. \\
+    \textbf{Domain:} $x_{ijk} \in \mathbb{R}_{\geq 0}$
+\end{itemize}
+
+\end{document}

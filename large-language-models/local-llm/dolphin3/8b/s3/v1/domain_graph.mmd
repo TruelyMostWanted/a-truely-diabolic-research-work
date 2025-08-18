@@ -1,0 +1,59 @@
+graph TD
+    subgraph Entities
+        project(P) --> worker(W)
+        team(T) --> worker(W)
+        feature(F) --> productBacklog(PB)
+        epic(E) --> userStory(US)
+        task(TSK) --> sprint(Sprint)
+        blocker(BL) --> task(TSK)
+        stakeholder(STK) --> sprintReview(SR)
+        scrumMaster(SM) --> team(T)
+        productOwner(PO) --> productBacklog(PB)
+        releasePlan(RP) --> feature(F)
+        roadmap(Rm) --> releasePlan(RP)
+        developmentSnapshot(DEV) --> productBacklog(PB)
+    end
+    
+    subgraph Relations
+        team(T)[style orange] --> project(P)
+        worker(W)[style orange] --> team(T)
+        worker(W)[style orange] --> skill(Skill)
+        worker(W)[style orange] --> role(Role)
+        productOwner(PO)[style orange] --> productBacklog(PB)
+        scrumMaster(SM)[style orange] --> team(T)
+        productBacklog(PB)[style orange] --> feature(F)
+        productBacklog(PB)[style orange] --> epic(E)
+        epic(E)[style orange] --> userStory(US)
+        userStory(US)[style orange] --> task(TSK)
+        sprint(Sprint)[style orange] --> task(TSK)
+        blocker(BL)[style orange] --> task(TSK)
+        stakeholder(STK)[style orange] --> sprintReview(SR)
+        scrumMaster(SM)[style orange] --> sprintRetrospective(Ret.)
+        releasePlan(RP)[style orange] --> feature(F)
+        roadmap(Rm)[style orange] --> releasePlan(RP)
+        developmentSnapshot(DEV)[style orange] --> productBacklog(PB)
+    end
+    
+    subgraph Goals
+        projectSuccess(G0) --> scrumMaster(SM)
+        lowCost(G1) --> project(P)
+        highTeamMorale(G2) --> team(T)
+        minimalScheduleDeviation(G3) --> project(P)
+        lowProjectRisk(G5) --> project(P)
+    end
+    
+    subgraph Conditions
+        validEmployeeRole(C0) --> worker(W)
+        adequateWorkerAvailability(C1) --> project(P)
+        onTimeSprintCompletion(C2) --> sprint(Sprint)
+        completedProductBacklog(C3) --> productBacklog(PB)
+        employeeSkillMatching(C4) --> worker(W)
+    end
+    
+    subgraph DecisionVariables
+        laborCost(D0)[style purple] --> project(P)
+        projectDuration(D1)[style purple] --> project(P)
+        scrumMasterExperience(D2)[style purple] --> scrumMaster(SM)
+    end
+
+    style orange filled

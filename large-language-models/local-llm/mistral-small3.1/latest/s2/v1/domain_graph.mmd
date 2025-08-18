@@ -1,0 +1,72 @@
+graph TD
+    %% Entities in blue
+    subgraph Entities
+        A[Entity1]:::entity
+        B[Entity2]:::entity
+        C[Entity3]:::entity
+    end
+
+    %% Attributes in white
+    subgraph Attributes
+        A1[Attribute1]:::attribute
+        A2[Attribute2]:::attribute
+        B1[Attribute3]:::attribute
+        B2[Attribute4]:::attribute
+        C1[Attribute5]:::attribute
+    end
+
+    %% Relations in orange
+    subgraph Relations
+        R1[Relation1]:::relation
+        R2[Relation2]:::relation
+    end
+
+    %% Goals in green
+    subgraph Goals
+        G1[Goal1]:::goal
+        G2[Goal2]:::goal
+    end
+
+    %% Conditions in red
+    subgraph Conditions
+        C1[Condition1]:::condition
+        C2[Condition2]:::condition
+    end
+
+    %% Decision Variables in purple
+    subgraph DecisionVariables
+        DV1[DecisionVariable1]:::decisionVariable
+        DV2[DecisionVariable2]:::decisionVariable
+    end
+
+    %% Connecting Entities with their Attributes
+    A --> A1
+    A --> A2
+    B --> B1
+    B --> B2
+    C --> C1
+
+    %% Connecting Entities with their Relations
+    A --> R1
+    B --> R2
+    C --> R1
+
+    %% Connecting Goals with the Entity/Attributes
+    G1 --> A1
+    G2 --> B2
+
+    %% Connecting Conditions with the Entity/Attributes
+    C1 --> A2
+    C2 --> B1
+
+    %% Connecting DecisionVariables with their relevant Entities
+    DV1 --> A
+    DV2 --> B
+
+    %% Style definitions
+    classDef entity fill:#0000FF,stroke:#0000FF,color:#FFFFFF
+    classDef attribute fill:#FFFFFF,stroke:#000000,color:#000000
+    classDef relation fill:#FFA500,stroke:#FFA500,color:#000000
+    classDef goal fill:#00FF00,stroke:#00FF00,color:#000000
+    classDef condition fill:#FF0000,stroke:#FF0000,color:#000000
+    classDef decisionVariable fill:#800080,stroke:#800080,color:#FFFFFF

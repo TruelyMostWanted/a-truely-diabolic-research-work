@@ -1,0 +1,57 @@
+graph LR
+    subgraph Entities
+        Project[Project] --|> Project_status[status]
+        Team[Team] --|> Team_size[team size]
+        Worker[Worker] --|> Worker_effort[effort]
+        Feature[Feature] --|> Feature_value[value]
+        Skill[Skill] --|> Skill_level[level]
+        Role[Role] --|> Role_type[type]
+        ProductOwner[Product Owner] --|> ProductOwner_efficiency[efficiency]
+        ScrumMaster[Scrum Master] --|> ScrumMaster_efficiency[efficiency]
+        ProductBacklog[Product Backlog] --|> ProductBacklog_priority[priority]
+        Sprint[Sprint] --|> Sprint_duration[duration]
+        SprintPlanningMeeting[Sprint Planning Meeting]
+        DailyScrum[Daily Scrum]
+        SprintReview[Sprint Review]
+        SprintRetrospective[Sprint Retrospective]
+        SprintBacklog[Sprint Backlog]
+        SprintGoal[Sprint Goal]
+        Epic[Epic] --|> Epic_value[value]
+        UserStory[User Story] --|> UserStory_value[value]
+        Task[Task] --|> Task_effort[effort]
+        DevelopmentSnapshot[Development Snapshot]
+        Blocker[Blocker]
+        Stakeholder[Stakeholder]
+        Velocity[Velocity]
+        ReleasePlan[Release Plan]
+    end
+
+    subgraph Relations
+        Project --|> Team : assigns
+        Project --|> ProductOwner : assigns
+        Project --|> ScrumMaster : assigns
+        Team --|> Role : has
+        Worker --|> Skill : possesses
+        Feature --|> Epic : belongs to
+        Feature --|> UserStory : consists of
+        SprintPlanningMeeting --|> DailyScrum : includes
+        DailyScrum --|> SprintRetrospective : follows
+        SprintBacklog --|> Task : contains
+        DevelopmentSnapshot --|> Blocker : occurs during
+        Stakeholder --|> Velocity : monitors
+    end
+
+    subgraph Goals
+        optimize_max(maximize) Project[Project] -->|--maximize--> Project_status[project status]
+        optimize_min(minimize) Worker[Worker] -->|--minimize--> Worker_effort[worker effort]
+    end
+
+    subgraph Conditions
+        active_project(active?) Project[Project] --|> Project_status[project status]: (active_project)
+        unavailable_worker(unavailable?) Worker[Worker] --|> Worker_effort[worker effort]: (unavailable_worker)
+    end
+
+    subgraph DecisionVariables
+        team_size(decision) Team[Team] -->|--> team_size[team size]
+        worker_effort(decision) Worker[Worker] -->|--> worker_effort[worker effort]
+    end

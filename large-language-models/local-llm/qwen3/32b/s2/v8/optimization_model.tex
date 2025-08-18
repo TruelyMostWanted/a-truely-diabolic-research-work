@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tocloft}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Entity1: Set of all factories $\mathcal{F}$
+    \item Entity2: Set of all distribution centers $\mathcal{D}$
+    \item Entity3: Set of all customer regions $\mathcal{C}$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $i$: Index for factories, $i \in \mathcal{F}$
+    \item $j$: Index for distribution centers, $j \in \mathcal{D}$
+    \item $k$: Index for customer regions, $k \in \mathcal{C}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item[G1] Maximize Profit: 
+    $$
+    \max \sum_{i \in \mathcal{F}} \sum_{j \in \mathcal{D}} \sum_{k \in \mathcal{C}} (p_{ijk} - c_{ijk}) \cdot x_{ijk}
+    $$
+    \item[G2] Minimize Transportation Cost: 
+    $$
+    \min \sum_{i \in \mathcal{F}} \sum_{j \in \mathcal{D}} \sum_{k \in \mathcal{C}} t_{ijk} \cdot x_{ijk}
+    $$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item[C1] Supply Capacity: 
+    $$
+    \sum_{j \in \mathcal{D}} x_{ijk} \leq S_i \quad \forall i \in \mathcal{F}
+    $$
+    \item[C2] Demand Satisfaction: 
+    $$
+    \sum_{j \in \mathcal{D}} \sum_{i \in \mathcal{F}} x_{ijk} \geq D_k \quad \forall k \in \mathcal{C}
+    $$
+    \item[C3] Non-Negativity: 
+    $$
+    x_{ijk} \geq 0 \quad \forall i \in \mathcal{F}, j \in \mathcal{D}, k \in \mathcal{C}
+    $$
+\end{itemize}
+
+\section{DecisionVariables}
+\begin{itemize}
+    \item $x_{ijk}$: Quantity shipped from factory $i$ to distribution center $j$ and then to customer region $k$
+\end{itemize}
+
+\end{document}

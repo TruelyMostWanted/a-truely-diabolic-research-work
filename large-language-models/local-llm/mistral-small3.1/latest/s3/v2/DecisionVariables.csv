@@ -1,0 +1,22 @@
+ID,Name,Description,DataType,Domain,MinValue,MaxValue
+DV0,project_budget,Project budget allocation,Integer,{10000,0,1000000
+DV1,feature_completion,Feature completion,Integer,{0,1},0,1
+DV2,epic_completion,Epic completion,Integer,{0,1},0,1
+DV3,project_completion,Project completion,Boolean,{0,1},0,1
+DV4,stakeholder_satisfaction,Stakeholder satisfaction,Boolean,{0,1},0,1
+DV5,feature_completion,Feature completion,Integer,{0,1},0,1
+DV6,epic_completion,Epics completion,Integer,{0,10},0,1
+DV7,project_completion,Project completion,Integer,{0,10},0,1
+DV8,feature_completion,Feature completion,Integer,{0,1},0,1
+DV9,sprint_completion,Ensure that all tasks are completed,Name,Description,IsSum,GoalType,Entity,Attribute,CriteriaType,Weight
+G0,ensure_project_completion,Ensure that all projects are completed on time,False,min,Task,status,2,1
+G1,ensure_task_completion,Ensure that all tasks are completed on time,False,max,Task,status,2,1
+G2,ensure_feature_completion,Ensure that all features are completed,False,max,Project,costs,min,1
+G3,ensure_feature_completion,Ensure that all features are completed on time,False,max,Feature,status,0.5
+G4,ensure_sprint_completion,2
+G5,ensure_feature_completion,Ensure that all features are completed on time,False,max,delay,2,1
+G6,maximize_sprint_efficiency,Maximize the efficiency of sprints by completing tasks,False,max,efficiency,2
+G7,minimize_project_delay,Minimize the delay of,Ensure the delay of projects,False,max,Project,project_delay,2
+G8,minimize_task_completion,Ensure that all tasks are completed on time,False,min,Task,status,2
+G9,maximize_feature_epic_completion,Maximize the number of story points completed in a sprint,False,Task,status,2
+G10,ensure_sprint_completion,ensure_sprint_efficiency,Ensure that sprints are efficient,False,max,project_completion,2

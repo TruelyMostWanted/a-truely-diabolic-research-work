@@ -1,0 +1,53 @@
+graph TD
+    %% Entities (blue)
+    A[Entity1]::blue
+    B[Entity2]::blue
+    C[Entity3]::blue
+
+    %% Attributes (white)
+    A1[Attribute1]::white
+    A2[Attribute2]::white
+    B1[Attribute3]::white
+    C1[Attribute4]::white
+
+    %% Relations (orange)
+    R1[Relation1]::orange
+    R2[Relation2]::orange
+
+    %% Goals (green)
+    G1[Goal1]::green
+    G2[Goal2]::green
+
+    %% Conditions (red)
+    C1[Condition1]::red
+    C2[Condition2]::red
+
+    %% Decision Variables (purple)
+    D1[DecisionVariable1]::purple
+    D2[DecisionVariable2]::purple
+
+    %% Connecting Entities with Attributes
+    A --> A1
+    A --> A2
+    B --> B1
+    C --> C1
+
+    %% Connecting Entities with Relations
+    A --> R1
+    B --> R2
+
+    %% Connecting Goals with Entities/Attributes
+    G1 --> A
+    G1 --> A1
+    G2 --> B
+    G2 --> B1
+
+    %% Connecting Conditions with Entities/Attributes
+    C1 --> C
+    C1 --> C1
+    C2 --> A
+    C2 --> A2
+
+    %% Connecting Decision Variables with Entities
+    D1 --> A
+    D2 --> B

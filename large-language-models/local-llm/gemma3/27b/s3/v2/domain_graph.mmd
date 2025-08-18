@@ -1,0 +1,56 @@
+graph TD
+    subgraph Entities
+        Team((Team))
+        Project((Project))
+        Feature((Feature))
+        UserStory((UserStory))
+        Blocker((Blocker))
+        Sprint((Sprint))
+        SprintGoal((SprintGoal))
+        Worker((Worker))
+        Stakeholder((Stakeholder))
+        ReleasePlan((ReleasePlan))
+        Velocity((Velocity))
+        FeatureDocumentation((Feature Documentation))
+    end
+
+    subgraph Attributes
+        Team_Size[Team Size]
+        Project_Budget[Project Budget]
+        Feature_Priority[Feature Priority]
+        Story_Points[Story Points]
+        Blocker_Severity[Blocker Severity]
+        Sprint_Duration[Sprint Duration]
+        Sprint_Goal_Achieved[Sprint Goal Achieved]
+        Worker_Availability[Worker Availability]
+        Stakeholder_Influence[Stakeholder Influence]
+        Release_Version[Release Version]
+        Velocity_Measure[Velocity Measure]
+        Documentation_Quality[Documentation Quality]
+
+    end
+
+
+    Team -- "has" --> Team_Size
+    Project -- "has" --> Project_Budget
+    Feature -- "has" --> Feature_Priority
+    UserStory -- "has" --> Story_Points
+    Blocker -- "has" --> Blocker_Severity
+    Sprint -- "has" --> Sprint_Duration
+    SprintGoal -- "has" --> Sprint_Goal_Achieved
+    Worker -- "has" --> Worker_Availability
+    Stakeholder -- "has" --> Stakeholder_Influence
+    ReleasePlan -- "has" --> Release_Version
+    Velocity -- "has" --> Velocity_Measure
+    FeatureDocumentation -- "has" --> Documentation_Quality
+
+    Feature -- "part of" --> Project
+    UserStory -- "part of" --> Feature
+    Blocker -- "affects" --> Project
+    Sprint -- "plans" --> Project
+    SprintGoal -- "defines" --> Sprint
+    Worker -- "works on" --> Project
+    Stakeholder -- "interested in" --> Project
+    ReleasePlan -- "governs" --> Project
+    Velocity -- "measures" --> Sprint
+    FeatureDocumentation -- "describes" --> Feature

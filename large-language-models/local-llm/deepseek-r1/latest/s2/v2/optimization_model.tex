@@ -1,0 +1,82 @@
+\documentclass{book}
+\usepackage{amsmath}
+\usepackage{enumitem}
+
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{1. Sets (Entities)}
+
+\begin{itemize}
+    \item <ID=1, NAME="Students">
+        $S = \{\text{Student } s_1, s_2, \ldots, s_n\}$
+    \item <ID=2, NAME="Courses">
+        $C = \{\text{Course } c_1, c_2, \ldots, c_m\}$
+    \item <ID=3, NAME="Professors">
+        $P = \{\text{Professor } p_1, p_2, \ldots, p_k\}$
+    \item <ID=4, NAME="Grades">
+        $G = \{\text{Grade } g_{s,c} | s \in S, c \in C\}$
+    \item <ID=5, NAME="Availability">
+        $A = \{\text{Available time } a_p | p \in P\}$
+\end{itemize}
+
+\section{2. Indices}
+
+\begin{itemize}
+    \item <ID=1, NAME="Student ID">
+        $i \in S$
+    \item <ID=2, NAME="Course Code">
+        $j \in C$
+    \item <ID=3, NAME="Professor ID">
+        $k \in P$
+    \item <ID=4, NAME="Semester">
+        $t \in T$
+\end{itemize}
+
+\section{3. Goals}
+
+\begin{itemize}
+    \item <ID=1, NAME="Maximize Student Grades">
+        $\text{Max } Z_1 = \sum_{i,j} w_{i,j} g_{i,j}$
+    \item <ID=2, NAME="Minimize Student Stress">
+        $\text{Min } Z_2 = \sum_{i,t} s_{i,t}$
+    \item <ID=3, NAME="Maximize Course Popularity">
+        $\text{Max } Z_3 = \sum_{j} p_j$
+    \item <ID=4, NAME="Minimize Professor Overload">
+        $\text{Min } Z_4 = \sum_{k,t} o_{k,t}$
+\end{itemize}
+
+\section{4. Conditions}
+
+\begin{itemize}
+    \item <ID=1, NAME="Each Student Enrolls in One Course per Semester">
+        $\forall i \in S: \sum_{j} x_{i,j,t} = 1$
+    \item <ID=2, NAME="Prerequisites Must Be Met">
+        $\forall (i,j): p_{i,j} \rightarrow e_j \geq d_i$
+    \item <ID=3, NAME="Maximum Course Load per Professor">
+        $\forall k \in P: o_k \leq O_{\text{max}}$
+    \item <ID=4, NAME="Non-Negative Grades">
+        $g_{i,j} \geq 0$
+\end{itemize}
+
+\section{5. DecisionVariables}
+
+\begin{itemize}
+    \item <ID=1, NAME="Student Enrollment">
+        $x_{i,j,t} \in \{0,1\}$
+    \item <ID=2, NAME="Course Credits">
+        $e_j \geq 0$
+    \item <ID=3, NAME="Professor Availability">
+        $a_k \geq 0$
+    \item <ID=4, NAME="Semester Duration">
+        $d_i > 0$
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{Optimization Model Formulation}
+\author{John Doe}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+    \item \textbf{ID:} R \textbf{Name:} Resources
+    \item \textbf{ID:} P \textbf{Name:} Projects
+    \item \textbf{ID:} D \textbf{Name:} Departments
+    \item \textbf{ID:} T \textbf{Name:} TimePeriods
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+    \item \textbf{ID:} i \textbf{Name:} ResourceIndex $\in R$
+    \item \textbf{ID:} j \textbf{Name:} ProjectIndex $\in P$
+    \item \textbf{ID:} k \textbf{Name:} DepartmentIndex $\in D$
+    \item \textbf{ID:} t \textbf{Name:} TimeIndex $\in T$
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}
+    \item \textbf{ID:} G1 \textbf{Name:} MaximizeTotalProfit
+    \begin{equation}
+        \text{Maximize} \quad \sum_{i \in R} \sum_{j \in P} c_{ij} x_{ij}
+    \end{equation}
+    \item \textbf{ID:} G2 \textbf{Name:} MinimizeResourceWaste
+    \begin{equation}
+        \text{Minimize} \quad \sum_{i \in R} \sum_{t \in T} \left( s_i^{\text{max}} - s_i(t) \right)
+    \end{equation}
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+    \item \textbf{ID:} C1 \textbf{Name:} ResourceCapacityConstraint
+    \begin{equation}
+        \sum_{j \in P} x_{ij} \leq s_i^{\text{max}} \quad \forall i \in R
+    \end{equation}
+    \item \textbf{ID:} C2 \textbf{Name:} ProjectBudgetConstraint
+    \begin{equation}
+        \sum_{i \in R} x_{ij} \leq B_j \quad \forall j \in P
+    \end{equation}
+    \item \text- \textbf{ID:} C3 \textbf{Name:} DepartmentalBalance
+    \begin{equation}
+        \sum_{i \in R} \sum_{j \in P_k} x_{ij} = \frac{1}{|D|} \sum_{i \in R} \sum_{j \in P} x_{ij} \quad \forall k \in D
+    \end{equation}
+    \item \textbf{ID:} C4 \textbf{Name:} TimePeriodDemand
+    \begin{equation}
+        \sum_{i \in R} x_{ij} \geq D_{jt} \quad \forall j \in P, t \in T
+    \end{equation}
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+    \item \textbf{ID:} DV1 \textbf{Name:} ResourceAllocation
+    \begin{equation}
+        x_{ij} \in \mathbb{R}_{\geq 0} \quad \text{Amount of resource } i \text{ allocated to project } j
+    \end{equation}
+    \item \textbf{ID:} DV2 \textbf{Name:} ResourceStock
+    \begin{equation}
+        s_i(t) \in \mathbb{R}_{\geq 0} \quad \text{Stock of resource } i \text{ at time } t
+    \end{equation}
+\end{itemize}
+
+\end{document}

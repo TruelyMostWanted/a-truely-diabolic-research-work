@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Optimization Model based on CSV Data}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=*]
+    \item $E = \{e_1, e_2, ..., e_{|E|}\}$ : Set of Entities
+    \item $R = \{r_1, r_2, ..., r_{|R|}\}$ : Set of Relations
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=*]
+    \item $\forall e \in E$, $I_e = \{i_{e1}, i_{e2}, ..., i_{e|e|}\}$ : Index set for Entity $e$
+    \item $\forall r \in R$, $J_r = \{j_{r1}, j_{r2}, ..., j_{r|r|}\}$ : Index set for Relation $r$
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}[leftmargin=*]
+    \item $\forall g \in G$, $f_g(x) = \sum\limits_{e \in E, i_e \in I_e} a_{egi_e} x_{e i_e} + b_g$ : Goal function for Goal $g$, with decision variables $x_{ei}$
+    \item Each goal has an associated ID and name:
+    \begin{itemize}[leftmargin=*]
+        \item $G = \{g_1, g_2, ..., g_{|G|}\}$ : Set of Goals
+        \item $\forall g \in G$, $g.id$ and $g.name$ represent the ID and name of Goal $g$
+    \end{itemize}
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}[leftmargin=*]
+    \item $\forall c \in C$, $h_c(x) = 0$ : Linear condition for Condition $c$, with decision variables $x_{ei}$
+    \item Each condition has an associated ID and name:
+    \begin{itemize}[leftmargin=*]
+        \item $C = \{c_1, c_2, ..., c_{|C|}\}$ : Set of Conditions
+        \item $\forall c \in C$, $c.id$ and $c.name$ represent the ID and name of Condition $c$
+    \end{itemize}
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=*]
+    \item $\forall e \in E$, $\forall i_e \in I_e$, $x_{ei}$ : Decision variable for the combination of Entity $e$ and index $i_e$
+\end{itemize}
+
+\end{document}

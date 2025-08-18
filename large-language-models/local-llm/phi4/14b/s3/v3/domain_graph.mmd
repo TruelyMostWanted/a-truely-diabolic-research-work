@@ -1,0 +1,55 @@
+graph TD
+    classDef entity fill:#blue,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#white,stroke:#333,stroke-width:1px;
+    classDef relation fill:#orange,stroke:#333,stroke-width:2px;
+    classDef goal fill:#green,stroke:#333,stroke-width:2px;
+    classDef condition fill:#red,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#purple,stroke:#333,stroke-width:2px;
+
+    subgraph Entities
+        Project[Project]:::entity
+        Team[T]:::entity
+        Worker[W]:::entity
+        Feature[F]:::entity
+        Blocker[B]:::entity
+        Sprint[SP]:::entity
+        ProductBacklog[PB]:::entity
+        ScrumMaster[SM]:::entity
+        ProductOwner[PO]:::entity
+    end
+
+    subgraph Attributes
+        Project-->id[Project.id]
+        Project-->budget[Project.budget]:::attribute
+        Team-->team_size[Team.team_size]:::attribute
+        Worker-->availability[Worker.availability]:::attribute
+        Feature-->priority[Feature.priority]:::attribute
+        Blocker-->severity[Blocker.severity]:::attribute
+        Sprint-->end_date[Sprint.end_date]
+    end
+
+    subgraph Relations
+        Project-->R1[is_assigned_to_project]:::relation
+        Team-->R2[belongs_to_team]:::relation
+        Worker-->R3[has_skill]:::relation
+        Feature-->R7[contains_feature]:::relation
+    end
+
+    subgraph Goals
+        G0[maximize_project_budget]:::goal
+        G1[minimize_sprint_duration]:::goal
+        Project-->G0
+        Sprint-->G1
+    end
+
+    subgraph Conditions
+        C0[maximum_budget_limit]:::condition
+        Project-->C0
+    end
+
+    subgraph DecisionVariables
+        D0[budget]:::decisionVariable
+        D2[team_size]:::decisionVariable
+        Project-->D0
+        Team-->D2
+    end

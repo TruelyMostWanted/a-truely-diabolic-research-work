@@ -1,0 +1,15 @@
+graph TD
+    subgraph Car
+        Car(Car) --> Engine(Engine [HP: 200])
+        Car --> Tires(Tires [Size: 18"])
+        Car --> FuelTank(Fuel Tank [Capacity: 60 gallons])
+    end
+
+    subgraph House
+        House(House) --> Roof(Roof [Material: Tile])
+        House --> Walls(Walls [Material: Brick])
+    end
+
+    Goal(Reduce CO2) --> Car[CO2 Emissions]
+    Condition(High Fuel Costs) --> FuelTank
+    DecisionVariable(Electric Option) --> Car

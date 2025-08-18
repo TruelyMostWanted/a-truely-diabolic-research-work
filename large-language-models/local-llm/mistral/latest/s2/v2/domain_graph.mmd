@@ -1,0 +1,21 @@
+graph TD
+
+subgraph Entity:Entity1[Blue]
+    Attribute1[White] :attributed_by: Entity1
+    Attribute2[White] :attributed_by: Entity1
+end
+
+subgraph Entity:Entity2[Blue]
+    Attribute3[White] :attributed_by: Entity2
+end
+
+subgraph Entity:Entity3[Blue]
+    Attribute4[White] :attributed_by: Entity3
+end
+
+Relation1[Orange] -.-> {Entity1, Entity2}
+Relation2[Orange] -.-> Entity3
+
+Goal[Green] -->|Goals| Entity1(Attribute1, Attribute2)
+Condition1[Red] -->|Conditions| Entity2(Attribute3)
+DecisionVariable1[Purple] -->|DVs| Entity3(Attribute4)

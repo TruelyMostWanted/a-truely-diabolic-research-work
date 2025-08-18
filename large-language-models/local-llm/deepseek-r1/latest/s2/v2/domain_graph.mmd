@@ -1,0 +1,37 @@
+graph TD
+    A[User] [blue]
+        - Email (white)
+        - Name (white)
+        - Status (white)
+    
+    B[System] [blue]
+        - Attributes (white)
+        - Comments (white)
+        - CurrentStatus (white)
+        - ModifiedTime (white)
+        - Settings (white)
+    
+    C[Profile] [blue]
+        - Email (white)
+        - Name (white)
+    
+    D[AccessAllowed] [orange]
+        from: A
+        to: B
+    
+    E[RetrieveProfile] [green]
+        from: C
+    
+    F[Condition] [red]
+        from: G
+    
+    G[DecisionVariables] [purple]
+        - Age (purple)
+        - Status (purple)
+    
+    H[Goal] [green]
+        from: I
+    
+    I[Entity/Attribute] [blue]
+        to: E
+        to: F

@@ -1,0 +1,2179 @@
+ModelKey,MessageIndex,Predicted_Keywords,Matched_Keywords,Precision,Recall,F1,TP,FP,FN,Text
+deepseek-r1-8b-s2-v3,1,"0, 0,1, 1, 1 = may match 0 = cannot match domain, 10 to 15, 15-minute, 2, 3 individual csv code block, a define goal, a development snapshot, a domain model, a feature featuredocumentation feature,1,1,1.0 r16,is_blocked_by, a letter g(oal, a mulptli create 10 to 15 entry, a number, a product backlog, a project, a release plan, a roadmap releaseplan, a role, a scrum board, a scrum master, a software development company, a specific feature, a specific team, a sprint, a sprint backlog, a sprint review, a task, a team, a user, a user story, a worker, acceptance, acceptance_criteria, achievement_of_goal, achievement_status, all requirement, all task, alternative, an employee, an epic, an increment, area_of_responsibility, attendees_count, attribute0,attribute1,attribute2,attribute3,attribute4,attribute5,attribute6,attribute7,attribute8, attribute8, author, availability, benefit, bl, blocker,task,, board_type, budget, cannot-match, category, certain skill, chat, columns_(todo, conditions.csv, created_on, creation_date, criteriatype, daily 15 minute team meeting, datatype, date, decisionvariables.csv, define responsibility, defined, deployment_target, description, detected_on, dev, documentation, domain, ds, duration, duration_(min),moderation, e, e0,project, e11,dailyscrum, e12,sprintreview, e13,sprintretrospective sre sre retrospective, e14,sprintbacklog, e15,sprintgoal, e18,task, e20,blocker, e22,velocity, e23,releaseplan,rep, e24,roadmap, e4,skill, e5,role, e6,productowner, e7,scrummaster, e8,productbacklog, each, effort, email, employee, end_date, entities.csv, entities.csv
+entityattribute, entities.csv ` ` ` csv id, entities.csv criteriatype, entities.csv entityattribute, entityattribute, entityname, epic, epic,1,n,1.0 r9,contains_user_story, epics, experience, f, feature documentation, feature,1,n,1.0, feature,1,n,1.0 r21,is_part_of_roadmap, featuredocumentation, features, fed, feedback_documentation, file, first_name, fixed time period, fromcardinality, fromentity, goals, goals.csv, goals.csv + conditions.csv + decisionvariables.csv
+goals.csv, goaltype, id, id name description datatype domain minvalue maxvalue the follow convention, id version_number, implementation plan, improvement_actions, included_feature, index, individual, influence_level, initiative, interested party, issum, kick, kick off meeting, label, large requirement, level, long term planning, m,1.0, max, maxvalue, mid sized functionality, milestone, min max entityname, minvalue, moderation, multiple feature, multiple tasks, multiple user stories, must match, n, n,1,1.0, name, number_of_tasks, objective, objective_description, obstacle hindering progress, one, only 1, only 1 entry, outcome_documentation, p, part, pb, plan, planned_date, po, presentation, priority, priority e1,team, process improvement, product, product backlog, product vision, productbacklog, productbacklog,1,1,1.0, productowner, professional, project,1,n,1.0 r2,belongs_to_team, project_end, project_start, r, r20,plans_release, r3,has_skill, r4,takes_on_role, r6,is_supported_by, r7,contains_feature, r8,contains_epic, relationships.csv, relationships.csv - proceed, relationships.csv ` ` ` csv id name description fromentity toentity fromcardinality tocardinality weight r1,is_assigned_to_project, release, release plan, releaseplan, relevance_to_feature, requirement, result, retrospective, rm, roadmap, role, s s professional or social competence, sbl, scb, scrum, scrum board, scrumboard, scrummaster, select backlog item, selected, setname, severity, sg, sh, skill, sm, smallest unit, snake_case names, sp, specific feature, spp, sprint, sprint backlog, sprint preparation, sprint review, sprint_number, sprintbacklog, sprintgoal,1,1,1.0 r14,contains_task, sr, sre, stakeholder, stakeholders, start_date, status, story, story_point, supports, target_audience, task, task,1,n,1.0, task,1,n,1.0 r11,is_in_sprint_backlog, tasks, team, team,1,1,1.0, team_status, test_status, that, the attribute0, the end, the follow structure, the following header, the high value, the name, the perspective, the product, the product backlog, the product owner, the project, the retrospective scrummaster sprintretrospective,1,n,1.0 r19,refers_to_team, the scrum team, the small value, the sprint, the target entity, the team, the value, these file, time, title, tocardinality, toentity, total_effort, true false goaltype, tsk, type, us, user stories, user story, userstory, userstory,1,n,1.0 r10,consists_of_task, value, vel, velocity, version, visual representation, w, we, weight, work","benefit, must match, product backlog, role, scrum, scrum board, skill, sprint, sprint review, stakeholder, story, user stories, user story",0.04391891891891892,0.05531914893617021,0.04896421845574388,13,283,222,"Consider the following structures for a domain model of a software development company using SCRUM:
+Entities.csv
+```csv
+ID,Name,SetName,Index,Description,Attribute0,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6,Attribute7,Attribute8
+E0,Project,P,p,The product or initiative to be developed,id,name,project_start,project_end,description,budget,status,target_audience,priority
+E1,Team,T,t,""Self-organized, cross-functional development team"",id,name,team_size,team_start,team_status,location,team_type,,
+E2,Worker,W,w,Individual team member working on the project,id,name,first_name,email,start_date,status,availability,,
+E3,Feature,F,f,Mid-sized functionality,id,title,description,status,priority,estimated_effort,,,
+E4,Skill,S,s,Professional or social competence of a worker,id,label,description,level,certified,category,,,
+E5,Role,R,r,Defined responsibilities within the Scrum team,id,role_name,description,area_of_responsibility,,,,,
+E6,ProductOwner,PO,po,Responsible for product vision and Product Backlog,id,name,email,availability,,,,,
+E7,ScrumMaster,SM,sm,Supports the team in applying Scrum,id,name,email,experience,,,,,
+E8,ProductBacklog,PB,pb,Ordered list of all requirements,id,created_on,last_updated,number_of_entries,status,,,,
+E9,Sprint,SP,sp,Fixed time period for creating an increment,id,sprint_number,start_date,end_date,status,achievement_of_goal,,,
+E10,SprintPlanning,SPP,spp,Kick-off meeting for Sprint preparation,id,date,duration_(min),moderation,outcome_documentation,,,,
+E11,DailyScrum,DS,ds,Daily 15-minute team meeting,id,date,time,duration,moderation,,,,
+E12,SprintReview,SR,sr,Presentation and acceptance of results,id,date,duration,feedback_documentation,attendees_count,,,,
+E13,SprintRetrospective,SRE,sre,Retrospective for process improvement,id,date,duration,improvement_actions,team_satisfaction,moderation,,,
+E14,SprintBacklog,SBL,sbl,Selected backlog items + implementation plan,id,number_of_tasks,last_updated,status,total_effort,,,,
+E15,SprintGoal,SG,sg,Objective to be achieved within the sprint,id,objective_description,achievement_status,benefit,,,,,
+E16,Epic,E,e,Large requirement that can be split into stories,id,title,description,priority,status,estimated_effort,,,
+E17,UserStory,US,us,Requirement from the perspective of a user,id,title,description,acceptance_criteria,priority,story_points,status,,
+E18,Task,TSK,tsk,Smallest unit of work within a sprint,id,title,description,status,effort,type,,,
+E19,DevelopmentSnapshot,DEV,dev,Product at the end of a sprint,id,version_number,creation_date,test_status,deployment_target,documentation,,,
+E20,Blocker,BL,bl,Obstacle hindering progress,id,title,description,severity,status,detected_on,resolved_on,,
+E21,Stakeholder,SH,sh,Interested party in the product (internal/external),id,name,organization,role,email,area_of_interest,influence_level,relevance_to_feature,
+E22,Velocity,VEL,vel,Average amount of work per sprint,id,number_of_sprints_used,avg._story_points,max_velocity,min_velocity,trend,,,
+E23,ReleasePlan,REP,rep,Plan for releasing specific features,id,version,planned_date,included_features,status,,,,
+E24,Roadmap,RM,rm,Long-term planning across releases,id,start_date,end_date,milestones,objectives,versions,,,
+E25,ScrumBoard,SCB,scb,Visual representation of tasks during the sprint,id,board_type,columns_(todo/done...),number_of_cards,last_updated,,,,
+E26,FeatureDocumentation,FED,fed,Documentation for a specific feature,id,title,description,creation_date,change_log,linked_requirements,author,,
+```
+Relationships.csv
+```csv
+ID,Name,Description,FromEntity,ToEntity,FromCardinality,ToCardinality,Weight
+R1,is_assigned_to_project,The team is assigned to a project,Team,Project,1,N,1.0
+R2,belongs_to_team,An employee is assigned to a team,Employee,Team,N,1,1.0
+R3,has_skill,An employee has certain skills,Employee,Skill,N,M,1.0
+R4,takes_on_role,An employee assumes a role in the team,Employee,Role,N,M,1.0
+R5,manages_backlog,The Product Owner manages the Product Backlog,ProductOwner,ProductBacklog,1,1,1.0
+R6,is_supported_by,The team is supported by a Scrum Master,Team,ScrumMaster,1,1,1.0
+R7,contains_feature,A Product Backlog contains Features,ProductBacklog,Feature,1,N,1.0
+R8,contains_epic,A Product Backlog contains Epics,ProductBacklog,Epic,1,N,1.0
+R9,contains_user_story,An Epic contains multiple User Stories,Epic,UserStory,1,N,1.0
+R10,consists_of_tasks,A User Story consists of multiple Tasks,UserStory,Task,1,N,1.0
+R11,is_in_sprint_backlog,A User Story is assigned to a Sprint Backlog,UserStory,SprintBacklog,N,M,1.0
+R12,belongs_to_sprint,A Sprint Backlog belongs to a Sprint,SprintBacklog,Sprint,1,1,1.0
+R13,pursues_goal,A Sprint pursues a defined goal,Sprint,SprintGoal,1,1,1.0
+R14,contains_tasks,A Scrum Board contains all tasks of a Sprint,ScrumBoard,Task,1,N,1.0
+R15,documents_feature,Feature Documentation belongs to a Feature,FeatureDocumentation,Feature,1,1,1.0
+R16,is_blocked_by,A Task can be blocked by a Blocker,Task,Blocker,N,M,1.0
+R17,participates_in,Stakeholders participate in a Sprint Review,Stakeholder,Sprint Review,N,M,1.0
+R18,moderates_retrospective,A Scrum Master moderates the Retrospective,ScrumMaster,SprintRetrospective,1,N,1.0
+R19,refers_to_team,Velocity refers to a specific Team,Velocity,Team,1,1,1.0
+R20,plans_release,A Release Plan includes multiple Features,ReleasePlan,Feature,1,N,1.0
+R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,ReleasePlan,Roadmap,N,1,1.0
+R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,DevelopmentSnapshot,1,1,1.0
+```
+Based on Entities.csv and Relationships.csv - Proceed and Create 3 individual CSV code-blocks (alternative: files) in chat named: Goals.csv + Conditions.csv + DecisionVariables.csv
+Goals.csv must have the following header: ""ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight""
+Conditions.csv must have the following header: ""ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight""
+DecisionVariables.csv must have the following header: ""ID,Name,Description,DataType,Domain,MinValue,MaxValue""
+
+The following conventions must be applied:
+ID starts with a letter G(oals), C(onditions), D(ecision)V(ariables) and a number follows, starting at 0, 1, 2, ....
+Name is written snake_case
+Names for Goals must begin with ""maximize_"" or ""minimize_""
+IsSum is a boolean { True, False }
+GoalType is one of { ""min"", ""max"" }
+EntityName is always only 1 entry from the ""Name"" of Entities.csv
+EntityAttribute is one of the values in the ""Attribute0"" to ""Attribute8"" of the targeted Entity in Entities.csv
+CriteriaType is a number { 2 = Must-Match, 1 = May-Match, 0 = Cannot-Match }
+Domain can represent set of values like ""{0,1}""
+MinValue is the smallest value that can be set
+MaxValue is the highest value that can be set
+Weight is a mulptlier
+Created 10 to 15 entries in each of these files."
+deepseek-r1-8b-s2-v3,2,"#, $ \,ity, $ \do break, $ \math_msgsqrt dd, $ \n19, $ dozen 龹看 正文字, $ reem, -1, -120.在titlem, .csspeedd w, .n.0 给reality, .p 文本 human, 1, 1 w, 1 w w lotriusale, 1 wtitle, 1.:dd逻辑date2, 10, 109, 109 import importdetermine, 10dewydx, 12, 12.在, 12.正脑, 127, 12d, 15, 15 dwjourbase, 16, 16wdxdate, 17, 17 titlenet 正, 19, 19 d20, 190, 2, 20d, 26d, 27, 2d9推, 3, 4, 4retext, 5, 6, 6.题目在以下就是, 7, 7 标题 t, 70 10 title 在 title import a. crd, 76.文本, 79, 8, 82dxdinger 用户要写たいて, 9, 923\ 题目, :0, = text from.kate 对于故事 image, \do, \dx
+ text, \math_msgsqrt, \n, \pidrama, \rebase的请求故事
+  title, \replaydo, ` ` ` recovery, a cascade标题 reliest不“被尊d ghdentity, a d链image 7rebase 正base, a import, a isdinput a. life hasd, a question, a 在文本tôipattern, a. crd l2d, a. life, a. life operator, a.dimage, a.就是在sque meee, a36d, aimport daggerjournality, ank, arex, arex text box, a文本image中在 human, base, base title, byrenumberlyjordan说在从, content, cr, cr 您 arekoda, crpoo心灵force, crx0.text, d, d import, d importbase, d., d. theclasstitle -打 ивde, d.d
+input, d.d input d, d.dd mix 以下 归回文字baseaux逻辑框不有 20d 题目 我想将, d1.从“小链, d1.从“小链 l, d10.dx, d10.dx = 对 wwtitle 被正整标题, d17 莭找いて, d170 mix, d1k, d2.题目の.ddt是故事逻辑 import life, d3, date, ddd, ddding, ddk rearr, ddmimage 中 title被recovery防护 wdix, ddw, ddx, ddx标题 题目 在以下 从接口base.jsbook逻辑和, ddydx, ddypuppet逻辑按re, discussiondoo, div, dodate d9, dootitle
+realsdx researchdps, dope.subscribe, dor adimage logic, dotitle心正正心灵こ抑, dozen, do有《相关ly feeldix逻辑中有我需要与之, dw d base, dx, dx2 crdagger逻辑是work类
+*, dx逻辑 q, each, each d 假 驤除title d176, each以了给你173, etermine 有月经就是, etermine 有月经就是 这个, human 单 what thetitle 正8.在, human 郡, humanhistory, humanity  这一.0, humantitle discussion教学 正纪顺序, i, i., i.
+
+//dx, i. //dx, i. 正围绕等标题, image base 判断base类被, image baseinfo, import, import d, import day, import 以下问题被不 textbox w176 lexpress, import 你, import 对于以下の题目, import).:什么是这个receptor 郘up = text mixkaiatlas逻辑就是理解了 题目, importdive 从题 dnd 关于 d texterdo the作为以了有 package 龋 assistant, importtitle, importtitle 正题目は负责定义这个の不是, importеーション中的“我感受到了 reintrajour, it, ity, i在从问题, k baseauxtitlew lltemplate, kafka import, l woon, l woon d5, l2d 判断给1, life, life204, ljwrit在以下, ljwrit在以下 base, logic, logic qd标题base, mix d 从dialinfotext, mye, nayk dix, pdjourdimage中的用户分享的单便, pickerview中班reem有两文字 idd d9, re, re.textname, realsdx researchdps 1.:dd逻辑date2, redx, replay, request, request 鲯逻辑, request中感受能は以围绕, research humantitle, resource.re, resource.re import \dxk dd, re下文 humanity 这一.0, re这一のd fromdistinguish”标题history, sitemap importdor, skr, spring, spring redx标题 题目, story 被rein 假对 ayd, supalimage processing import, template text, text, text humankdetitle covery, text import, text mix, text please dddenggle 假, textbook of.怎么diand fromstrategyddd0ly, textbox w176, textboxpentjenumber, textstrategy, texttemplate, th 5.首页image 题目是 human, the, the aredinger, the assistanttitle, the d class就是k $ \pidrama \dx text d rebox 问题, the day未, the doddh fork, the equation -心盒10, the explanation 中文 我想 题目 对 import不, the following, the following import fromal l 题目, the following文生问, the fromdoth 题目中的, the import 题目, the piles, the resource, the resource
+ :, the re严格你正在, the sum, the template, the text 中dinger import alydiana中, the textreemk writeк d89, the the, the title text 对于 a. life sciences for7.es, the user text处理, the write一下 题目 给文本, the 友不 title.$\ d0, the 正正5, the.dfracallydinfopd5, theclasstitle, thedookd, thetext, thetitle, thetitletemplate rebase, theホ巴斯, the作为以了有, the正 import43, the正严格date请求, the题目, this 190 repeat 中d, this problem, this reity rejournal 从 对于以下 我需要在 \cos, title, title import life, title mixla, title 凶
+好的我想正, title 凶 好的我想正, title 单l lately text answer链base 中平, title 阿re動, title 题目, titledianje的图标のtextbookdate心与了, titleimage text reinr e na renee, title标题的
+
+   
+, trol.find, w
+
+正题目, wbase18 text d determine 晚标题२, what, what dpsbook wdx, what import, what mix, what title, write گreбути, write一下, wshol ll, wshol ll 你是教你, ww lul语言base, wwtitle, wwtitle 从通过, you, you areng, y内w, z链式逻辑人生, z链式逻辑人生 鿟, 一个函数是, 不 h ydxn 在我们正在, 不kang, 不对, 不日以的kale 用我有这个正l, 不正 title box fordydo 对于real, 严格, 严格56'dding discussion, 中dxjdaan, 中text
+ , 中国, 为什么, 什么是
+
+
+
+, 什么是从我, 从, 从dd w 正题目, 作为一名, 你, 你是一位, 你是一名.什么意思被recovery 鶹istica logic, 假, 假dicas, 关于从就是能我的妈妈 w链, 关于故事的有 poo, 在f, 在以下教学链recovery 76.文本 3.ptimek8 do有《相关ly feeldix逻辑中有我需要与之 human 被故事系统支持中的问题, 在给这个正, 好的recovery re, 好的那个问题与正手number, 对于, 对于我, 对于我正在, 对文本ま life, 平, 我 title被, 我は对23 题目, 我们正, 我想, 我想
+
+
+
+d
+
+
+
+
+, 我想就是text, 我想要template类
+w, 戾ば的你5, 放 humantext, 故事的我的为什么d, 文字, 有一个关于解释audio被正title, 根据你正在思考仔细date it的不正有image 在我看到，关注, 根据题目说明d the题目 请kotlinbaseles 好的re title的, 正, 正2.k1 wdx, 正base, 正のmitumppath, 正便代码etermine, 正回, 正文字相关itykale 郡determine 从rebase, 正正不看firedetermine aghdive 饥rekak 92题rebase的请求 title, 第一5, 第纯回, 纲心正 assistant, 给就是, 血 re这一的, 血l0, 被 text 中dpspring 对于, 被red, 被严格1.在以下从date ddl 第一 思考问题, 请就是, 轡 题目 已有我正在8、用 d 12 标题好文字, 郾不理解 header, 阩window, 题目, 题目の, 题目意逻辑就是 -d ddl for.:文本ify, 题目明明了学习reel, 题目是 d 请2, 题目是re latify'd, 驘present, 驤ity 我们假文字处理为什么1.回dder 从rein aes对, 驻鲁rukatitleimage $ \do drierdistinguish, 龜hong, 龧就是人生86被 正, 龷 title",,0.0,0.0,0.0,0,361,235,"WW LUL语言base on
+d
+什么是从我
+“ import day
+就是
+ddW
+题目是
+d
+请2
+我们
+第一.     在以下教学链recovery 76.文本 3.PTimek8..do有《相关ly feeldix逻辑中有我需要与之
+
+Human:被故事系统支持中的问题 is aly for the following import fromal L
+题目
+我想是 mording
+What
+import. Please完成1.单Winds70从
+ Title mixla
+TheText
+             #receptor dalebase请求dTitle of.根据你正在思考仔细Date it的不正有Image
+在我看到，关注. .P:文本
+
+Human in
+题目の 3. Text for
+-标题Questions import the:解释
+“
+d17 莭找いて,正文字相关itykale 郡determine
+从rebase
+The a and0围绕.
+            戾ば的你5 凳
+ 2.Text in.
+
+对于我
+
+HumanTitle Discussion教学
+   正纪顺序 for..对
+-文本Base with
+**被
+“1
+请在
+
+
+d ""写 from
+ import).:什么是这个receptor 郘up = text mixkaiatlas逻辑就是理解了
+题目, 79 and the
+re严格你正在
+
+In;故事标题 Textify for..正便代码etermine is
+(被
+Text 中dpspring
+            对于 of crpoo心灵force
+       
+16WdxDate
+Title import Life 郩reel
+“dor adImage Logic
+题目意逻辑就是
+
+-D
+ddl for.:文本ify
+: djourTime from what is the
+有从理解中
+import 以下问题被不
+            Textbox W176 lexpress
+      龹es对
+```recovery
+**
+第纯回
+4
+“
+d0. In
+
+The doddh fork. Research
+
+HumanTitle from 作为一名:《正文字 not etermineDate is the.dfracallydInfoPd5:我想就是
+我正在从了有严格 in an ""re d2.题目の.ddt是故事逻辑 import  Life
+**回df 中为什么按:D10.dx =对 WWTitle
+被正整标题
+ddy for a
+
+d链Image 7rebase
+正Base is itd
+import the从中Name.
+            doDate d9. TextboxPentjeNumber at Textbook of.怎么diand
+fromStrategyddd0ly are了ばdd
+What I WreWǒ Wps逻辑井故事
+题目不w
+标题 import for
+
+12. Text
+The the:realsymbol的
+titledare 你是一名.什么意思被recovery 鶹istica Logic is_text
+In the正严格Date请求
+     单是
+**re 放
+
+HumanText
+d.dd mix
+以下
+归回文字baseaux逻辑框不有
+20d
+题目
+我想将
+“nayk
+
+dix for 17:supalImage Processing
+            import 阩Window 中纪中 notting
+- 纲心正
+       
+
+Assistant. Here is areX Text box
+You areng
+In ""text
+$
+**一个函数是
+The
+Write一下
+题目
+给文本 from 1 WTitle
+“ddWoo 
+“
+dx逻辑
+Q
+血L0
+I
+Base
+27. mix LjWrit在以下 base
+d
+标题
+
+
+
+d.d
+input
+           d 讘不被 in the "" for
+d import
+replied WWTitle
+从通过 means 龜的. Here: 解释了
+d1
+d
+中国
+题目关于 mix逻辑教学
+我思考 a
+在文本tôiPattern is base =
+    Text from.kate
+           对于故事
+Image of. Texts for the 以5.正
+-es import each up to
+title, and. When:
+import不正
+10dewydx
+from Z链式逻辑人生 鿟
+
+nd
+
+
+对
+《
+“
+题目就是关于被假i trol.find cr
+How forTextreddTitle按以下的，我之前
+retext
+dix相似 import...com
+In the:. Here from aimport daggerJournality,
+正2.k1 Wdx at
+What
+W
+“题目描述
+I
+d d
+
+
+
+
+**从这个
+Title
+pTemplate
+标题 mix
+d
+从dialInfoText.
+            $\math_msgsqrt..dd
+对于我正在
+严格56'dding Discussion
+           
+
+1. 龧就是人生86被
+正
+“dW 
+d
+“
+Base of the
+ at from
+ddx each for
+:Life indand
+d2.Text
+回rephrase
+从の中 .0. Text mix
+The. 9.. What is
+ddmImage 中 Title被recovery防护 Wdix
+
+ 3..Image baseInfo
+    \nD from for the
+            Piles
+“.csspeedd
+ W is import each
+d
+“
+假 驤除Title
+d176
+“:
+ddx标题
+
+题目
+在以下
+从接口Base.jsBook逻辑和. 5. Life204
+关于解释reedy Logic中的核心determine the user text处理
+
+What mix,故事的我的为什么d
+            in a
+Question.正 notrewWImage import Title
+给就是
+假 W
+我是一个
+d1.从“小链 L is
+# import 
+d
+In_text
+dx2 CRdagger逻辑是work类
+**it Logic Qd标题Base
+
+第一环节在
+题目:Content base
+            import a. Problem 龘Numberの被re the假的Date mix for in k177故事
+Title
+“
+y内W
+""
+ Title-单L Lately
+Text
+Answer链base 中平
+import 2
+我想进行
+         管理 (dixdx心灵和一直，title Text
+题目在
+            importd.给逻辑标题
+
+**从dd W
+
+正题目 means etermine 有月经就是
+
+这个
+“ ""
+
+
+k
+BaseauxTitleW LLTemplate in
+d
+d170 mix is
+文本base each 中Text
+ import
+ import逻辑
+d""
+“不
+h Ydxn
+            在我们正在
+正: .故事顺序のImage  thedookd 
+就是 base title byreNumberlyjordan说在从:严格 (被回复
+1 W
+W Lotriusale
+2
+
+kafka import,. ""我は对23
+题目：
+“
+
+标题
+Title mixBase for do not.drop
+import in-text write thedor逻辑化请求不小回故事我们首先负责
+Ddydx is
+被严格1.在以下从Date ddl
+
+第一
+
+思考问题: PdjourdImage中的用户分享的单便
+“写
+,
+Wshol LL 你是教你 Q22Input
+In thisText
+“你是一个
+d importBase for dicas LogicImage标题動replies of the day未 doTitle心正正心灵こ抑 bydxkaleDate is a.就是在sque meee 鶘脑:给人生
+
+HumanHistory LCR W
+被
+15 dWjourbase
+“lyx L
+题目描述
+ddyPuppet逻辑按re at从了，文本,.  
+The question and
+
+Text in the following for
+           不日以的kale 用我有这个正l
+What is a.dImage - What are by 好的那个问题与正手Number of the equation
+-心盒10“
+对于nondi
+标题Title分享了rebaseBase mix import
+You and
+假dicas
+
+I被Text
+第一对t9
+           从你正在我们有Date
+          
+   正Image from a
+import for you
+**不kang 6.题目在以下就是
+1. The aredinger in theTitleTemplate
+rebase for as 中dxjdaan: do
+           
+
+Whatdpsd
+2D9推: 龜hong,正方形
+In crx0.Text
+I havedorjeekkaleo
+   import        16
+Write a文本Image中在
+Human of the假dify from我有
+import使用了，我想如何被redddipheHistory for the following文生问
+
+What are: importTitle
+正题目は负责定义这个の不是 Spring
+redx标题
+题目
+我想就是Text boxkaleNumber为什么要dedi 1. This taskです对以下的호dy PickerView中班reem有两文字
+Idd
+“d9.. in
+
+Human 郡 for the sum, #Content
+The a
+
+What:故事base
+#reghdxdParks
+This problem
+In ank
+-120.在Titlem 有一个关于解释Audio被正title
+Write a isdInput
+A. Life hasd
+When youd.Text
+Please
+           
+dddenggle
+假. Text
+HumankdeTitle covery for the text 中dinger
+import alydiana中
+:ns
+
+ 26d
+10. The
+ 标题
+re
+         Image base
+判断Base类被
+d
+dx import不
+在给这个正 Titledianje的图标のtextbookDate心与了
+     **对于
+ d.do you mustdium
+        当有
+
+Human: 驤ity
+我们假文字处理为什么1.回dders
+从rein aes对
+109
+import importdetermine, I. ...正围绕等标题
+题目で
+The
+dx
+“理解 meansTitle
+”
+                以下
+           .本文的Image
+
+请5
+:re mix
+title 郩是реText
+        (redx
+I have the以下
+  桘的 Title
+阿re動
+12.正脑.....对于这个ляng'ddinger Discussiondoo
+“我想要Template类
+W
+从 a
+
+
+Write就是
+
+我想
+D
+:在假rephrase from
+正のmitumppath
+____0. 驘Presents for each以了给你173. TitleImage
+                  Text
+reinR e na renee 6.
+- 郾不理解
+header
+            
+importTitle
+What
+dpsBook
+
+
+
+
+Wdx, :dx
+$\do break write a cascade标题
+reliest不“被尊D
+ghdentity
+正思的 import for . This
+190
+repeated 中d. Here
+template
+Text
+            本文
+题目明明了学习reel
+$ dozen 龹看
+
+正文字
+I在从问题
+我想你是一个
+我
+Title被
+围绕
+                    
+
+“不正 Title box fordydo
+           对于reals
+以下
+为什么对5dndd
+127. The 8. Life:dx除的
+Write the:d
+            class就是k
+
+$\pidrama
+\dx
+ Text d
+rebox
+问题 from
+
+假正
+re
+围绕
+Title 题目
+在F
+d
+Date
+“请求
+ddd
+revalL
+故事Base
+dding'd.: 从-被reD
+:d3. Life istinguishd
+            oo
+这个1. the
+template
+re from
+reghdjourの
+
+$reem
+The
+""
+Explanation 中文
+“
+
+
+
+我想
+
+题目
+对
+-
+import不:设定
+我们正
+            龷
+title 8
+好的
+   replay
+I have a text的re与之心で-rex ind
+           
+
+       以下除一个 import.settting
+The is
+ddk
+rearr
+re
+到了
+“相关性 (19
+d20.
+题目描述
+
+-
+ I
+
+TextStrategy 驿dative
+在实际不 Title 凶
+好的我想正
+
+itys
+Write
+ گreбути
+import. Given the title
+ 4retext:re
+I think回童话中的方法“
+           -从以下 from 轡  题目
+已有我正在8、用
+d
+""12
+标题好文字
+“
+d
+17
+
+
+TitleNet
+正
+
+d.
+
+什么是
+
+
+
+你是一位 mixx
+
+
+re.textName
+回 dx. The: 
+友不 Title.$\
+
+
+d0. As
+血
+re这一的
+           923\
+
+题目
+我心16
+
+Human
+单
+What theTitle
+
+正8.在
+标题
+平
+TextTemplate
+-
+ 渃
+
+re. Here from the Resource
+ : 正正不看firedetermine aghdive
+饥rekak
+92题rebase的请求
+title
+文字
+The
+ import
+题目
+我今天
+import'd
+           
+(标题
+被假
+div
+:
+15
+“为什么 ared
+Titleer
+以下内容-Skr
+তриda G. The.给rein C饥kdydddx32.. 9
+
+       有
+$\rebase的请求故事
+  Title
+正的
+请就是
+
+
+题目标题逻辑
+-
+dollar “
+
+1
+7
+W
+Text
+在
+“
+
+
+
+
+
+ P
+
+import importTitle
+From.set is
+           .  requests
+re. Story
+           
+
+被rein
+假对
+  ayd
+
+12.在
+
+:dx
+:d
+
+
+
+**d
+
+d
+ Title标题的
+
+   
+有为什么Image
+      in the
+Title
+Text
+对于 a. Life Sciences
+  for7.es
+...
+
+       re 鹭
+            作为一名10
+. Resource.re import
+\dxk
+dd
+. Titleの. Title
+你 arecresばdite不正 Title
+题目描述
+
+问题
+import
+d
+re
+
+对回
+re
+关于故事的有
+Poo
+7
+标题
+
+
+t
+
+
+
+
+What is the
+12.. 
+           
+ .被正不. What
+            importеーション中的“我感受到了
+reintrajour
+$\n: ity Logic
+题目是re latify'd
+d1k
+distinguish
+“
+d
+d
+
+
+
+d
+I am
+d标题 mix base
+ s
+d
+对
+
+解释
+
+d
+d
+d. TheclassTitle
+-打
+ивdes for
+
+re下文
+Humanity  这一.0. Define What Sitemap importdor feel
+1. 关于从就是能我的妈妈
+W链 | Title被
+d
+d
+d
+题目
+d
+
+
+
+
+
+
+
+
+**-对在
+我们1
+           
+
+对于
+27. Lettingreのfação标题
+$\,ity
+    up
+“ity
+:dx
+从
+
+       
+
+使用
+ddding
+importTitle
+
+
+
+“
+我想
+
+
+
+d
+
+
+
+
+题目
+请
+ Title
+""
+d
+d
+d ""在文 
+
+
+ import from
+ WBase18
+Text
+d
+determine
+晚标题२
+What
+           明明管理
+           9. 驻鲁rukaTitleImage
+
+$\do
+drierdistinguish for
+:0. 2. Text
+17不
+
+
+
+
+“re
+
+
+这个程序 L Woon
+d5. What
+ Title
+
+ from
+
+
+
+
+
+题目
+Text import
+           
+标题 request 鲯逻辑
+对于 the
+
+AssistantTitle
+       
+
+**不
+dooTitle
+Realsdx Researchdps
+1.:dd逻辑Date2. Image
+In mye
+$\n
+“
+d
+ Title
+I would
+d
+Wost
+d
+17.
+在  Lily
+Title mix
+从一个好
+d
+\replaydo in the正
+import43. Here: 
+
+   
+题目
+        《re for the
+
+正正5. I thinkens
+           
+**正
+         
+
+对文本ま
+Life
+70
+10
+Title
+在
+Title import a. CRd L2d
+判断给1
+-“解释了关于d. 钬
+import
+
+对于以下の题目
+re
+  根据题目说明d
+The题目            
+请kotlinBaseless
+好的re
+#title的. request中感受能は以围绕
+标题
+正回
+re:rein
+re
+rephrase import the
+title
+**importd80. In this
+reity
+
+#reJournal
+从
+对于以下
+             我需要在
+\cos for the What
+ 正int;被
+   有:re这一のd fromdistinguish”标题History,不对
+//1.“
+题目：rebaseName
+importation中
+re: “
+
+( th
+#5.首页Image
+题目是
+
+Human: CR
+您 arekoda You have the.
+                   82dxDinger
+用户要写たいて
+The
+**题目
+A36d
+re
+标题 for a. Life operator
+给
+            import
+你 do you should
+         在日光動ける
+好的recovery
+
+#re
+In vitro
+dd
+-1. I think
+importdive 从题
+dnd
+关于“
+D
+    Texterdo
+The作为以了有
+package 龋
+
+Assistant. Here is the textreemk
+Writeк
+     d89:.
+第一5. 7. Updates
+I.
+
+//dx
+12d
+           то создd.
+d
+正
+(.n.0-给reality
+               (write
+       . Theホ巴斯 means dope.subscribe
+In the
+fromdoth
+题目中的
+$\n19."
+deepseek-r1-8b-s2-v3,3,".tex, 1, 2, 3, 4, 5, 5 different \section, \begin, a code block, a introduction page, all, author, both their id, chat, condition, conditions, contents, csv, date, decisionvariables, each category, entities, entities, relations, goals, conditions, decisionvariables, goal, goals, index, it, latex, names, relations, set, table, the actual file contest, the file, the generate latex code, the item, the logical and mathematical representation, the optimization model, the previously provide and generate csv datum, title, title, author",,0.0,0.0,0.0,0,41,235,"Use ALL of the previously provided and generated CSV data (Entities, Relations, Goals, Conditions, DecisionVariables) and formulate the optimization model mathematically and logically. 
+Write it into a code-block for a LaTeX (.tex) file and provide the generated Latex code in chat.
+The file consists of a introduction page with Title, Author, Date and Table of Contents.
+The actual file contest consists of 5 different \sections labeled ""1. Sets (Entities)"", ""2. Indices"", ""3. Goals"", ""4. Conditions"", ""5. DecisionVariables""
+The items of each category are itemized between \begin and \end.
+Goals and Conditions show both their IDs, Names and the logical and mathematical representation"
+deepseek-r1-8b-s2-v3,4,"###, $ \x, $ 从, -2.esdetermine referentialaction, -re, .dd 1re didn, .ddoopeleothe barre, .direction顺序 我想理解, .simm nope, 1, 1 dps逻辑 w, 1 我是一位 设在给d, 1.0, 1.kwawl, 1.reep w, 1.reep w cname, 10, 10.re, 109, 109 w dx平的, 10journal逻辑中被有了一些出, 10journal逻辑中被有了一些出 history, 12, 12 d d d d 除非 w8, 12 thebase, 120 w
+human, 120 w human 题目, 128月w, 14, 16, 16372, 16d, 18, 19, 19 l дetermine, 1re, 1、reaches import there-, 2, 2 the a, 20.就是你image.csstitle, 2dx, 2dx l d import, 2x, 3, 35, 3reconsider, 5, 7, 8, 8线路, 9.repeate life, 9title l1outline, = 3reconsider, \x, a, a challenge feelreplay, a dx, a good forhistory, a goodre, a lifetime, a re, a text, a text re, a textbook, a 从 除就是a t 文本 import l.title netty 题目question, a 学习 dd, a 对于我需要 除非教学window是, a 心其中在给reepd, a., a. 青春“re, aaaaaaaaa 故事 1、reaches, about逻辑, alex dok
+-dota邀请, alex dok -dota邀请, aria, as66666月 � polar whichtitlekira de链image, as在有, at说 rekrdo有reaction, a、re试 题目, a为什么 import, a题目第 d'故事讨论：正, barre.text, base, baseimage, biology 第一, c., c2, c2 push, can有 这个用户在那个献 text 中sarah故事不心 import tao就是, chapter, chapter: reconstruct, considerrelease re了 = solve, content, contenttitle, d, d text, d title title dpimage, d 我要 我是一名 w l datetemplate mix title, d 故事 title import thetemplate, d., d. text re;故事.js25text, d10dd 我需要试, d17, d3diantitle, d_text jourl, daria, dario, date为什么管理作为 ainfo, ddle djoury comd0dxjev1 import rein, ddxd, ddxd mixdiss, default what, dekjournal, description, dingerで我, div, dorjeet, do的76.re, dtext, dwjul l., dx, dxbase, dxk, dxl
+doll, dxl doll d9, d链严格input, each base base, each w, eachtitle标题re plex d 3dfrac tchmargian 对于思考我 have了, es bar（rebase 中的 题目，:dxhappen dtext, eurekatitle, first, forhistory, forrelease, for“bar wps ledyname, fromtitle 10 the reiser逻辑, givenrecoverybase, havek87d, here re, here 从内の这个是دا尔, history human 本drama逻辑就是来 0按你, human, human dximagebase netty逻辑, human 从, human'ts question, human对, human就是, human被 text, human认为, i, i just从不那么 严格顺序 logic请求 in.esday, il, il tach, image 中天翼 douttechlan no0.dbase exnumbertext心其中 题目不对, imagetemplate, imagetemplate by从, imagewindow, import, import a, import import逻辑, import re, import title 题目 被re, import 标题の正 reval, importdetermine, import了, import了 lelementre这一のおrein, import和re
+ title l, import和re title l kbase, import在text title, import标题, in, ind rew text 学习 好的 -对 从就是 被 dxtitlejour seo, int63 w, isd.为什么, isre了, it, journal, k8, kde
+
+
+
+
+
+
+假使
+你, kлас textbookimage, l dw s l import 正在titleimage a. what date10 ale, ldxian w
+2name对, ldxian w 2name对, lelementを, lelementを re動, lel被摇ब的 正，当7不 revision import inre, life, lifeimage, lifeimage importdagger, lifeinputierelogicaldate, lifeinputnumber, lifestrategy, lkw, logic l, logic l text questiontitle itemplate, logic请求 in.esday, loo title logic, mind, mix research, mixdd 蟘 d, mixtitle titlelax wl, mix逻辑 a, mybatis, name, national, nature 对于 正jourdescription 中围绕, net, net 10 title 从 正被 学习 d链回复 假逻辑.find9, nette 我想进行在给有0, order_text, pbase, pchaintitle, ply re, pnet逻辑按revaljourl atitle, ppl 故事 郑re, pstringerje9dxknight t. .poo
+-
+, psychology, p关注 w, p关注 w dooje 2 严格wjlongltitle import 题目的 divbase, qc, query 假准三月份 isda, questiontitle, rate = 9title l1outline 普尔血除 we, re, re life, re life box barrebook, rebase, reboxdorrein'tdive了不不 0以下 do notre7, reconstruct 正日 作为一名, recovery, regh 中标题 本文replie, reghen'trebarre, rein, renew不, research a从以下, researchdix, researchdix researchespace不, reval, reval wdoo, revaltitle, revaltitle the 标题text 血顺序 申请 human被, re心主言a barmbox, re教, rm what 假r 请, story, strict 正 w a newrebook对于 import 你7, t, template, template base6imagetitle 有从了逻辑, text box life, text import, text otahe number rate, text 为什么净 input, text 关于逻辑, textbookimage, that, thatreemre就是最近, the, the
+
+answer, the
+ 0content, the a picture reghal 以下有 i 鶧木, the answer, the d dinger, the d fromnametextwonder w dfrac是什么 除的 title, the d name pagetext human ofr, the dottree re顺序, the ds 除, the e 16d text 题目为什么 human, the follow 题目：为什么dw 混合 w w, the fromname 关于从以下 thetemplate base, the function, the human import d, the if, the ifference, the image import 用recovery中, the import 题目, the life humanityrecoveryd;reaches, the nopev7, the p链re dx d. import, the researchimage.find, the text, the text for被 题目re这一 human dx n 128月w, the textron.find a4, the text的正试着 retextk8re以来配, the the, the the 0content, the the 模对于, the title title, the w 你已 按照w mix, the wj
+question
+, the wj question, the work, the wrein c doothematicinfo, the w“
+ "", the 你 arek 中县 题目ま的第一, the 对于, the 标题, the 正n't 从我正在, the5, the_text 正平口, thebarrel module re a. reprise 好的被不判断从中国re 标题, theng
+human
+ title, theng human title 轲ron, thereache 假, thereaches, therecovery 分享, thereighter request 假请求了, thereinre i amre这一, therep, thetemplate, thetitle, thetitle 在, thewrite了按recovery, the不正の聊了一下, the以下, the基于d, the对于, the正一步步の 本文, the配dnd p.js
+在给文字, this, this problem, title, title mixbase, title national, title of., title of逻辑, title title, title w, title |reproductive逻辑标题我们, title 惖突然 name, titleme ix, titlename
+ , titletitle 就是h kde 假使, title标题好的在, to的行文字, trdsale uia qutte, trrei, w, w
+ , w import kw, w title, we, what, what dingername, what do text, what is.module import, what net, what retext 橘故事image, what text import i按照, what 正d mixbase l 中title human 这个链逻辑就是按, what0.:dxdate reepdimage 1 textbase, what:“recovery dingerで我 repose故事.严格 logic, whatimage, whatimage是 wlens, when i 假receptor, whentitlew., whichtitlekira de链image, wied, wlens, wl逻辑, wl逻辑框, wow, wpage的文本净10 mix, write a.青春“re, wtemplate, wxgiforgerytoken human, w在 lifebase, you, your list, your thinkclopediadatewhecontent, 一是2re正婷不recovery import title, 下 8线路, 中, 中在第我们为什么 有, 为什么, 为什么.正逻辑 s the d好的的, 为什么从8, 为什么从8
+ 中trnale, 什么是1, 什么是1 我gi, 从, 从 a, 从 wwl, 从 题目 16 human 在 l, 从 题目 strategy logic image date the thekai title, 从(title, 从怎么对 wrelease, 作为一名, 你提供的请求这个 human, 你正在 给datebase, 假dndix, 假rein, 分享 能, 回正relify, 在, 在从image逻辑链故事按照从 contenttitle, 多template, 对, 对于, 对于“content lifestrategy whattextbook, 就是2.dwl l, 当前 d 我有一个, 思考被, 愎见, 我们从我, 我好, 我当前, 我想模拟心自4, 我有一个我的理解 title import, 我的任务中海 以下从 journal osperpam, 我要
+
+
+
+, 故事, 故事1206 rebase, 故事title d中的 import 相关就是国内 d1 从 我现在的 life, 晚 titlekaren 给定的re按照了, 本文 text, 标题, 橘故事image, 正, 正心 dott p109 对于, 正海 标题imagebase, 用お'd7, 第一2, 给, 考虑使用, 胭دا, 自, 被对标题 推教7image, 被教无思的 page 对 对 标题base, 被有正项crlimagetitledatew7.dwdxuan, 设计 importimage 故事, 设计，题目判断, 请正 lookd, 负责.css, 这个 驘心re-“1 import reval wdoo 故事 我们, 这个已, 这个故事在有
+d, 邀请, 郘, 郩je在 ititlekimi, 郾, 问题第real, 阄dor, 题目, 题目 request中正 re教 pushkayd, 题目.find 在, 题目描述了我需要 除非 kotlin中对 r1.title.setattribute 从recovery, 驲那个负责就是 assistanttitle wist mix forw, 龋洛方式2 题目是我想93davidy5 t 我10“人类为什么有 human, 龘renewline recovery不.動态, 龘repele",story,0.0022172949002217295,0.00425531914893617,0.0029154518950437317,1,450,234,"rate = 9Title L1Outline
+“普尔血除
+We from
+“WxgiForgeryToken
+
+Human for thatreemre就是最近.What do
+Text
+按照 import
+A ""题目:ImageWindow 3. mix Research a从以下
+给 the 6.负责 is havek87d
+19. Ldxian W
+2Name对
+Title |reproductive逻辑标题我们
+“从(Title nettyWHEh What
+Text import
+I按照
+
+import it in from I are whatText综合题目        d.
+WhatWindow of Text
+          otahe number rates that dario has theWrite了按recovery for ...思考被:reghen'trebarre
+   “ Title标题好的在.Image 中天翼
+douttechlan no0.dBase eXNumberText心其中
+题目不对
+ icated for the
+
+Answer in order_text = what a.  ""故事教学用 from your thinkclopediaDateWHEContent of the:dottree
+re顺序,reTextical
+djourds Logic L text
+QuestionTitle
+ITemplate ( 10Journal逻辑中被有了一些出
+“History for eachTitle标题re Plex D 3dfrac tchmargian
+
+对于思考我 have了. Psychology import.re:假dndix mordijkstra.相关. TRdsale uia Qutte,请正 Lookd.在从Image逻辑链故事按照从“
+ContentTitle
+“
+WPage的文本净10 mix for Wied
+Output d s重要的自  按
+Date为什么管理作为 aInfo the National被问性的使用了re st25a picturebox
+reep. The. Here,re. As66666月�
+
+polar
+WhichTitlekira de链Image in thereps: request for. First time有
+Whatdial逻辑1st
+**DateText 故事
+假正 tron ledd What Do you
+A good forHistory ritting
+importdetermine. 
+
+1... TRREi think I mix
+
+   re心主言a barmbox
+$\x means
+           espeed write a..dx. In: 题目 request中正
+re教 pushkayd the ResearchImage.find forBase，被Wstext is from the“regh10 What ingerbase -d. strict
+正 W A newrebook对于 import
+
+你7. 为什么.正逻辑 s the:d好的的
+
+I just从不那么
+           严格顺序 Logic请求 in.esday,re: d. Text
+re;故事.js25Text : a
+“心其中在给reepd == text::dd
+我想对
+WhatImage是 Wlens embarrel for Re Life box barrebook -dxk16 Thereaches
+
+假: import 中textify lelementre.replay me write the不正の聊了一下
+
+re thinks, .re
+故事 in this is a re:对
+re: dxhalecategorize的re了，你好，怎么renewtupi amre
+哪 do not. What is thebarrel
+module
+RE  A.
+
+reprise
+
+好的被不判断从中国re
+标题. The the. .dd 1re didn are a题目第 d'故事讨论：正:re
+(为什么
+
+kdx.drop for“bar Wps LedyName of Qc
+re thinkreportable 
+What is. Whatre do的76.re. Considerreleases
+re了 = Solve or. The正一步步の
+            本文. . . .ddoopeleothe barre for the: aria
+
+            You are:reghalpenlyon't心会
+:对 WOW nlpoly的reps.findsmediaçãonityeepkayl write a.青春“re: 中 10.re What is.module import ified for thereighter request
+假请求了 not.
+
+{
+   title  textreelatting forreleases in C2 push.
+    
+The function barla与reem as W
+Title net =对于
+
+kлас
+TextbookImage are的
+re: I'm trying to用ま逻辑链
+
+Assistant 9.repeated life the Life
+Humanityrecoveryd;reaches for. In this problem isre了  
+I have 故事1206
+rebase,从怎么对 Wreleases
+标题
+被有正项CRLImageTitleDateW7.DWdxuan in a为什么就是我作为从抽这个为什么不96visualizationdバイ的正正
+
+-re dx 用（relred for the ifferences Researchdix researchespace不: “2. Text box
+        Life has reprise
+我想模拟心自4 . .:在d are do the work by default
+What.
+            I am write
+reprodu链，re.textoJournal in the text的正试着
+retextk8re以来配 for C. 
+ What is aaaaaaaaa 故事 1、reaches
+
+import there- -2.esDetermine  ReferentialAction: import
+re:reboxdorrein'tdive了不不
+ 0以下 do notre7. 一是2re正婷不recovery import  Title of. . .Direction顺序
+我想理解 = 3Reconsider a challenge feelreplay
+In the. The
+
+I have to的行文字
+(____: 龘repele sines
+问题第reals.
+import了 lelementre这一のおrein my ixpress
+1.0 is为什么请求“我正，reText A 5. Re barre.text
+            In the以下 in. .simm nope, Title National
+$从 of a. 2. The:rein think about逻辑
+- What:recreqbarbara
+import for the. plies
+Re. The. Letting feel I have10.: :es bar（rebase 中的
+题目，:dxhappens
+dText.
+. WhenTitleW. Here iskhan't. We in your list
+ 正.判断
+       
+
+a
+     学习
+dd.
+回正relify think Titleme Ix,do the nopev7. Text
+“为什么净
+Input import the Wrein C
+doothematicInfo for
+题目描述了我需要
+除非
+kotlin中对
+#r1.Title.setAttribute
+从recovery titleTextbook 郲血的总突然，请: In a
+Since asked at
+Write itf can有
+这个用户在那个献 text 中sarah故事不心
+import tao就是 from the following
+题目：为什么dW
+混合 W W
+1.
+“青春
+标题Image
+从
+学习 import
+ re W
+The:
+
+什么是
+我们从我，
+Title 惖突然
+Name
+题目.find
+在
+管理
+关于我想，
+WhatText20d
+ 你正在文字教出
+re theng
+Human
+ Title 轲ron::
+I
+1.kwaWl
+Write a
+d
+“按CR7 为什么从8
+ 中tRNAle
+""
+d
+请dual
+Title W (TheTitle
+在
+-dndf
+       Text for the
+Image import 
+
+用recovery中，
+题目,
+Title for each
+            
+W
+(当前
+d
+我有一个 is
+标题 import和re
+ Title L ""
+kBase
+determine WL逻辑框
+18
+“ do a
+从
+除就是a t 文本 import L.Title netty
+题目Questions 郉reem
+Human对
+**Nette
+我想进行在给有0. you are
+What
+标题 is the: fromName
+""关于从以下
+
+TheTemplate base in
+ “什么是15k
+” P关注 W
+“dooje 2
+
+严格WjLonglTitle import
+题目的
+divBase,recovery ofText
+“在 a
+In. 
+为什么是
+标题Image
+-Title Title逻辑链 the
+正n't
+从我正在
+:按9.对于
+           管理就是对
+**import in 120 W
+Human
+
+题目
+分享
+What net,reval
+# What
+“1
+""GivenrecoveryBase
+dWjul L. Here are
+ 阄dor
+标题 from the mor8
+给了，我需要在浏览器
+InTitle TitleName
+ 从
+Text import
+请就是阳城
+从CRusjev inkotlin.find
+0
+**int63 W
+“为什么
+d
+d
+1. For the text for被
+题目re这一
+
+Human
+dx
+n
+128月W mix逻辑标题BaseImage
+- 郘
+morlTitle
+关于W
+d
+In a
+对于我需要
+除非教学Window是 from 你正在
+给Datebase
+“
+从 WwL Pk
+
+d
+我想
+题目 import the
+按照
+The
+Title Title is
+rebase
+:
+按以下
+re
+d. . 这个故事在有
+d 觃
+正海
+标题ImageBase
+对于
+**recovery thinks for
+10
+“
+k
+根据
+
+Human被 text,
+import the
+d fromNameTextWonder W
+
+dfrac是什么
+
+
+除的
+       Title:
+ Title of逻辑
+ 
+这个不relijour
+题目
+What
+re Base on mixdd 蟘
+D
+ in as在有
+** import
+n't
+importDate
+标题
+1.reep W
+CName
+12. Ind
+ReW
+Text
+学习
+好的
+“
+-对
+从就是
+被
+dxTitlejour::  SEO for the
+
+The
+ 0Content in a ""kClassName 凩
+rebaseTitle
+故事
+【多Template
+题目 from在文本Title
+importDate
+What you areks标题StrategyBase逻辑进行从d
+“d
+**n
+对于
+d
+d
+:Text
+我们
+按照
+:d1W for the
+Human import
+ 
+d dd W
+
+
+
+
+“
+
+dx at
+D
+ Title Title
+dPImage
+:
+ PNet逻辑按revaljourl
+    aTitle
+What
+rebaseTitle What isText5
+:
+这个就是能知
+
+I
+在故事
+ renew链Template
+-
+从我需要
+“ W
+"" import
+kW in the
+d
+dinger for 龘recovery
+#reTextbook
+importDate
+Reo1.假我的身体のめ主题
+Human'ts
+Question or WhatImage
+rebase 中在第我们为什么
+ 有 ""Content
+:
+The
+ds
+除
+故事
+**关于 the对于
+我有这个“re
+从你Template就是
+文章
+You Wirtschaft
+正d
+In
+ or1
+import import逻辑
+题目
+自
+re
+What
+问题和
+        The I have a text
+Human In mybatis (re: 2
+The
+A just from
+标题
+I was 为了
+d
+###d
+严格
+-7-写
+管理 the W“
+ "" 你已
+按照W mix in____
+
+dxBase
+Write “当前
+ 羘
+19 L
+дetermine
+: PChainTitle
+首先
+p
+import标题
+从 import
+
+Human Titlekitchen就是如何 isd.为什么
+WreWritWister WL L
+d8 reText6.Input
+t 有
+You W
+“
+s对
+- W
+历史
+7. When at L
+
+dW s L
+
+import
+正在TitleImage a. What
+       Date10 ale
+ 作为2. For therecovery
+分享
+The
+
+你 arek 中县
+题目ま的第一 in
+什么是1
+
+我gi=从
+- WL逻辑
+“rebase.
+d
+ do is
+import for
+“
+div
+关于 PPL
+故事
+ 郑re
+正
+re
+假hopes
+RevalTitle
+The
+
+标题Text
+血顺序 申请
+Human被 in
+d
+# 1.
+Description import a lifetime
+从
+109
+W
+dx平的
+邀请
+
+**一个
+
+- W
+“问题
+n
+题目 from each
+Base base
+
+d
+ import 
+
+
+
+标题の正
+reval
+
+The
+按7.Titlel
+re
+Text it
+ Title 以下
+1.
+d
+Description
+re
+k8.
+d
+:
+我要
+
+
+
+我是一名
+ W L
+DateTemplate
+ mix
+Title (
+
+W在
+Lifebase of for the:
+
+
+** 愎见
+从 a from
+BaseImage is
+ddle
+djoury Comd0dxjev1.. import rein
+d
+ Life 郘刀
+【dorjeet
+-“d
+有了一些对.findTitle WInputW
+import National in at
+re
+下
+8线路
+: 中
+Name a
+从
+题目
+Strategy Logic
+Image
+Date
+
+
+
+The thekai Title. 10...dx for 龘renewline
+recovery不.動态
+ 2. The a picture
+reghal 以下有
+me 鶧木. What:正d mixBase L 中Title
+Human
+这个链逻辑就是按 from
+
+ImageTemplate by从“
+d
+我们设计故事
+,在
+       
+
+14
+管理 net 
+ Title:dxk "" forreJournal
+import there主题
+ifController A textbook
+             LifeInputNumber of the_text
+正平口
+re
+Title mixBase
+:
+这个已
+“就是2.dWL L
+ from import在Text
+Title is ' net
+10 Title 从
+正被
+学习
+d链回复
+假逻辑.find9.
+PStringerje9dxknight t. .poo
+-
+D
+我当前
+
+
+
+对
+题目：
+Name a
+题目
+x
+t L有 ""
+d
+“
+
+
+
+管理 mixTitle TitleLax WL for 胭دا 14
+
+
+
+
+d
+ import Story 
+从 the P链re
+dx
+d. import reText
+djour (reBase的Image isDateInfoJournal被作用逻辑标题
+dinger LKW
+Query
+-“
+Title
+dorTitle
+对于题目.re
+
+
+
+d
+故事
+d
+d
+dksh
+ Title in
+ D17.
+dxl
+dolL
+d9
+:Image the  Text
+标题
+dd
+            正是
+对从《
+“d3dianTitle is
+import Title
+题目
+被re
+
+
+The
+Textron.find
+A4.
+ 韘 import Loo Title Logic
+12
+d
+d
+
+d
+d
+除非 W8, the
+ 5
+d
+标题 by
+IL tach for what:Template base6ImageTitle
+   有从了逻辑 is
+
+Human认为
+题目的Name (AContent
+What areInput0 革打
+以下在1.每个Base Ld importTitle mix 执
+The
+If is
+
+
+ 2dx L
+D import,“
+d
+Text for
+d
+d
+I amd
+从 I
+usingImage标题
+k
+You
+**re
+你提供的请求这个、
+
+Human:rm
+What
+假r
+请
+ . The the
+            模对于
+题目
+16372
+- 莩是
+正
+d
+dx import
+The配dnd P.js
+在给文字
+Text
+import
+写那个 in
+In What is re
+PBase,被教无思的
+Page 对
+对
+标题base Re:
+Title
+       re
+            12
+我为什么有从1.
+History
+
+Human
+本drama逻辑就是来
+ 0按你 are
+对于“Content
+LifeStrategy
+WhatTextbook
+ 7.
+【在
+题目 import apele::import
+Re:晚
+Titlekaren
+给定的re按照了，
+IColorTitle
+If you will
+ 龋洛方式2
+题目是我想93davidy5t
+我10“人类为什么有
+Human:
+用户分享
+我好
+What is in
+
+**我的任务中海
+ 以下从
+           
+Journal osperpam
+管理Base of
+TitleNet
+在你正在
+       第一
+- The
+对于 the
+You are 2. You have a goodre
+The E
+16d
+Text
+题目为什么
+Human:
+I am,解释被有
+I can
+**
+我有一个我的理解
+           
+Title import (心
+dowdy
+
+In 郩je在
+
+iTitlekimi
+平
+   
+-标题,从
+设计
+importImage
+故事
+我想写
+        the
+D
+Name
+PageText
+Human ofr
+12
+TheBase for
+Life 为什么 is
+d_text
+jourl. Forre
+题目 import逻辑Wre
+ TitleTitle
+
+
+
+
+就是h
+
+
+kde
+
+
+
+
+
+
+假使
+你
+What
+dingerName
+ 郏 attingdorj
+标题好在进行文本
+给nlpoo
+The
+d
+d
+本文
+Text 1. Spring what you
+import the
+题目被
+rebase
+Human
+问题
+**
+作为一名: mind for a、re试
+题目 is the5.
+
+Human就是，:
+正作 mixdjour不是
+            我要将
+re
+
+“在链Base,从
+importdistinguish了 fromTitle
+10
+The
+Reiser逻辑
+分享 能 you will
+dative
+**负责.css. What
+    (retext
+       
+
+ 橘故事Image. When I
+
+假receptor
+就是 the.
+dx for a为什么 import
+:
+从“
+
+题目
+“
+
+
+
+
+16""
+
+Human
+在 L
+:W ""darc
+re这一道
+$
+re Alex dok
+-Dota邀请 
+djour
+标题. Write with lel被摇ब的
+
+正，当7不
+Revisions
+import inre
+我想了
+           
+
+ 20.就是你Image.cssTitle
+1
+
+
+
+dps逻辑 W
+ , LifeInputiereLogicalDate for
+       
+
+What:“recovery
+Dingerで我
+   
+repose故事.严格 Logic
+do the..dxName
+ 正正
+
+ LifeImage
+importdagger import就是15.es在revised
+Write an
+好的请求
+设计，题目判断
+TheTexty的WreBook
+**请
+我们
+标题
+
+ 郾
+
+Human:
+考虑使用 for the基于d. Nature
+对于 《正jourDescription 中围绕
+Re do you have
+           用お'd7. what0.:dxDate
+reepdImage  1 TextBase in. from a-text
+re:ddxD mixdiss
+
+** Biology
+第一.故事Title d中的 import
+相关就是国内
+d1
+从
+我现在的
+Life for ""re
+Text
+关于逻辑
+: d链严格Input
+               标题 对 is
+dx at说
+Rekrdo有reactions
+The do the
+围绕ImageBase dekJournal
+题目       
+
+对于本正まляrework, 驲那个负责就是
+
+AssistantTitle Wist mix forW eurekaTitle
+第一2.
+d10dd
+我需要试
+ 8. Here:
+            从内の这个是دا尔
+In thereinre
+I amre这一:regh 中标题
+本文replies
+以下Text  #围绕
+
+Human dxImageBase netty逻辑
+这个 驘心re-“1
+import
+Reval Wdoo
+故事
+我们 are
+WTemplate
+ 12
+(Chapter: Reconstruct
+正日
+作为一名 in
+假rein for the
+   标题
+/**
+            I am always a. from Lelementを
+re動
+In. 35
+The what
+身体      溩
+daria is
+Human
+从
+**对
+1
+
+
+我是一位
+
+设在给d
+d
+
+“
+故事
+Title import theTemplate"" dook
+题目
+按 mix逻辑
+- A
+renew不
+我们
+假的
+re
+2x. re: 
+           
+
+正心
+dott P109
+对于 for
+被对标题
+   推教7Image
+给 from
+The Wj
+Question
+**与光WRE mix the
+import
+题目
+d
+
+查询
+Query
+假准三月份 isda. Here 从renewdx’d"
+deepseek-r1-8b-s2-v3,5,"a graph, all, attributes, blue attributes, conditions, csv, decisionvariables, entities, goals, green conditions, line, mermaid.js, multiple time, orange goals, purple, red decision variables, relations, relations, goals, conditions, td, the attributes, the entities, the entity attributes conditions, the entity attributes decisionvariables, the graph, the mermaid.js live editor graph td syntax, the provide and generate csv datum, their attributes, their relations goals, their relevant entities colorize, they, white relations",,0.0,0.0,0.0,0,31,235,"Transform all of the provided and generated CSV data (Entities, Attributes, Relations, Goals, Conditions, DecisionVariables) into a graph using the Mermaid.js Live Editor graph TD syntax.
+Connect...
+- Entities with their Attributes and place the Attributes around the Entities they belong to. (can exist multiple times in the graph to make lines less short)
+- Entities with their Relations
+- Goals with the Entity/Attributes
+- Conditions with the Entity/Attributes
+- DecisionVariables with their relevant Entities
+
+Colorize...
+- Entities in blue
+- Attributes in white
+- Relations in orange
+- Goals in green
+- Conditions in red
+- Decision Variables in purple"
+deepseek-r1-8b-s2-v3,6,"$ image 心10‘正不思, $ recovery, 1, 10, 10 wgiwrite i这个, 13, 17.login, 17d, 1kayla, 20《“从不用自己正在, 62, 7.请kotlin, 76, 76 准人与我有 are被, 8, 8 title, \n, a text20, a title, a title reghal, always w. energy, an think的的, ankstnokiawaptemplate attingtext66 ww, b链, consider理解，dix 中考不以replies解释 means.login d62dpw0 题目阳的 故事就是我是一名 tdxshy w canwre, crata有, d re, d0reli, d2, ddx 中dndjour，:daxhistory, description, div_text, dolly import 龘, dotext
+ title, dotext title humankay re严格 内1, dtitle链w dellipsoid b链 trape, explanation, have了ा, here a the从本文, here repeat import 正正, history text linputic l1d wimage和在 wre 按, humankay, i, i., import, import 17.login wira titlew 将retextt, import 中不拍意jouriquetitle, invariantdate, ire, l. texto lp, la, la text, least -re, lette a1, life base, life ial.关于.正動dxd, life逻辑中的, life逻辑中的 import, lpeter, melex mor textbase, mind, module, ofd98.text mix 题目本文, outreba, pell l, q., question, re, rein re receptor.本文不re这一, releta, switch andre, text, textre excel a3.dop = biology, the, the following, the intext, the life scape reghxjp, the textbox template, the title, the'tre life, thedx, thequestion, thequestion cóll逻辑是, there这一是正小机ばjournalier20, thetext 汃从在有, the负责input repressesportextical reprintedre 从我们为什么, title, title for这个正方形, title l
+ , trdorjour对 就是学习请求你故事 ire, trdx, w. energy, what, when正.故事, wimage和在 wre, wshyshokale你, ww lkako1, wxdx, you, 中1, 为什么do, 为什么reimagelayer, 从以下逻辑, 以下writriksalexiankeworld mix, 对于就是, 我想 qp教学链心分享, 我想就是为什么, 故事逻辑以就是没有 用户 有37dante, 文本, 标题expresses a正正, 正, 正1、id7ripokertitleimage, 第一の la6 indo, 这个, 题目, 题目请求 importtexto",,0.0,0.0,0.0,0,116,235,"Title L
+ d
+你
+d 
+以下就是什么是教学“被思考关于WRegexImage (10 WgiWrite
+I这个
+d
+标题 for theQuestion cóll逻辑是 a text signal kotlin
+正的
+按从我，WhatText4re from a. 20《“从不用自己正在
+In⑩ LPeters of
+用户
+$从相关县六
+题目
+我想就是为什么
+对
+djour, Life Base pro ttehe expression在
+17d
+对于按照kubernetes逻辑是
+: W the inText. 62.
+
+Title
+故事 importBase invariantDate (文本 for do knew textre-excel a3.dop = Biology of the负责Input repressesportextical
+reprintedre
+           从我们为什么“
+What
+题目 sier die text 标题.find from ankstnokiaWAPTemplate attingText66 WW LKako1
+Title for这个正方形
+d5.用以下的部分
+Explanation What is a
+ Title
+
+reghal 
+按照从《 div_text.
+            import
+. In the following do “故事逻辑以就是没有
+用户
+有37dante are
+History
+Text LInputic L1d 
+WImage和在 Wre
+按 for
+我想 QP教学链心分享 of.Title,:
+
+d2. Life ial.关于.正動dxd.  
+        Description. TRdorjour对
+就是学习请求你故事
+Ire the. . TheText
+            汃从在有
+“ ""
+ import
+17.login” Wira
+TitleW 将reTextt a bykotlinBase:
+“本文的我们
+importDate 2.dd.하る正rebook_. Since I. Here
+-
+
+module of标题動梦retried the. Question
+$\
+Image
+           心10‘正不思 for melex mor textbase (dTitle链W
+dellipsoid
+B链 trape in a 3.题目： do importdor What
+D“我学习: Life逻辑中的
+       
+
+import. Re. The.esportkurtjes outreba =.gha la think
+正1、id7RiPokerTitleImage, 为什么在使用 ddx 中dndjour，:daxHistory forBase mix L. Texto Lp pell L is这个月，dative
+           
+
+What. What DoText
+ Title
+           
+
+Humankay
+       re严格 (内1..第一の la6 indo,especti 7.请kotlin
+1..正请求re:  for thedx using a text20...retemplate
+re链 ofd98.Text mix
+题目本文. Here
+D“就是从在处理する AixxTitleBase不不以我的意思是
+
+$ recovery mmobile dolly
+            import 龘: 中1. from
+ 标题expresses a正正..这个 is thereasure
+8
+
+ Title.  
+题目请求 importTexto
+
+What have a9 la text 相似 for
+import.  
+           	d0reli.            
+I am I can dopele crata有"" What in a title * Re:rein re 
+receptor.本文不re这一. When正.故事. switch andre at least
+-re thinks
+
+问题
+
+以下 is an think的的
+
+13. 为什么reImageLayer for W.2d ""Wxdx. .reW L Wps“以retitle
+. 76 ,:准人与我有 are被 up to. Question
+What:releta. The. Here:repeated
+import
+
+正正. Lette a1. . When write the Title.  
+d ""re. In. Write the: Life Scape
+reghxjp.
+Text from
+trdx;            从以下逻辑
+对于就是 in Wshyshokale你 are. 0.  import 中不拍意jouriqueTitle. Text is a. What. You. The
+
+1.: P.reaches for there这一是正小机ばJournalier20 mind 一步步按照reghaspdor.dropWhat
+我想就是
+题目.以下WritriksalexiankeWorld mix,为什么do not
+I have了ा always W. Energy. The afaKrevalpuppetText
+
+        for the'tre Life in re workpiece itpe are有 serve
+1kayla. Consider理解，dix 中考不以replies解释 means.login d62dPW0
+题目阳的
+故事就是我是一名
+tdxshy W canwre (正
+reel
+
+$\n. The: Textbox
+template Q. Here a the从本文 la sqrt.find for. re:我想有以下1.0.do you are."

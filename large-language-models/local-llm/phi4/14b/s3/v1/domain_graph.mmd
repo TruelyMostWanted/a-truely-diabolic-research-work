@@ -1,0 +1,127 @@
+graph TD
+    subgraph Entities[Entities]
+        Project[Project]::blue
+        Team[Team]::blue
+        Worker[Worker]::blue
+        Feature[Feature]::blue
+        Skill[Skill]::blue
+        Role[Role]::blue
+        ProductOwner[ProductOwner]::blue
+        ScrumMaster[ScrumMaster]::blue
+        ProductBacklog[ProductBacklog]::blue
+        Sprint[Sprint]::blue
+        SprintPlanning[SprintPlanning]::blue
+        DailyScrum[DailyScrum]::blue
+        SprintReview[SprintReview]::blue
+        SprintRetrospective[SprintRetrospective]::blue
+        SprintBacklog[SprintBacklog]::blue
+        SprintGoal[SprintGoal]::blue
+        Epic[Epic]::blue
+        UserStory[UserStory]::blue
+        Task[Task]::blue
+        DevelopmentSnapshot[DevelopmentSnapshot]::blue
+        Blocker[Blocker]::blue
+        Stakeholder[Stakeholder]::blue
+        Velocity[Velocity]::blue
+        ReleasePlan[ReleasePlan]::blue
+        Roadmap[Roadmap]::blue
+        ScrumBoard[ScrumBoard]::blue
+        FeatureDocumentation[FeatureDocumentation]::blue
+    end
+
+    subgraph Attributes[Attributes]
+        project_start[id, name, project_start, project_end, description, budget, status, target_audience, priority]::white
+        team_size[id, name, team_size, team_start, team_status, location, team_type]::white
+        worker_skill[id, name, first_name, email, start_date, status, availability]::white
+        feature_details[id, title, description, status, priority, estimated_effort]::white
+        skill_level[id, name, level]::white
+        role_description[id, title, responsibilities]::white
+        productowner_role[id, name, contact_info]::white
+        scrummaster_role[id, name, contact_info]::white
+        backlog_items[id, item_name, status]::white
+        sprint_details[id, start_date, end_date, velocity]::white
+        planning_duration[id, duration]::white
+        daily_scrum_minutes[id, minutes]::white
+        review_feedback[id, feedback]::white
+        retrospective_outcomes[id, outcomes]::white
+        backlog_count[id, count]::white
+        goal_achievement[id, achievement_level]::white
+        epic_scope[id, scope]::white
+        userstory_points[id, points]::white
+        task_effort[id, effort, status]::white
+        snapshot_version[id, version]::white
+        blocker_type[id, type, resolution_status]::white
+        stakeholder_importance[id, name, influence_level]::white
+        velocity_avg_story_points[id, avg_story_points]::white
+        release_plan_date[id, planned_release_date]::white
+        roadmap_milestones[id, milestones]::white
+        scrumboard_columns[id, columns]::white
+        feature_doc_version[id, version, author]::white
+    end
+
+    subgraph Relations[Relations]
+        isMemberOf["is Member Of"]::orange
+        hasAttribute["has Attribute"]::orange
+        belongsTo["belongs To"]::orange
+    end
+
+    subgraph Goals[Goals]
+        maximize_team_size[maximize team size]::green
+        minimize_project_end_time[minimize project end time]::green
+        maximize_sprint_velocity[maximize sprint velocity]::green
+        minimize_blocker_count[minimize blocker count]::green
+        maximize_stakeholder_satisfaction[maximize stakeholder satisfaction]::green
+    end
+
+    subgraph Conditions[Conditions]
+        max_team_size_limit[maximum team size limit]::red
+        min_project_budget[minimum project budget]::red
+        required_sprint_duration[required sprint duration]::red
+        max_task_effort[maximum task effort]::red
+        min_stakeholder_influence[min stakeholder influence]::red
+    end
+
+    subgraph DecisionVariables[Decision Variables]
+        sprint_duration[sprint duration]::purple
+        budget_allocation[budget allocation]::purple
+        number_of_tasks[number of tasks per user story]::purple
+        team_size[team size]::purple
+        stakeholder_engagement_level[stakeholder engagement level]::purple
+    end
+
+    Project-->isMemberOf-->Team
+    Team-->hasAttribute-->project_start
+    Worker-->isMemberOf-->Team
+    Feature-->belongsTo-->ProductBacklog
+    Skill-->belongsToMany-->Worker
+    Role-->belongsTo-->Worker
+    ProductOwner-->belongsTo-->Project
+    ScrumMaster-->belongsTo-->Project
+    Sprint-->belongsTo-->SprintPlanning
+    SprintReview-->belongsTo-->Sprint
+    SprintRetrospective-->belongsTo-->Sprint
+    UserStory-->belongsTo-->Epic
+    Task-->belongsTo-->UserStory
+    Blocker-->belongsTo-->Task
+    Stakeholder-->hasAttribute-->stakeholder_importance
+    Velocity-->belongsTo-->Sprint
+    ReleasePlan-->belongsTo-->Roadmap
+    ScrumBoard-->belongsTo-->Project
+
+    maximize_team_size-->belongsTo-->Team
+    minimize_project_end_time-->belongsTo-->Project
+    maximize_sprint_velocity-->belongsTo-->Velocity
+    minimize_blocker_count-->belongsTo-->Blocker
+    maximize_stakeholder_satisfaction-->belongsTo-->Stakeholder
+
+    max_team_size_limit-->belongsTo-->Team
+    min_project_budget-->belongsTo-->Project
+    required_sprint_duration-->belongsTo-->Sprint
+    max_task_effort-->belongsTo-->Task
+    min_stakeholder_influence-->belongsTo-->Stakeholder
+
+    sprint_duration-->belongsTo-->Sprint
+    budget_allocation-->belongsTo-->Project
+    number_of_tasks-->belongsTo-->UserStory
+    team_size-->belongsTo-->Team
+    stakeholder_engagement_level-->belongsTo-->Stakeholder

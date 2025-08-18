@@ -1,0 +1,31 @@
+graph TD
+
+    // Define Entities (in blue)
+    subgraph Entity1[Entity1]
+        style Entity1 fill:#blue,stroke-width:2px,color:white;
+    end
+    
+    subgraph Entity2[Entity2]
+        style Entity2 fill:#blue,stroke-width:2px,color:white;
+    end
+
+    // Define Attributes (in white)
+    A1(Attribute1 of Entity1) --> Entity1
+    A2(Attribute2 of Entity1) --> Entity1
+    A3(Attribute1 of Entity2) --> Entity2
+    
+    // Define Relations (in orange)
+    R1[Relation1] -->|Entity1 to Entity2| Entity2
+    style R1 fill:#orange,stroke-width:2px,color:white;
+    
+    // Define Goals (in green)
+    G1[Goal1] --> Entity1
+    G2[Goal2] --> A3
+    
+    // Define Conditions (in red)
+    C1[Condition1] --> Entity2
+    C2[Condition2] --> A1
+
+    // Define Decision Variables (in purple)
+    DV1[DecisionVar1] --> Entity1
+    style DV1 fill:#purple,stroke-width:2px,color:white;

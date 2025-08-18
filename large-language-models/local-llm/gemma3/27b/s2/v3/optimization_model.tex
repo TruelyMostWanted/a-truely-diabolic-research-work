@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref} % For Table of Contents with links
+\usepackage{graphicx} % For including images (optional)
+
+\title{Optimization Model for [Your Problem Domain]}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+
+\begin{itemize}
+    \item \textbf{Machines:} $M = \{M_1, M_2, \dots, M_n\}$ (Set of available machines)
+    \item \textbf{Materials:} $R = \{R_1, R_2, \dots, R_m\}$ (Set of materials used in production)
+    \item \textbf{Operators:} $O = \{O_1, O_2, \dots, O_p\}$ (Set of operators available)
+    \item \textbf{Tasks:} $T = \{T_1, T_2, \dots, T_t\}$ (Set of tasks to be performed)
+    \item \textbf{Products:} $P = \{P_1, P_2, \dots, P_k\}$ (Set of products to be produced)
+\end{itemize}
+
+\section{2. Indices}
+
+\begin{itemize}
+    \item $i$ : Index for Machines ($i \in M$)
+    \item $j$ : Index for Materials ($j \in R$)
+    \item $k$ : Index for Operators ($k \in O$)
+    \item $l$ : Index for Tasks ($l \in T$)
+    \item $p$ : Index for Products ($p \in P$)
+\end{itemize}
+
+\section{3. Goals}
+
+\begin{itemize}
+    \item \textbf{Goal 1:}
+        \begin{itemize}
+            \item \textbf{ID:} G1
+            \item \textbf{Name:} Minimize Total Cost
+            \item \textbf{Description:} Minimize the overall production cost, including material, labor, and machine operating costs.
+            \item \textbf{Mathematical Representation:}  $\min \sum_{i \in M} \sum_{j \in R} c_{ij}x_{ij} + \sum_{k \in O} w_k y_k$  (where $c_{ij}$ is the cost of using material $j$ on machine $i$, $x_{ij}$ is the amount of material $j$ used on machine $i$, $w_k$ is the wage of operator k and $y_k$ is the time operator k works)
+        \end{itemize}
+    \item \textbf{Goal 2:}
+        \begin{itemize}
+            \item \textbf{ID:} G2
+            \item \textbf{Name:} Maximize Throughput
+            \item \textbf{Description:} Maximize the number of products produced within a given timeframe.
+            \item \textbf{Mathematical Representation:} $\max \sum_{p \in P} q_p z_p$ (where $q_p$ is the quantity of product $p$ and $z_p$ is a binary variable indicating whether product $p$ is produced)
+        \end{itemize}
+\end{itemize}
+
+\section{4. Conditions}
+
+\begin{itemize}
+    \item \textbf{Condition 1:}
+        \begin{itemize}
+            \item \textbf{ID:} C1
+            \item \textbf{Name:} Machine Capacity
+            \item \textbf{Description:} The total amount of materials processed on a machine cannot exceed its capacity.
+            \item \textbf{Mathematical Representation:} $\sum_{j \in R} x_{ij} \leq \text{Capacity}_i \quad \forall i \in M$
+        \end{itemize}
+    \item \textbf{Condition 2:}
+        \begin{itemize}
+            \item \textbf{ID:} C2
+            \item \textbf{Name:} Demand Fulfillment
+            \item \textbf{Description:} The amount of each product produced must meet the demand.
+            \item \textbf{Mathematical Representation:} $\sum_{i \in M} z_{ip} \geq D_p \quad \forall p \in P$ (where $D_p$ is the demand for product $p$)
+        \end{itemize}
+\end{itemize}
+
+\section{5. DecisionVariables}
+
+\begin{itemize}
+    \item \textbf{Variable 1:} $x_{ij}$ : Amount of material $j$ used on machine $i$ (Continuous, $x_{ij} \geq 0$)
+    \item \textbf{Variable 2:} $z_{ip}$ : Binary variable indicating whether product $p$ is produced on machine $i$ (Binary, $z_{ip} \in \{0, 1\}$)
+    \item \textbf{Variable 3:} $y_k$ : Time operator k works (Continuous, $y_k \geq 0$)
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,316 @@
+ModelKey,MessageIndex,Predicted_Keywords,Matched_Keywords,Precision,Recall,F1,TP,FP,FN,Text
+phi4-14b-s2-v8,1,"0, 0,1, 1, 1 = may match 0 = cannot match domain, 10 to 15, 15-minute, 2, 3 individual csv code block, a define goal, a development snapshot, a domain model, a feature featuredocumentation feature,1,1,1.0 r16,is_blocked_by, a letter g(oal, a mulptli create 10 to 15 entry, a number, a product backlog, a project, a release plan, a roadmap releaseplan, a role, a scrum board, a scrum master, a software development company, a specific feature, a specific team, a sprint, a sprint backlog, a sprint review, a task, a team, a user, a user story, a worker, acceptance, acceptance_criteria, achievement_of_goal, achievement_status, all requirement, all task, alternative, an employee, an epic, an increment, area_of_responsibility, attendees_count, attribute0,attribute1,attribute2,attribute3,attribute4,attribute5,attribute6,attribute7,attribute8, attribute8, author, availability, benefit, bl, blocker,task,, board_type, budget, cannot-match, category, certain skill, chat, columns_(todo, conditions.csv, created_on, creation_date, criteriatype, daily 15 minute team meeting, datatype, date, decisionvariables.csv, define responsibility, defined, deployment_target, description, detected_on, dev, documentation, domain, ds, duration, duration_(min),moderation, e, e0,project, e11,dailyscrum, e12,sprintreview, e13,sprintretrospective sre sre retrospective, e14,sprintbacklog, e15,sprintgoal, e18,task, e20,blocker, e22,velocity, e23,releaseplan,rep, e24,roadmap, e4,skill, e5,role, e6,productowner, e7,scrummaster, e8,productbacklog, each, effort, email, employee, end_date, entities.csv, entities.csv
+entityattribute, entities.csv ` ` ` csv id, entities.csv criteriatype, entities.csv entityattribute, entityattribute, entityname, epic, epic,1,n,1.0 r9,contains_user_story, epics, experience, f, feature documentation, feature,1,n,1.0, feature,1,n,1.0 r21,is_part_of_roadmap, featuredocumentation, features, fed, feedback_documentation, file, first_name, fixed time period, fromcardinality, fromentity, goals, goals.csv, goals.csv + conditions.csv + decisionvariables.csv
+goals.csv, goaltype, id, id name description datatype domain minvalue maxvalue the follow convention, id version_number, implementation plan, improvement_actions, included_feature, index, individual, influence_level, initiative, interested party, issum, kick, kick off meeting, label, large requirement, level, long term planning, m,1.0, max, maxvalue, mid sized functionality, milestone, min max entityname, minvalue, moderation, multiple feature, multiple tasks, multiple user stories, must match, n, n,1,1.0, name, number_of_tasks, objective, objective_description, obstacle hindering progress, one, only 1, only 1 entry, outcome_documentation, p, part, pb, plan, planned_date, po, presentation, priority, priority e1,team, process improvement, product, product backlog, product vision, productbacklog, productbacklog,1,1,1.0, productowner, professional, project,1,n,1.0 r2,belongs_to_team, project_end, project_start, r, r20,plans_release, r3,has_skill, r4,takes_on_role, r6,is_supported_by, r7,contains_feature, r8,contains_epic, relationships.csv, relationships.csv - proceed, relationships.csv ` ` ` csv id name description fromentity toentity fromcardinality tocardinality weight r1,is_assigned_to_project, release, release plan, releaseplan, relevance_to_feature, requirement, result, retrospective, rm, roadmap, role, s s professional or social competence, sbl, scb, scrum, scrum board, scrumboard, scrummaster, select backlog item, selected, setname, severity, sg, sh, skill, sm, smallest unit, snake_case names, sp, specific feature, spp, sprint, sprint backlog, sprint preparation, sprint review, sprint_number, sprintbacklog, sprintgoal,1,1,1.0 r14,contains_task, sr, sre, stakeholder, stakeholders, start_date, status, story, story_point, supports, target_audience, task, task,1,n,1.0, task,1,n,1.0 r11,is_in_sprint_backlog, tasks, team, team,1,1,1.0, team_status, test_status, that, the attribute0, the end, the follow structure, the following header, the high value, the name, the perspective, the product, the product backlog, the product owner, the project, the retrospective scrummaster sprintretrospective,1,n,1.0 r19,refers_to_team, the scrum team, the small value, the sprint, the target entity, the team, the value, these file, time, title, tocardinality, toentity, total_effort, true false goaltype, tsk, type, us, user stories, user story, userstory, userstory,1,n,1.0 r10,consists_of_task, value, vel, velocity, version, visual representation, w, we, weight, work","benefit, must match, product backlog, role, scrum, scrum board, skill, sprint, sprint review, stakeholder, story, user stories, user story",0.04391891891891892,0.05531914893617021,0.04896421845574388,13,283,222,"Consider the following structures for a domain model of a software development company using SCRUM:
+Entities.csv
+```csv
+ID,Name,SetName,Index,Description,Attribute0,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6,Attribute7,Attribute8
+E0,Project,P,p,The product or initiative to be developed,id,name,project_start,project_end,description,budget,status,target_audience,priority
+E1,Team,T,t,""Self-organized, cross-functional development team"",id,name,team_size,team_start,team_status,location,team_type,,
+E2,Worker,W,w,Individual team member working on the project,id,name,first_name,email,start_date,status,availability,,
+E3,Feature,F,f,Mid-sized functionality,id,title,description,status,priority,estimated_effort,,,
+E4,Skill,S,s,Professional or social competence of a worker,id,label,description,level,certified,category,,,
+E5,Role,R,r,Defined responsibilities within the Scrum team,id,role_name,description,area_of_responsibility,,,,,
+E6,ProductOwner,PO,po,Responsible for product vision and Product Backlog,id,name,email,availability,,,,,
+E7,ScrumMaster,SM,sm,Supports the team in applying Scrum,id,name,email,experience,,,,,
+E8,ProductBacklog,PB,pb,Ordered list of all requirements,id,created_on,last_updated,number_of_entries,status,,,,
+E9,Sprint,SP,sp,Fixed time period for creating an increment,id,sprint_number,start_date,end_date,status,achievement_of_goal,,,
+E10,SprintPlanning,SPP,spp,Kick-off meeting for Sprint preparation,id,date,duration_(min),moderation,outcome_documentation,,,,
+E11,DailyScrum,DS,ds,Daily 15-minute team meeting,id,date,time,duration,moderation,,,,
+E12,SprintReview,SR,sr,Presentation and acceptance of results,id,date,duration,feedback_documentation,attendees_count,,,,
+E13,SprintRetrospective,SRE,sre,Retrospective for process improvement,id,date,duration,improvement_actions,team_satisfaction,moderation,,,
+E14,SprintBacklog,SBL,sbl,Selected backlog items + implementation plan,id,number_of_tasks,last_updated,status,total_effort,,,,
+E15,SprintGoal,SG,sg,Objective to be achieved within the sprint,id,objective_description,achievement_status,benefit,,,,,
+E16,Epic,E,e,Large requirement that can be split into stories,id,title,description,priority,status,estimated_effort,,,
+E17,UserStory,US,us,Requirement from the perspective of a user,id,title,description,acceptance_criteria,priority,story_points,status,,
+E18,Task,TSK,tsk,Smallest unit of work within a sprint,id,title,description,status,effort,type,,,
+E19,DevelopmentSnapshot,DEV,dev,Product at the end of a sprint,id,version_number,creation_date,test_status,deployment_target,documentation,,,
+E20,Blocker,BL,bl,Obstacle hindering progress,id,title,description,severity,status,detected_on,resolved_on,,
+E21,Stakeholder,SH,sh,Interested party in the product (internal/external),id,name,organization,role,email,area_of_interest,influence_level,relevance_to_feature,
+E22,Velocity,VEL,vel,Average amount of work per sprint,id,number_of_sprints_used,avg._story_points,max_velocity,min_velocity,trend,,,
+E23,ReleasePlan,REP,rep,Plan for releasing specific features,id,version,planned_date,included_features,status,,,,
+E24,Roadmap,RM,rm,Long-term planning across releases,id,start_date,end_date,milestones,objectives,versions,,,
+E25,ScrumBoard,SCB,scb,Visual representation of tasks during the sprint,id,board_type,columns_(todo/done...),number_of_cards,last_updated,,,,
+E26,FeatureDocumentation,FED,fed,Documentation for a specific feature,id,title,description,creation_date,change_log,linked_requirements,author,,
+```
+Relationships.csv
+```csv
+ID,Name,Description,FromEntity,ToEntity,FromCardinality,ToCardinality,Weight
+R1,is_assigned_to_project,The team is assigned to a project,Team,Project,1,N,1.0
+R2,belongs_to_team,An employee is assigned to a team,Employee,Team,N,1,1.0
+R3,has_skill,An employee has certain skills,Employee,Skill,N,M,1.0
+R4,takes_on_role,An employee assumes a role in the team,Employee,Role,N,M,1.0
+R5,manages_backlog,The Product Owner manages the Product Backlog,ProductOwner,ProductBacklog,1,1,1.0
+R6,is_supported_by,The team is supported by a Scrum Master,Team,ScrumMaster,1,1,1.0
+R7,contains_feature,A Product Backlog contains Features,ProductBacklog,Feature,1,N,1.0
+R8,contains_epic,A Product Backlog contains Epics,ProductBacklog,Epic,1,N,1.0
+R9,contains_user_story,An Epic contains multiple User Stories,Epic,UserStory,1,N,1.0
+R10,consists_of_tasks,A User Story consists of multiple Tasks,UserStory,Task,1,N,1.0
+R11,is_in_sprint_backlog,A User Story is assigned to a Sprint Backlog,UserStory,SprintBacklog,N,M,1.0
+R12,belongs_to_sprint,A Sprint Backlog belongs to a Sprint,SprintBacklog,Sprint,1,1,1.0
+R13,pursues_goal,A Sprint pursues a defined goal,Sprint,SprintGoal,1,1,1.0
+R14,contains_tasks,A Scrum Board contains all tasks of a Sprint,ScrumBoard,Task,1,N,1.0
+R15,documents_feature,Feature Documentation belongs to a Feature,FeatureDocumentation,Feature,1,1,1.0
+R16,is_blocked_by,A Task can be blocked by a Blocker,Task,Blocker,N,M,1.0
+R17,participates_in,Stakeholders participate in a Sprint Review,Stakeholder,Sprint Review,N,M,1.0
+R18,moderates_retrospective,A Scrum Master moderates the Retrospective,ScrumMaster,SprintRetrospective,1,N,1.0
+R19,refers_to_team,Velocity refers to a specific Team,Velocity,Team,1,1,1.0
+R20,plans_release,A Release Plan includes multiple Features,ReleasePlan,Feature,1,N,1.0
+R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,ReleasePlan,Roadmap,N,1,1.0
+R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,DevelopmentSnapshot,1,1,1.0
+```
+Based on Entities.csv and Relationships.csv - Proceed and Create 3 individual CSV code-blocks (alternative: files) in chat named: Goals.csv + Conditions.csv + DecisionVariables.csv
+Goals.csv must have the following header: ""ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight""
+Conditions.csv must have the following header: ""ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight""
+DecisionVariables.csv must have the following header: ""ID,Name,Description,DataType,Domain,MinValue,MaxValue""
+
+The following conventions must be applied:
+ID starts with a letter G(oals), C(onditions), D(ecision)V(ariables) and a number follows, starting at 0, 1, 2, ....
+Name is written snake_case
+Names for Goals must begin with ""maximize_"" or ""minimize_""
+IsSum is a boolean { True, False }
+GoalType is one of { ""min"", ""max"" }
+EntityName is always only 1 entry from the ""Name"" of Entities.csv
+EntityAttribute is one of the values in the ""Attribute0"" to ""Attribute8"" of the targeted Entity in Entities.csv
+CriteriaType is a number { 2 = Must-Match, 1 = May-Match, 0 = Cannot-Match }
+Domain can represent set of values like ""{0,1}""
+MinValue is the smallest value that can be set
+MaxValue is the highest value that can be set
+Weight is a mulptlier
+Created 10 to 15 entries in each of these files."
+phi4-14b-s2-v8,2,"###, 0, 1, 2, a development team, a maximum number, a project review, a sprint, achieve, achieve sprint goal, achievement status, achievement_status, active blocker, all role, as many feature, attribute2,false,1.0, average maximum story point, average velocity, avoid, avoid delay, blocker, blockers, budget, budget allocation, c4,sprint_goal_achievement, c8,maximize_stakeholder_participation, complete, conditions.csv, conditions.csv ` ` ` csv id name description issum goaltype entityname entityattribute criteriatype weight c0,team_size_limit, criteriatype, csv, d4,stakeholder_count, d5,effort_per_task, d6,team_location_issue, d8,feature_priority, d9,sprint_goal_achievement_status, datatype, description, domain, each sprint, efficiency, effort, end date, entityattribute, entityname, entry, false,""min"",blocker, false,""min"",project, false,""min"",releaseplan, false,""min"",team, false,""min"",velocity, false,1.2 ` ` ` decisionvariables.csv ` ` ` csv id name description datatype domain minvalue maxvalue d0,sprint_length, false,1.3 c3,blocker_severity_control, false,1.3 g9,minimize_team_location_issue, false,1.4, false,1.4
+c4,sprint_goal_achievement, false,1.5, false,1.5
+c8,maximize_stakeholder_participation, false,2.0 g6,minimize_project_end_delay, feature, float, g1,minimize_team_size, g2,maximize_sprint_goal, g3,maximize_velocity, goals.csv, goaltype, high budget allocation, hour, hours, id, increase stakeholder participation, indicator, influence_level, integer, integer,{1,5,10},1,10, integer,{30,50,70},30,70 d3,budget_allocation, integer,{5,10,15,20},5,20
+d2,max_velocity, integer,{5,10,15,20},5,20 d2,max_velocity, issum, key feature, location, low severity, max, max velocity, max_velocity, maximize, maximize achievement goal, maxvalue, member, minimize, minimize delay, minimize issue, minvalue, no issue, none,0,none, none,1.0,none, number, plan sprint capacity, priority level, project, project development, project success, project_end, reduce, relationship, relevance_to_feature, review, set limit, severity, sprint, sprint duration, sprint goal, stakeholder, stakeholders, status, task, task effort, team, team location dispersion, team location issue, team size, the convention, the influence, the number, the provide entity, the release plan, the three csv code block, these, these csv entry, three, true,""max"",feature, true,""max"",project, true,""max"",sprintgoal, true,""max"",stakeholder, true,""max"",team, true,""max"",velocity, true,""min"",blocker, true,""min"",role, true,""min"",stakeholder, true,""min"",task, true,1.0, true,1.2 g7,maximize_feature_completion, true,1.3
+c9,task_effort_estimation, true,1.3 c9,task_effort_estimation, true,1.4 c7,minimize_release_delay, true,1.5, true,1.5 c2,maximum_velocity_check, true,1.5 g5,maximize_sprint_achievement, true,1.8 g4,minimize_blocker, true,2.0, true,2.0
+c5,project_budget_allocation, true,2.0 c5,project_budget_allocation, velocity management, week, weeks, weight g0,maximize_budget, your request","feature, member, sprint, sprint goal, stakeholder",0.03184713375796178,0.02127659574468085,0.025510204081632654,5,152,230,"Below are the three CSV code-blocks as specified: `Goals.csv`, `Conditions.csv`, and `DecisionVariables.csv`. These include entries based on the provided entities and relationships.
+
+### Goals.csv
+
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,maximize_budget,Achieve higher budget allocation for projects,True,""max"",Project,attribute4,False,1.5
+G1,minimize_team_size,Reduce team size to optimize efficiency,False,""min"",Team,attribute2,False,1.0
+G2,maximize_sprint_goals,Increase the number of achieved sprint goals,True,""max"",SprintGoal,achievement_status,True,2.0
+G3,maximize_velocity,Average velocity should be high across sprints,True,""max"",Velocity,avg._story_points,True,1.8
+G4,minimize_blockers,Reduce the number of blockers affecting tasks,False,""min"",Blocker,status,True,1.5
+G5,maximize_sprint_achievements,Maximize achievement goals in each sprint,True,""max"",SprintGoal,achievement_status,False,2.0
+G6,minimize_project_end_delay,Minimize delays to project end dates,False,""min"",Project,project_end,True,1.2
+G7,maximize_feature_completion,Complete as many features as possible within sprints,True,""max"",Feature,status,False,1.8
+G8,maximize_stakeholder_influence,Increase the influence of stakeholders on projects,True,""max"",Stakeholder,influence_level,False,1.3
+G9,minimize_team_location_issues,Minimize issues related to team location dispersion,False,""min"",Team,location,True,1.0
+```
+
+### Conditions.csv
+
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_size_limit,Maintain a maximum number of members per team,True,""max"",Team,attribute2,False,1.0
+C1,role_assignment,Ensure all roles are filled in each sprint,True,""min"",Role,id,True,1.5
+C2,maximum_velocity_check,Average velocity should not exceed max velocity,False,""min"",Velocity,max_velocity,False,1.3
+C3,blocker_severity_control,Blockers must be of low severity to proceed,True,""min"",Blocker,severity,False,1.4
+C4,sprint_goal_achievement,Sprint goals need to be achieved for project success,True,""max"",SprintGoal,achievement_status,True,2.0
+C5,project_budget_allocation,Budget should not exceed set limits,False,""max"",Project,budget,False,1.2
+C6,stakeholder_relevance,Stakeholders must be relevant to key features,True,""min"",Stakeholder,relevance_to_feature,True,1.4
+C7,minimize_release_delays,Avoid delays in the release plans,False,""min"",ReleasePlan,status,False,1.5
+C8,maximize_stakeholder_participation,Increase stakeholder participation in reviews,True,""max"",Stakeholder,id,True,1.3
+C9,task_effort_estimation,Task effort should not exceed planned sprint capacity,True,""min"",Task,effort,False,1.2
+```
+
+### DecisionVariables.csv
+
+```csv
+ID,Name,Description,DataType,Domain,MinValue,MaxValue
+D0,sprint_length,Sprint duration in weeks,Integer,{2,3,4},2,4
+D1,team_size,Members in a development team,Integer,{5,10,15,20},5,20
+D2,max_velocity,Average maximum story points per sprint for velocity management,Integer,{30,50,70},30,70
+D3,budget_allocation,Budget allocation for project development,Float,None,10000.0,None
+D4,stakeholder_count,Number of stakeholders involved in a project review,Integer,{1,5,10},1,10
+D5,effort_per_task,Effort required per task measured in hours,Float,None,1.0,None
+D6,team_location_issues,Indicator for team location issues (0 = no issue, 1 = issue),Integer,{0,1},0,1
+D7,blocker_count,Number of active blockers in a sprint,Integer,None,0,None
+D8,feature_priority,Priority level of features being developed,Integer,{1,2,3,4},1,4
+D9,sprint_goal_achievement_status,Achievement status of sprint goals (0 = not achieved, 1 = partially achieved, 2 = fully achieved),Integer,{0,1,2},0,2
+```
+
+These CSV entries are based on the provided entities and relationships, aligning with the conventions outlined in your request."
+phi4-14b-s2-v8,3,".tex, 1, 2, 3, 4, 5, 5 different \section, \begin, a code block, a introduction page, all, author, both their id, chat, condition, conditions, contents, csv, date, decisionvariables, each category, entities, entities, relations, goals, conditions, decisionvariables, goal, goals, index, it, latex, names, relations, set, table, the actual file contest, the file, the generate latex code, the item, the logical and mathematical representation, the optimization model, the previously provide and generate csv datum, title, title, author",,0.0,0.0,0.0,0,41,235,"Use ALL of the previously provided and generated CSV data (Entities, Relations, Goals, Conditions, DecisionVariables) and formulate the optimization model mathematically and logically. 
+Write it into a code-block for a LaTeX (.tex) file and provide the generated Latex code in chat.
+The file consists of a introduction page with Title, Author, Date and Table of Contents.
+The actual file contest consists of 5 different \sections labeled ""1. Sets (Entities)"", ""2. Indices"", ""3. Goals"", ""4. Conditions"", ""5. DecisionVariables""
+The items of each category are itemized between \begin and \end.
+Goals and Conditions show both their IDs, Names and the logical and mathematical representation"
+phi4-14b-s2-v8,4,"### instructions, 1, 2, \begin{itemize}[noitemsep \item id, \begin{itemize}[noitemsep \item name, \date{\today, \end{document ` ` ` instruction, \geometry{margin=1, \item, \item entity a, \item goal, \item logical representation, \leq, \max z = \sum_{i, \min c = \sum_{j, \newpage, \section{1, \section{5, \sum_{i, \sum_{j, \usepackage{amsmath, \usepackage{geometry, a latex template, a structured way, all necessary latex package, an optimization model, an optimization problem, as need \end{itemize, b, c2, c2 \item name, condition 1, condition 2, condition \begin{enumerate}[label=\arabic, condition \section{4, content \tableofcontent, csv, decision variable, demand satisfaction, description, description of entity a, each section, entities, entity a, entity a. \item entity b, entity b., entity i. \item, entity j., formatting, goal \begin{enumerate}[label=\arabic, goal \section{3, index \section{2, index i. \item index j, index j., indices \begin{itemize}[noitemsep \item index i, it, latex, logical representation, maximize profit, methodology, minimize cost, model formulation, more condition, more decision variable, more detail, more entity, more goal, more index, necessary \end{itemize, need \end{enumerate, reader, replace placeholder, resource constraints, section 1: sets (entities, section 2: indices, section 3: goals
+\section{3, section 4: conditions
+\section{4, section 5: decision, tex, that, the content, the csv file, the provide category, this template, title page \maketitle table, update mathematical expression, x_i, you, your logic, your optimization model, your specific datum, your tex distribution",,0.0,0.0,0.0,0,92,235,"Certainly! Below is a LaTeX template that incorporates the provided categories: Entities, Indices, Goals, Conditions, and Decision Variables into an optimization model. You can adjust the content within each section based on your specific data.
+
+```latex
+\documentclass[a4paper,12pt]{article}
+
+% Packages for formatting
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Title and author information
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+% Document begins here
+\begin{document}
+
+% Title page
+\maketitle
+
+% Table of contents
+\tableofcontents
+\newpage
+
+% Section 1: Sets (Entities)
+\section{1. Sets (Entities)}
+\begin{itemize}[noitemsep]
+    \item Entity A: Description of Entity A.
+    \item Entity B: Description of Entity B.
+    % Add more entities as needed
+\end{itemize}
+
+% Section 2: Indices
+\section{2. Indices}
+\begin{itemize}[noitemsep]
+    \item Index i: Description for index i.
+    \item Index j: Description for index j.
+    % Add more indices as needed
+\end{itemize}
+
+% Section 3: Goals
+\section{3. Goals}
+\begin{enumerate}[label=\arabic*.]
+    \item Goal 1:
+    \begin{itemize}[noitemsep]
+        \item Name: Maximize Profit.
+        \item Mathematical Representation: \( \max Z = \sum_{i} c_i x_i \)
+        % Add more details if necessary
+    \end{itemize}
+    
+    \item Goal 2:
+    \begin{itemize}[noitemsep]
+        \item Name: Minimize Cost.
+        \item Mathematical Representation: \( \min C = \sum_{j} d_j y_j \)
+        % Add more details if necessary
+    \end{itemize}
+    % Add more goals as needed
+\end{enumerate}
+
+% Section 4: Conditions
+\section{4. Conditions}
+\begin{enumerate}[label=\arabic*.]
+    \item Condition 1:
+    \begin{itemize}[noitemsep]
+        \item ID: C1
+        \item Name: Resource Constraints.
+        \item Logical Representation: \( \sum_{i} a_i x_i \leq b \)
+        % Add more details if necessary
+    \end{itemize}
+    
+    \item Condition 2:
+    \begin{itemize}[noitemsep]
+        \item ID: C2
+        \item Name: Demand Satisfaction.
+        \item Logical Representation: \( \sum_{j} e_j y_j = f \)
+        % Add more details if necessary
+    \end{itemize}
+    % Add more conditions as needed
+\end{enumerate}
+
+% Section 5: Decision Variables
+\section{5. DecisionVariables}
+\begin{itemize}[noitemsep]
+    \item \( x_i \): Decision variable for entity i.
+    \item \( y_j \): Decision variable for entity j.
+    % Add more decision variables as needed
+\end{itemize}
+
+% Document ends here
+\end{document}
+```
+
+### Instructions:
+- Replace placeholders like ""Description of Entity A"" with your specific data from the CSV files.
+- Update mathematical expressions and logical representations to match your optimization model.
+- Ensure all necessary LaTeX packages are installed in your TeX distribution.
+
+This template provides a structured way to present an optimization problem, making it easier for readers to follow your logic and methodology."
+phi4-14b-s2-v8,5,"a graph, all, attributes, blue attributes, conditions, csv, decisionvariables, entities, goals, green conditions, line, mermaid.js, multiple time, orange goals, purple, red decision variables, relations, relations, goals, conditions, td, the attributes, the entities, the entity attributes conditions, the entity attributes decisionvariables, the graph, the mermaid.js live editor graph td syntax, the provide and generate csv datum, their attributes, their relations goals, their relevant entities colorize, they, white relations",,0.0,0.0,0.0,0,31,235,"Transform all of the provided and generated CSV data (Entities, Attributes, Relations, Goals, Conditions, DecisionVariables) into a graph using the Mermaid.js Live Editor graph TD syntax.
+Connect...
+- Entities with their Attributes and place the Attributes around the Entities they belong to. (can exist multiple times in the graph to make lines less short)
+- Entities with their Relations
+- Goals with the Entity/Attributes
+- Conditions with the Entity/Attributes
+- DecisionVariables with their relevant Entities
+
+Colorize...
+- Entities in blue
+- Attributes in white
+- Relations in orange
+- Goals in green
+- Conditions in red
+- Decision Variables in purple"
+phi4-14b-s2-v8,6,"###, ### explanation, > a3 decision variables, > a4, > e1 a2([attribute2]):::attribute > e1 a3([attribute3]):::attribute, > e1 g2([goal2]):::goal, > e2 a4([attribute4]):::attribute, > e3, a clear color code manner, a graph, a4
+    
+    %, an example, attribute, attribute1, attributes, blue node, c1([condition1]):::condition, classdef condition, classdef relation fill:#orange stroke:#333,stroke width:2px classdef goal, complex relationship, condition, connection, customization, decision variable, e1 dv2([decisionvariable2]):::decision, e2, e2 c2([condition2]):::condition, each entity, entity, entity a1([attribute1]):::attribute, entity r1([relation1]):::relation -->|connects| e1, goal, graph, green, green node, mermaid.js, mermaid.js live editor 's ` graph td ` syntax, mermaid.js live editor's, more node, node, orange, purple, purple node, r2([relation2]):::relation -->|connects| e2, red, red node, relation, relevant entity, relevant entity dv1([decisionvariable1]):::decision, specific entity, td, the same pattern, their respective entity, they, this graph, this structure, you, your actual datum, your datum",entity,0.01694915254237288,0.00425531914893617,0.006802721088435375,1,58,234,"To transform your data into a graph using Mermaid.js Live Editor's `graph TD` syntax, you'll need to represent each entity, attribute, relation, goal, condition, and decision variable as nodes. Below is an example of how you can structure this graph:
+
+```mermaid
+graph TD
+
+    %% Entities in blue
+    subgraph ""Entities""
+        E1([Entity1]):::entity
+        E2([Entity2]):::entity
+        E3([Entity3]):::entity
+    end
+    
+    %% Attributes in white, around entities
+    A1([Attribute1]):::attribute --> E1
+    A2([Attribute2]):::attribute --> E1
+    A3([Attribute3]):::attribute --> E2
+    A4([Attribute4]):::attribute --> E3
+    
+    %% Relations in orange between entities
+    R1([Relation1]):::relation -->|connects| E1 & E2
+    R2([Relation2]):::relation -->|connects| E2 & E3
+    
+    %% Goals in green connected to entities/attributes
+    G1([Goal1]):::goal --> E1
+    G2([Goal2]):::goal --> A4
+    
+    %% Conditions in red connected to entities/attributes
+    C1([Condition1]):::condition --> E2
+    C2([Condition2]):::condition --> A3
+    
+    %% Decision Variables in purple connected to relevant entities
+    DV1([DecisionVariable1]):::decision --> E1
+    DV2([DecisionVariable2]):::decision --> E3
+
+%% Styles
+classDef entity fill:#blue,stroke:#333,stroke-width:2px;
+classDef attribute fill:#white,stroke:#333,stroke-width:2px;
+classDef relation fill:#orange,stroke:#333,stroke-width:2px;
+classDef goal fill:#green,stroke:#333,stroke-width:2px;
+classDef condition fill:#red,stroke:#333,stroke-width:2px;
+classDef decision fill:#purple,stroke:#333,stroke-width:2px;
+```
+
+### Explanation:
+
+- **Entities**: Represented as blue nodes.
+- **Attributes**: Connected to their respective entities and colored white.
+- **Relations**: Orange lines connecting entities they relate.
+- **Goals**: Green nodes connected to entities or attributes they pertain to.
+- **Conditions**: Red nodes linked to specific entities or attributes.
+- **Decision Variables**: Purple nodes associated with relevant entities.
+
+### Customization:
+
+Replace `Entity1`, `Attribute1`, etc., with your actual data. You can add more nodes and connections as needed by following the same pattern. This structure allows you to visualize complex relationships in a clear, color-coded manner using Mermaid.js."

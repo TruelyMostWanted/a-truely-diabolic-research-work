@@ -1,0 +1,65 @@
+graph TD
+
+<!-- Entities -->
+Project([Project]) 
+Team([Team])
+Worker([Worker])
+Feature([Feature])
+Skill([Skill])
+Role([Role])
+ProductOwner([ProductOwner])
+ScrumMaster([ScrumMaster])
+ProductBacklog([ProductBacklog])
+Sprint([Sprint])
+
+<!-- Attributes -->
+Project --> priority
+Project --> status
+Team --> members
+Worker --> skills
+Feature --> priority
+Skill --> level
+Role --> responsibilities
+ProductOwner --> projects
+ScrumMaster --> team
+ProductBacklog --> items
+Sprint --> goals
+
+<!-- Relationships -->
+Project --> Team
+Team --> Worker
+Worker --> Skill
+Feature --> Sprint
+Skill --> Role
+Role --> ScrumMaster
+ProductOwner --> ProductBacklog
+ScrumMaster --> Sprint
+ProductBacklog --> Feature
+Sprint --> Task
+
+<!-- Goals -->
+G0([Maximize Project Priority]) 
+G1([Minimize Task Effort])
+G2([Maximize Velocity Points])
+
+G0 --> Project.priority
+G1 --> Task.effort
+G2 --> Velocity.avg_story_points
+
+<!-- Conditions -->
+C0([Ensure Project Status Active]) 
+C1([Ensure All Tasks Completed])
+C2([Keep Velocity Min-Max Ratio])
+
+C0 --> Project.status
+C1 --> Task.status
+C2 --> Velocity.min_velocity, Velocity.max_velocity
+
+<!-- Decision Variables -->
+D0([Assign Tasks to Sprint]) 
+D1([Set Task Effort])
+D2([Prioritize Features])
+
+D0 --> Task.sprint
+D1 --> Task.effort
+D2 --> Feature.priority

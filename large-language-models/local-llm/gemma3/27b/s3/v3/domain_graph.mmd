@@ -1,0 +1,66 @@
+graph TD
+    subgraph Entities
+        Project((Project))
+        Team((Team))
+        Worker((Worker))
+        Feature((Feature))
+        UserStory((UserStory))
+        Task((Task))
+    end
+
+    subgraph Attributes
+        Project_Budget --"has"--> Project
+        Team_Size --"has"--> Team
+        Worker_SkillLevel --"has"--> Worker
+        Feature_Priority --"has"--> Feature
+        UserStory_StoryPoints --"has"--> UserStory
+        Task_Effort --"has"--> Task
+    end
+
+    subgraph Relations
+        Project --"assigns"--> Team
+        Team --"composed of"--> Worker
+        Feature --"part of"--> Project
+        UserStory --"part of"--> Feature
+        Task --"part of"--> UserStory
+    end
+
+    subgraph Goals
+        G0[Maximize Team Velocity]
+        G1[Minimize Project Cost]
+        G2[Maximize Feature Priority]
+    end
+
+    subgraph Conditions
+        C0[Feature Priority High]
+        C1[Worker Status Active]
+    end
+
+    subgraph DecisionVariables
+        DV0[Team Size]
+        DV1[Budget Allocation]
+    end
+    
+    style Project fill:#ADD8E6,stroke:#333,stroke-width:2px
+    style Team fill:#ADD8E6,stroke:#333,stroke-width:2px
+    style Worker fill:#ADD8E6,stroke:#333,stroke-width:2px
+    style Feature fill:#ADD8E6,stroke:#333,stroke-width:2px
+    style UserStory fill:#ADD8E6,stroke:#333,stroke-width:2px
+    style Task fill:#ADD8E6,stroke:#333,stroke-width:2px
+
+    style Project_Budget fill:#FFFFE0,stroke:#333,stroke-width:1px
+    style Team_Size fill:#FFFFE0,stroke:#333,stroke-width:1px
+    style Worker_SkillLevel fill:#FFFFE0,stroke:#333,stroke-width:1px
+    style Feature_Priority fill:#FFFFE0,stroke:#333,stroke-width:1px
+    style UserStory_StoryPoints fill:#FFFFE0,stroke:#333,stroke-width:1px
+    style Task_Effort fill:#FFFFE0,stroke:#333,stroke-width:1px
+
+    style G0 fill:#90EE90,stroke:#333,stroke-width:2px
+    style G1 fill:#90EE90,stroke:#333,stroke-width:2px
+    style G2 fill:#90EE90,stroke:#333,stroke-width:2px
+    
+    style C0 fill:#F08080,stroke:#333,stroke-width:2px
+    style C1 fill:#F08080,stroke:#333,stroke-width:2px
+    
+    style DV0 fill:#D8BFD8,stroke:#333,stroke-width:2px
+    style DV1 fill:#D8BFD8,stroke:#333,stroke-width:2px

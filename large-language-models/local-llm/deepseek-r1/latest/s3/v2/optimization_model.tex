@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage{mermaid}
+
+\begin{document}
+
+\section{Entities and Attributes}
+\subsection{Entities}
+\begin{mermaid}
+    \nodedata{A}{Project} \nodedata{B}{Team} \nodedata{C}{Worker} \nodedata{D}{Attribute}
+    \nodexref{A}{B, C, D}
+    \node{Attributes} -from-D
+\end{mermaid}
+
+\subsection{Attributes}
+\begin{mermaid}
+    \nodedata{A}{PID, PID, PID} \nodedata{B}{TeamID, TeamID, TeamID} 
+    \nodexref{A}{B}
+\end{mermaid}
+
+\section{Goals}
+\subsection{Goals}
+\begin{tabular}{|l|l|}
+\hline
+ID & Name \\
+\hline
+G0 & Maximize Product Velocity \\
+G1 & Minimize Employee Debt \\
+G2 & Maximize User Story Progression \\
+G3 & Minimize Blocker Impact \\
+G4 & Maximize User Story Completion \\
+G5 & Minimize Training Costs \\
+G6 & Maximize Feature Velocity \\
+G7 & Minimize Misestimate \\
+G8 & Maximize Work Roughness Reduction \\
+G9 & Minimize Task Dependencies \\
+G10 & Maximize Product Backlog Completion \\
+\hline
+\end{tabular}
+
+\section{Conditions}
+\subsection{Conditions}
+\begin{tabular}{|l|l|}
+\hline
+ID & Name \\
+\hline
+C0 & Maximize Velocity \\
+C1 & Minimize User Story Duration \\
+C2 & Maximize User Story Completion Rate \\
+C3 & Minimize Task Blockages \\
+C4 & Maximize User Story Effort \\
+C5 & Minimize Project Backlog Size \\
+C6 & Maximize User Story Progress \\
+C7 & Minimize Project Overrun \\
+C8 & Maximize User Story Efficiency \\
+C9 & Minimize Task Dependencies \\
+\hline
+\end{tabular}
+
+\section{DecisionVariables}
+\subsection{Decision Variables}
+\begin{tabular}{|l|l|}
+\hline
+ID & Name \\
+\hline
+D0 & Velocity in Sprints \\
+D1 & Task Duration (Minutes) \\
+D2 & User Story Effort (Hours) \\
+D3 & Project Size (User Stories) \\
+D4 & Number of Sprints Completed \\
+D5 & Blocker Severity Level \\
+D6 & Training Duration (Hours) \\
+D7 & Work Roughness Level \\
+D8 & Number of Sprint Reviews \\
+D9 & Number of Support Issues Resolved \\
+\hline
+\end{tabular}
+
+\section{Mermaid Diagram}
+\begin{mermaid}
+    \nodedata{A}{Project, Team, Worker} \nodedata{B}{PID, PID, PID} 
+    \nodexref{A}{B}
+    
+    \nodedata{C}{Attributes} \nodedata{D}{Role, Skill} 
+    \nodexref{C}{D}
+    
+    \nodedata{E}{ProductBacklog, Feature, UserStory} \nodedata{F}{Ticket} 
+    \nodexref{E}{F}
+    
+    \nodedata{G}{Velocity, Task Duration, User Story Effort} \nodedata{H}{User Story Progression, Task Blockage} 
+    \nodexref{G}{H}
+\end{mermaid}
+
+\end{document}

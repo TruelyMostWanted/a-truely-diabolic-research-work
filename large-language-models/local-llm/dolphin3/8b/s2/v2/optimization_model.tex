@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}}
+\title{\textbf{Optimization Model Formulation}}
+\author{Author's Name}
+\date{}
+\begin{document}
+
+\maketitle
+
+\section*{Table of Contents}
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $E$: Set of Entities
+    \item $I$: Set of Indices
+    \item $G$: Set of Goals
+    \item $C$: Set of Conditions
+    \item $D$: Set of Decision Variables
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $i \in I$: Indices set for Entity identification.
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item Goal ID: $g \in G$
+    \item Goal Name: $GN$ for all $g \in G$
+    \item Logical Representation: $\bigwedge_{g \in G} \text{(Conditions)} \Rightarrow \text{(Goal)}$
+    \item Mathematical Representation:
+    \[
+        \sum_{i \in I} x_i = g \quad \forall g \in G
+    \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item Condition ID: $c \in C$
+    \item Condition Name: $CN$ for all $c \in C$
+    \item Logical Representation: $\bigwedge_{c \in C} \text{(Decision Variables)} \Rightarrow \text{(Goal)}$
+    \item Mathematical Representation:
+    \[
+        y_i = 1 \quad \forall i \in I
+    \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item Decision Variable ID: $d \in D$
+    \item Decision Variable Name: $DN$ for all $d \in D$
+    \item Decision Variable Representation:
+    \[
+        x_i = \text{(Decision Variable)} \quad \forall i \in I
+    \]
+\end{itemize}
+
+\end{document}

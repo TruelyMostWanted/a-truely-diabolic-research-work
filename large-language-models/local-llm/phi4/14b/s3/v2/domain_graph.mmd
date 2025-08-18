@@ -1,0 +1,43 @@
+graph TD
+    style Project fill:blue,color:white
+    style Team fill:blue,color:white
+    style Blocker fill:blue,color:white
+    style Velocity fill:blue,color:white
+    
+    style budget fill:white,color:black
+    style project_end fill:white,color:black
+    style team_size fill:white,color:black
+    style severity fill:white,color:black
+    style trend fill:white,color:black
+
+    style R1 fill:orange,color:black
+    style C0 fill:red,color:black
+    style G0 fill:green,color:black
+    
+    Project -->|R1| Team
+    Blocker -->|R16| Task
+    Velocity -->|R19| Team
+
+    Project -- budget --> G0
+    Project -- project_end --> G1
+    Team -- team_size --> G2
+    Blocker -- severity --> C3
+    SprintBacklog -- status --> C0
+    SprintBacklog -- status --> C1
+    
+    subgraph Decision Variables
+        D0[budget_allocation]
+        D1[sprint_duration]
+        D2[team_size]
+        D3[blocker_resolution_time]
+
+        style D0 fill:purple,color:black
+        style D1 fill:purple,color:black
+        style D2 fill:purple,color:black
+        style D3 fill:purple,color:black
+
+        Project -->|D0| D0
+        Sprint -->|D1| D1
+        Team -->|D2| D2
+        Blocker -->|D3| D3
+    end

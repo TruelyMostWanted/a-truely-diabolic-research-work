@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref}
+
+\title{Resource Allocation Optimization Model}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{1. Sets (Entities)}
+
+\begin{itemize}
+    \item \textbf{Projects:} $P = \{P_1, P_2, ..., P_n\}$ -  Set of projects. (Based on Entities CSV)
+    \item \textbf{Resources:} $R = \{R_1, R_2, ..., R_m\}$ - Set of available resources. (Based on Entities CSV)
+    \item \textbf{Skills:} $S = \{S_1, S_2, ..., S_k\}$ - Set of required skills for projects. (Based on Entities CSV)
+    \item \textbf{Teams:} $T = \{T_1, T_2, ..., T_l\}$ - Set of teams available to work on projects. (Based on Entities CSV)
+\end{itemize}
+
+\section{2. Indices}
+
+\begin{itemize}
+    \item $i \in P$: Index representing a specific project.
+    \item $j \in R$: Index representing a specific resource.
+    \item $s \in S$: Index representing a specific skill.
+    \item $t \in T$: Index representing a specific team.
+\end{itemize}
+
+\section{3. Goals}
+
+\begin{itemize}
+    \item \textbf{Goal 1: Maximize Project Completion} (ID: G1, Name: Completion)
+    \begin{itemize}
+        \item \textbf{Logical Representation:} Maximize the number of completed projects.
+        \item \textbf{Mathematical Representation:} $\max \sum_{i \in P} x_i$ , where $x_i$ is a binary variable indicating whether project $i$ is completed.
+    \end{itemize}
+    \item \textbf{Goal 2: Minimize Total Cost} (ID: G2, Name: Cost)
+    \begin{itemize}
+        \item \textbf{Logical Representation:} Minimize the total cost of resource allocation to projects.
+        \item \textbf{Mathematical Representation:} $\min \sum_{i \in P} \sum_{j \in R} c_{ij} y_{ij}$, where $c_{ij}$ is the cost of assigning resource $j$ to project $i$, and $y_{ij}$ is the amount of resource $j$ allocated to project $i$.
+    \end{itemize}
+    \item \textbf{Goal 3: Maximize Resource Utilization} (ID: G3, Name: Utilization)
+    \begin{itemize}
+        \item \textbf{Logical Representation:} Maximize the total amount of resources used.
+        \item \textbf{Mathematical Representation:} $\max \sum_{j \in R} \sum_{i \in P} y_{ij}$
+    \end{itemize}
+\end{itemize}
+
+\section{4. Conditions}
+
+\begin{itemize}
+    \item \textbf{Condition 1: Project Skill Requirements} (ID: C1, Name: SkillMatch)
+    \begin{itemize}
+        \item \textbf{Logical Representation:} A project can only be completed if the assigned resources possess the required skills.
+        \item \textbf{Mathematical Representation:} $\sum_{j \in R} a_{ijs} = 1 \; \forall i \in P, \; \forall s \in S$, where $a_{ijs}$ is a binary variable indicating whether resource $j$ has skill $s$ required for project $i$.
+    \end{itemize}
+    \item \textbf{Condition 2: Resource Availability} (ID: C2, Name: ResourceLimit)
+    \begin{itemize}
+        \item \textbf{Logical Representation:} The total amount of each resource allocated to projects cannot exceed its availability.
+        \item \textbf{Mathematical Representation:} $\sum_{i \in P} y_{ij} \le b_j \; \forall j \in R$, where $b_j$ is the availability of resource $j$.
+    \end{itemize}
+    \item \textbf{Condition 3: Project Budget} (ID: C3, Name: BudgetLimit)
+    \begin{itemize}
+        \item \textbf{Logical Representation:} The total cost of resources allocated to a project cannot exceed its budget.
+        \item \textbf{Mathematical Representation:} $\sum_{j \in R} c_{ij} y_{ij} \le d_i \; \forall i \in P$, where $d_i$ is the budget of project $i$.
+    \end{itemize}
+    \item \textbf{Condition 4: Project Completion Dependency} (ID: C4, Name: CompletionDependency)
+    \begin{itemize}
+        \item \textbf{Logical Representation:} If a project is not fully staffed (enough resources allocated), it cannot be completed.
+        \item \textbf{Mathematical Representation:} $x_i \le \prod_{j \in R}  z_{ij} \; \forall i \in P$, where $z_{ij}$ is a binary variable which equals 1 if enough resource j is assigned to project i.
+    \end{itemize}
+\end{itemize}
+
+\section{5. DecisionVariables}
+
+\begin{itemize}
+    \item $x_i \in \{0, 1\} \; \forall i \in P$: Binary variable indicating whether project $i$ is completed (1) or not (0).
+    \item $y_{ij} \ge 0 \; \forall i \in P, \; \forall j \in R$:  Amount of resource $j$ allocated to project $i$.
+    \item $a_{ijs} \in \{0, 1\} \; \forall i \in P, \; \forall j \in R, \; \forall s \in S$: Binary variable indicating whether resource $j$ has skill $s$ required for project $i$.
+    \item $z_{ij} \in \{0, 1\} \; \forall i \in P, \; \forall j \in R$: Binary variable indicating if resource j has been sufficiently allocated to project i.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Optimization Model Formulation}
+\author{John Doe}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Users $U$
+    \item Products $P$
+    \item TimePeriods $T$
+    \item Suppliers $S$
+    \item Customers $C$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $i \in U$: User index
+    \item $j \in P$: Product index
+    \item $t \in T$: Time period index
+    \item $s \in S$: Supplier index
+    \item $c \in C$: Customer index
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G1 (Maximize Profit): 
+    \begin{itemize}
+        \item ID: G1
+        \item Name: Maximize Profit
+        \item Representation: $\max \sum_{i,j,t} p_{i,j,t} x_{i,j,t}$
+    \end{itemize}
+    \item G2 (Minimize Cost): 
+    \begin{itemize}
+        \item ID: G2
+        \item Name: Minimize Cost
+        \item Representation: $\min \sum_{s,j,t} c_{s,j,t} y_{s,j,t}$
+    \end{itemize}
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C1 (Demand Satisfaction): 
+    \begin{itemize}
+        \item ID: C1
+        \item Name: Demand Satisfaction
+        \item Representation: $\sum_{j} x_{i,j,t} \geq d_{i,t} \quad \forall i \in U, t \in T$
+    \end{itemize}
+    \item C2 (Supply Capacity): 
+    \begin{itemize}
+        \item ID: C2
+        \item Name: Supply Capacity
+        \item Representation: $\sum_{j} y_{s,j,t} \leq a_{s,t} \quad \forall s \in S, t \in T$
+    \end{itemize}
+\end{itemize}
+
+\section{DecisionVariables}
+\begin{itemize}
+    \item $x_{i,j,t}$: Quantity of product $j$ delivered to user $i$ in time $t$
+    \item $y_{s,j,t}$: Quantity of product $j$ supplied by supplier $s$ in time $t$
+\end{itemize}
+
+\end{document}

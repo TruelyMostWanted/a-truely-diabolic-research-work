@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{Optimization Model Formulation}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{1. Sets (Entities)}
+\label{sec:sets}
+
+\begin{enumerate}[label=\arabic*.]
+    \item $N_1$: Set of Nodes (e.g., Traffic Lights)
+    \item $N_2$: Set of Links (e.g., Road Segments)
+    \item $S$: Set of Sensors
+    \item $P$: Set of People (e.g., Pedestrians)
+    \item $C$: Set of Control Variables
+\end{enumerate}
+
+\section{2. Indices}
+\label{sec:indices}
+
+\begin{enumerate}[label=\arabic*.]
+    \item $i$: Index for Nodes ($i \in N_1$)
+    \item $j$: Index for Links ($j \in N_2$)
+    \item $k$: Index for Sensors ($k \in S$)
+    \item $l$: Index for People ($l \in P$)
+    \item $m$: Index for Control Variables ($m \in C$)
+\end{enumerate}
+
+\section{3. Goals}
+\label{sec:goals}
+
+\begin{enumerate}[label=\arabic*.]
+    \item Goal 1: Minimize Average Travel Time (\textbf{ID: G1})
+        \textit{Name:} Minimize Average Travel Time
+        \textit{Mathematical Representation:} $\min_{m \in C} \sum_{i \in N_1} \sum_{j \in N_2} \theta_{ij} \cdot \alpha_{ij}(m)$
+        \textit{Condition:}  $\alpha_{ij}(m) \ge 0$
+
+    \item Goal 2: Maximize Traffic Flow (\textbf{ID: G2})
+        \textit{Name:} Maximize Total Traffic Flow
+        \textit{Mathematical Representation:} $\max_{m \in C} \sum_{i \in N_1} \sum_{j \in N_2} f_{ij}(m)$
+        \textit{Condition:}  $f_{ij}(m) \ge 0$
+
+    \item Goal 3: Minimize Congestion (\textbf{ID: G3})
+        \textit{Name:} Reduce Congestion Levels
+        \textit{Mathematical Representation:} $\min_{m \in C} \sum_{i \in N_1} \sum_{j \in N_2} \delta_{ij}(m)$
+        \textit{Condition:}  $\delta_{ij}(m) \ge 0$
+\end{enumerate}
+
+\section{4. Conditions}
+\label{sec:conditions}
+
+\begin{enumerate}[label=\arabic*.]
+    \item Condition 1: Traffic Flow Rate (\textbf{ID: C1})
+        \textit{Name:} Traffic Flow Rate
+        \textit{Mathematical Representation:} $f_{ij}(m) = \text{Function}(v_{ij}, m)$
+        \textit{Variable:} $v_{ij}$: Vehicle speed on link $j$
+
+    \item Condition 2: Travel Time (\textbf{ID: C2})
+        \textit{Name:}  Travel Time on Link
+        \textit{Mathematical Representation:} $\theta_{ij}(m) = \text{Function}(v_{ij}, m)$
+        \textit{Variable:} $v_{ij}$: Vehicle speed on link $j$
+
+    \item Condition 3: Sensor Data (\textbf{ID: C3})
+        \textit{Name:} Sensor Readings
+        \textit{Mathematical Representation:} $s_k(m) = \text{SensorReadingFunction}(p_k, m)$
+        \textit{Variable:} $p_k$: Position of person $l$
+\end{enumerate}
+
+\section{5. DecisionVariables}
+\label{sec:decisionvariables}
+
+\begin{enumerate}[label=\arabic*.]
+    \item Decision Variable 1: Vehicle Speed (\textbf{ID: DV1})
+        \textit{Name:} Vehicle Speed on Link
+        \textit{Mathematical Representation:} $v_{ij}(m)$
+        \textit{Range:} $0 \le v_{ij}(m) \le V_{max}$ (Maximum allowed speed)
+
+    \item Decision Variable 2: Traffic Light Timing (\textbf{ID: DV2})
+        \textit{Name:} Traffic Light Cycle Length
+        \textit{Mathematical Representation:} $\tau_{i}(m)$ (Cycle Length)
+        \textit{Range:} $0 \le \tau_{i}(m) \le T_{max}$ (Maximum Cycle Length)
+
+    \item Decision Variable 3:  Sensor Activation (\textbf{ID: DV3})
+        \textit{Name:} Sensor Activation Level
+        \textit{Mathematical Representation:}  $x_k(m)$
+        \textit{Range:}  $0 \le x_k(m) \le 1$
+\end{enumerate}
+
+\end{document}

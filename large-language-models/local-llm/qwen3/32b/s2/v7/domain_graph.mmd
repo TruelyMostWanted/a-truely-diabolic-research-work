@@ -1,0 +1,85 @@
+graph TD
+    %% Entities
+    Entity_Customer[Customer]:::entity
+    Entity_Product[Product]:::entity
+    Entity_Order[Order]:::entity
+    Entity_Supplier[Supplier]:::entity
+    
+    %% Attributes
+    Attribute_Customer_Name[Name]:::attribute
+    Attribute_Customer_Email[Email]:::attribute
+    Attribute_Customer_Phone[Phone]:::attribute
+    
+    Attribute_Product_SKU[SKU]:::attribute
+    Attribute_Product_Price[Price]:::attribute
+    Attribute_Product_Stock[Stock]:::attribute
+    
+    Attribute_Order_OrderID[OrderID]:::attribute
+    Attribute_Order_Date[Date]:::attribute
+    Attribute_Order_Total[Total]:::attribute
+    
+    Attribute_Supplier_Name[Name]:::attribute
+    Attribute_Supplier_Contact[Contact]:::attribute
+    
+    %% Relations
+    Relation_Customer_Order[Places]:::relation
+    Relation_Order_Product[Contains]:::relation
+    Relation_Product_Supplier[Supplied by]:::relation
+    
+    %% Goals
+    Goal_Maximize_Profit[Maximize Profit]:::goal
+    Goal_Minimize_Cost[Minimize Cost]:::goal
+    
+    %% Conditions
+    Condition_Price_Limit[Price must be < $100]:::condition
+    Condition_Stock_Available[Stock must be > 0]:::condition
+    
+    %% DecisionVariables
+    DecisionVariable_Price[Set Price]:::decisionvariable
+    DecisionVariable_Stock[Adjust Stock]:::decisionvariable
+    
+    %% Connections
+    %% Entities to Attributes
+    Entity_Customer --> Attribute_Customer_Name
+    Entity_Customer --> Attribute_Customer_Email
+    Entity_Customer --> Attribute_Customer_Phone
+    
+    Entity_Product --> Attribute_Product_SKU
+    Entity_Product --> Attribute_Product_Price
+    Entity_Product --> Attribute_Product_Stock
+    
+    Entity_Order --> Attribute_Order_OrderID
+    Entity_Order --> Attribute_Order_Date
+    Entity_Order --> Attribute_Order_Total
+    
+    Entity_Supplier --> Attribute_Supplier_Name
+    Entity_Supplier --> Attribute_Supplier_Contact
+    
+    %% Entities to Relations
+    Entity_Customer --> Relation_Customer_Order
+    Relation_Customer_Order --> Entity_Order
+    Entity_Order --> Relation_Order_Product
+    Relation_Order_Product --> Entity_Product
+    Entity_Product --> Relation_Product_Supplier
+    Relation_Product_Supplier --> Entity_Supplier
+    
+    %% Goals to Entities/Attributes
+    Goal_Maximize_Profit --> Entity_Product
+    Goal_Maximize_Profit --> Attribute_Product_Price
+    Goal_Minimize_Cost --> Entity_Supplier
+    
+    %% Conditions to Entities/Attributes
+    Condition_Price_Limit --> Attribute_Product_Price
+    Condition_Stock_Available --> Attribute_Product_Stock
+    
+    %% DecisionVariables to Entities
+    DecisionVariable_Price --> Entity_Product
+    DecisionVariable_Stock --> Entity_Product
+    
+    %% Style Definitions
+    classDef entity fill:#0074D9, color:white, shape:ellipse;
+    classDef attribute fill:#ffffff, color:black, shape:ellipse;
+    classDef relation fill:#FFA500, color:white, shape:ellipse;
+    classDef goal fill:#7ED321, color:white, shape:ellipse;
+    classDef condition fill:#FF4136, color:white, shape:ellipse;
+    classDef decisionvariable fill:#B10DC9, color:white, shape:ellipse;

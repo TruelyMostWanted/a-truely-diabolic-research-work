@@ -1,0 +1,137 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Entity1
+    \item Entity2
+    \item Entity3
+    \item Entity4
+    \item Entity5
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item Index1
+    \item Index2
+    \item Index3
+    \item Index4
+    \item Index5
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{Goal1} (ID: G1)
+    \begin{itemize}
+        \item Name: Maximize Profit
+        \item Logical Representation: Maximize total revenue minus total costs
+        \item Mathematical Representation: $\max \sum_{(i,j) \in A} c_{ij}x_{ij}$
+    \end{itemize}
+    \item \textbf{Goal2} (ID: G2)
+    \begin{itemize}
+        \item Name: Minimize Costs
+        \item Logical Representation: Minimize total operational costs
+        \item Mathematical Representation: $\min \sum_{(i,j) \in A} d_{ij}x_{ij}$
+    \end{itemize}
+    \item \textbf{Goal3} (ID: G3)
+    \begin{itemize}
+        \item Name: Maximize Customer Satisfaction
+        \item Logical Representation: Maximize the number of satisfied customers
+        \item Mathematical Representation: $\max \sum_{i \in N} s_i y_i$
+    \end{itemize}
+    \item \textbf{Goal4} (ID: G4)
+    \begin{itemize}
+        \item Name: Minimize Environmental Impact
+        \item Logical Representation: Minimize carbon emissions
+        \item Mathematical Representation: $\min \sum_{(i,j) \in A} e_{ij}x_{ij}$
+    \end{itemize}
+    \item \textbf{Goal5} (ID: G5)
+    \begin{itemize}
+        \item Name: Maximize Resource Utilization
+        \item Logical Representation: Maximize the use of available resources
+        \item Mathematical Representation: $\max \sum_{k \in K} u_k z_k$
+    \end{itemize}
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{Condition1} (ID: C1)
+    \begin{itemize}
+        \item Name: Capacity Constraint
+        \item Logical Representation: Ensure that the total demand does not exceed the available capacity
+        \item Mathematical Representation: $\sum_{(i,j) \in A} x_{ij} \leq \text{Capacity}_i \quad \forall i \in N$
+    \end{itemize}
+    \item \textbf{Condition2} (ID: C2)
+    \begin{itemize}
+        \item Name: Flow Conservation
+        \item Logical Representation: Ensure that the flow into a node equals the flow out of the node
+        \item Mathematical Representation: $\sum_{j:(i,j) \in A} x_{ij} - \sum_{j:(j,i) \in A} x_{ji} = \text{Demand}_i \quad \forall i \in N$
+    \end{itemize}
+    \item \textbf{Condition3} (ID: C3)
+    \begin{itemize}
+        \item Name: Non-Negativity Constraint
+        \item Logical Representation: Ensure that the decision variables are non-negative
+        \item Mathematical Representation: $x_{ij} \geq 0 \quad \forall (i,j) \in A$
+    \end{itemize}
+    \item \textbf{Condition4} (ID: C4)
+    \begin{itemize}
+        \item Name: Binary Constraint
+        \item Logical Representation: Ensure that the decision variables are binary
+        \item Mathematical Representation: $y_i \in \{0,1\} \quad \forall i \in N$
+    \end{itemize}
+    \item \textbf{Condition5} (ID: C5)
+    \begin{itemize}
+        \item Name: Resource Constraint
+        \item Logical Representation: Ensure that the total resource usage does not exceed the available resources
+        \item Mathematical Representation: $\sum_{k \in K} r_{ik} z_k \leq \text{Resource}_i \quad \forall i \in N$
+    \end{itemize}
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{DecisionVariable1} (ID: DV1)
+    \begin{itemize}
+        \item Name: Flow Variable
+        \item Description: Represents the amount of flow from node i to node j
+        \item Mathematical Representation: $x_{ij}$
+    \end{itemize}
+    \item \textbf{DecisionVariable2} (ID: DV2)
+    \begin{itemize}
+        \item Name: Binary Variable
+        \item Description: Represents whether a particular decision is made (1) or not (0)
+        \item Mathematical Representation: $y_i$
+    \end{itemize}
+    \item \textbf{DecisionVariable3} (ID: DV3)
+    \begin{itemize}
+        \item Name: Resource Utilization Variable
+        \item Description: Represents the amount of resource k utilized
+        \item Mathematical Representation: $z_k$
+    \end{itemize}
+    \item \textbf{DecisionVariable4} (ID: DV4)
+    \begin{itemize}
+        \item Name: Cost Variable
+        \item Description: Represents the cost associated with a particular decision
+        \item Mathematical Representation: $c_{ij}$
+    \end{itemize}
+    \item \textbf{DecisionVariable5} (ID: DV5)
+    \begin{itemize}
+        \item Name: Environmental Impact Variable
+        \item Description: Represents the environmental impact associated with a particular decision
+        \item Mathematical Representation: $e_{ij}$
+    \end{itemize}
+\end{itemize}
+
+\end{document}
