@@ -1,0 +1,57 @@
+graph TD
+subgraph Entities
+    classStyle Entity, blue
+    classStyle Attribute, white
+    classStyle Relation, orange
+
+    project --> |has| attributes
+    team --> |has| attributes
+    worker --> |has| attributes
+    feature --> |has| attributes
+    skill --> |has| attributes
+    role --> |has| attributes
+    product_owner --> |manages| attributes
+    scrum_master --> |supports| attributes
+    product_backlog --> |contains| attributes
+    sprint --> |has| attributes
+    sprint_planning --> |includes| attributes
+    daily_scrum --> |includes| attributes
+    sprint_review --> |includes| attributes
+    sprint_retrospective --> |includes| attributes
+    sprint_backlog --> |includes| attributes
+    sprint_goal --> |achieves| attributes
+    epic --> |has| attributes
+    user_story --> |has| attributes
+    task --> |has| attributes
+    development_snapshot --> |generated_by| attributes
+    blocker --> |blocks| attributes
+    stakeholder --> |participates_in| attributes
+    velocity --> |measured_for| attributes
+    release_plan --> |includes| attributes
+    roadmap --> |includes| attributes
+    scrum_board --> |contains| attributes
+    feature_documentation --> |documents| attributes
+end
+
+subgraph Relations
+classStyle Relation, orange
+
+project --> team: is part of
+team --> worker: consists of
+worker --> task: performs
+task --> skill: requires
+product_owner --> product_backlog: owns
+scrum_master --> team: supports
+sprint --> sprint_planning: includes
+daily_scrum --> task: includes
+sprint_review --> sprint: includes
+sprint_retrospective --> sprint: includes
+sprint_backlog --> sprint_goal: includes
+sprint --> epic: part of
+task --> user_story: belongs to
+worker --> task: assigned by
+product_backlog --> sprint: contains
+sprint_goal --> epic: achieves
+sprint --> velocity: measures
+team --> release_plan: participates in
+velocity --> team: measured for

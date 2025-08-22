@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Entity1
+    \item Entity2
+    \item Entity3
+    \item Entity4
+    \item Entity5
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item Index1
+    \item Index2
+    \item Index3
+    \item Index4
+    \item Index5
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{Goal ID: G1, Name: Maximize Profit}
+    \begin{itemize}
+        \item Logical Representation: Maximize the total profit.
+        \item Mathematical Representation: $\max \sum_{(i,j) \in A} c_{ij} x_{ij}$
+    \end{itemize}
+
+    \item \textbf{Goal ID: G2, Name: Minimize Cost}
+    \begin{itemize}
+        \item Logical Representation: Minimize the total cost.
+        \item Mathematical Representation: $\min \sum_{(i,j) \in A} d_{ij} x_{ij}$
+    \end{itemize}
+
+    \item \textbf{Goal ID: G3, Name: Maximize Efficiency}
+    \begin{itemize}
+        \item Logical Representation: Maximize the efficiency of resource usage.
+        \item Mathematical Representation: $\max \sum_{(i,j) \in A} e_{ij} x_{ij}$
+    \end{itemize}
+
+    \item \textbf{Goal ID: G4, Name: Minimize Time}
+    \begin{itemize}
+        \item Logical Representation: Minimize the total time required.
+        \item Mathematical Representation: $\min \sum_{(i,j) \in A} t_{ij} x_{ij}$
+    \end{itemize}
+
+    \item \textbf{Goal ID: G5, Name: Maximize Customer Satisfaction}
+    \begin{itemize}
+        \item Logical Representation: Maximize the customer satisfaction level.
+        \item Mathematical Representation: $\max \sum_{(i,j) \in A} s_{ij} x_{ij}$
+    \end{itemize}
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{Condition ID: C1, Name: Resource Constraint}
+    \begin{itemize}
+        \item Logical Representation: The total resource usage should not exceed the available resources.
+        \item Mathematical Representation: $\sum_{(i,j) \in A} r_{ij} x_{ij} \leq R$
+    \end{itemize}
+
+    \item \textbf{Condition ID: C2, Name: Demand Constraint}
+    \begin{itemize}
+        \item Logical Representation: The total demand should be met.
+        \item Mathematical Representation: $\sum_{j:(i,j) \in A} x_{ij} \geq d_i \quad \forall i \in N$
+    \end{itemize}
+
+    \item \textbf{Condition ID: C3, Name: Capacity Constraint}
+    \begin{itemize}
+        \item Logical Representation: The capacity of each entity should not be exceeded.
+        \item Mathematical Representation: $\sum_{j:(i,j) \in A} x_{ij} \leq cap_i \quad \forall i \in N$
+    \end{itemize}
+
+    \item \textbf{Condition ID: C4, Name: Non-Negativity Constraint}
+    \begin{itemize}
+        \item Logical Representation: All decision variables should be non-negative.
+        \item Mathematical Representation: $x_{ij} \geq 0 \quad \forall (i,j) \in A$
+    \end{itemize}
+
+    \item \textbf{Condition ID: C5, Name: Binary Constraint}
+    \begin{itemize}
+        \item Logical Representation: Decision variables should be binary.
+        \item Mathematical Representation: $x_{ij} \in \{0, 1\} \quad \forall (i,j) \in A$
+    \end{itemize}
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{Decision Variable ID: DV1, Name: Flow Variable}
+    \begin{itemize}
+        \item Description: Represents the flow from entity i to entity j.
+        \item Mathematical Representation: $x_{ij}$
+    \end{itemize}
+
+    \item \textbf{Decision Variable ID: DV2, Name: Resource Allocation Variable}
+    \begin{itemize}
+        \item Description: Represents the allocation of resources to entity i.
+        \item Mathematical Representation: $y_i$
+    \end{itemize}
+
+    \item \textbf{Decision Variable ID: DV3, Name: Time Variable}
+    \begin{itemize}
+        \item Description: Represents the time taken for the process from entity i to entity j.
+        \item Mathematical Representation: $t_{ij}$
+    \end{itemize}
+
+    \item \textbf{Decision Variable ID: DV4, Name: Cost Variable}
+    \begin{itemize}
+        \item Description: Represents the cost associated with the process from entity i to entity j.
+        \item Mathematical Representation: $c_{ij}$
+    \end{itemize}
+
+    \item \textbf{Decision Variable ID: DV5, Name: Efficiency Variable}
+    \begin{itemize}
+        \item Description: Represents the efficiency of the process from entity i to entity j.
+        \item Mathematical Representation: $e_{ij}$
+    \end{itemize}
+\end{itemize}
+
+\end{document}

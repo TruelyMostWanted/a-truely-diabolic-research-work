@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+
+\title{Optimization Model for SCRUM Project Management}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item G0: Maximize User Story Count
+    \item G1: Minimize Task Blockers
+    \item G2: Maximize Sprint Velocity
+    \item G3: Maximize Feature Priority
+    \item G4: Minimize Deployment Time
+    \item G5: Maximize Stakeholder Feedback
+    \item G6: Maximize Team Satisfaction
+    \item G7: Minimize Epic Estimation Effort
+    \item G8: Maximize Backlog Completion Rate
+    \item G9: Maximize Daily Scrum Participation
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item C0: Ensure Sprint Goal Achievement
+    \item C1: Require Unique Team Assignment
+    \item C2: Enforce Task Prioritization
+    \item C3: Maintain Positive Velocity
+    \item C4: Require Feature Documentation
+    \item C5: Enforce Blocker Resolution
+    \item C6: Limit Team Size
+    \item C7: Enforce Sprint Planning
+    \item C8: Require Stakeholder Involvement
+    \item C9: Maintain Product Owner Responsibility
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: Maximize User Story Count - $\max \sum_{i} x_i$
+    \item G1: Minimize Task Blockers - $\min \sum_{j} y_j$
+    \item G2: Maximize Sprint Velocity - $\max v_k$
+    \item G3: Maximize Feature Priority - $\max p_l$
+    \item G4: Minimize Deployment Time - $\min t_m$
+    \item G5: Maximize Stakeholder Feedback - $\max f_n$
+    \item G6: Maximize Team Satisfaction - $\max s_o$
+    \item G7: Minimize Epic Estimation Effort - $\min e_p$
+    \item G8: Maximize Backlog Completion Rate - $\max r_q$
+    \item G9: Maximize Daily Scrum Participation - $\max d_r$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: Ensure Sprint Goal Achievement - $g_s = 1$
+    \item C1: Require Unique Team Assignment - $\sum_{t} a_{t,w} = 1$
+    \item C2: Enforce Task Prioritization - $p_i > 0$
+    \item C3: Maintain Positive Velocity - $v_k \geq 0$
+    \item C4: Require Feature Documentation - $d_f = true$
+    \item C5: Enforce Blocker Resolution - $res_j \leq 2$
+    \item C6: Limit Team Size - $\sum_{w} t_w \leq 10$
+    \item C7: Enforce Sprint Planning - $plan_s = true$
+    \item C8: Require Stakeholder Involvement - $inv_i = true$
+    \item C9: Maintain Product Owner Responsibility - $po_r = true$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item D0: Assign Workers to Teams - $a_{t,w} \in \{0,1\}$
+    \item D1: Assign Tasks to Sprints - $s_{k,t} \in \{0,1\}$
+    \item D2: Set Feature Priorities - $p_l \in \mathbb{N}$
+    \item D3: Assign Epics to Backlogs - $e_b \in \{true,false\}$
+    \item D4: Plan Sprint Goals - $goal_k \in Text$
+    \item D5: Assign User Stories to Sprints - $us_{k,u} \in \{0,1\}$
+    \item D6: Set Blocker Severity - $sev_j \in \{"Low","Medium","High"\}$
+    \item D7: Define Team Roles - $role_t \in Text$
+    \item D8: Assign Stakeholders to Reviews - $rev_{s,k} \in \{0,1\}$
+    \item D9: Set Task Estimations - $est_i \geq 0$
+\end{itemize}
+
+\end{document}

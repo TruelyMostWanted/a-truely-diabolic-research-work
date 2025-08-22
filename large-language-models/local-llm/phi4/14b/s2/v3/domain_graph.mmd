@@ -1,0 +1,57 @@
+graph TD
+
+  subgraph Entities
+    A[Entity1]:::entity
+    B[Entity2]:::entity
+    C[Entity3]:::entity
+  end
+
+  subgraph Attributes
+    A1[Attribute1.1]
+    A2[Attribute1.2]
+    B1[Attribute2.1]
+    C1[Attribute3.1]
+  end
+
+  subgraph Relations
+    R1[Relation1]:::relation
+    R2[Relation2]:::relation
+  end
+
+  subgraph Goals
+    G1[Goal1]:::goal
+    G2[Goal2]:::goal
+  end
+
+  subgraph Conditions
+    C1[Condition1]:::condition
+    C2[Condition2]:::condition
+  end
+
+  subgraph DecisionVariables
+    DV1[DecisionVariable1]:::decisionvariable
+    DV2[DecisionVariable2]:::decisionvariable
+  end
+
+  A --> A1
+  A --> A2
+  B --> B1
+  C --> C1
+
+  A -- R1 --> B
+  B -- R2 --> C
+
+  G1 -.-> A1
+  G2 -.-> B
+
+  C1 -.-> A2
+  C2 -.-> B1
+
+  DV1 --> A
+  DV2 --> C
+
+style entity fill:#ADD8E6,stroke:#333,stroke-width:2px
+style relation fill:none,stroke:#FFA500,stroke-width:2px
+style goal fill:none,stroke:#008000,stroke-width:2px
+style condition fill:none,stroke:#FF0000,stroke-width:2px
+style decisionvariable fill:none,stroke:#800080,stroke-width:2px

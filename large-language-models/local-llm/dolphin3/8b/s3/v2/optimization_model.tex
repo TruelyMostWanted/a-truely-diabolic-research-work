@@ -1,0 +1,115 @@
+\documentclass{article}
+\title{Optimization Model}
+\author{Dolphin}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section*{1. Sets (Entities)}
+\begin{itemize}
+    \item Project: $P = \{p_0, p_1, ..., p_n\}$
+    \item Team: $T = \{t_0, t_1, ..., t_m\}$
+    \item Worker: $W = \{w_0, w_1, ..., w_k\}$
+    \item Feature: $F = \{f_0, f_1, ..., f_l\}$
+    \item Skill: $S = \{s_0, s_1, ..., s_p\}$
+    \item Role: $R = \{r_0, r_1, ..., r_q\}$
+    \item Product Owner: $PO = \{po_0, po_1, ..., po_r\}$
+    \item Scrum Master: $SM = \{sm_0, sm_1, ..., sm_s\}$
+    \item Product Backlog: $PB = \{pb_0, pb_1, ..., pb_t\}$
+    \item Sprint: $SP = \{sp_0, sp_1, ..., sp_v\}$
+    \item User Story: $US = \{us_0, us_1, ..., us_w\}$
+    \item Task: $TSK = \{tsk_0, tsk_1, ..., tsk_x\}$
+    \item Development Snapshot: $DEV = \{dev_0, dev_1, ..., dev_y\}$
+    \item Blocker: $BL = \{bl_0, bl_1, ..., bl_z\}$
+    \item Stakeholder: $SH = \{sh_0, sh_1, ..., sh_aa\}$
+    \item Velocity: $VEL = \{vel_0, vel_1, ..., vel_bb\}$
+    \item Release Plan: $REP = \{rep_0, rep_1, ..., rep_cc\}$
+    \item Roadmap: $RM = \{rm_0, rm_1, ..., rm_dd\}$
+    \item Scrum Board: $SCB = \{scb_0, scb_1, ..., scb_e\}$
+    \item Feature Documentation: $FED = \{fed_0, fed_1, ..., fed_ff\}$
+\end{itemize}
+
+\section*{2. Indices}
+\begin{itemize}
+    \item $i$: Index of Projects
+    \item $j$: Index of Teams
+    \item $k$: Index of Workers
+    \item $l$: Index of Features
+    \item $m$: Index of Skills
+    \item $n$: Index of Roles
+    \item $r$: Index of Product Owners
+    \item $s$: Index of Scrum Masters
+    \item $t$: Index of Product Backlogs
+    \item $u$: Index of Epics
+    \item $v$: Index of Sprints
+    \item $w$: Index of User Stories
+    \item $x$: Index of Tasks
+    \item $y$: Index of Development Snapshots
+    \item $z$: Index of Blockers
+    \item $aa$: Index of Stakeholders
+    \item $bb$: Index of Velocities
+    \item $cc$: Index of Release Plans
+    \item $dd$: Index of Roadmaps
+    \item $e$: Index of Scrum Boards
+\end{itemize}
+
+\section*{3. Goals}
+\begin{itemize}
+    \item $G0$: Maximize the profit of projects.
+        \[
+        max_{i} Profit_i
+        \]
+    \item $G1$: Minimize the cost of developing projects.
+        \[
+        min_{i} Cost_i
+        \]
+    \item $G2$: Maximize team efficiency.
+        \[
+        max_{j} Efficiency_j
+        \]
+    \item $G3$: Minimize project duration.
+        \[
+        min_{i} Duration_i
+        \]
+    \item $G4$: Maximize worker satisfaction.
+        \[
+        max_{k} Satisfaction_k
+        \]
+    \item $G5$: Minimize worker unavailability.
+        \[
+        min_{k} Unavailability_k
+        \]
+\end{itemize}
+
+\section*{4. Conditions}
+\begin{itemize}
+    \item $C0$: Project budget must not exceed the allocated budget.
+        \[
+        0 \leq Budget_i \leq AllocatedBudget
+        \]
+    \item $C1$: Each sprint should last for a maximum of two weeks.
+        \[
+        Duration_{SP_u} \leq 120 \quad \forall u
+        \]
+    \item $C2$: The team size must not exceed twenty members.
+        \[
+        Size_j \leq 20 \quad \forall j
+        \]
+    \item $C3$: Each worker must have sufficient skills to complete their tasks.
+        \[
+        Skill_k \geq RequiredSkill \quad \forall k
+        \]
+\end{itemize}
+
+\section*{5. DecisionVariables}
+\begin{itemize}
+    \item $D0$: Select a team for a project.
+    \item $D1$: Set the length of a sprint in minutes.
+    \item $D2$: Choose the start date for a sprint.
+\end{itemize}
+
+\end{document}

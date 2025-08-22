@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{SCRUM Domain Optimization Model}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Projects: Set of all projects
+    \item Teams: Set of all teams
+    \item Workers: Set of all workers
+    \item Features: Set of all features
+    \item Skills: Set of all skills
+    \item Roles: Set of all roles
+    \item ProductOwners: Set of product owners
+    \item ScrumMasters: Set of scrum masters
+    \item ProductBacklogs: Set of product backlogs
+    \item Sprints: Set of sprints
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p$: Index for projects
+    \item $t$: Index for teams
+    \item $w$: Index for workers
+    \item $f$: Index for features
+    \item $s$: Index for skills
+    \item $r$: Index for roles
+    \item $po$: Index for product owners
+    \item $sm$: Index for scrum masters
+    \item $pb$: Index for product backlogs
+    \item $sp$: Index for sprints
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: Maximize project priority \\
+          $\max \sum_{p} priority_p$
+    \item G1: Minimize total task effort \\
+          $\min \sum_{tsk} effort_{tsk}$
+    \item G2: Maximize velocity points \\
+          $\max \sum_{v} avg\_story\_points_v$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: Ensure project status is active \\
+          $\forall p, status_p = \text{Active}$
+    \item C1: All tasks must be completed \\
+          $\forall tsk, status_{tsk} = \text{Done}$
+    \item C2: Keep velocity within min-max ratio \\
+          $\forall v, min\_velocity_v \leq avg\_story\_points_v \leq max\_velocity_v$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $assign_{tsk,sp} \in \{0,1\}$: Assign task to sprint
+    \item $effort_{tsk} \geq 0$: Task effort
+    \item $priority_f \geq 0$: Feature priority
+\end{itemize}
+
+\end{document}

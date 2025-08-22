@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{Optimization Model for SCRUM Project Management}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+    \item Project
+    \item Team
+    \item Blocker
+    \item Velocity
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+    \item $i$ - Index for Projects
+    \item $j$ - Index for Teams
+    \item $k$ - Index for Blockers
+    \item $l$ - Index for Velocities
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}
+    \item $\text{G0: } \max \sum_{i} \text{budget}[i]$ \\
+      Maximize the budget allocation for projects.
+      
+    \item $\text{G1: } \min \sum_{i} (\text{project\_end}[i] - \text{project\_start}[i])$ \\
+      Minimize the duration of each project.
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+    \item $\text{C0: } \forall j, \sum_{i} \text{sprint\_backlog}[i,j] = 1$ \\
+      Must complete all tasks in a sprint.
+      
+    \item $\text{C1: } \sum_{i} \text{budget}[i] \leq \text{project\_budget}[i]$ \\
+      Budget must not exceed project budget.
+\end{itemize}
+
+\section{5. Decision Variables}
+\begin{itemize}
+    \item $x_0$: Budget allocated to a project (Float, {10000, 500000})
+    
+    \item $x_1$: Duration of a sprint in days (Integer, {5, 30})
+\end{itemize}
+
+\end{document}

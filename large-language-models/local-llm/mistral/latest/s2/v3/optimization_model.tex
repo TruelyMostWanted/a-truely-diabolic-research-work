@@ -1,0 +1,48 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{Optimization Model for Multi-Entity Interaction System}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=*]
+    \item $\mathcal{E}$ - Set of Entities: \\ $\mathcal{E} = \{e_1, e_2, ..., e_{|\mathcal{E}|}\}$
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=*]
+    \item $i$ - Index for Entities: \\ $i \in \{1, 2, ..., |\mathcal{E}|\}$
+    \item $j$ - Index for Relations: \\ $j \in \{1, 2, ..., |\mathcal{R}|\}$
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}[leftmargin=*]
+    \item $\text{Goal}_k$ - Goal with ID $k$: \\
+    $\text{Goal}_{k}: \max \sum_{i=1}^{|\mathcal{E}|} w_i e_i$, \\
+    where $w_i$ represents the goal weight for entity $e_i$.
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}[leftmargin=*]
+    \item $\text{Condition}_{l}$ - Condition with ID $l$: \\
+    $\text{Condition}_{l}: \sum_{j=1}^{|\mathcal{R}|} r_j x_{ij} \leq b_l$, \\
+    where $r_j$ represents the relation strength between entities $e_i$ and $e_j$, $x_{ij}$ is a decision variable indicating the interaction between $e_i$ and $e_j$, and $b_l$ is the condition threshold for $\text{Condition}_l$.
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=*]
+    \item $x_{ij}$ - Decision variable indicating interaction between entities $e_i$ and $e_j$: \\
+    $x_{ij} = \begin{cases}
+        1, & \text{if there is an interaction between } e_i \text{ and } e_j \\
+        0, & \text{otherwise}
+    \end{cases}$
+\end{itemize}
+\end{document}

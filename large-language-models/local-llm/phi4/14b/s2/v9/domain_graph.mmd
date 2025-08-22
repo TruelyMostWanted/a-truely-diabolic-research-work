@@ -1,0 +1,55 @@
+graph TD
+
+    classDef entityStyle fill:#1f77b4,color:white;
+    classDef attributeStyle fill:#ffffff,color:black;
+    classDef relationStyle stroke:#ff7f0e,stroke-width:2px,color:#ff7f0e;
+    classDef goalStyle fill:#2ca02c,color:white;
+    classDef conditionStyle fill:#d62728,color:white;
+    classDef decisionVariableStyle fill:#9467bd,color:white;
+
+    // Entities
+    E1[Entity1]:::entityStyle
+    E2[Entity2]:::entityStyle
+    
+    // Attributes
+    A1[Attribute1]:::attributeStyle
+    A2[Attribute2]:::attributeStyle
+    A3[Attribute3]:::attributeStyle
+
+    // Relations
+    R1[Relation1]:::relationStyle
+    R2[Relation2]:::relationStyle
+    
+    // Goals
+    G1[Goal1]:::goalStyle
+    G2[Goal2]:::goalStyle
+    
+    // Conditions
+    C1[Condition1]:::conditionStyle
+    C2[Condition2]:::conditionStyle
+
+    // Decision Variables
+    D1[DecisionVariable1]:::decisionVariableStyle
+    D2[DecisionVariable2]:::decisionVariableStyle
+
+    // Connect Entities with Attributes
+    E1 --- A1
+    E1 --- A3
+    E2 --- A2
+    
+    // Connect Entities with Relations
+    E1 --- R1
+    E2 --- R2
+    E1 ---|Related to| E2
+    
+    // Connect Goals with Entity/Attributes
+    G1 --- E1
+    G2 --- A2
+    
+    // Connect Conditions with Entity/Attributes
+    C1 --- E2
+    C2 --- A3
+
+    // Connect Decision Variables with Entities
+    D1 --- E1
+    D2 --- E2

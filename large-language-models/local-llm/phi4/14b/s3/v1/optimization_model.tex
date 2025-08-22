@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{a4paper}
+
+\title{Optimization Model for SCRUM Software Development}
+\author{Author Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+    \item Project
+    \item Team
+    \item Worker
+    \item Feature
+    \item Skill
+    \item Role
+    \item ProductOwner
+    \item ScrumMaster
+    \item ProductBacklog
+    \item Sprint
+    \item SprintPlanning
+    \item DailyScrum
+    \item SprintReview
+    \item SprintRetrospective
+    \item SprintBacklog
+    \item SprintGoal
+    \item Epic
+    \item UserStory
+    \item Task
+    \item DevelopmentSnapshot
+    \item Blocker
+    \item Stakeholder
+    \item Velocity
+    \item ReleasePlan
+    \item Roadmap
+    \item ScrumBoard
+    \item FeatureDocumentation
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+    \item Project ID
+    \item Team ID
+    \item Worker ID
+    \item Feature ID
+    \item Skill ID
+    \item Role ID
+    \item ProductOwner ID
+    \item ScrumMaster ID
+    \item Sprint ID
+    \item UserStory ID
+    \item Task ID
+    \item Blocker ID
+    \item Stakeholder ID
+    \item Velocity ID
+    \item ReleasePlan ID
+    \item Roadmap ID
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}
+    \item G0: Maximize team size, \( \max \sum_{i} \text{team\_size}_i \)
+    \item G1: Minimize project end time, \( \min \sum_{j} \text{project\_end}_j \)
+    \item G2: Maximize sprint velocity, \( \max \sum_{k} \text{avg.\_story\_points}_k \)
+    \item G3: Minimize blocker count, \( \min \sum_{l} 1 - \text{blocker\_status}_l \)
+    \item G4: Maximize stakeholder satisfaction, \( \max \sum_{m} \text{relevance\_to\_feature}_m \)
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+    \item C0: Maximum team size limit, \( \forall i, \text{team\_size}_i \leq 10 \)
+    \item C1: Minimum project budget, \( \forall j, \text{budget}_j \geq 50000 \)
+    \item C2: Required sprint duration, \( \forall k, \text{sprint\_end}_k - \text{sprint\_start}_k \geq 5 \)
+    \item C3: Maximum task effort, \( \forall l, \text{effort}_l \leq 8 \)
+    \item C4: Minimum stakeholder influence, \( \forall m, \text{influence\_level}_m \geq 2 \)
+\end{itemize}
+
+\section{5. Decision Variables}
+\begin{itemize}
+    \item D0: Sprint duration (\( s_i \)), Integer, Domain: {5,10,15,20}, Min: 5, Max: 20
+    \item D1: Budget allocation (\( b_j \)), Float, Domain: {10000, 50000, 100000}, Min: 10000, Max: 100000
+    \item D2: Number of tasks per user story (\( t_l \)), Integer, Domain: {0,10,20,30}, Min: 0, Max: 30
+    \item D3: Team size (\( ts_i \)), Integer, Domain: {1,5,10,15}, Min: 1, Max: 15
+    \item D4: Stakeholder engagement level (\( se_m \)), Integer, Domain: {1,2,3}, Min: 1, Max: 3
+\end{itemize}
+
+\end{document}

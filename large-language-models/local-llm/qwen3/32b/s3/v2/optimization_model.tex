@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Agile Project Optimization Model}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $ P $: Set of Projects
+    \item $ T $: Set of Teams
+    \item $ S $: Set of Sprints
+    \item $ B $: Set of Blockers
+    \item $ F $: Set of Features
+    \item $ W $: Set of Workers
+    \item $ R $: Set of Roles
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $ p \in P $: Project index
+    \item $ t \in T $: Team index
+    \item $ s \in S $: Sprint index
+    \item $ b \in B $: Blocker index
+    \item $ f \in F $: Feature index
+    \item $ w \in W $: Worker index
+    \item $ r \in R $: Role index
+\end{itemize}
+
+\section{Goals}
+\begin{enumerate}
+    \item Maximize project budget utilization: 
+    $$ \max \sum_{p} \alpha_p \cdot \text{budget}_p $$
+    where $ \alpha_p \in [0,1] $ is budget utilization factor
+    
+    \item Minimize team turnover:
+    $$ \min \sum_{t} \beta_t \cdot (1 - \text{team\_stability}_t) $$
+    
+    \item Maximize sprint goal achievement:
+    $$ \max \sum_{s} \gamma_s \cdot \text{goal\_achievement}_s $$
+    
+    \item Minimize blocker duration:
+    $$ \min \sum_{b} \delta_b \cdot (\text{resolution\_time}_b - \text{detection\_time}_b) $$
+\end{enumerate}
+
+\section{Conditions}
+\begin{enumerate}
+    \item Budget constraint:
+    $$ \text{budget}_p \geq 0 \quad \forall p $$
+    
+    \item Team size constraint:
+    $$ \text{team\_size}_t = \text{required\_capacity}_t \quad \forall t $$
+    
+    \item Minimum sprint duration:
+    $$ \text{duration}_s \geq 15 \quad \forall s $$
+    
+    \item Blocker severity constraint:
+    $$ \text{severity}_b = 4 \Rightarrow \text{resolution\_required}_b = 1 \quad \forall b $$
+\end{enumerate}
+
+\section{Decision Variables}
+\begin{enumerate}
+    \item Worker assignment:
+    $$ x_{wt} \in \{0,1\} \quad \text{Assign worker $ w $ to team $ t $} $$
+    
+    \item Sprint duration setting:
+    $$ y_s \in \mathbb{Z}^+ \quad \text{Duration of sprint $ s $} $$
+    
+    \item Blocker priority assignment:
+    $$ z_b \in \{1,2,3,4\} \quad \text{Priority level for blocker $ b $} $$
+    
+    \item User story effort estimation:
+    $$ e_{fs} \in \mathbb{R}^+ \quad \text{Effort for feature $ f $ in sprint $ s $} $$
+\end{enumerate}
+
+\end{document}

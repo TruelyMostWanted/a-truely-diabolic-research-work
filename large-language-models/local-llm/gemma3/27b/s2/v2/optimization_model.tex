@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref}
+
+\title{Optimization Model for Resource Allocation}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{1. Sets (Entities)}
+
+\begin{itemize}
+    \item \textbf{Resources} ($R$):  \{$r_1$, $r_2$, $r_3$, $r_4$, $r_5$\} = \{Wood, Stone, Iron, Gold, Food\}
+    \item \textbf{Projects} ($P$): \{$p_1$, $p_2$, $p_3$, $p_4$, $p_5$\} = \{House, Wall, Sword, Crown, Meal\}
+    \item \textbf{Workers} ($W$): \{$w_1$, $w_2$, $w_3$, $w_4$\} = \{Alice, Bob, Charlie, David\}
+\end{itemize}
+
+\section{2. Indices}
+
+\begin{itemize}
+    \item $i$ : Index for resources, $i \in R$
+    \item $j$ : Index for projects, $j \in P$
+    \item $k$ : Index for workers, $k \in W$
+\end{itemize}
+
+\section{3. Goals}
+
+\begin{itemize}
+    \item \textbf{Goal ID:} G1, \textbf{Name:} Maximize Total Project Value \\
+    \textbf{Mathematical Representation:} $\max \sum_{j \in P} V_j \cdot x_j$ \\
+    \textbf{Logical Representation:} The model aims to maximize the total value derived from completing projects.
+
+    \item \textbf{Goal ID:} G2, \textbf{Name:} Minimize Resource Consumption \\
+    \textbf{Mathematical Representation:} $\min \sum_{i \in R} C_i \cdot y_i$ \\
+    \textbf{Logical Representation:} The model aims to minimize the total cost associated with resource utilization.
+\end{itemize}
+
+\section{4. Conditions}
+
+\begin{itemize}
+    \item \textbf{Condition ID:} C1, \textbf{Name:} Resource Availability \\
+    \textbf{Mathematical Representation:} $\sum_{j \in P} a_{ij} \cdot x_j \le A_i, \forall i \in R$ \\
+    \textbf{Logical Representation:} The total resource consumption by all projects must not exceed the available amount of each resource.
+
+    \item \textbf{Condition ID:} C2, \textbf{Name:} Project Completion \\
+    \textbf{Mathematical Representation:} $x_j \in \{0, 1\}, \forall j \in P$ \\
+    \textbf{Logical Representation:} Each project can either be completed (1) or not completed (0).
+
+    \item \textbf{Condition ID:} C3, \textbf{Name:} Worker Assignment \\
+    \textbf{Mathematical Representation:} $\sum_{j \in P} b_{jk} \cdot x_j \le 1, \forall k \in W$ \\
+    \textbf{Logical Representation:}  Each worker can be assigned to at most one project.
+    
+    \item \textbf{Condition ID:} C4, \textbf{Name:} Project Resource Requirement \\
+    \textbf{Mathematical Representation:} $\sum_{i \in R} a_{ij} \cdot x_j  = 1, \forall j \in P$ \\
+    \textbf{Logical Representation:} Each project requires at least one resource to be built.
+
+\end{itemize}
+
+\section{5. DecisionVariables}
+
+\begin{itemize}
+    \item $x_j$: Binary variable indicating whether project $j$ is completed (1) or not (0).  $x_j \in \{0, 1\}, \forall j \in P$
+    \item $y_i$:  Amount of resource $i$ consumed. $y_i \ge 0, \forall i \in R$
+\end{itemize}
+
+\end{document}

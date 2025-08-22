@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Entity1
+    \item Entity2
+    \item Entity3
+    \item Entity4
+    \item Entity5
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item Index1
+    \item Index2
+    \item Index3
+    \item Index4
+    \item Index5
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{Goal ID: G1} \\
+    \textbf{Name:} Maximize Profit \\
+    \textbf{Mathematical Representation:} $\max \sum_{i \in I} \sum_{j \in J} c_{ij}x_{ij}$
+
+    \item \textbf{Goal ID: G2} \\
+    \textbf{Name:} Minimize Cost \\
+    \textbf{Mathematical Representation:} $\min \sum_{i \in I} \sum_{j \in J} d_{ij}x_{ij}$
+
+    \item \textbf{Goal ID: G3} \\
+    \textbf{Name:} Maximize Efficiency \\
+    \textbf{Mathematical Representation:} $\max \sum_{i \in I} \sum_{j \in J} e_{ij}x_{ij}$
+
+    \item \textbf{Goal ID: G4} \\
+    \textbf{Name:} Minimize Time \\
+    \textbf{Mathematical Representation:} $\min \sum_{i \in I} \sum_{j \in J} t_{ij}x_{ij}$
+
+    \item \textbf{Goal ID: G5} \\
+    \textbf{Name:} Maximize Resource Utilization \\
+    \textbf{Mathematical Representation:} $\max \sum_{i \in I} \sum_{j \in J} r_{ij}x_{ij}$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{Condition ID: C1} \\
+    \textbf{Name:} Resource Constraint \\
+    \textbf{Mathematical Representation:} $\sum_{j \in J} a_{ij}x_{ij} \leq b_i \quad \forall i \in I$
+
+    \item \textbf{Condition ID: C2} \\
+    \textbf{Name:} Demand Constraint \\
+    \textbf{Mathematical Representation:} $\sum_{i \in I} x_{ij} \leq d_j \quad \forall j \in J$
+
+    \item \textbf{Condition ID: C3} \\
+    \textbf{Name:} Non-Negativity Constraint \\
+    \textbf{Mathematical Representation:} $x_{ij} \geq 0 \quad \forall i \in I, j \in J$
+
+    \item \textbf{Condition ID: C4} \\
+    \textbf{Name:} Binary Constraint \\
+    \textbf{Mathematical Representation:} $x_{ij} \in \{0, 1\} \quad \forall i \in I, j \in J$
+
+    \item \textbf{Condition ID: C5} \\
+    \textbf{Name:} Capacity Constraint \\
+    \textbf{Mathematical Representation:} $\sum_{i \in I} \sum_{j \in J} k_{ij}x_{ij} \leq K$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{Decision Variable ID: DV1} \\
+    \textbf{Name:} Allocation Variable \\
+    \textbf{Description:} $x_{ij}$ represents the allocation of resource $i$ to task $j$
+
+    \item \textbf{Decision Variable ID: DV2} \\
+    \textbf{Name:} Binary Variable \\
+    \textbf{Description:} $y_{ij}$ represents a binary decision for resource $i$ and task $j$
+
+    \item \textbf{Decision Variable ID: DV3} \\
+    \textbf{Name:} Continuous Variable \\
+    \textbf{Description:} $z_{ij}$ represents a continuous decision for resource $i$ and task $j$
+
+    \item \textbf{Decision Variable ID: DV4} \\
+    \textbf{Name:} Time Variable \\
+    \textbf{Description:} $t_{ij}$ represents the time allocated to task $j$ by resource $i$
+
+    \item \textbf{Decision Variable ID: DV5} \\
+    \textbf{Name:} Cost Variable \\
+    \textbf{Description:} $c_{ij}$ represents the cost associated with resource $i$ and task $j$
+\end{itemize}
+
+\end{document}

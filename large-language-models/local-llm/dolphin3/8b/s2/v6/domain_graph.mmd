@@ -1,0 +1,35 @@
+graph TD
+
+% Entities
+% Attributes
+% Relations
+% Goals
+% Conditions
+% DecisionVariables
+
+{% for entity in entities %}
+  {{entity}} --> {{entity_attr}} --> {{entity}}
+{% endfor %}
+
+{% for relation in relations %}
+  {{relation.entity1}} --- {{relation.label}} --> {{relation.entity2}}
+{% endfor %}
+
+{% for goal in goals %}
+  {{goal}} --> {{goal_entity}}
+{% endfor %}
+
+{% for condition in conditions %}
+  {{condition}} --> {{condition_entity}}
+{% endfor %}
+
+{% for decision_variable in decision_variables %}
+  {{decision_variable}} --> {{decision_variable_entity}}
+{% endfor %}
+
+style entity fill:#00FFFF, stroke:#000, stroke-width:2px
+style attribute fill:#FFFFFF, stroke:#000, stroke-width:1px
+style relation fill:#FFA500, stroke:#000, stroke-width:2px
+style goal fill:#008000, stroke:#000, stroke-width:2px
+style condition fill:#FF0000, stroke:#000, stroke-width:2px
+style decision_variable fill:#800080, stroke:#000, stroke-width:2px

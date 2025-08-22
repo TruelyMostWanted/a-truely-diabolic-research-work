@@ -1,0 +1,61 @@
+\documentclass{book}
+\usepackage{amsmath}
+
+% Define custom commands if needed
+\newcommand{\Set}[3]{\textbf{#1}: \quad &\text{ID: }#2, \text{ Name: }#3, \text{ Description: }\ldots}
+
+\begin{document}
+
+\title{Optimization Model Documentation}
+\author{Your Name}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\section{1. Sets (Entities)}
+
+\subsection*{Entities}
+\begin{itemize}
+    \Set{Entity}{1}{Entities collection ID = 1, Entities name = \texttt{EntitiesCollection}, Description: A set of fundamental objects relevant to the optimization problem.}
+    \Set{Resource}{2}{Resource IDs and names ID = 2, Resource collection ID = 2, Resources name = \texttt{ResourceCollection}, Description: A collection of resources available for use in the model.}
+    \Set{Decision}{3}{Decision variables collection ID = 3, DecisionVariables name = \texttt{DecisionVariables}, Description: The set of variables that can be adjusted to achieve the optimization goals.}
+\end{itemize}
+
+\section{2. Indices}
+
+\subsection*{Indices}
+\begin{itemize}
+    \index{index1}{4}{Index ID = 4, Name = \texttt{TimeSteps}, Type: Discrete, Description: Represents time periods considered in the model.}
+    \index{index2}{5}{Index ID = 5, Name = \texttt{Locations}, Type: String, Description: A collection of locations relevant to the problem.}
+    \index{index3}{6}{Index ID = 6, Name = \texttt{Products}, Type: Enum, Description: A list of products available for consideration.}
+\end{itemize}
+
+\section{3. Goals}
+
+\subsection*{Goals}
+\begin{itemize}
+    \goal{G1}{7}{Goal ID = 7, Goal Name = \texttt{MaximizeProfit}, Type = maximize, Mathematical representation: $\max \sum_{t \in \text{TimeSteps}} \sum_{l \in \text{Locations}} \sum_{p \in \text{Products}} p_{t,l,p}$.}
+    \goal{G2}{8}{Goal ID = 8, Goal Name = \texttt{MinimizeCost}, Type = minimize, Mathematical representation: $\min \sum_{l \in \text{Locations}} \sum_{p \in \text{Products}} c_{l,p}$.}
+    \goal{G3}{9}{Goal ID = 9, Goal Name = \texttt{MeetDemand}, Type = satisfy, Mathematical representation: $\forall t \in \text{TimeSteps}, \forall p \in \text{Products}: \sum_{l \in \text{Locations}} x_{t,l,p} \geq d_{t,p}$.}
+\end{itemize}
+
+\section{4. Conditions}
+
+\subsection*{Conditions}
+\begin{itemize}
+    \condition{C1}{10}{Condition ID = 10, Condition Name = \texttt{ResourceLimit}, Logical representation: $\forall l \in \text{Locations}: \sum_{p \in \text{Products}} y_{l,p} \leq R_l$.}
+    \condition{C2}{11}{Condition ID = 11, Condition Name = \texttt{CapacityConstraint}, Logical representation: $\forall t \in \text{TimeSteps}: \sum_{l \in \text{Locations}} x_{t,l,p} \leq C_t$.}
+    \condition{C3}{12}{Condition ID = 12, Condition Name = \texttt{NonNegativeVariables}, Logical representation: $\forall v \in \text{DecisionVariables}: y_v \geq 0$.}
+\end{itemize}
+
+\section{5. Decision Variables}
+
+\subsection*{DecisionVariables}
+\begin{itemize}
+    \variable{D1}{13}{Variable ID = 13, Name = \texttt{x}, Type = continuous, Bounds: $[0, 100]$, Description: Represents the quantity of product produced in each location over time.}
+    \variable{D2}{14}{Variable ID = 14, Name = \texttt{y}, Type = binary, Bounds: $[0, 1]$, Description: Indicates whether a particular location is selected for production.}
+    \variable{D3}{15}{Variable ID = 15, Name = \texttt{z}, Type = integer, Bounds: $[1, 50]$, Description: Represents the number of workers assigned to each production line.}
+\end{itemize}
+
+\end{document}

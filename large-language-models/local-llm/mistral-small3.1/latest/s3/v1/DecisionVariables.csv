@@ -1,0 +1,44 @@
+ID,Name,Description,DataType,Domain,MinValue,MaxValue
+DV0,team_size,Number of members in a team,Integer,{1,2,3,...,10},1,10
+DV1,worker_availability,Availability of a worker,Boolean,{0,1},0,1
+DV2,feature_status,Status of a feature,Enum,{In Progress, Completed, Not Started},0,2
+DV3,user_story_status,Status of a user story,Enum,{In Progress, Completed, Not Started},0,2
+DV4,task_status,Status of a task,Enum,{In Progress, Completed, Not Started},0,2
+DV5,blocker_severity,Severity of a blocker,Enum,{Low, Medium, High},0,2
+DV6,project_status,Status of a project,Enum,{In Progress, Completed, Not Started},0,2
+DV7,sprint_retrospective_duration,Duration of a sprint retrospective,Integer,{30,60,90,120},30,120
+DV8,sprint_goal_achievement,Achievement status of a sprint goal,Enum,{Achieved, Not Achieved},0,1
+DV9,team_satisfactionable
+1. Sets (Entities), 2. Indices, 3. Goals, 4. Constraints, 5. Decision Variables
+G0,maximize_team_size,Maximize the number of team members in a team,False, "Team,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight,DecisionVariable.csv,False, "Decision,Description,DataType,Domain,MinValue,MaxValue
+G1,minimize_story_points,Minimize the number of story points not completed in a sprint,Description,False,GoalType,EntityName,EntityAttribute,CriteriaType,Weight,False,EntityAttribute,DataType,Domain,MinValue,MaxValue
+G2,maximize_task_completion,Maximize the number of tasks completed in a sprint,Description,GoalType,EntityName,EntityAttribute,CriteriaType,Weight,Description,DataType,Domain,MinValue
+G3,maximize_sprint_duration,Minimize the duration of a sprint,False,GoalType,EntityName,EntityAttribute,CriteriaType,Weight,Description,DataType,Domain,MinValue,MaxValue
+G4,minimize_team_turnover,False,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G5,maximize_average_task_completion,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G6,minimize_team_size_variance,False,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G7,maximize_project_velocity,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G8,minimize_sprint_duration,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue"
+G9,maximize_task_completion_rate,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue
+G10,minimize_task_turnover,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G11,maximize_sprint_duration,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G12,minimize_task_completion,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G13,maximize_task_completion_rate,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G14,minimize_team_turnover,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G15,maximize_sprint_duration,GoalType,EntityName,EntityAttribute,CriteriaType,Description,DataType,Domain,MinValue,MaxValue
+G0,maximize_team_size,Maximize the number of team members in a team,Team,True,EntityName,EntityAttribute,CriteriaType,1.0,team_size,2
+G1,minimize_story_points,Minimize the number of story points not completed in a sprint,False,Task,EntityAttribute,CriteriaType,1.0
+G2,maximize_task_completion,Maximize the number of tasks completed in a sprint,False,Task,EntityAttribute,CriteriaType,1.0
+G3,maximize_task_completion,False,GoalType,EntityName,EntityAttribute,CriteriaType,2
+G4,minimize_task_turnover,True,GoalType,EntityName,EntityAttribute,CriteriaType,1
+G5,maximize_project_velocity,GoalType,EntityName,Attribute,CriteriaType,False,1
+G6,minimize_sprint_duration,False,GoalType,EntityName,Attribute,Entity,CriteriaType,2
+G7,maximize_team_size_variance,GoalType,EntityName,Attribute,Entity,CriteriaType,False,1.0
+G8,minimize_sprint_duration,GoalType,EntityName,Attribute,Entity,CriteriaType,False,1
+G9,maximize_task_completion_rate,GoalType,Entity,Attribute,Name,CriteriaType,False,1.0
+G10,maximize_task_turnover,GoalType,Entity,Attribute,Name,CriteriaType,False,1.0
+G11,maximize_sprint_duration,GoalType,Entity,Attribute,Name,CriteriaType,False,1
+G12,maximize_task_completion,GoalType,Entity,Attribute,Name,CriteriaType,1.0
+G13,minimize_team_size_variance,GoalType,Entity,Name,Attribute,CriteriaType,False,1.0
+G14,maximize_sprint_duration,GoalType,Entity,Attribute,Name,CriteriaType,False,1
+G15,minimize_task_completion,GoalType,Entity,Name,Attribute,CriteriaType,1.0

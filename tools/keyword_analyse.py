@@ -2,52 +2,46 @@
 # -*- coding: utf-8 -*-
 
 """
-Keyword Analysis for LLM Chats with Strategy Prompt Normalization + Aggregation + .env
-=====================================================================================
-
-- Pfadschema: <root>/<local-llm|remote-llms>/<model>/<size>/<strategy>/<version>/chat.json
-  * size darf Dezimalstellen haben: 7.2b, 3.5b, 24b ...
-- Strategy-Prompts aus: input/strategyX_prompts.csv  (toleriert: strategyX_promts.csv)
-- Normalisiert Chats auf die erwartete Prompt-Anzahl
-- Flexible Keyword-CSV (Keyword | w1..wN | generische Textspalten)
-- Per-Chat + globale Aggregation + XML (ModelKey)
-- ENV-Unterstützung via .env + GitHub Actions (CLI-Args optional)
-- NEU: speichert pro Nachricht `Matched_Keywords` + aggregiert alle Treffer im Summary
+Keyword Analysis for LLM Chats — env-ready & new chat schema support
+- findet chat_*.json und chat.json
+- unterstützt neues chat-Schema (Liste von Messages) + Ollama JSONL-Streams
+- Prompts aus strategyX_prompts.(csv|md) oder sX_prompts.(csv|md)
 """
 
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 from typing import List, Tuple, Dict, Set
 import pandas as pd
-import re
 import spacy
 import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
 from collections import Counter
 
-SIZE_RE = re.compile(r"^\d+(?:\.\d+)?[bB]$")   # 8b, 24b, 7.2b, 3.5b
-W_COL_RE  = re.compile(r"^w\d+$", re.IGNORECASE)
+# -------- Regex / Helpers --------
+SIZE_RE = re.compile(r"^\d+(?:\.\d+)?[bB]$")
+W_COL_RE = re.compile(r"^w\d+$", re.IGNORECASE)
+SNAME_RE = re.compile(r"^(?:s|strategy)\s*(\d+)$", re.IGNORECASE)
 
+def _norm(s: str) -> str:
+    return (s or "").strip()
 
-# ----------------------------
-# Discovery & path parsing
-# ----------------------------
+# -------- Discovery & path parsing --------
 def find_chat_files(root: Path) -> List[Path]:
     files: List[Path] = []
     for sub in ("local-llm", "remote-llms"):
         base = root / sub
-        if base.exists():
-            files.extend(base.rglob("chat.json"))
-    return sorted(files)
-
+        if not base.exists():
+            continue
+        files.extend(base.rglob("chat_*.json"))
+        files.extend(base.rglob("chat.json"))
+    return sorted(set(files))
 
 def parse_triplet_from_path(chat_path: Path) -> Tuple[str, str, str]:
     parts = chat_path.parts
     model = strategy = version = "unknown"
-
-    # find scope anchor
     anchor = None
     for i, p in enumerate(parts):
         if p in ("local-llm", "remote-llms"):
@@ -55,12 +49,9 @@ def parse_triplet_from_path(chat_path: Path) -> Tuple[str, str, str]:
             break
     if anchor is None:
         return model, strategy, version
-
     if anchor + 1 >= len(parts):
         return model, strategy, version
     m = parts[anchor + 1]
-
-    # size
     if anchor + 2 < len(parts) and SIZE_RE.fullmatch(parts[anchor + 2]):
         size = parts[anchor + 2]
         model = f"{m}-{size}"
@@ -69,73 +60,121 @@ def parse_triplet_from_path(chat_path: Path) -> Tuple[str, str, str]:
         if anchor + 4 < len(parts):
             version = parts[anchor + 4]
     else:
-        # kein expliziter size-Ordner
         model = m
         if anchor + 2 < len(parts):
             strategy = parts[anchor + 2]
         if anchor + 3 < len(parts):
             version = parts[anchor + 3]
-
-    # sanity: strategy sollte s<digits> sein; notfalls weich fallbacken
     if not re.fullmatch(r"s\d+", str(strategy).lower()):
         if re.fullmatch(r"v\d+", str(strategy).lower()):
-            strategy = "s1"  # fallback
+            strategy = "s1"
     return model, strategy, version
 
-
-# ----------------------------
-# Strategy prompts
-# ----------------------------
-def load_strategy_prompts(input_root: Path, strategy: str) -> List[str]:
-    m = re.match(r"s(\d+)", str(strategy).lower())
-    if not m:
-        raise SystemExit(f"❌ Strategie '{strategy}' nicht erkennbar. Erwartet Format sX.")
+# -------- Strategy prompts --------
+def _normalize_strategy_name(s: str) -> Tuple[str, str]:
+    """
+    returns ("sX", "strategyX") or (None,None)
+    """
+    s = _norm(s).lower()
+    m = SNAME_RE.fullmatch(s)
+    if not m: return None, None
     num = m.group(1)
+    return f"s{num}", f"strategy{num}"
 
-    preferred = input_root / f"strategy{num}_prompts.csv"
-    tolerated = input_root / f"strategy{num}_promts.csv"  # Tippfehler-tolerant
+def _load_prompts_from_md(path: Path) -> List[str]:
+    txt = path.read_text(encoding="utf-8")
+    blocks = [p.strip() for p in txt.split("---") if p.strip()]
+    return blocks
 
-    if preferred.exists():
-        csv_path = preferred
-    elif tolerated.exists():
-        csv_path = tolerated
-        print(f"⚠️  Using tolerated filename: {tolerated.name}")
-    else:
-        raise SystemExit(f"❌ Prompt-CSV nicht gefunden: {preferred} (oder {tolerated.name})")
+def load_strategy_prompts(input_root: Path, strategy: str) -> List[str]:
+    s_folder, s_filebase = _normalize_strategy_name(strategy)
+    if not s_folder:
+        raise SystemExit(f"❌ Strategie '{strategy}' nicht erkennbar. Erwarte sX / strategyX.")
 
-    df = pd.read_csv(csv_path)
+    candidates = [
+        input_root / f"{s_filebase}_prompts.csv",
+        input_root / f"{s_filebase}_prompts.md",
+        input_root / f"{s_folder}_prompts.csv",
+        input_root / f"{s_folder}_prompts.md",
+        input_root / f"{s_filebase}_promts.csv",  # tolerierter Tippfehler
+    ]
+    chosen = next((p for p in candidates if p.exists()), None)
+    if not chosen:
+        raise SystemExit(f"❌ Prompt-Datei nicht gefunden (CSV/MD): {candidates[0].name} …")
+
+    if chosen.suffix.lower() == ".md":
+        return _load_prompts_from_md(chosen)
+
+    df = pd.read_csv(chosen)
+    # bevorzugt Spalte 'Prompt', sonst erste Textspalte
     if "Prompt" in df.columns:
-        prompts = [str(v).strip() for v in df["Prompt"] if str(v).strip()]
+        col = "Prompt"
     else:
         text_cols = [c for c in df.columns if pd.api.types.is_string_dtype(df[c])]
         if not text_cols:
-            raise SystemExit(f"❌ Keine Textspalten in {csv_path} gefunden.")
-        prompts = [str(v).strip() for v in df[text_cols[0]] if str(v).strip()]
-    return prompts
+            return []
+        col = text_cols[0]
+    return [str(v).strip() for v in df[col] if str(v).strip()]
 
+# -------- New/Old chat loading --------
+def _parse_stream_text(jsonl: str) -> str:
+    out = []
+    for line in jsonl.splitlines():
+        t = line.strip()
+        if not t: continue
+        try:
+            obj = json.loads(t)
+            out.append(obj.get("response", ""))
+        except Exception:
+            out.append(t)
+    return "".join(out)
 
-# ----------------------------
-# Chat loading & normalization
-# ----------------------------
 def load_and_normalize_chat(chat_path: Path, expected_prompts: List[str]) -> List[str]:
     """
-    Returns messages interleaved [user1, assistant1, ...], normalized
-    to len(expected_prompts) user turns (missing -> '<empty>').
+    Returns [user1, assistant1, ...] normalized to number of expected prompts.
+    Supports:
+      - new schema: {"chat": [ {role, content} ... ]}
+        content can be str or {"text": jsonl, "response": "..."}
+      - legacy schema (your old history dict)  :contentReference[oaicite:1]{index=1}
     """
     with chat_path.open("r", encoding="utf-8") as f:
         data = json.load(f)
 
     user_msgs, assistant_msgs = [], []
-    for entry in data:
-        chat = entry.get("chat", {})
-        msgs = chat.get("history", {}).get("messages", {})
-        for msg in msgs.values():
+
+    # new schema
+    if isinstance(data, dict) and isinstance(data.get("chat"), list):
+        for msg in data["chat"]:
+            if not isinstance(msg, dict): continue
             role = msg.get("role")
-            txt = (msg.get("content") or "").strip()
+            c = msg.get("content")
+            text = ""
+            if isinstance(c, str):
+                text = c
+            elif isinstance(c, dict):
+                if isinstance(c.get("text"), str):
+                    text = _parse_stream_text(c["text"])
+                elif isinstance(c.get("response"), str):
+                    text = c["response"]
             if role == "user":
-                user_msgs.append(txt)
+                user_msgs.append(text.strip())
             elif role == "assistant":
-                assistant_msgs.append(txt)
+                assistant_msgs.append(text.strip())
+    else:
+        # legacy fallback: list with old nested structure
+        try:
+            for entry in data:
+                chat = entry.get("chat", {})
+                msgs = chat.get("history", {}).get("messages", {})
+                for m in msgs.values():
+                    role = m.get("role")
+                    txt = (m.get("content") or "").strip()
+                    if role == "user":
+                        user_msgs.append(txt)
+                    elif role == "assistant":
+                        assistant_msgs.append(txt)
+        except Exception:
+            pass
 
     n_expected = len(expected_prompts)
     # pad/crop user
@@ -155,10 +194,7 @@ def load_and_normalize_chat(chat_path: Path, expected_prompts: List[str]) -> Lis
         combined.append(a)
     return combined
 
-
-# ----------------------------
-# Keyword reference
-# ----------------------------
+# -------- Keyword reference --------
 def _is_text_col(s: pd.Series) -> bool:
     return s.dtype == "object" or pd.api.types.is_string_dtype(s)
 
@@ -188,12 +224,8 @@ def load_keyword_reference(csv_path: Path) -> Set[str]:
         kws.extend([_normalize_kw(v) for v in df[c] if isinstance(v, str) and v.strip()])
     return set(kws)
 
-
-# ----------------------------
-# NLP & scoring
-# ----------------------------
+# -------- NLP & scoring --------
 def extract_keywords(doc) -> Set[str]:
-    # noun chunks (lemmatized) + named entities (surface)
     chunks = [
         " ".join(t.lemma_.lower() for t in nc if not t.is_punct and not t.is_space)
         for nc in doc.noun_chunks
@@ -211,10 +243,7 @@ def compute_scores(predicted: Set[str], reference: Set[str]):
     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
     return precision, recall, f1, tp, fp, fn
 
-
-# ----------------------------
-# Per-chat analysis
-# ----------------------------
+# -------- Per-chat analysis --------
 def analyze_single_chat(chat_path: Path, nlp, reference_keywords: Set[str],
                         strategy_prompts: List[str], batch_size: int = 64) -> Dict:
     model, strategy, version = parse_triplet_from_path(chat_path)
@@ -223,27 +252,25 @@ def analyze_single_chat(chat_path: Path, nlp, reference_keywords: Set[str],
 
     rows = []
     agg_tp = agg_fp = agg_fn = 0
-    matched_counter = Counter()  # NEU: globale Trefferhäufigkeit im Chat
+    matched_counter = Counter()
 
     for i, doc in enumerate(nlp.pipe(messages, batch_size=batch_size)):
         predicted = extract_keywords(doc)
-        matched = predicted & reference_keywords                     # NEU
+        matched = predicted & reference_keywords
         precision, recall, f1, tp, fp, fn = compute_scores(predicted, reference_keywords)
         agg_tp += tp; agg_fp += fp; agg_fn += fn
         if matched:
             matched_counter.update(matched)
-
         rows.append({
             "ModelKey": model_key,
             "MessageIndex": i + 1,
             "Predicted_Keywords": ", ".join(sorted(predicted)),
-            "Matched_Keywords": ", ".join(sorted(matched)),          # NEU
+            "Matched_Keywords": ", ".join(sorted(matched)),
             "Precision": precision, "Recall": recall, "F1": f1,
             "TP": tp, "FP": fp, "FN": fn,
             "Text": doc.text,
         })
 
-    # write per-chat artifacts
     per_message_csv = chat_path.parent / "analyse_per_message.csv"
     pd.DataFrame(rows).to_csv(per_message_csv, index=False)
 
@@ -251,7 +278,6 @@ def analyze_single_chat(chat_path: Path, nlp, reference_keywords: Set[str],
     rec  = agg_tp / (agg_tp + agg_fn) if (agg_tp + agg_fn) else 0.0
     f1   = (2 * prec * rec / (prec + rec)) if (prec + rec) else 0.0
 
-    # NEU: aggregierte Trefferlisten
     matched_keyword_counts = sorted(
         [{"keyword": k, "count": int(v)} for k, v in matched_counter.items()],
         key=lambda x: (-x["count"], x["keyword"])
@@ -266,9 +292,9 @@ def analyze_single_chat(chat_path: Path, nlp, reference_keywords: Set[str],
         "expected_prompts": strategy_prompts,
         "TP": agg_tp, "FP": agg_fp, "FN": agg_fn,
         "precision": prec, "recall": rec, "f1": f1,
-        "matched_unique_count": matched_unique_count,                # NEU
-        "all_matched_keywords": all_matched_keywords,                # NEU
-        "matched_keyword_counts": matched_keyword_counts,            # NEU
+        "matched_unique_count": matched_unique_count,
+        "all_matched_keywords": all_matched_keywords,
+        "matched_keyword_counts": matched_keyword_counts,
         "per_message_csv": str(per_message_csv),
         "chat_path": str(chat_path),
     }
@@ -277,24 +303,18 @@ def analyze_single_chat(chat_path: Path, nlp, reference_keywords: Set[str],
 
     return summary
 
-
-# ----------------------------
-# Global aggregation
-# ----------------------------
+# -------- Global aggregation --------
 def ensure_analyse_root(root: Path) -> Path:
     out = root / "analyse"
     out.mkdir(parents=True, exist_ok=True)
     return out
 
-
 def aggregate_and_write(all_chat_summaries: List[Dict], analyse_root: Path, strategy_prompts_map: Dict[str, List[str]]):
     df = pd.DataFrame(all_chat_summaries).sort_values(["model", "strategy", "version"]).reset_index(drop=True)
 
-    # all chats
     all_csv = analyse_root / "all_chats_summary.csv"
     df.to_csv(all_csv, index=False)
 
-    # per strategy (group by model+strategy)
     strat_rows = []
     for (m, s), g in df.groupby(["model", "strategy"], dropna=False):
         tp, fp, fn = g["TP"].sum(), g["FP"].sum(), g["FN"].sum()
@@ -310,7 +330,6 @@ def aggregate_and_write(all_chat_summaries: List[Dict], analyse_root: Path, stra
         })
     pd.DataFrame(strat_rows).to_csv(analyse_root / "per_strategy_summary.csv", index=False)
 
-    # per model
     model_rows = []
     for m, g in df.groupby("model", dropna=False):
         tp, fp, fn = g["TP"].sum(), g["FP"].sum(), g["FN"].sum()
@@ -325,7 +344,6 @@ def aggregate_and_write(all_chat_summaries: List[Dict], analyse_root: Path, stra
         })
     pd.DataFrame(model_rows).to_csv(analyse_root / "per_model_summary.csv", index=False)
 
-    # overall
     tp, fp, fn = df["TP"].sum(), df["FP"].sum(), df["FN"].sum()
     prec = tp / (tp + fp) if (tp + fp) else 0.0
     rec  = tp / (tp + fn) if (tp + fn) else 0.0
@@ -339,14 +357,11 @@ def aggregate_and_write(all_chat_summaries: List[Dict], analyse_root: Path, stra
     with (analyse_root / "overall_summary.json").open("w", encoding="utf-8") as f:
         json.dump(overall, f, indent=2, ensure_ascii=False)
 
-    # store strategy prompts centrally
     with (analyse_root / "strategy_prompts.json").open("w", encoding="utf-8") as f:
         json.dump(strategy_prompts_map, f, indent=2, ensure_ascii=False)
 
-    # XML export with ModelKey + aggregations
     xml_root = ET.Element("LLMKeywordComparison")
     ET.SubElement(xml_root, "Meta", attrib={"totalChats": str(df.shape[0])})
-
     for _, row in df.iterrows():
         ET.SubElement(xml_root, "ChatSummary", attrib={
             "ModelKey": row["ModelKey"],
@@ -358,7 +373,6 @@ def aggregate_and_write(all_chat_summaries: List[Dict], analyse_root: Path, stra
             "recall": f'{row["recall"]:.6f}',
             "f1": f'{row["f1"]:.6f}',
         })
-
     aggr = ET.SubElement(xml_root, "Aggregations")
     per_model_node = ET.SubElement(aggr, "PerModel")
     for r in model_rows:
@@ -384,16 +398,11 @@ def aggregate_and_write(all_chat_summaries: List[Dict], analyse_root: Path, stra
             "recall": f'{r["Recall"]:.6f}',
             "f1": f'{r["F1"]:.6f}',
         })
-
     ET.ElementTree(xml_root).write(analyse_root / "comparison.xml", encoding="utf-8", xml_declaration=True)
 
-
-# ----------------------------
-# Main
-# ----------------------------
+# -------- Main --------
 def main():
     load_dotenv()
-
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=os.getenv("LLM_ROOT"))
     ap.add_argument("--keywords", default=os.getenv("LLM_KEYWORDS"))
@@ -425,10 +434,10 @@ def main():
 
     chat_files = find_chat_files(root)
     if not chat_files:
-        print(f"⚠️  No chat.json files found under: {root}")
+        print(f"⚠️  No chat files found under: {root}")
         return
 
-    print(f"🔎 Found {len(chat_files)} chat.json files. Starting analysis…")
+    print(f"🔎 Found {len(chat_files)} chat files. Starting analysis…")
 
     summaries = []
     strategy_prompts_map: Dict[str, List[str]] = {}
@@ -436,7 +445,6 @@ def main():
     for p in chat_files:
         model, strategy, version = parse_triplet_from_path(p)
         print(f"\nModel: {model} | Strategie: {strategy} | Version: {version}")
-        print("  chat.json found")
         # load prompts
         try:
             prompts = load_strategy_prompts(input_root, strategy)
@@ -452,9 +460,8 @@ def main():
     aggregate_and_write(summaries, analyse_root, strategy_prompts_map)
 
     print("\n✅ Done.")
-    print("   Per-chat outputs are next to each chat.json (analyse_per_message.csv, analyse_summary.json).")
+    print("   Per-chat outputs are next to each chat file (analyse_per_message.csv, analyse_summary.json).")
     print("   Global outputs in:", analyse_root)
-
 
 if __name__ == "__main__":
     main()

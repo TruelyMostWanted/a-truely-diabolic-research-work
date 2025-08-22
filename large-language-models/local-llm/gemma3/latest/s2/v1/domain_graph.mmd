@@ -1,0 +1,53 @@
+graph TD
+    subgraph "Entities"
+        User[User {UserId, Location }]
+        Product[Product {ProductId, Category, Price, Attributes}]
+        Order[Order {OrderId, CustomerId}]
+    end
+
+    subgraph "Attributes"
+        UserId[UserId]
+        ProductId[ProductId]
+        Category[Category]
+        Price[Price]
+        Location[Location]
+    end
+
+    subgraph "Relations"
+        owns[User -- owns --> Product]
+        contains[Order -- contains --> Order]
+        hasCustomerId[Order -- hasCustomerId --> Customer]
+    end
+
+    subgraph "Goals"
+        RecommendProduct[RecommendProduct]
+        ProcessOrder[ProcessOrder]
+    end
+
+    subgraph "Conditions"
+        UserAge > 30[UserAge > 30]
+        ProductPrice > 10[ProductPrice > 10]
+        ProductReviews > 5[ProductReviews > 5]
+        UserLoyalty > 10[UserLoyalty > 10]
+        ProductRatings > 4[ProductRatings > 4]
+        ProductPromo > 0.1[ProductPromo > 0.1]
+        UserAge > 30[UserAge > 30]
+        UserLocation = 'New York'[UserLocation = 'New York']
+        ProductCategory = 'Electronics'[ProductCategory = 'Electronics']
+        UserAge > 30[UserAge > 30]
+        UserLocation = 'New York'[UserLocation = 'New York']
+        ProductCategory = 'Electronics'[ProductCategory = 'Electronics']
+    end
+
+    subgraph "Decision Variables"
+        UserPurchaseHistory[UserPurchaseHistory]
+        ClickRate[ClickRate]
+        PageViews[PageViews]
+        ShippingCost[ShippingCost]
+        SessionDuration[SessionDuration]
+        CustomerSatisfaction[CustomerSatisfaction]
+        Revenue[Revenue]
+        InventoryLevel[InventoryLevel]
+        ProductPopularity[ProductPopularity]
+        ConversionRate[ConversionRate]
+    end

@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\title{Optimization Model for Agile Project Management}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Sets (Entities)}
+
+\begin{itemize}
+    \item \textbf{Team:} Represents the project team members.
+    \item \textbf{Project:} Represents the project being managed.
+    \item \textbf{Feature:} Represents the features to be developed.
+    \item \textbf{UserStory:} Represents the user stories associated with features.
+    \item \textbf{Blocker:} Represents obstacles hindering project progress.
+    \item \textbf{Sprint:} Represents the time-boxed periods for development.
+    \item \textbf{SprintGoal:} Represents the objectives of each Sprint.
+    \item \textbf{Worker:} Represents the developers contributing to the project.
+    \item \textbf{Stakeholder:} Represents the parties interested in the project outcome.
+    \item \textbf{ReleasePlan:} Represents the planned release schedule.
+    \item \textbf{Velocity:} Represents the measure of work completed per sprint.
+    \item \textbf{FeatureDocumentation:} The documentation related to features.
+\end{itemize}
+
+\section{Indices}
+
+\begin{itemize}
+    \item $i \in$ Teams
+    \item $j \in$ Projects
+    \item $k \in$ Features
+    \item $l \in$ UserStories
+    \item $m \in$ Blockers
+    \item $n \in$ Sprints
+    \item $o \in$ SprintGoals
+    \item $p \in$ Workers
+    \item $q \in$ Stakeholders
+    \item $r \in$ ReleasePlans
+    \item $s \in$ Velocities
+    \item $t \in$ FeatureDocumentation
+\end{itemize}
+
+\section{Goals}
+
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_velocity}: Maximize overall team velocity.  $\max \sum_{i} \text{team\_size}_i$
+    \item \textbf{G1: minimize\_project\_cost}: Minimize total project cost. $\min \sum_{j} \text{budget}_j$
+    \item \textbf{G2: maximize\_feature\_delivery}: Maximize the number of delivered features. $\max \sum_{k} 1$
+    \item \textbf{G3: maximize\_user\_story\_points}: Maximize the sum of story points completed.  $\max \sum_{l} \text{story\_points}_l$
+    \item \textbf{G4: minimize\_blocker\_count}: Minimize the number of open blockers. $\min \sum_{m} 1$
+    \item \textbf{G5: maximize\_sprint\_goal\_achievement}: Maximize sprint goal achievement rate.
+    \item \textbf{G6: maximize\_team\_availability}: Maximize the average team member availability.
+    \item \textbf{G7: maximize\_feature\_documentation\_completeness}: Maximize feature documentation coverage.
+    \item \textbf{G8: maximize\_stakeholder\_satisfaction}: Maximize overall stakeholder satisfaction.
+    \item \textbf{G9: minimize\_project\_delay}: Minimize the project delay.
+    \item \textbf{G10: maximize\_sprint\_velocity}: Maximize the velocity of sprints.
+    \item \textbf{G11: maximize\_release\_feature\_count}: Maximize the number of features in each release.
+    \item \textbf{G12: maximize\_road\_map\_mile\_stones}: Maximize the number of completed milestones.
+    \item \textbf{G13: maximize\_sprint\_backlog\_tasks}: Maximize the number of tasks in the sprint backlog.
+    \item \textbf{G14: maximize\_development\_snapshot\_stability}: Maximize the stability of development snapshots.
+\end{itemize}
+
+\section{Conditions}
+
+\begin{itemize}
+    \item \textbf{C0: feature\_priority\_high}: Feature priority must be high.  $\text{priority}_k = 5$
+    \item \textbf{C1: blocker\_severity\_critical}: Blocker severity must be critical.  $\text{severity}_m = 5$
+    \item \textbf{C2: story\_status\_completed}: User Story status must be completed. $\text{status}_l = \text{Completed}$
+    \item \textbf{C3: team\_status\_active}: Team status must be active. $\text{team\_status}_i = \text{Active}$
+    \item \textbf{C4: project\_status\_ongoing}: Project status must be ongoing. $\text{status}_j = \text{Ongoing}$
+    \item \textbf{C5: sprint\_status\_active}: Sprint status must be active. $\text{status}_n = \text{Active}$
+    \item \textbf{C6: worker\_status\_available}: Worker status must be available. $\text{status}_p = \text{Available}$
+    \item \textbf{C7: feature\_documentation\_present}: Feature documentation must exist. $\text{title}_t \neq \emptyset$
+    \item \textbf{C8: release\_plan\_status\_approved}: Release plan status must be approved. $\text{status}_r = \text{Approved}$
+    \item \textbf{C9: stakeholder\_relevance\_high}: Stakeholder relevance to feature must be high. $\text{relevance\_to\_feature}_q = 5$
+    \item \textbf{C10: velocity\_trend\_positive}: Velocity trend must be positive. $\text{trend}_s > 0$
+    \item \textbf{C11: roadmap\_milestone\_completed}: Roadmap milestone must be completed. $\text{milestones} \in \text{Completed}$
+    \item \textbf{C12: sprint\_goal\_achieved}: Sprint goal must be achieved. $\text{achievement\_status}_o = \text{Achieved}$
+    \item \textbf{C13: task\_status\_done}: Task status must be done. $\text{status} = \text{Done}$
+    \item \textbf{C14: sprint\_backlog\_status\_active}: Sprint backlog status must be active. $\text{status} = \text{Active}$
+\end{itemize}
+
+\section{DecisionVariables}
+
+\begin{itemize}
+    \item \textbf{D0: team\_size}: Number of team members (Integer).  $1 \le \text{team\_size} \le 10$
+    \item \textbf{D1: feature\_priority}: Priority of the feature (Integer).  $1 \le \text{feature\_priority} \le 5$
+    \item \textbf{D2: blocker\_severity}: Severity of the blocker (Integer).  $1 \le \text{blocker\_severity} \le 5$
+    \item \textbf{D3: project\_budget}: Budget allocated to the project (Float).  $0.0 \le \text{project\_budget} \le 3000.0$
+    \item \textbf{D4: user\_story\_story\_points}: Story points assigned to the user story (Integer).  $1 \le \text{story\_points} \le 13$
+    \item \textbf{D5: sprint\_duration}: Duration of the sprint in days (Integer). $7, 14, 21, 28$
+    \item \textbf{D6: feature\_development\_effort}: Effort to develop the feature (Integer). $1 \le \text{effort} \le 5$
+    \item \textbf{D7: risk\_mitigation\_cost}: Cost to mitigate a risk (Float). $0.0 \le \text{cost} \le 300.0$
+    \item \textbf{D8: worker\_availability\_percentage}: Percentage of worker's availability (Integer). $50,60,70,80,90,100$
+    \item \textbf{D9: stakeholder\_influence\_level}: Level of stakeholder's influence (Integer). $1,2,3,4,5$
+    \item \textbf{D10: release\_plan\_version}: Version of the release plan (Float). $1.0, 2.0, 3.0$
+    \item \textbf{D11: sprint\_velocity}: The average amount of work per sprint (Integer). $1 \le \text{velocity} \le 10$
+    \item \textbf{D12: feature\_documentation\_quality}: Quality of the feature documentation (Integer). $1 \le \text{quality} \le 5$
+\end{itemize}
+\end{document}

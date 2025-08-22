@@ -1,0 +1,130 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{a4paper, margin=2cm}
+\title{Scrum Domain Model Optimization}
+\author{Automated Model}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Sets (Entities)}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Entity} & \textbf{Attributes} & \textbf{Description} & \textbf{Relations} \\
+\hline
+Project & id, name, budget, status & Project management details & is\_assigned\_to\_project \\
+\hline
+Team & id, name, size, start, end & Team composition & belongs\_to\_team \\
+\hline
+Worker & id, name, role, skill & Team members & \\
+\hline
+Feature & id, name, priority, status & Product backlog items & \\
+\hline
+Task & id, name, effort, status & Work units & \\
+\hline
+Sprint & id, name, duration, goal, status & Iterative development cycles & \\
+\hline
+Stakeholder & id, name, influence, relevance & External parties & \\
+\hline
+Blocker & id, name, severity, resolution & Obstacles & \\
+\hline
+Skill & id, name, level & Team expertise & \\
+\hline
+\end{tabular}
+
+\section{Indices}
+\begin{itemize}
+    \item \textbf{Project Budget} - Financial allocation
+    \item \textbf{Task Effort} - Work required
+    \item \textbf{Team Size} - Resource availability
+    \item \textbf{Feature Priority} - Business value
+    \item \textbf{Sprint Duration} - Development cycle
+    \item \textbf{Stakeholder Influence} - External impact
+    \item \textbf{Blocker Severity} - Risk level
+    \item \textbf{Skill Level} - Team expertise
+\end{itemize}
+
+\section{Goals}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{ID} & \textbf{Name} & \textbf{Description} & \textbf{Mathematical Representation} \\
+\hline
+G0 & maximize\_project\_budget & Maximize project budget & $\max \sum_{p} B_p$ \\
+\hline
+G1 & minimize\_blocker\_severity & Minimize blocker severity & $\min \sum_{b} S_b$ \\
+\hline
+G2 & maximize\_sprint\_velocity & Maximize sprint velocity & $\max \sum_{s} V_s$ \\
+\hline
+G3 & minimize\_sprint\_duration & Minimize sprint duration & $\min \sum_{s} D_s$ \\
+\hline
+G4 & maximize\_feature\_priority & Maximize feature priority & $\max \sum_{f} P_f$ \\
+\hline
+G5 & minimize\_task\_effort & Minimize task effort & $\min \sum_{t} E_t$ \\
+\hline
+G6 & maximize\_team\_size & Maximize team size & $\max \sum_{t} S_t$ \\
+\hline
+G7 & minimize\_team\_start\_date & Minimize team start date & $\min \sum_{t} T_s$ \\
+\hline
+G8 & maximize\_user\_story\_points & Maximize user story points & $\max \sum_{u} P_u$ \\
+\hline
+G9 & minimize\_sprint\_end\_date & Minimize sprint end date & $\min \sum_{s} E_s$ \\
+\hline
+G10 & maximize\_stakeholder\_influence & Maximize stakeholder influence & $\max \sum_{s} I_s$ \\
+\hline
+G11 & minimize\_blocker\_resolution\_time & Minimize blocker resolution time & $\min \sum_{b} R_b$ \\
+\hline
+G12 & maximize\_sprint\_goal\_achievement & Maximize sprint goal achievement & $\max \sum_{s} A_s$ \\
+\hline
+G13 & minimize\_sprint\_backlog\_tasks & Minimize sprint backlog tasks & $\min \sum_{b} T_b$ \\
+\hline
+G14 & maximize\_skill\_level & Maximize skill level & $\max \sum_{s} L_s$ \\
+\hline
+G15 & minimize\_sprint\_retrospective\_duration & Minimize sprint retrospective duration & $\min \sum_{r} D_r$ \\
+\hline
+G16 & maximize\_stakeholder\_relevance & Maximize stakeholder relevance & $\max \sum_{s} R_s$ \\
+\hline
+G17 & minimize\_sprint\_planning\_duration & Minimize sprint planning duration & $\min \sum_{p} D_p$ \\
+\hline
+G18 & maximize\_roadmap\_milestones & Maximize roadmap milestones & $\max \sum_{r} M_r$ \\
+\hline
+G19 & minimize\_release\_plan\_features & Minimize release plan features & $\min \sum_{r} F_r$ \\
+\hline
+G20 & maximize\_development\_snapshot\_quality & Maximize development snapshot quality & $\max \sum_{d} Q_d$ \\
+\hline
+\end{tabular}
+
+\section{Constraints}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{ID} & \textbf{Name} & \textbf{Description} & \textbf{Mathematical Representation} \\
+\hline
+C2 & sprint\_duration\_range & Sprint duration between 10-14 days & $10 \leq D_s \leq 14$ \\
+\hline
+C3 & feature\_priority\_valid & Feature priority between 1-10 & $1 \leq P_f \leq 10$ \\
+\hline
+C4 & team\_size\_min & Team size at least 3 members & $S_t \geq 3$ \\
+\hline
+C5 & blocker\_resolution\_time & Blocker resolution time within 2 days & $R_b \leq 2$ \\
+\hline
+C7 & skill\_level\_valid & Skill level between 1-5 & $1 \leq L_s \leq 5$ \\
+\hline
+C8 & roadmap\_milestone\_valid & Roadmap milestones valid dates & $M_r$ valid \\
+\hline
+C9 & release\_plan\_valid & Release plan includes valid features & $F_r$ valid \\
+\hline
+C10 & stakeholder\_influence\_valid & Stakeholder influence between 1-10 & $1 \leq I_s \leq 10$ \\
+\hline
+C11 & sprint\_retrospective\_duration & Sprint retrospective duration within 1-2 hours & $1 \leq D_r \leq 2$ \\
+\hline
+C12 & sprint\_planning\_duration & Sprint planning duration within 2-4 hours & $2 \leq D_p \leq 4$ \\
+\hline
+C13 & development\_snapshot\_valid & Development snapshot with valid test status & $Q_d$ valid \\
+\hline
+\end{tabular}
+
+\end{document}

@@ -1,0 +1,123 @@
+graph TD
+    %% Class Definitions for Colorization
+    classDef entity fill:#87CEEB, color:white;
+    classDef attribute fill:#ffffff, color:black;
+    classDef relation fill:#FFA500, color:white;
+    classDef goal fill:#320066, color:white;
+    classDef condition fill:#FF0000, color:white;
+    classDef decisionVariable fill:#800080, color:white;
+
+    %% Entities
+    A[Project]:::entity
+    B[TeamMember]:::entity
+    C[Task]:::entity
+    D[Resource]:::entity
+    E[Budget]:::entity
+
+    %% Attributes
+    A1[ProjectID]:::attribute
+    A2[Name]:::attribute
+    A3[StartDate]:::attribute
+    A4[EndDate]:::attribute
+    A5[Status]:::attribute
+    B1[TeamMemberID]:::attribute
+    B2[Name]:::attribute
+    B3[Role]:::attribute
+    B4[Availability]:::attribute
+    C1[TaskID]:::attribute
+    C2[Name]:::attribute
+    C3[Description]:::attribute
+    C4[Duration]:::attribute
+    C5[Status]:::attribute
+    D1[ResourceID]:::attribute
+    D2[Name]:::attribute
+    D3[Type]:::attribute
+    D4[Quantity]:::attribute
+    E1[BudgetID]:::attribute
+    E2[TotalAmount]:::attribute
+    E3[Currency]:::attribute
+    E4[Allocation]:::attribute
+
+    %% Relations
+    A -->|Assigns| B
+    A -->|Contains| C
+    A -->|Utilizes| D
+    A -->|Has| E
+    C -->|Requires| D
+    C -->|AssignedTo| B
+    D -->|AllocatedTo| C
+    D -->|DependsOn| D
+    E -->|AllocatesTo| A
+    B -->|Completes| C
+    B -->|Uses| D
+    B -->|Manages| E
+    B -->|Supervises| B
+    C -->|DependsOn| C
+
+    %% Connect Entities to Attributes
+    A --> A1
+    A --> A2
+    A --> A3
+    A --> A4
+    A --> A5
+    B --> B1
+    B --> B2
+    B --> B3
+    B --> B4
+    C --> C1
+    C --> C2
+    C --> C3
+    C --> C4
+    C --> C5
+    D --> D1
+    D --> D2
+    D --> D3
+    D --> D4
+    E --> E1
+    E --> E2
+    E --> E3
+    E --> E4
+
+    %% Goals
+    G1[OptimizeProjectTimeline]:::goal
+    G2[MinimizeResourceCost]:::goal
+    G3[MaximizeTeamUtilization]:::goal
+    G4[EnsureBudgetAdherence]:::goal
+    G5[ReduceTaskDependencies]:::goal
+
+    %% Connect Goals to Entities/Attributes
+    G1 --> A4
+    G1 --> C4
+    G2 --> D4
+    G3 --> B4
+    G4 --> E2
+    G5 --> C5
+
+    %% Conditions
+    C1[ProjectEndDateConstraint]:::condition
+    C2[TeamMemberAvailability]:::condition
+    C3[TaskDurationConstraints]:::condition
+    C4[ResourceQuantityConstraints]:::condition
+    C5[BudgetLimit]:::condition
+
+    %% Connect Conditions to Entities/Attributes
+    C1 --> A4
+    C2 --> B4
+    C3 --> C4
+    C4 --> D4
+    C5 --> E2
+
+    %% Decision Variables
+    D1[TaskAssignment]:::decisionVariable
+    D2[ResourceAllocation]:::decisionVariable
+    D3[BudgetDistribution]:::decisionVariable
+    D4[TeamMemberAssignment]:::decisionVariable
+    D5[TaskScheduling]:::decisionVariable
+
+    %% Connect Decision Variables to Entities
+    D1 --> C
+    D1 --> B
+    D2 --> D
+    D3 --> E
+    D4 --> B
+    D5 --> C

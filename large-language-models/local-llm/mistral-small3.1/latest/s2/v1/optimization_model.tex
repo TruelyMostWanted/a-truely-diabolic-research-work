@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $E$ - Entities
+    \item $R$ - Relations
+    \item $G$ - Goals
+    \item $C$ - Conditions
+    \item $D$ - Decision Variables
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $i$ - Index for Entities
+    \item $j$ - Index for Relations
+    \item $k$ - Index for Goals
+    \item $l$ - Index for Conditions
+    \item $m$ - Index for Decision Variables
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{Goal 1: Maximize Profit}
+    \begin{itemize}
+        \item \textbf{ID:} G1
+        \item \textbf{Name:} Maximize Profit
+        \item \textbf{Mathematical Representation:}
+        \[
+        \max \sum_{i \in E} \sum_{m \in D} P_{im} x_{im}
+        \]
+        \item \textbf{Logical Representation:} Maximize the total profit by selecting the optimal decision variables.
+    \end{itemize}
+    \item \textbf{Goal 2: Minimize Costs}
+    \begin{itemize}
+        \item \textbf{ID:} G2
+        \item \textbf{Name:} Minimize Costs
+        \item \textbf{Mathematical Representation:}
+        \[
+        \min \sum_{i \in E} \sum_{m \in D} C_{im} x_{im}
+        \]
+        \item \textbf{Logical Representation:} Minimize the total costs by selecting the optimal decision variables.
+    \end{itemize}
+    % Add more goals as needed
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{Condition 1: Resource Constraints}
+    \begin{itemize}
+        \item \textbf{ID:} C1
+        \item \textbf{Name:} Resource Constraints
+        \item \textbf{Mathematical Representation:}
+        \[
+        \sum_{m \in D} R_{im} x_{im} \leq B_i \quad \forall i \in E
+        \]
+        \item \textbf{Logical Representation:} The total resource usage for each entity should not exceed the available budget.
+    \end{itemize}
+    \item \textbf{Condition 2: Non-negativity}
+    \begin{itemize}
+        \item \textbf{ID:} C2
+        \item \textbf{Name:} Non-negativity
+        \item \textbf{Mathematical Representation:}
+        \[
+        x_{im} \geq 0 \quad \forall i \in E, \forall m \in D
+        \]
+        \item \textbf{Logical Representation:} Decision variables should be non-negative.
+    \end{itemize}
+    % Add more conditions as needed
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $x_{im}$ - Decision variable representing the level of decision variable $m$ for entity $i$
+\end{itemize}
+
+\end{document}

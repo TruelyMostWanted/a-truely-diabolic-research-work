@@ -1,0 +1,45 @@
+graph TD
+  subgraph entities["Entities"]
+    p[Project] --> |1| e[Epic]
+    p --> |0| f[Feature]
+    p --> |3| us[User Story]
+    p --> |2| tsk[Task]
+    e --> |1| pb[Product Backlog]
+    us --> |1| s[Sprint Backlog]
+    tsk --> |1| dev[Development Snapshot]
+  end
+
+  subgraph attributes["Attributes"]
+    f --> |0| title
+    f --> |1| description
+    f --> |2| status
+    f --> |3| priority
+    us --> |0| acceptance_criteria
+    tsk --> |0| task_description
+  end
+
+  subgraph relations["Relations"]
+    p --> |0| w[Worker]
+    e --> |0| po[Product Owner]
+    tsk --> |1| r[Role]
+    s --> |1| sm[Scrum Master]
+  end
+
+  subgraph goals["Goals"]
+    p --> |0| max_profit
+    p --> |1| min_cost
+    w --> |0| max_satisfaction
+    w --> |1| min_unavailability
+  end
+
+  subgraph conditions["Conditions"]
+    p --> |0| budget_constraints
+    s --> |1| sprint_duration_constraints
+    tsk --> |2| sufficient_skills
+  end
+
+  subgraph decision_variables["Decision Variables"]
+    p --> |0| team_selection
+    s --> |1| sprint_length
+    s --> |2| start_date
+  end

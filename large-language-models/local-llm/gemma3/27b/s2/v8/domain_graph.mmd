@@ -1,0 +1,65 @@
+graph TD
+    subgraph Entities [Entities]
+        Customer["Customer" style:fill:#ADD8E6,stroke:#333,stroke-width:2px]
+        Order["Order" style:fill:#ADD8E6,stroke:#333,stroke-width:2px]
+        Product["Product" style:fill:#ADD8E6,stroke:#333,stroke-width:2px]
+    end
+
+    subgraph Attributes [Attributes]
+        CustomerID["CustomerID" style:fill:#FFFFFF,stroke:#333,stroke-width:1px]
+        Name["Name" style:fill:#FFFFFF,stroke:#333,stroke-width:1px]
+        Address["Address" style:fill:#FFFFFF,stroke:#333,stroke-width:1px]
+        OrderID["OrderID" style:fill:#FFFFFF,stroke:#333,stroke-width:1px]
+        OrderDate["OrderDate" style:fill:#FFFFFF,stroke:#333,stroke-width:1px]
+        TotalAmount["TotalAmount" style:fill:#FFFFFF,stroke:#333,stroke-width:1px]
+        ProductID["ProductID" style:fill:#FFFFFF,stroke:#333,stroke-width:1px]
+        ProductName["ProductName" style:fill:#FFFFFF,stroke:#333,stroke-width:1px]
+        Price["Price" style:fill:#FFFFFF,stroke:#333,stroke-width:1px]
+    end
+
+    subgraph Relations [Relations]
+        places["places" style:fill:#FFA500,stroke:#333,stroke-width:1px]
+        contains["contains" style:fill:#FFA500,stroke:#333,stroke-width:1px]
+    end
+
+    subgraph Goals [Goals]
+        MaximizeRevenue["MaximizeRevenue" style:fill:#90EE90,stroke:#333,stroke-width:1px]
+        ImproveCustomerSatisfaction["ImproveCustomerSatisfaction" style:fill:#90EE90,stroke:#333,stroke-width:1px]
+    end
+
+    subgraph Conditions [Conditions]
+        OrderDelayed["OrderDelayed" style:fill:#F08080,stroke:#333,stroke-width:1px]
+        CustomerComplaint["CustomerComplaint" style:fill:#F08080,stroke:#333,stroke-width:1px]
+    end
+
+    subgraph DecisionVariables [DecisionVariables]
+        DiscountRate["DiscountRate" style:fill:#D8BFD8,stroke:#333,stroke-width:1px]
+        ShippingMethod["ShippingMethod" style:fill:#D8BFD8,stroke:#333,stroke-width:1px]
+    end
+
+    %% Entity - Attribute connections
+    Customer -- CustomerID
+    Customer -- Name
+    Customer -- Address
+    Order -- OrderID
+    Order -- OrderDate
+    Order -- TotalAmount
+    Product -- ProductID
+    Product -- ProductName
+    Product -- Price
+
+    %% Entity - Relation connections
+    Customer -- places --> Order
+    Order -- contains --> Product
+
+    %% Entity - Goal connections
+    Order -- MaximizeRevenue
+    Customer -- ImproveCustomerSatisfaction
+
+    %% Entity - Condition connections
+    Order -- OrderDelayed
+    Customer -- CustomerComplaint
+
+    %% Entity - Decision Variable connections
+    Customer -- DiscountRate
+    Order -- ShippingMethod

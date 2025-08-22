@@ -1,0 +1,165 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\title{\textbf{Optimization Model for Software Development Company}}
+\author{\textbf{Author Name}}
+\date{\textbf{Date}}
+
+\begin{document}
+
+\maketitle
+
+\section*{Table of Contents}
+\toc
+
+\section{1. Sets (Entities)}
+\begin{enumerate}
+    \item Project
+    \item Team
+    \item Worker
+    \item Feature
+    \item Skill
+    \item Role
+    \item Product Owner
+    \item Scrum Master
+    \item Product Backlog
+    \item Sprint
+    \item Sprint Planning
+    \item Daily Scrum
+    \item Sprint Review
+    \item Sprint Retrospective
+    \item Sprint Backlog
+    \item Sprint Goal
+    \item Epic
+    \item User Story
+    \item Task
+    \item Development Snapshot
+    \item Blocker
+    \item Stakeholder
+    \item Velocity
+    \item Release Plan
+    \item Roadmap
+    \item Scrum Board
+    \item Feature Documentation
+\end{enumerate}
+
+\section{2. Indices}
+\begin{enumerate}
+    \item ID
+    \item Name
+    \item SetName
+    \item Index
+    \item Description
+    \item Attribute0
+    \item Attribute1
+    \item Attribute2
+    \item Attribute3
+    \item Attribute4
+    \item Attribute5
+    \item Attribute6
+    \item Attribute7
+    \item Attribute8
+\end{enumerate}
+
+\section{3. Goals}
+\begin{enumerate}
+    \item G0 - Maximize team size
+        \[
+        \text{Objective: Maximize } x_{team\_size}
+        \]
+        \[
+        \text{Constraints: }
+        \begin{cases}
+            0 \leq x_{team\_size} \leq 50 \\
+            \text{sufficient\_team\_size}
+        \end{cases}
+        \]
+    \item G1 - Minimize project duration
+        \[
+        \text{Objective: Minimize } x_{project\_duration}
+        \]
+        \[
+        \text{Constraints: }
+        \begin{cases}
+            0 \leq x_{project\_duration} \leq 12 \\
+            \text{appropriate\_project\_duration}
+        \end{cases}
+        \]
+    \item G2 - Maximize velocity
+        \[
+        \text{Objective: Maximize } x_{velocity}
+        \]
+        \[
+        \text{Constraints: }
+        \begin{cases}
+            0 \leq x_{velocity} \leq 50 \\
+            \text{satisfactory\_velocity}
+        \end{cases}
+        \]
+    \item G3 - Minimize bug rate
+        \[
+        \text{Objective: Minimize } x_{bug\_rate}
+        \]
+        \[
+        \text{Constraints: }
+        \begin{cases}
+            0 \leq x_{bug\_rate} \leq 2 \\
+            \text{low\_bug\_rate}
+        \end{cases}
+        \]
+    \item G4 - Maximize team satisfaction
+        \[
+        \text{Objective: Maximize } x_{team\_satisfaction}
+        \]
+        \[
+        \text{Constraints: }
+        \begin{cases}
+            0 \leq x_{team\_satisfaction} \leq 5 \\
+            \text{satisfactory\_team\_satisfaction}
+        \end{cases}
+        \]
+    \item G5 - Minimize sprint duration
+        \[
+        \text{Objective: Minimize } x_{sprint\_duration}
+        \]
+        \[
+        \text{Constraints: }
+        \begin{cases}
+            0 \leq x_{sprint\_duration} \leq 10 \\
+            \text{short\_sprint\_duration}
+        \end{cases}
+        \]
+\end{enumerate}
+
+\section{4. Conditions}
+\begin{enumerate}
+    \item C0 - Sufficient team size
+        \[
+        x_{team\_size} \geq x_{required\_team\_size}
+        \]
+    \item C1 - Appropriate project duration
+        \[
+        x_{project\_duration} \leq x_{max\_project\_duration}
+        \]
+    \item C2 - Satisfactory velocity
+        \[
+        x_{velocity} \geq x_{min\_velocity}
+        \]
+    \item C3 - Low bug rate
+        \[
+        x_{bug\_rate} \leq x_{max\_bug\_rate}
+        \]
+\end{enumerate}
+
+\section{5. Decision Variables}
+\begin{enumerate}
+    \item D0 - Project start date
+        \[
+        x_{start\_date} \in \text{Date Range: 2023-01-01 to 2035-12-31}
+        \]
+    \item D1 - Sprint duration time
+        \[
+        x_{sprint\_duration\_time} \in \text{Range: 2 to 50 hours}
+        \]
+\end{enumerate}
+
+\end{document}

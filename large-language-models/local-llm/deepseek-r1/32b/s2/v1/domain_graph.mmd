@@ -1,0 +1,24 @@
+style
+  .entity { fill: #3498db; }
+  .attribute { fill: #ecf0f1; }
+  .relation { stroke: #ff6b35; }
+  .goal { fill: #2ecc71; }
+  .condition { fill: #e74c3c; }
+  .decisionVar { fill: #9b59b6; }
+
+graph TD
+    A([Entity A]):::entity
+    B([Entity B]):::entity
+    a1([Attribute a1]):::attribute
+    a2([Attribute a2]):::attribute
+    R1([Relation R1]):::relation
+    G1([Goal G1]):::goal
+    C1([Condition C1]):::condition
+    DV1([DecisionVar DV1]):::decisionVar
+
+    A --> a1
+    A --> a2
+    B --> R1
+    G1 --> A
+    C1 --> a1
+    DV1 --> B

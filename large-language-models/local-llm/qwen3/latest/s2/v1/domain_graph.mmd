@@ -1,0 +1,48 @@
+graph TD
+    %% Entities
+    subgraph Entities
+        classDef entity fill:#0074D9,stroke:#000
+        classDef relation fill:#FF851B,stroke:#000
+        classDef attribute fill:#FFFFFF,stroke:#000
+        classDef goal fill:#2ECC71,stroke:#000
+        classDef condition fill:#E74C3C,stroke:#000
+        classDef decision fill:#9B59B6,stroke:#000
+
+        %% Entities
+        User(entity)
+        Product(entity)
+        Order(entity)
+
+        %% Attributes
+        User[Name(attribute)] --> User
+        User[Age(attribute)] --> User
+        Product[Price(attribute)] --> Product
+        Product[Stock(attribute)] --> Product
+        Order[Date(attribute)] --> Order
+        Order[Quantity(attribute)] --> Order
+    end
+
+    %% Relations
+    User -->|buys| Product(relation)
+    Product -->|supplies| Order(relation)
+    Order -->|placed_by| User(relation)
+
+    %% Goals
+    MaximizeSales(goal) --> Product
+    MinimizeCost(goal) --> Product
+
+    %% Conditions
+    StockAvailable(condition) --> Product
+    AgeOver18(condition) --> User
+
+    %% Decision Variables
+    SetPrice(decision) --> Product
+    Discount(decision) --> Order
+
+    %% Connections
+    MaximizeSales -->|affects| Price(attribute)
+    MinimizeCost -->|affects| Price(attribute)
+    StockAvailable -->|checks| Stock(attribute)
+    AgeOver18 -->|checks| Age(attribute)
+    SetPrice -->|controls| Price(attribute)
+    Discount -->|controls| Quantity(attribute)

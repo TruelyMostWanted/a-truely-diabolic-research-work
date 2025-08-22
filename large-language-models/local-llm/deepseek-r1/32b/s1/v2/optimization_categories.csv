@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\title{Optimization Model Formulation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Sets (Entities)}
+The following sets are defined based on the Entities CSV data:
+
+\begin{itemize}
+    \item $P$: Set of products
+    \item $L$: Set of locations
+    \item $T$: Set of time periods
+\end{itemize}
+
+\section{Indices}
+The indices corresponding to the above sets are:
+
+\begin{itemize}
+    \item $i \in P$: Index representing each product
+    \item $j \in L$: Index representing each location
+    \item $t \in T$: Index representing each time period
+\end{itemize}
+
+\section{Goals}
+The following goals are derived from the Goals CSV data:
+
+\begin{itemize}
+    \item Goal 1: Maximize total profit
+    \begin{equation} 
+        \text{Maximize } Z = \sum_{i=1}^{P} \sum_{j=1}^{L} p_{ij}x_{ij}
+    \end{equation}
+    
+    \item Goal 2: Minimize transportation costs
+    \begin{equation}
+        \text{Minimize } C = \sum_{i=1}^{P} \sum_{j=1}^{L} c_{ij}y_{ij}
+    \end{equation}
+\end{itemize}
+
+\section{Conditions}
+The following conditions are derived from the Conditions CSV data:
+
+\begin{itemize}
+    \item Condition 1: Supply constraint
+    \begin{equation}
+        \sum_{j=1}^{L} x_{ij} \leq S_i \quad \forall i \in P
+    \end{equation}
+    
+    \item Condition 2: Demand constraint
+    \begin{equation}
+        \sum_{i=1}^{P} x_{ij} \geq D_j \quad \forall j \in L
+    \end{equation}
+    
+    \item Condition 3: Time constraint
+    \begin{equation}
+        \sum_{t=1}^{T} a_{it} \leq T_i \quad \forall i \in P
+    \end{equation}
+\end{itemize}
+
+\section{Decision Variables}
+The following decision variables are derived from the DecisionVariables CSV data:
+
+\begin{itemize}
+    \item $x_{ij}$: Number of units of product $i$ sent to location $j$
+    \item $y_{ij}$: Binary variable indicating if product $i$ is transported to location $j$
+    \item $a_{it}$: Amount of resource allocated to product $i$ in time period $t$
+\end{itemize}
+
+\end{document}

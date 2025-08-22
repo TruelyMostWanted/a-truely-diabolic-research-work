@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage{hyperref}
+
+\title{Optimization Model for SCRUM Domain}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+    \item Project
+    \item Team
+    \item Worker
+    \item Feature
+    \item Blocker
+    \item Sprint
+    \item ProductBacklog
+    \item ScrumMaster
+    \item ProductOwner
+    \item Velocity
+    \item ReleasePlan
+    \item Roadmap
+    \item ScrumBoard
+    \item FeatureDocumentation
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+    \item ID, Name, SetName from Entities.csv
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}
+    \item G0: maximize\_project\_budget
+        \[
+        \text{Maximize } \sum_{i} \text{Project}[i].\text{budget}
+        \]
+    \item G1: minimize\_sprint\_duration
+        \[
+        \text{Minimize } \sum_{j} (\text{Sprint}[j].\text{end\_date} - \text{Sprint}[j].\text{start\_date})
+        \]
+    \item G2: maximize\_team\_size
+        \[
+        \text{Maximize } \sum_{k} \text{Team}[k].\text{team\_size}
+        \]
+    \item G3: minimize\_blocker\_severity
+        \[
+        \text{Minimize } \sum_{l} \text{Blocker}[l].\text{severity}
+        \]
+    \item G4: maximize\_feature\_priority
+        \[
+        \text{Maximize } \sum_{m} \text{Feature}[m].\text{priority}
+        \]
+    \item G5: minimize\_employee\_unavailability
+        \[
+        \text{Minimize } \sum_{n} (1 - \text{Worker}[n].\text{availability})
+        \]
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+    \item C0: maximum\_budget\_limit
+        \[
+        \text{Project}[i].\text{budget} \leq 100000, \forall i
+        \]
+    \item C1: minimum\_team\_size
+        \[
+        \text{Team}[k].\text{team\_size} \geq 5, \forall k
+        \]
+    \item C2: max\_sprint\_tasks
+        \[
+        \text{SprintBacklog}[j].\text{number\_of\_tasks} \leq 50, \forall j
+        \]
+    \item C3: blocker\_resolution\_time
+        \[
+        (\text{Blocker}[l].\text{resolved\_on} - \text{Blocker}[l].\text{detected\_on}) \leq 7, \forall l
+        \]
+    \item C4: feature\_completion\_status
+        \[
+        \text{Feature}[m].\text{status} = 'Completed', \forall m
+        \]
+    \item C5: maximum\_velocity\_limit
+        \[
+        \text{Velocity}.avg.\_story\_points \leq 100, \forall
+        \]
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+    \item D0: budget (integer)
+    \item D1: sprint\_duration (real)
+    \item D2: team\_size (integer)
+    \item D3: blocker\_severity (ordinal)
+    \item D4: feature\_priority (integer)
+    \item D5: worker\_availability (boolean)
+\end{itemize}
+
+\end{document}

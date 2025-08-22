@@ -1,0 +1,82 @@
+graph TD
+    subgraph Entities [Entities]
+        Team[Team]:::blue
+        Project[Project]:::blue
+        Feature[Feature]:::blue
+        Epic[Epic]:::blue
+        Story[Story]:::blue
+        Task[Task]:::blue
+        Blocker[Blocker]:::blue
+        Worker[Worker]:::blue
+        Release[Release]:::blue
+        Stakeholder[Stakeholder]:::blue
+    end
+
+    subgraph Attributes [Attributes]
+        TeamSize[(Team Size)]:::white
+        ProjectBudget[(Project Budget)]:::white
+        FeatureStatus[(Feature Status)]:::white
+        EpicPriority[(Epic Priority)]:::white
+        StoryPoints[(Story Points)]:::white
+        TaskStatus[(Task Status)]:::white
+        BlockerSeverity[(Blocker Severity)]:::white
+        WorkerAvailability[(Worker Availability)]:::white
+        ReleaseDate[(Release Date)]:::white
+        StakeholderInfluence[(Stakeholder Influence)]:::white
+    end
+    
+    subgraph Relations [Relations]
+        Project -- Team
+        Team -- Worker
+        Project -- Feature
+        Feature -- Story
+        Story -- Task
+        Feature -- Blocker
+        Project -- Release
+        Release -- Stakeholder
+    end
+
+    subgraph Goals [Goals]
+        G0[Maximize Team Size]:::green
+        G1[Maximize Sprint Velocity]:::green
+        G2[Minimize Blocker Count]:::green
+        G3[Maximize Feature Completion]:::green
+    end
+
+    subgraph Conditions [Conditions]
+        C0[Must Have Team]:::red
+        C1[Must Have Scrum Master]:::red
+        C2[Must Have Product Owner]:::red
+        C3[Must Meet Budget]:::red
+    end
+    
+    subgraph DecisionVariables [DecisionVariables]
+        DV0[Team Size]:::purple
+        DV1[Sprint Duration]:::purple
+        DV2[Story Point Estimate]:::purple
+    end
+    
+    Team -- TeamSize
+    Project -- ProjectBudget
+    Feature -- FeatureStatus
+    Epic -- EpicPriority
+    Story -- StoryPoints
+    Task -- TaskStatus
+    Blocker -- BlockerSeverity
+    Worker -- WorkerAvailability
+    Release -- ReleaseDate
+    Stakeholder -- StakeholderInfluence
+
+    G0 -- Team
+    G1 -- Story
+    G2 -- Blocker
+    G3 -- Feature
+
+    C0 -- Project
+    C1 -- Team
+    C2 -- Project
+    C3 -- Project
+
+    DV0 -- Team
+    DV1 -- Story
+    DV2 -- Story

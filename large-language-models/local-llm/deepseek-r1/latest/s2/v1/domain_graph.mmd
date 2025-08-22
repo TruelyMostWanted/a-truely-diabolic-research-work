@@ -1,0 +1,110 @@
+<div style="border: 1px solid #ccc; padding: 20px;">
+    <h3>Graph Representation</h3>
+    
+    <!-- Entities -->
+    <graph TD
+        style="width: 800px; height: 400px"
+        margin="5%"
+        font="14px"
+        color:
+            entity: #377eb8,
+            attr: '#fff',
+            relation: '#orangered',
+            goal: '#4CAF50',
+            condition: '#f44336',
+            decisionVariable: '#9C27B0'
+    >
+        
+        // Entities
+        E1: Entity1,
+        E2: Entity2,
+        E3: Entity3,
+        E4: Entity4,
+        E5: Entity5
+        
+        // Attributes
+        A1: Attribute1,
+        B1: Attribute2,
+        C1: Attribute3,
+        D1: Attribute4,
+        E1: Attribute5
+        
+        // Relations
+        R1: E1-E2,
+        R2: E2-E3,
+        R3: E4-E5,
+        R4: E3-E4,
+        R5: E5-E1
+        
+        // Goals and Conditions
+        G1: Goal1,
+        G2: Goal2,
+        G3: Goal3,
+        G4: Goal4,
+        C1: Condition1,
+        C2: Condition2,
+        C3: Condition3,
+        
+        // Decision Variables
+        D1: DecisionVariable1
+        
+        <!-- Draw Edges -->
+        (E1)
+        E1 --> A1
+        E1 --> B1
+        E1 --> C1
+        E1 --> D1
+        E1 --> E1
+        E2 --> E1
+        E3 --> R4
+        E4 --> R5
+        E5 --> R1
+        
+        (E2)
+        E2 --> A2
+        E2 --> B2
+        E2 --> C2
+        E2 --> D2
+        E2 --> E2
+        E2 --> E3
+        
+        (E3)
+        E3 --> A3
+        E3 --> B3
+        E3 --> C3
+        E3 --> D3
+        E3 --> E3
+        E3 --> E4
+        
+        (E4)
+        E4 --> A4
+        E4 --> B4
+        E4 --> C4
+        E4 --> D4
+        E4 --> E4
+        E4 --> E5
+        
+        (E5)
+        E5 --> A5
+        E5 --> B5
+        E5 --> C5
+        E5 --> D5
+        E5 --> E5
+        E5 --> E1
+        
+        // Goals
+        G1 --> E1
+        G2 --> E3
+        G3 --> E4
+        G4 --> E5
+        
+        // Conditions
+        C1 --> E1
+        C2 --> E2
+        C3 --> E5
+        
+        // Decision Variables
+        D1 --> A1
+        D1 --> B1
+    </graph TD>
+</div>

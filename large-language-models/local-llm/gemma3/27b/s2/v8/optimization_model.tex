@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref} % For clickable table of contents
+
+\title{Optimization Model for Resource Allocation}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+    \item $P$: Set of Products.  (e.g., $\{P_1, P_2, \dots, P_n\}$)
+    \item $L$: Set of Locations. (e.g., $\{L_1, L_2, \dots, L_m\}$)
+    \item $R$: Set of Resources. (e.g., $\{R_1, R_2, \dots, R_k\}$)
+    \item $W$: Set of Workers. (e.g., $\{W_1, W_2, \dots, W_o\}$)
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+    \item $i$: Index for Products, $i \in P$
+    \item $j$: Index for Locations, $j \in L$
+    \item $k$: Index for Resources, $k \in R$
+    \item $w$: Index for Workers, $w \in W$
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}
+    \item \textbf{Goal ID: G1} \\
+      \textbf{Name:} Maximize Total Profit \\
+      \textbf{Mathematical Representation:} $\max \sum_{i \in P} \sum_{j \in L} p_{ij} x_{ij}$  \\
+      \textbf{Logical Description:} Maximize the sum of profit earned from producing product $i$ at location $j$.
+    \item \textbf{Goal ID: G2} \\
+      \textbf{Name:} Minimize Total Cost \\
+      \textbf{Mathematical Representation:} $\min \sum_{i \in P} \sum_{j \in L} c_{ij} x_{ij}$ \\
+      \textbf{Logical Description:} Minimize the sum of costs associated with producing product $i$ at location $j$.
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+    \item \textbf{Condition ID: C1} \\
+      \textbf{Name:} Production Capacity Constraint \\
+      \textbf{Mathematical Representation:} $\sum_{i \in P} x_{ij} \leq \text{Capacity}_{j} \quad \forall j \in L$ \\
+      \textbf{Logical Description:} The total quantity of products produced at location $j$ cannot exceed the production capacity of that location.
+    \item \textbf{Condition ID: C2} \\
+      \textbf{Name:} Resource Availability Constraint \\
+      \textbf{Mathematical Representation:} $\sum_{i \in P} a_{ik} x_{ij} \leq \text{Resource}_{k} \quad \forall j \in L, \forall k \in R$ \\
+      \textbf{Logical Description:} The total amount of resource $k$ used to produce all products at location $j$ cannot exceed the available amount of resource $k$.
+    \item \textbf{Condition ID: C3} \\
+      \textbf{Name:} Demand Satisfaction Constraint \\
+      \textbf{Mathematical Representation:} $\sum_{j \in L} x_{ij} \geq \text{Demand}_{i} \quad \forall i \in P$ \\
+      \textbf{Logical Description:} The total quantity of product $i$ produced across all locations must meet the demand for that product.
+\end{itemize}
+
+\section{5. Decision Variables}
+\begin{itemize}
+    \item $x_{ij}$: Quantity of product $i$ produced at location $j$. ($x_{ij} \geq 0 \quad \forall i \in P, \forall j \in L$)
+\end{itemize}
+
+\end{document}

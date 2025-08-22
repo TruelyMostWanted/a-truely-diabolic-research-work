@@ -1,0 +1,32 @@
+graph TD;
+
+// Entities (blue)
+entity1([Entity 1])
+entity2([Entity 2])
+entity3([Entity 3])
+
+// Attributes (white)
+attribute1_entity1(Attribute1) around entity1
+attribute2_entity1(Attribute2) around entity1
+attribute1_entity2(Attribute1) around entity2
+attribute2_entity2(Attribute2) around entity2
+attribute1_entity3(Attribute1) around entity3
+attribute2_entity3(Attribute2) around entity3
+
+// Relations (orange)
+relation1_entity1_entity2(Relation 1) -.-> {entity1}
+relation2_entity1_entity3(Relation 2) -.-> {entity1}
+relation1_entity2_entity3(Relation 3) -.-> {entity2}
+
+// Goals (green)
+goal1([Goal 1]) -.-> entity1
+goal2([Goal 2]) -.-> entity2
+
+// Conditions (red)
+condition1_entity1(Condition 1) -.-> entity1
+condition2_entity1(Condition 2) -.-> entity1
+condition1_entity3(Condition 3) -.-> entity3
+
+// DecisionVariables (purple)
+decisionVariable1_entity1([Decision Variable 1]) -.-> entity1
+decisionVariable2_entity2([Decision Variable 2]) -.-> entity2

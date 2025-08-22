@@ -1,0 +1,38 @@
+graph TD
+    subgraph Entities
+      classStyle blue
+      A[Entity1] --> B[Attribute1]
+      C[Entity2] --> D[Attribute2]
+    end
+
+    subgraph Attributes
+      classStyle white
+      E[Attribute3]
+    end
+
+    subgraph Relations
+      classStyle orange
+      F[Relation1] --> G[Entity1, Entity2]
+    end
+
+    subgraph Goals
+      classStyle green
+      H[Goal1] --> I[Entity/Attributes]
+    end
+
+    subgraph Conditions
+      classStyle red
+      J[Condition1] --> K[Entity/Attributes]
+    end
+    
+    subgraph DecisionVariables
+      classStyle purple
+      L[DecisionVariable1] --> M[Relevant Entity]
+    end
+
+    A --> E
+    C --> E
+    F --> G
+    H --> I
+    J --> K
+    L --> M

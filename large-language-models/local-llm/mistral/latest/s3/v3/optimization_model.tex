@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[usestackEOL]{stackengine}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\definecolor{blue}{RGB}{46,139,157}
+\definecolor{white}{RGB}{255, 255, 255}
+\definecolor{orange}{RGB}{255, 160, 0}
+\definecolor{green}{RGB}{74, 156, 84}
+\definecolor{red}{RGB}{239, 68, 68}
+\definecolor{purple}{RGB}{128, 0, 128}
+
+\begin{document}
+
+\title{Optimization Model for Software Development Company using SCRUM}
+\author{AI Assistant}
+\date{\today}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}[leftmargin=*]
+  \item Project (\textcolor{blue}{P})
+  \item Team (\textcolor{blue}{T})
+  \item Worker (\textcolor{blue}{W})
+  \item Feature (\textcolor{blue}{F})
+  \item Skill (\textcolor{blue}{S})
+  \item Role (\textcolor{blue}{R})
+  \item ProductOwner (\textcolor{blue}{PO})
+  \item ScrumMaster (\textcolor{blue}{SM})
+  \item ProductBacklog (\textcolor{blue}{PB})
+  \item Sprint (\textcolor{blue}{SP})
+  \item SprintPlanning (\textcolor{blue}{SPP})
+  \item DailyScrum (\textcolor{blue}{DS})
+  \item SprintReview (\textcolor{blue}{SR})
+  \item SprintRetrospective (\textcolor{blue}{SRE})
+  \item SprintBacklog (\textcolor{blue}{SBL})
+  \item SprintGoal (\textcolor{blue}{SG})
+  \item Epic (\textcolor{blue}{E})
+  \item UserStory (\textcolor{blue}{US})
+  \item Task (\textcolor{blue}{TSK})
+  \item DevelopmentSnapshot (\textcolor{blue}{DEV})
+  \item Blocker (\textcolor{blue}{BL})
+  \item Stakeholder (\textcolor{blue}{SH})
+  \item Velocity (\textcolor{blue}{VEL})
+  \item ReleasePlan (\textcolor{blue}{REP})
+  \item Roadmap (\textcolor{blue}{RM})
+  \item ScrumBoard (\textcolor{blue}{SCB})
+  \item FeatureDocumentation (\textcolor{blue}{FED})
+\end{itemize}
+
+\section{Indices}
+...
+
+\section{Goals}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{ID:} G01, \textbf{Name:} maximize\_total\_project\_budget, \textbf{Description:} Maximize total project budget.\\
+    \(\max_{\text{P}} \sum_{p \in P} \text{{Budget}}_p \cdot w_G\) \\
+  \item \textbf{ID:} G02, \textbf{Name:} minimize\_project\_duration, \textbf{Description:} Minimize project duration.\\
+    \(\min_{\text{P}} \sum_{p \in P} (\text{{Project\_end}}_p - \text{{Project\_start}}_p) \cdot w_G\) \\
+  ...
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{ID:} C01, \textbf{Name:} project\_status\_must\_be\_active, \textbf{Description:} Project status must be active.\\
+    \(\forall_{p \in P}: \text{{Status}}_p = 1 \Rightarrow w_C\) \\
+  \item \textbf{ID:} C02, \textbf{Name:} team\_size\_may\_be\_any, \textbf{Description:} Team size may be any.\\
+    \(\forall_{t \in T}: \text{{Team\_size}}_t \geq 1 \Rightarrow w_C\) \\
+  ...
+\end{itemize}
+
+\section{DecisionVariables}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{ID:} DV01, \textbf{Name:} num\_teams, \textbf{Description:} Number of teams.\\
+    \(x_D: \mathbb{Z}^+ \rightarrow \mathbb{R}\) \\
+  \item \textbf{ID:} DV02, \textbf{Name:} avg\_team\_size, \textbf{Description:} Average team size.\\
+    \(y_D: \mathbb{R} \rightarrow \mathbb{R}\) \\
+  ...
+\end{itemize}

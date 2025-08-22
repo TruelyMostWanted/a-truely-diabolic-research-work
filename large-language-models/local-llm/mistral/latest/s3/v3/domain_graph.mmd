@@ -1,0 +1,33 @@
+graph TD
+  subgraph Entities
+    P(Project)
+    T(Team) -->|Is_part_of| A0(Attribute0_T)
+    W(Worker) -->|Is_part_of| A1(Attribute1_W)
+    F(Feature) -->|Is_part_of| A2(Attribute2_F)
+    ...
+  end
+
+  subgraph Relations
+    P-->|Has| R0(Relation0_P)
+    T-->|Consists_of| R1(Relation1_T)
+    W-->|Works_on| R2(Relation2_W)
+    ...
+  end
+
+  subgraph Goals
+    G01(maximize\_total\_project\_budget) -->|depends on| P
+    G02(minimize\_project\_duration) -->|depends on| P
+    ...
+  end
+
+  subgraph Conditions
+    C01(project\_status\_must\_be\_active) -->|affects| P
+    C02(team\_size\_may\_be\_any) -->|affects| T
+    ...
+  end
+
+  subgraph DecisionVariables
+    DV01(num\_teams) -->|uses| T
+    DV02(avg\_team\_size) -->|uses| A1,A2
+    ...
+  end

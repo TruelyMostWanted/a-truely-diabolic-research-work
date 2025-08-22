@@ -1,0 +1,65 @@
+\documentclass[12pt]{article}
+
+% Title Page
+\title{Optimization Model Formulation}
+\author{Author Name}
+\date{\today}
+\maketitle
+
+% Table of Contents
+\tableofcontents
+
+\section{1. Sets (Entities)}
+The optimization model consists of several entities, which are defined as follows:
+\begin{enumerate}
+    \item Customer: $C = \{c_1, c_2, ..., c_n\}$.
+    \item Product: $P = \{p_1, p_2, ..., p_m\}$.
+    \item Supplier: $S = \{s_1, s_2, ..., s_l\}$.
+\end{enumerate}
+
+\section{2. Indices}
+The indices used in the optimization model are defined as follows:
+\begin{enumerate}
+    \item Time periods: $t = 1, 2, ..., T$.
+    \item Batch quantities: $i = 1, 2, ..., I$.
+\end{enumerate}
+
+\section{3. Goals}
+The goals of the optimization model are defined as follows:
+\begin{enumerate}
+    \item Minimize total cost: 
+        \[
+        \text{Minimize } Z = \sum_{t=1}^{T} \left( \sum_{s \in S} f_s(t) + \sum_{c \in C} g_c(t) \right)
+        \]
+    \item Maximize customer satisfaction: 
+        \[
+        \text{Maximize } U = \sum_{t=1}^{T} \left( \sum_{c \in C} u_c(t) \right)
+        \]
+\end{enumerate}
+
+\section{4. Conditions}
+The conditions of the optimization model are defined as follows:
+\begin{enumerate}
+    \item Demand constraints: 
+        \[
+        0 \leq d_{ct}(t) \leq c_q(c), \quad \forall c \in C, \; \forall t
+        \]
+    \item Inventory level constraints: 
+        \[
+        i_p(p,t-1) + q_{pt}(t) - d_{ct}(t) \geq 0, \quad \forall p \in P, \; \forall t > 1
+        \]
+    \item Supply constraints:
+        \[
+        f_s(t) \leq s_s(s,t), \quad \forall s \in S, \; \forall t
+        \]
+\end{enumerate}
+
+\section{5. DecisionVariables}
+The decision variables of the optimization model are defined as follows:
+\begin{enumerate}
+    \item Order quantities: $x_{c}(t)$ for each customer c and time period t.
+    \item Production quantities: $y_{p}(i,t)$ for each product p, batch quantity i, and time period t.
+    \item Transportation quantities: $z_{sp}(t)$ for each supplier s, product p, and time period t.
+\end{enumerate}
+
+\end{document}

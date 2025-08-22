@@ -1,0 +1,21 @@
+graph TD
+    A[Entity: Feature] --> A1[Attribute: status];
+    A --> A2[Attribute: documentation];
+    A --> A3[Attribute: story_points];
+
+    B[Entity: UserStory] --> B1[Attribute: story_points];
+    B --> B2[Attribute: description];
+
+    C[Entity: Blocker] --> C1[Attribute: severity];
+    C --> C2[Attribute: resolved_on];
+
+    D[Entity: Stakeholder] --> D1[Attribute: influence_level];
+    D --> D2[Attribute: relevance_to_feature];
+
+    E[Entity: Velocity] --> E1[Attribute: avg._story_points];
+    E --> E2[Attribute: team_size];
+
+    A -- "Must have documentation" --> C;
+    B -- "May have a minimum story points" --> C;
+    B -- "must have a documented user stories" --> D;
+    E -- "team size" --> E2;

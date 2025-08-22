@@ -1,0 +1,11 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,track_product_backlog的任务状态,CB tracks the state of tasks in the Product Backlog.,False,sum,ProductBacklog,PB.tasks.state,Cube,Cube,1.0
+C1,ensure_sprintbacklog task availability,Ensure all tasks in the Sprint Backlog are available to work on.,False,no,Task,TASKS.available,2,Must-Match,1.0
+C2,track_sprint_goal_achievement,Monitor which sprint goals have been achieved during sprints.,True,sum,SprintGoal,sg.achievement_status,Cube,Cube,1.0
+C3,monitor_work_in_progress tasks,WIP contains all active tasks that are neither completed nor blocked.,False,no,TSPK,WIP.tasks.count,Cube,Cube,1.0
+C4,ensure_sprintbacklog task feasibility,Ensure all tasks in the Sprint Backlog are feasible to complete within the sprint duration.,False,no,Task,TASKS.feasible,2,Must-Match,1.0
+C5,track_user_story acceptance rate,User Stories' acceptance rates must be tracked over time.,True,sum,UserStory,US.acceptance_rate,Cube,Cube,1.0
+C6,minimize_sprint_backlog_task_blockers,Minimize the number of blockers assigned to tasks in the Sprint Backlog.,False,sum,Task,TASKS.blocker_impact,Cube,Cube,1.0
+C7,maximize_user_story_priority,Maximize user stories' priority levels within features.,True,sum,UserStory,US.priority,Ordinal,Ordinal,1.0
+C8,track_sprint_goal_progress,Monitor progress towards completing sprint goals.,False,no,SprintGoal,sg.progress,Cube,Cube,1.0
+C9,minimize_user_story_effort,Minimize the total effort required to complete user stories within features.,True,sum,UserStory,US.effort,Cube,Cube,1.0

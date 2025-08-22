@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref}
+
+\title{Resource Allocation Optimization Model}
+\author{GPT-3}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{1. Sets (Entities)}
+
+\begin{itemize}
+    \item \textbf{Resources:} $R = \{\text{Water}, \text{Energy}, \text{Labor}, \text{Land}, \text{Capital}\}$
+    \item \textbf{Activities:} $A = \{\text{Farming}, \text{Manufacturing}, \text{Service}, \text{Research}, \text{Distribution}\}$
+    \item \textbf{Locations:} $L = \{\text{CityA}, \text{CityB}, \text{CityC}, \text{RuralArea}\}$
+    \item \textbf{Products:} $P = \{\text{Food}, \text{Goods}, \text{Services}, \text{Knowledge}\}$
+    \item \textbf{Stakeholders:} $S = \{\text{Farmers}, \text{Manufacturers}, \text{Consumers}, \text{Researchers}\}$
+\end{itemize}
+
+\section{2. Indices}
+
+\begin{itemize}
+    \item $r \in R$: Index for resources.
+    \item $a \in A$: Index for activities.
+    \item $l \in L$: Index for locations.
+    \item $p \in P$: Index for products.
+    \item $s \in S$: Index for stakeholders.
+    \item $t$: Index for time periods (e.g., months, years).
+\end{itemize}
+
+\section{3. Goals}
+
+\begin{itemize}
+    \item \textbf{Goal ID: G1} - Maximize Total Production Value \\
+    \textbf{Name:} Overall Economic Output \\
+    \textbf{Mathematical Representation:} $\max \sum_{p \in P} \sum_{l \in L} \text{Price}_p \cdot \text{Production}_{p,l,t}$ \\
+    \textbf{Logical Representation:}  The model aims to maximize the total value of all products produced across all locations over the time horizon.
+
+    \item \textbf{Goal ID: G2} - Minimize Environmental Impact \\
+    \textbf{Name:} Sustainability \\
+    \textbf{Mathematical Representation:} $\min \sum_{l \in L} \text{PollutionLevel}_l \cdot \text{ActivityScale}_l$ \\
+    \textbf{Logical Representation:} The model aims to minimize the overall environmental impact, measured by pollution levels across all locations, influenced by the scale of activities.
+
+    \item \textbf{Goal ID: G3} - Maximize Social Welfare \\
+    \textbf{Name:}  Community Benefit \\
+    \textbf{Mathematical Representation:} $\max \sum_{s \in S} \text{WelfareGain}_s \cdot \text{StakeholderSatisfaction}_s$ \\
+    \textbf{Logical Representation:} The model aims to maximize social welfare by increasing benefits to all stakeholders, proportional to their satisfaction.
+\end{itemize}
+
+\section{4. Conditions}
+
+\begin{itemize}
+    \item \textbf{Condition ID: C1} - Resource Availability \\
+    \textbf{Name:} Resource Limits \\
+    \textbf{Mathematical Representation:} $\sum_{a \in A} \text{ResourceUsage}_{a,r,l,t} \le \text{ResourceCapacity}_{r,l,t} \quad \forall r \in R, l \in L, t$ \\
+    \textbf{Logical Representation:} The total resource usage by all activities in a location cannot exceed the available resource capacity in that location for each time period.
+
+    \item \textbf{Condition ID: C2} - Production Capacity \\
+    \textbf{Name:} Activity Limits \\
+    \textbf{Mathematical Representation:} $\text{Production}_{p,l,t} \le \text{ActivityCapacity}_{a,l,t} \quad \forall p \in P, a \in A, l \in L, t$ \\
+    \textbf{Logical Representation:} The production of a product cannot exceed the capacity of the activity producing it in a given location and time period.
+
+    \item \textbf{Condition ID: C3} - Demand Satisfaction \\
+    \textbf{Name:} Meeting Needs \\
+    \textbf{Mathematical Representation:} $\sum_{l \in L} \text{Production}_{p,l,t} \ge \text{Demand}_p \quad \forall p \in P, t$ \\
+    \textbf{Logical Representation:} The total production of a product across all locations must meet or exceed the demand for that product in each time period.
+
+    \item \textbf{Condition ID: C4} - Activity Input Requirements \\
+    \textbf{Name:} Input/Output Balance \\
+    \textbf{Mathematical Representation:}  $\text{Input}_{i,a,l,t} \le \text{Output}_{o,a,l,t} \quad \forall a \in A, l \in L, t, i,o$ \\
+    \textbf{Logical Representation:} The inputs consumed by an activity should not exceed the outputs it generates.
+\end{itemize}
+
+\section{5. DecisionVariables}
+
+\begin{itemize}
+    \item $\text{Production}_{p,l,t}$: Amount of product $p$ produced in location $l$ at time $t$. (Continuous, non-negative)
+    \item $\text{ResourceUsage}_{a,r,l,t}$: Amount of resource $r$ used by activity $a$ in location $l$ at time $t$. (Continuous, non-negative)
+    \item $\text{ActivityScale}_{l,t}$:  Scale of activities in location $l$ at time $t$.  (Continuous, non-negative)
+    \item $\text{StakeholderSatisfaction}_s$: Level of satisfaction of stakeholder $s$. (Continuous, between 0 and 1)
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\title{Optimization Model}
+\author{Optimization Team}
+\date{\today}
+\begin{document}
+\maketitle
+\tableofcontents
+\section{Sets (Entities)}
+\begin{itemize}
+    \item \textbf{Project}: $ P \in \mathbb{P} $
+    \item \textbf{Team}: $ T \in \mathbb{T} $
+    \item \textbf{Task}: $ \tau \in \mathbb{R} $
+    \item \textbf{Sprint}: $ S \in \mathbb{S} $
+    \item \textbf{Blocker}: $ B \in \mathbb{B} $
+    \item \textbf{Stakeholder}: $ H \in \mathbb{H} $
+    \item \textbf{Feature}: $ F \in \mathbb{F} $
+    \item \textbf{SprintGoal}: $ G \in \mathbb{G} $
+    \item \textbf{SprintBacklog}: $ SB \in \mathbb{SB} $
+    \item \textbf{DevelopmentSnapshot}: $ D \in \mathbb{D} $
+    \item \textbf{SprintRetrospective}: $ R \in \mathbb{R} $
+\end{itemize}
+\section{Indices}
+\begin{itemize}
+    \item $ i \in \mathbb{N} $: Index for tasks
+    \item $ j \in \mathbb{N} $: Index for blockers
+    \item $ k \in \mathbb{N} $: Index for stakeholders
+    \item $ l \in \mathbb{N} $: Index for features
+    \item $ m \in \mathbb{N} $: Index for sprint goals
+    \item $ n \in \mathbb{N} $: Index for development snapshots
+    \item $ o \in \mathbb{N} $: Index for sprint retrospectives
+\end{itemize}
+\section{Goals}
+\begin{itemize}
+    \item $ \max_{P} \text{Priority}(P) $
+    \item $ \min_{B} \text{Severity}(B) $
+    \item $ \max_{S} \text{Achievement}(S) $
+    \item $ \min_{T} \text{TeamSize}(T) $
+    \item $ \max_{V} \text{Velocity}(V) $
+    \item $ \min_{H} \text{Influence}(H) $
+    \item $ \max_{F} \text{Priority}(F) $
+    \item $ \min_{\tau} \text{Effort}(\tau) $
+    \item $ \max_{G} \text{Benefit}(G) $
+    \item $ \min_{S} \text{Duration}(S) $
+\end{itemize}
+\section{Conditions}
+\begin{itemize}
+    \item $ \text{Status}(P) = \text{Active} $
+    \item $ \text{TeamSize}(T) \leq \text{MaxSize} $
+    \item $ \text{Status}(\tau) \in \{\text{In Progress}, \text{Completed}\} $
+    \item $ \text{Achievement}(S) = \text{Completed} $
+    \item $ \text{ResolvedOn}(B) \leq \text{ResolutionDeadline} $
+    \item $ \text{Influence}(H) \leq \text{MaxInfluence} $
+    \item $ \text{Priority}(F) \geq \text{MinPriority} $
+    \item $ \text{Effort}(\tau) \leq \text{MaxEffort} $
+    \item $ \text{Duration}(S) \leq \text{MaxDuration} $
+    \item $ \text{Satisfaction}(R) \geq \text{MinSatisfaction} $
+\end{itemize}
+\section{Decision Variables}
+\begin{itemize}
+    \item $ \text{NumberTasks}(SB) \in \mathbb{Z}^+ $
+    \item $ \text{Effort}(\tau) \in \mathbb{R}^+ $
+    \item $ \text{Duration}(S) \in \mathbb{R}^+ $
+    \item $ \text{Severity}(B) \in [0, 1] $
+    \item $ \text{TeamSize}(T) \in \mathbb{R}^+ $
+    \item $ \text{Priority}(F) \in [0, 1] $
+    \item $ \text{Influence}(H) \in [0, 1] $
+    \item $ \text{Success}(S) \in [0, 1] $
+    \item $ \text{Satisfaction}(R) \in [0, 1] $
+    \item $ \text{Benefit}(G) \in \mathbb{R}^+ $
+    \item $ \text{ResolutionTime}(B) \in \mathbb{R}^+ $
+    \item $ \text{ProjectPriority}(P) \in [0, 1] $
+    \item $ \text{Overlap}(\tau) \in [0, 1] $
+    \item $ \text{Quality}(D) \in [0, 1] $
+    \item $ \text{Relevance}(H) \in [0, 1] $
+    \item $ \text{BacklogEffort}(SB) \in \mathbb{R}^+ $
+\end{itemize}
+\end{document}

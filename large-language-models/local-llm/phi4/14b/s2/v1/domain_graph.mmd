@@ -1,0 +1,73 @@
+graph TD
+
+    classDef entity fill:#1f8dd6,stroke:none,color:white;
+    classDef attribute fill:#ffffff,stroke:#000000,color:black;
+    classDef relation fill:#ffa500,stroke:#000000,color:black;
+    classDef goal fill:#008000,stroke:none,color:white;
+    classDef condition fill:#ff0000,stroke:none,color:white;
+    classDef decisionVariable fill:#800080,stroke:none,color:white;
+
+    // Entities
+    E1(Entity1) {
+        class entity;
+    }
+    
+    E2(Entity2) {
+        class entity;
+    }
+
+    // Attributes
+    A1(Attribute1) --> E1;
+    A1 {
+        class attribute;
+    }
+
+    A2(Attribute2) --> E1;
+    A2 {
+        class attribute;
+    }
+
+    A3(Attribute3) --> E2;
+    A3 {
+        class attribute;
+    }
+
+    // Relations
+    R1(Relation1) --> E1;
+    R1 --> E2;
+    R1 {
+        class relation;
+    }
+
+    // Goals
+    G1(Goal1) --> E1;
+    G1 {
+        class goal;
+    }
+
+    G2(Goal2) --> A3;
+    G2 {
+        class goal;
+    }
+
+    // Conditions
+    C1(Condition1) --> A1;
+    C1 {
+        class condition;
+    }
+
+    C2(Condition2) --> E2;
+    C2 {
+        class condition;
+    }
+
+    // Decision Variables
+    DV1(DecisionVariable1) --> E1;
+    DV1 {
+        class decisionVariable;
+    }
+
+    DV2(DecisionVariable2) --> A3;
+    DV2 {
+        class decisionVariable;
+    }

@@ -1,0 +1,60 @@
+graph LR
+  subgraph Entities
+      Project("Project")
+      Team("Team")
+      Worker("Worker")
+      Feature("Feature")
+      ...
+  end
+
+  subgraph Attributes
+      id1("id", "Project") --> Project
+      name1("name", "Project") --> Project
+      budget1("budget", "Project") --> Project
+      project_start1("project_start", "Project") --> Project
+      ...
+
+      id2("id", "Team") --> Team
+      team_size1("team_size", "Team") --> Team
+      team_start1("team_start", "Team") --> Team
+      ...
+
+      id3("id", "Worker") --> Worker
+      first_name1("first_name", "Worker") --> Worker
+      email1("email", "Worker") --> Worker
+      start_date1("start_date", "Worker") --> Worker
+      ...
+
+      id4("id", "Feature") --> Feature
+      title4("title", "Feature") --> Feature
+      description4("description", "Feature") --> Feature
+      status4("status", "Feature") --> Feature
+      ...
+  end
+
+  subgraph Relations
+      Project -- has_team : has_skill(Assigned to) Worker
+      Worker -- takes_on_role Role
+      Role -- manages_backlog ProductBacklog
+      ProductBacklog -- contains_feature Feature
+      ...
+  end
+
+  subgraph Goals
+      maximize_project_budget("maximize_project_budget") --> Project --> budget1
+      minimize_project_duration("minimize_project_duration") --> Project --> project_start1
+      ...
+  end
+
+  subgraph Conditions
+      project_budget_must_match("project_budget_must_match") --> Project --> budget1
+      team_size_may_match("team_size_may_match") --> Team --> team_size1
+      sprint_goal_must_be_achieved("sprint_goal_must_be_achieved") --> SprintGoal --> achievement_status
+      ...
+  end
+
+  subgraph DecisionVariables
+      team_efficiency("team_efficiency") --> Team --> Effort_per_sprint
+      sprint_duration("sprint_duration") --> Sprint --> Duration
+      ...
+  end

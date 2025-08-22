@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\use
+\title{Optimization Model Formulation}
+\author{Author Name}
+\date{April 2024}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+    \item \textbf{Entities:}
+    \begin{itemize}
+        \item $ \mathcal{E} = \{ \text{Products}, \text{Suppliers}, \text{Warehouses} \} $
+        \item $ \mathcal{R} = \{ \text{SupplyLink}, \text{DemandLink}, \text{TransportLink} \} $
+    \end{itemize}
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+    \item $ i \in \mathcal{I} $: Index for Products
+    \item $ j \in \mathcal{J} $: Index for Suppliers
+    \item $ k \in \mathcal{K} $: Index for Warehouses
+    \item $ t \in \mathcal{T} $: Index for Time Periods
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}
+    \item \textbf{ID:} G1, \textbf{Name:} Minimize Total Cost, $ \min \sum_{i,j,k} c_{ij}^{k} x_{ijk} $
+    \item \textbf{ID:} G2, \textbf{Name:} Maximize Profit, $ \max \sum_{i,k} p_i^{k} y_{ik} $
+    \item \textbf{ID:} G3, \text, \textbf{Name:} Satisfy Demand, $ \sum_{j} x_{ijk} = d_{ik} \quad \forall i,k $
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+    \item \textbf{ID:} C1, \textbf{Name:} Supply Constraint, $ \sum_{k} x_{ijk} \leq s_j \quad \forall i,j $
+    \item \textbf{ID:} C2, \textbf{Name:} Capacity Constraint, $ \sum_{i} x_{ijk} \leq c_k \quad \forall j,k $
+    \item \textbf{ID:} C3, \textbf{Name:} Non-Negativity, $ x_{ijk}, y_{ik} \geq 0 $
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+    \item $ x_{ijk} $: Quantity of product $ i $ shipped from supplier $ j $ to warehouse $ k $
+    \item $ y_{ik} $: Quantity of product $ i $ produced at warehouse $ k $
+    \item $ z_{jk} $: Binary variable indicating whether supplier $ j $ is selected for warehouse $ k $
+\end{itemize}
+
+\end{document}

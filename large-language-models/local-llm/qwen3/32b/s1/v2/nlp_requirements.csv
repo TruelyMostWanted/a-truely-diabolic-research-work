@@ -1,0 +1,54 @@
+graph TD
+    %% Class definitions for colorization
+    classDef entity fill:#1199ff, color:#000000;
+    classDef attribute fill:#ffffff, color:#000000;
+    classDef relation fill:#ffa500, color:#000000;
+    classDef goal fill:#33cc33, color:#000000;
+    classDef condition fill:#ff3300, color:#000000;
+    classDef decisionVar fill:#a64caf, color:#000000;
+
+    %% Entities
+    E1[Entity1]:::entity
+    E2[Entity2]:::entity
+
+    %% Attributes (multiple can exist around entities)
+    A1[Attribute1]:::attribute
+    A2[Attribute2]:::attribute
+    A3[Attribute3]:::attribute
+
+    %% Relations between entities
+    R1[Relation1]:::relation
+    R2[Relation2]:::relation
+
+    %% Goals
+    G1[Goal1]:::goal
+    G2[Goal2]:::goal
+
+    %% Conditions
+    C1[Condition1]:::condition
+    C2[Condition2]:::condition
+
+    %% Decision Variables
+    DV1[DecisionVariable1]:::decisionVar
+    DV2[DecisionVariable2]:::decisionVar
+
+    %% Connect Entities to Attributes
+    E1 -->|Attribute1| A1
+    E1 -->|Attribute2| A2
+    E2 -->|Attribute3| A3
+
+    %% Connect Entities via Relations
+    E1 -->|Relation1| R1
+    R1 -->|Relation1| E2
+
+    %% Connect Goals to Entities/Attributes
+    G1 -->|Goal1| E1
+    G2 -->|Goal2| A2
+
+    %% Connect Conditions to Entities/Attributes
+    C1 -->|Condition1| E2
+    C2 -->|Condition2| A3
+
+    %% Connect DecisionVariables to Entities
+    DV1 -->|DecisionVar1| E1
+    DV2 -->|DecisionVar2| E2
