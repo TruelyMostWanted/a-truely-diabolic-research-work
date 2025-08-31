@@ -46,5 +46,5 @@ Erstelle eine LaTeX Datei und speichere dort: Mengen, Indices, Entscheidungsvari
 
 #### Prompt 10: Visualisierung durch geeignete Syntax (Mermaid.js Live Editor?)
 Verwandele das erstelle Domänen-Optimierungs-Modell nun in eine strukturelle Graphen-Repräsentation.
-Verwende dafür die Mermaid Live Editor Syntax.
+Wähle eine geeignete Graph-Syntax. Liste zuerst verschiedene Möglichkeiten auf, entscheide dich dann für eine Syntax.
 Der Graph MUSS die Entitäten, Attribute, Relationen, Ziele und Bedingungen enthalten
