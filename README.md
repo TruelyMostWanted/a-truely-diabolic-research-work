@@ -290,6 +290,12 @@ phi4_14b_s2.txt: CSVs greifen teils korrekte Entitäten auf, verweisen aber auf 
 phi4_14b_s3.txt: Die 5 Artefakte werden erzeugt, sind aber fachlich/strukturell inkonsistent: Goals/Conditions nutzen fragwürdige Proxy-Felder (z. B. `end_date` als „Sprint-Dauer“), DecisionVariables mischen Datums-/∞-Notation mit fehlenden Werten, der LaTeX-Teil referenziert Attribute fehlerhaft (z. B. `avg.__story__points`), und der Mermaid-Graph bleibt unvollständig/trunkiert. Die Beziehungsinkonsistenzen („Employee“, „Sprint Review“) bestehen fort. :contentReference[oaicite:3]{index=3}
 ---
 
+Beispielzeiten der lokalen LLMs:
+
+dolphin3_8b_s1.json: 157.225 s (≈ 0:02:37)
+phi4_14b_s1.json: 1012.435 s (≈ 0:16:52)
+qwen3_32b_s1.json: 8687.907 s (≈ 2:24:48)
+
 ## Tipps
 - **Normalisierung** mit Strategie-Prompts ist entscheidend, um faire Vergleiche zu machen
 - Diagramme sind besonders hilfreich, um Ausreißer zu erkennen
