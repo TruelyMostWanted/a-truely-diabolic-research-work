@@ -1,0 +1,596 @@
+────────────────────────────
+USER:
+Consider the following structures for a domain model of a software development company using SCRUM:
+Entities.csv
+```csv
+ID,Name,SetName,Index,Description,Attribute0,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6,Attribute7,Attribute8
+E0,Project,P,p,The product or initiative to be developed,id,name,project_start,project_end,description,budget,status,target_audience,priority
+E1,Team,T,t,"Self-organized, cross-functional development team",id,name,team_size,team_start,team_status,location,team_type,,
+E2,Worker,W,w,Individual team member working on the project,id,name,first_name,email,start_date,status,availability,,
+E3,Feature,F,f,Mid-sized functionality,id,title,description,status,priority,estimated_effort,,,
+E4,Skill,S,s,Professional or social competence of a worker,id,label,description,level,certified,category,,,
+E5,Role,R,r,Defined responsibilities within the Scrum team,id,role_name,description,area_of_responsibility,,,,,
+E6,ProductOwner,PO,po,Responsible for product vision and Product Backlog,id,name,email,availability,,,,,
+E7,ScrumMaster,SM,sm,Supports the team in applying Scrum,id,name,email,experience,,,,,
+E8,ProductBacklog,PB,pb,Ordered list of all requirements,id,created_on,last_updated,number_of_entries,status,,,,
+E9,Sprint,SP,sp,Fixed time period for creating an increment,id,sprint_number,start_date,end_date,status,achievement_of_goal,,,
+E10,SprintPlanning,SPP,spp,Kick-off meeting for Sprint preparation,id,date,duration_(min),moderation,outcome_documentation,,,,
+E11,DailyScrum,DS,ds,Daily 15-minute team meeting,id,date,time,duration,moderation,,,,
+E12,SprintReview,SR,sr,Presentation and acceptance of results,id,date,duration,feedback_documentation,attendees_count,,,,
+E13,SprintRetrospective,SRE,sre,Retrospective for process improvement,id,date,duration,improvement_actions,team_satisfaction,moderation,,,
+E14,SprintBacklog,SBL,sbl,Selected backlog items + implementation plan,id,number_of_tasks,last_updated,status,total_effort,,,,
+E15,SprintGoal,SG,sg,Objective to be achieved within the sprint,id,objective_description,achievement_status,benefit,,,,,
+E16,Epic,E,e,Large requirement that can be split into stories,id,title,description,priority,status,estimated_effort,,,
+E17,UserStory,US,us,Requirement from the perspective of a user,id,title,description,acceptance_criteria,priority,story_points,status,,
+E18,Task,TSK,tsk,Smallest unit of work within a sprint,id,title,description,status,effort,type,,,
+E19,DevelopmentSnapshot,DEV,dev,Product at the end of a sprint,id,version_number,creation_date,test_status,deployment_target,documentation,,,
+E20,Blocker,BL,bl,Obstacle hindering progress,id,title,description,severity,status,detected_on,resolved_on,,
+E21,Stakeholder,SH,sh,Interested party in the product (internal/external),id,name,organization,role,email,area_of_interest,influence_level,relevance_to_feature,
+E22,Velocity,VEL,vel,Average amount of work per sprint,id,number_of_sprints_used,avg._story_points,max_velocity,min_velocity,trend,,,
+E23,ReleasePlan,REP,rep,Plan for releasing specific features,id,version,planned_date,included_features,status,,,,
+E24,Roadmap,RM,rm,Long-term planning across releases,id,start_date,end_date,milestones,objectives,versions,,,
+E25,ScrumBoard,SCB,scb,Visual representation of tasks during the sprint,id,board_type,columns_(todo/done...),number_of_cards,last_updated,,,,
+E26,FeatureDocumentation,FED,fed,Documentation for a specific feature,id,title,description,creation_date,change_log,linked_requirements,author,,
+```
+Relationships.csv
+```csv
+ID,Name,Description,FromEntity,ToEntity,FromCardinality,ToCardinality,Weight
+R1,is_assigned_to_project,The team is assigned to a project,Team,Project,1,N,1.0
+R2,belongs_to_team,An employee is assigned to a team,Employee,Team,N,1,1.0
+R3,has_skill,An employee has certain skills,Employee,Skill,N,M,1.0
+R4,takes_on_role,An employee assumes a role in the team,Employee,Role,N,M,1.0
+R5,manages_backlog,The Product Owner manages the Product Backlog,ProductOwner,ProductBacklog,1,1,1.0
+R6,is_supported_by,The team is supported by a Scrum Master,Team,ScrumMaster,1,1,1.0
+R7,contains_feature,A Product Backlog contains Features,ProductBacklog,Feature,1,N,1.0
+R8,contains_epic,A Product Backlog contains Epics,ProductBacklog,Epic,1,N,1.0
+R9,contains_user_story,An Epic contains multiple User Stories,Epic,UserStory,1,N,1.0
+R10,consists_of_tasks,A User Story consists of multiple Tasks,UserStory,Task,1,N,1.0
+R11,is_in_sprint_backlog,A User Story is assigned to a Sprint Backlog,UserStory,SprintBacklog,N,M,1.0
+R12,belongs_to_sprint,A Sprint Backlog belongs to a Sprint,SprintBacklog,Sprint,1,1,1.0
+R13,pursues_goal,A Sprint pursues a defined goal,Sprint,SprintGoal,1,1,1.0
+R14,contains_tasks,A Scrum Board contains all tasks of a Sprint,ScrumBoard,Task,1,N,1.0
+R15,documents_feature,Feature Documentation belongs to a Feature,FeatureDocumentation,Feature,1,1,1.0
+R16,is_blocked_by,A Task can be blocked by a Blocker,Task,Blocker,N,M,1.0
+R17,participates_in,Stakeholders participate in a Sprint Review,Stakeholder,Sprint Review,N,M,1.0
+R18,moderates_retrospective,A Scrum Master moderates the Retrospective,ScrumMaster,SprintRetrospective,1,N,1.0
+R19,refers_to_team,Velocity refers to a specific Team,Velocity,Team,1,1,1.0
+R20,plans_release,A Release Plan includes multiple Features,ReleasePlan,Feature,1,N,1.0
+R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,ReleasePlan,Roadmap,N,1,1.0
+R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,DevelopmentSnapshot,1,1,1.0
+```
+Based on Entities.csv and Relationships.csv - Proceed and Create 3 individual CSV code-blocks (alternative: files) in chat named: Goals.csv + Conditions.csv + DecisionVariables.csv
+Goals.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
+Conditions.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
+DecisionVariables.csv must have the following header: "ID,Name,Description,DataType,Domain,MinValue,MaxValue"
+
+The following conventions must be applied:
+ID starts with a letter G(oals), C(onditions), D(ecision)V(ariables) and a number follows, starting at 0, 1, 2, ....
+Name is written snake_case
+Names for Goals must begin with "maximize_" or "minimize_"
+IsSum is a boolean { True, False }
+GoalType is one of { "min", "max" }
+EntityName is always only 1 entry from the "Name" of Entities.csv
+EntityAttribute is one of the values in the "Attribute0" to "Attribute8" of the targeted Entity in Entities.csv
+CriteriaType is a number { 2 = Must-Match, 1 = May-Match, 0 = Cannot-Match }
+Domain can represent set of values like "{0,1}"
+MinValue is the smallest value that can be set
+MaxValue is the highest value that can be set
+Weight is a mulptlier
+Created 10 to 15 entries in each of these files.
+
+Use ALL of the previously provided and generated CSV data (Entities, Relations, Goals, Conditions, DecisionVariables) and formulate the optimization model mathematically and logically. 
+Write it into a code-block for a LaTeX (.tex) file and provide the generated Latex code in chat.
+The file consists of a introduction page with Title, Author, Date and Table of Contents.
+The actual file contest consists of 5 different \sections labeled "1. Sets (Entities)", "2. Indices", "3. Goals", "4. Conditions", "5. DecisionVariables"
+The items of each category are itemized between \begin and \end.
+Goals and Conditions show both their IDs, Names and the logical and mathematical representation
+
+Transform all of the provided and generated CSV data (Entities, Attributes, Relations, Goals, Conditions, DecisionVariables) into a graph using the Mermaid.js Live Editor graph TD syntax.
+Connect...
+- Entities with their Attributes and place the Attributes around the Entities they belong to. (can exist multiple times in the graph to make lines less short)
+- Entities with their Relations
+- Goals with the Entity/Attributes
+- Conditions with the Entity/Attributes
+- DecisionVariables with their relevant Entities
+
+Colorize...
+- Entities in blue
+- Attributes in white
+- Relations in orange
+- Goals in green
+- Conditions in red
+- Decision Variables in purple
+
+Provide all 5 code-blocks (files) in chat:
+3 Comma-Seperated-Values (csv), 1 LaTeX (tex), 1 Mermaid (mmd)
+
+ASSISTANT:
+<think>
+Okay, let's tackle this problem step by step. First, I need to create three CSV files: Goals.csv, Conditions.csv, and DecisionVariables.csv based on the provided Entities and Relationships. Each file has specific headers and conventions to follow. Then, I need to generate a LaTeX document that includes an introduction and sections on sets, indices, goals, conditions, and decision variables. Finally, I have to create a Mermaid graph that connects all these elements with appropriate colors.
+
+Starting with Goals.csv. The user mentioned that Goals must start with "maximize_" or "minimize_". I need to look at the Entities and their attributes to find possible optimization goals. For example, maximizing project budget, minimizing sprint duration, maximizing team availability, etc. Each goal should reference an entity and an attribute from it. The IsSum field is a boolean indicating if the goal is a sum of values. The GoalType is either "min" or "max". CriteriaType is a number for Must-Match, May-Match, Cannot-Match. Weight is a multiplier. I'll create 10-15 entries here.
+
+Next, Conditions.csv. Similar structure but the Name doesn't start with "maximize_" or "minimize_". These are constraints. For example, ensuring that a project's start date is before the end date, or that a team's size doesn't exceed a certain number. Each condition also references an entity and an attribute. Again, 10-15 entries.
+
+DecisionVariables.csv requires specifying the data type, domain, min, max, and weight. These variables are the ones that the optimization model can adjust. For example, the number of tasks in a sprint, the priority of a feature, the availability of a worker, etc. Each variable should have a clear domain, like integers or a set of values, and appropriate min/max values.
+
+Once the CSVs are created, the LaTeX document needs to be structured with sections for each category. The introduction includes title, author, date, and table of contents. Then, each section (Sets, Indices, Goals, Conditions, Decision Variables) will list the entries from the CSVs. Goals and Conditions will have their mathematical representations, using the entity attributes and weights.
+
+For the Mermaid graph, I need to represent entities as blue nodes, attributes as white, relations as orange, goals as green, conditions as red, and decision variables as purple. Each entity should be connected to its attributes. Relations from the Relationships.csv will connect the entities. Goals and conditions will link to their respective entities and attributes. Decision variables will connect to the relevant entities.
+
+I need to make sure all connections are correct. For example, if a goal is to maximize the budget of a project, there should be an arrow from the Goal node to the Project entity and its 'budget' attribute. Similarly, a condition that a team's size must be less than 10 would connect to the Team entity's 'team_size' attribute.
+
+I also have to check for consistency in IDs, ensuring they start with G, C, or D followed by a number. Names should be in snake_case. Data types for decision variables should match the attributes (e.g., integer, string, etc.).
+
+Now, putting all this together step by step, making sure each file follows the specified format and conventions. Then, verifying that the LaTeX document correctly references the entries and the Mermaid graph accurately represents the relationships and connections.
+</think>
+
+### Goals.csv
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,maximize_project_budget,Maximize the budget allocated to a project,True,max,Project,budget,2,1.0
+G1,minimize_sprint_duration,Minimize the duration of each sprint,True,min,Sprint,end_date,2,0.8
+G2,maximize_team_availability,Maximize the availability of team members,True,max,Team,availability,1,0.9
+G3,minimize_blocker_severity,Minimize the severity of blockers,True,min,Blocker,severity,2,1.0
+G4,maximize_velocity,Maximize the team's velocity,True,max,Velocity,avg._story_points,2,1.2
+G5,maximize_sprint_goal_achievement,Maximize achievement of sprint goals,True,max,SprintGoal,achievement_status,2,1.1
+G6,maximize_worker_effort,Maximize effort allocated to tasks,True,max,Worker,availability,1,0.95
+G7,minimize_task_effort,Minimize effort required for tasks,True,min,Task,effort,2,0.7
+G8,maximize_feature_priority,Maximize priority of critical features,True,max,Feature,priority,2,1.0
+G9,maximize_user_story_story_points,Maximize story points for user stories,True,max,UserStory,story_points,2,1.0
+G10,maximize_release_plan_coverage,Maximize included features in a release plan,True,max,ReleasePlan,included_features,2,1.0
+G11,minimize_project_duration,Minimize the total project duration,True,min,Project,project_end,2,0.8
+G12,maximize_team_size,Maximize team size to utilize all resources,True,max,Team,team_size,1,1.0
+G13,maximize_sprint_review_feedback,Maximize feedback documentation quality,True,max,SprintReview,feedback_documentation,1,1.0
+G14,minimize_blocker_duration,Minimize time between detection and resolution,True,min,Blocker,resolved_on,2,0.7
+```
+
+---
+
+### Conditions.csv
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,project_start_before_end,Project start date must be before end date,False,max,Project,project_start,2,1.0
+C1,team_size_limit,Team size must not exceed 10 members,False,min,Team,team_size,0,1.0
+C2,worker_availability_required,Workers must have at least 50% availability,False,max,Worker,availability,2,1.0
+C3,task_effort_limit,Task effort must not exceed 8 hours,False,min,Task,effort,0,1.0
+C4,blocker_resolved_before_sprint_end,Blockers must be resolved before sprint end,False,max,Blocker,resolved_on,2,1.0
+C5,velocity_must_be_positive,Velocity must be non-negative,False,max,Velocity,avg._story_points,2,1.0
+C6,feature_priority_range,Feature priority must be between 1-5,False,max,Feature,priority,2,1.0
+C7,story_points_positive,User story story points must be positive,False,max,UserStory,story_points,2,1.0
+C8,sprint_start_before_end,Sprint start date must be before end date,False,max,Sprint,start_date,2,1.0
+C9,blocker_severity_range,Blocker severity must be between 1-5,False,max,Blocker,severity,2,1.0
+C10,team_status_active,Team must be active,False,max,Team,team_status,2,1.0
+C11,project_budget_positive,Project budget must be positive,False,max,Project,budget,2,1.0
+C12,task_status_valid,Task status must be valid,False,max,Task,status,2,1.0
+C13,sprint_goal_achievement_valid,Sprint goal achievement must be binary,False,max,SprintGoal,achievement_status,2,1.0
+C14,feature_status_valid,Feature status must be valid,False,max,Feature,status,2,1.0
+```
+
+---
+
+### DecisionVariables.csv
+```csv
+ID,Name,Description,DataType,Domain,MinValue,MaxValue
+D0,number_of_tasks_per_sprint,Integer,{1,2,3,4,5},1,5
+D1,feature_priority,Integer,{1,2,3,4,5},1,5
+D2,worker_availability,Float,{0,1},0,1
+D3,task_effort,Integer,{1,2,3,4,5,6,7,8},1,8
+D4,blocker_severity,Integer,{1,2,3,4,5},1,5
+D5,velocity_story_points,Integer,{0,1,2,...},0,100
+D6,sprint_duration,Integer,{7,14,21},7,21
+D7,team_size,Integer,{3,4,5,6,7},3,7
+D8,project_budget,Integer,{10000,20000,...},10000,100000
+D9,task_status,String,{"Not Started", "In Progress", "Completed"},0,0
+D10,sprint_goal_achievement,Boolean,{"True", "False"},0,0
+D11,feature_status,String,{"Planned", "In Progress", "Completed"},0,0
+D12,user_story_story_points,Integer,{1,2,3,5,8},1,8
+D13,blocker_resolution_time,Integer,{1,2,...},1,10
+D14,release_plan_coverage,Integer,{1,2,3,...},1,10
+```
+
+---
+
+### LaTeX.tex
+```latex
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Optimization Model Documentation}
+\author{Generated by AI}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item \textbf{Project} with attributes: project\_start, project\_end, budget
+    \item \textbf{Sprint} with attributes: start\_date, end\_date, duration
+    \item \textbf{Team} with attributes: team\_size, availability
+    \item \textbf{Worker} with attributes: availability
+    \item \textbf{Task} with attributes: effort, status
+    \item \textbf{Blocker} with attributes: severity, resolved\_on
+    \item \textbf{Velocity} with attribute: avg.\_story\_points
+    \item \textbf{SprintGoal} with attribute: achievement\_status
+    \item \textbf{Feature} with attributes: priority, status
+    \item \textbf{UserStory} with attributes: story\_points, status
+    \item \textbf{ReleasePlan} with attribute: included\_features
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $i$: Project index
+    \item $j$: Sprint index
+    \item $k$: Team index
+    \item $l$: Worker index
+    \item $m$: Task index
+    \item $n$: Blocker index
+    \item $o$: Velocity index
+    \item $p$: SprintGoal index
+    \item $q$: Feature index
+    \item $r$: UserStory index
+    \item $s$: ReleasePlan index
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0:} Maximize $\sum_{i} \text{Project}_i.\text{budget} \times w_0$
+    \item \textbf{G1:} Minimize $\sum_{j} \text{Sprint}_j.\text{end\_date} \times w_1$
+    \item \textbf{G2:} Maximize $\sum_{k} \text{Team}_k.\text{availability} \times w_2$
+    \item \textbf{G3:} Minimize $\sum_{n} \text{Blocker}_n.\text{severity} \times w_3$
+    \item \textbf{G4:} Maximize $\sum_{o} \text{Velocity}_o.\text{avg\_story\_points} \times w_4$
+    \item \textbf{G5:} Maximize $\sum_{p} \text{SprintGoal}_p.\text{achievement\_status} \times w_5$
+    \item \textbf{G6:} Maximize $\sum_{l} \text{Worker}_l.\text{availability} \times w_6$
+    \item \textbf{G7:} Minimize $\sum_{m} \text{Task}_m.\text{effort} \times w_7$
+    \item \textbf{G8:} Maximize $\sum_{q} \text{Feature}_q.\text{priority} \times w_8$
+    \item \textbf{G9:} Maximize $\sum_{r} \text{UserStory}_r.\text{story\_points} \times w_9$
+    \item \textbf{G10:} Maximize $\sum_{s} \text{ReleasePlan}_s.\text{included\_features} \times w_{10}$
+    \item \textbf{G11:} Minimize $\sum_{i} \text{Project}_i.\text{project\_end} \times w_{11}$
+    \item \textbf{G12:} Maximize $\sum_{k} \text{Team}_k.\text{team\_size} \times w_{12}$
+    \item \textbf{G13:} Maximize $\sum_{j} \text{SprintReview}_j.\text{feedback\_documentation} \times w_{13}$
+    \item \textbf{G14:} Minimize $\sum_{n} \text{Blocker}_n.\text{resolved\_on} \times w_{14}$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0:} $\text{Project}_i.\text{project\_start} < \text{Project}_i.\text{project\_end}$
+    \item \textbf{C1:} $\text{Team}_k.\text{team\_size} \leq 10$
+    \item \textbf{C2:} $\text{Worker}_l.\text{availability} \geq 0.5$
+    \item \textbf{C3:} $\text{Task}_m.\text{effort} \leq 8$
+    \item \textbf{C4:} $\text{Blocker}_n.\text{resolved\_on} < \text{Sprint}_j.\text{end\_date}$
+    \item \textbf{C5:} $\text{Velocity}_o.\text{avg\_story\_points} \geq 0$
+    \item \textbf{C6:} $\text{Feature}_q.\text{priority} \in [1,5]$
+    \item \textbf{C7:} $\text{UserStory}_r.\text{story\_points} > 0$
+    \item \textbf{C8:} $\text{Sprint}_j.\text{start\_date} < \text{Sprint}_j.\text{end\_date}$
+    \item \textbf{C9:} $\text{Blocker}_n.\text{severity} \in [1,5]$
+    \item \textbf{C10:} $\text{Team}_k.\text{team\_status} = \text{"Active"}$
+    \item \textbf{C11:} $\text{Project}_i.\text{budget} > 0$
+    \item \textbf{C12:} $\text{Task}_m.\text{status} \in \{\text{"Not Started"}, \text{"In Progress"}, \text{"Completed"}\}$
+    \item \textbf{C13:} $\text{SprintGoal}_p.\text{achievement\_status} \in \{\text{"True"}, \text{"False"}\}$
+    \item \textbf{C14:} $\text{Feature}_q.\text{status} \in \{\text{"Planned"}, \text{"In Progress"}, \text{"Completed"}\}$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{D0:} $x_{\text{tasks}} \in \{1,2,3,4,5\}$
+    \item \textbf{D1:} $x_{\text{priority}} \in \{1,2,3,4,5\}$
+    \item \textbf{D2:} $x_{\text{availability}} \in [0,1]$
+    \item \textbf{D3:} $x_{\text{effort}} \in \{1,2,3,4,5,6,7,8\}$
+    \item \textbf{D4:} $x_{\text{severity}} \in \{1,2,3,4,5\}$
+    \item \textbf{D5:} $x_{\text{velocity}} \geq 0$
+    \item \textbf{D6:} $x_{\text{duration}} \in \{7,14,21\}$
+    \item \textbf{D7:} $x_{\text{size}} \in \{3,4,5,6,7\}$
+    \item \textbf{D8:} $x_{\text{budget}} \in \mathbb{N}$
+    \item \textbf{D9:} $x_{\text{status}} \in \{\text{"Not Started"}, \text{"In Progress"}, \text{"Completed"}\}$
+    \item \textbf{D10:} $x_{\text{achievement}} \in \{\text{"True"}, \text{"False"}\}$
+    \item \textbf{D11:} $x_{\text{feature}} \in \{\text{"Planned"}, \text{"In Progress"}, \text{"Completed"}\}$
+    \item \textbf{D12:} $x_{\text{story}} \in \{1,2,3,5,8\}$
+    \item \textbf{D13:} $x_{\text{resolution}} \in \mathbb{N}$
+    \item \textbf{D14:} $x_{\text{coverage}} \in \mathbb{N}$
+\end{itemize}
+
+\end{document}
+```
+
+---
+
+### Mermaid Diagram (mmd)
+```mermaid
+graph TD
+    A[Project] --> B[has attributes]
+    A --> C[related to]
+    A --> D[connected to]
+    A --> E[linked with]
+    A --> F[interacts with]
+    A --> G[depends on]
+    A --> H[uses]
+    A --> I[includes]
+    A --> J[affects]
+    A --> K[is part of]
+
+    B --> B1[project_start]
+    B --> B2[project_end]
+    B --> B3[budget]
+
+    C --> C1[Sprint]
+    C --> C2[Team]
+    C --> C3[Worker]
+    C --> C4[Task]
+    C --> C5[Blocker]
+    C --> C6[Velocity]
+    C --> C7[SprintGoal]
+    C --> C8[Feature]
+    C --> C9[UserStory]
+    C --> C10[ReleasePlan]
+
+    D --> D1[has attributes]
+    D --> D2[related to]
+    D --> D3[connected to]
+    D --> D4[linked with]
+    D --> D5[interacts with]
+    D --> D6[depends on]
+    D --> D7[uses]
+    D --> D8[includes]
+    D --> D9[affects]
+    D --> D10[is part of]
+
+    E --> E1[has attributes]
+    E --> E2[related to]
+    E --> E3[connected to]
+    E --> E4[linked with]
+    E --> E5[interacts with]
+    E --> E6[depends on]
+    E --> E7[uses]
+    E --> E8[includes]
+    E --> E9[affects]
+    E --> E10[is part of]
+
+    F --> F1[has attributes]
+    F --> F2[related to]
+    F --> F3[connected to]
+    F --> F4[linked with]
+    F --> F5[interacts with]
+    F --> F6[depends on]
+    F --> F7[uses]
+    F --> F8[includes]
+    F --> F9[affects]
+    F --> F10[is part of]
+
+    G --> G1[has attributes]
+    G --> G2[related to]
+    G --> G3[connected to]
+    G --> G4[linked with]
+    G --> G5[interacts with]
+    G --> G6[depends on]
+    G --> G7[uses]
+    G --> G8[includes]
+    G --> G9[affects]
+    G --> G10[is part of]
+
+    H --> H1[has attributes]
+    H --> H2[related to]
+    H --> H3[connected to]
+    H --> H4[linked with]
+    H --> H5[interacts with]
+    H --> H6[depends on]
+    H --> H7[uses]
+    H --> H8[includes]
+    H --> H9[affects]
+    H --> H10[is part of]
+
+    I --> I1[has attributes]
+    I --> I2[related to]
+    I --> I3[connected to]
+    I --> I4[linked with]
+    I --> I5[interacts with]
+    I --> I6[depends on]
+    I --> I7[uses]
+    I --> I8[includes]
+    I --> I9[affects]
+    I --> I10[is part of]
+
+    J --> J1[has attributes]
+    J --> J2[related to]
+    J --> J3[connected to]
+    J --> J4[linked with]
+    J --> J5[interacts with]
+    J --> J6[depends on]
+    J --> J7[uses]
+    J --> J8[includes]
+    J --> J9[affects]
+    J --> J10[is part of]
+
+    K --> K1[has attributes]
+    K --> K2[related to]
+    K --> K3[connected to]
+    K --> K4[linked with]
+    K --> K5[interacts with]
+    K --> K6[depends on]
+    K --> K7[uses]
+    K --> K8[includes]
+    K --> K9[affects]
+    K --> K10[is part of]
+```
+
+---
+
+### Mermaid Diagram (mmd) - Final Version
+```mermaid
+graph TD
+    classDef entity fill:#98FB98,stroke:#363636,stroke-width:2px;
+    classDef attribute fill:#ADD8E6,stroke:#363636,stroke-width:1px;
+    classDef relation fill:#FFD700,stroke:#363636,stroke-width:1px;
+
+    class Project entity
+    class Sprint entity
+    class Team entity
+    class Worker entity
+    class Task entity
+    class Blocker entity
+    class Velocity entity
+    class SprintGoal entity
+    class Feature entity
+    class UserStory entity
+    class ReleasePlan entity
+
+    class project_start attribute
+    class project_end attribute
+    class budget attribute
+    class start_date attribute
+    class end_date attribute
+    class duration attribute
+    class team_size attribute
+    class availability attribute
+    class availability attribute
+    class effort attribute
+    class status attribute
+    class severity attribute
+    class resolved_on attribute
+    class avg_story_points attribute
+    class achievement_status attribute
+    class priority attribute
+    class status attribute
+    class story_points attribute
+    class included_features attribute
+
+    Project --> project_start
+    Project --> project_end
+    Project --> budget
+
+    Sprint --> start_date
+    Sprint --> end_date
+    Sprint --> duration
+
+    Team --> team_size
+    Team --> availability
+
+    Worker --> availability
+
+    Task --> effort
+    Task --> status
+
+    Blocker --> severity
+    Blocker --> resolved_on
+
+    Velocity --> avg_story_points
+
+    SprintGoal --> achievement_status
+
+    Feature --> priority
+    Feature --> status
+
+    UserStory --> story_points
+    UserStory --> status
+
+    ReleasePlan --> included_features
+
+    Project -->|related to| Sprint
+    Project -->|related to| Team
+    Project -->|related to| Worker
+    Project -->|related to| Task
+    Project -->|related to| Blocker
+    Project -->|related to| Velocity
+    Project -->|related to| SprintGoal
+    Project -->|related to| Feature
+    Project -->|related to| UserStory
+    Project -->|related to| ReleasePlan
+
+    class project_start,project_end,budget attribute
+    class start_date,end_date,duration attribute
+    class team_size,availability attribute
+    class availability attribute
+    class effort,status attribute
+    class severity,resolved_on attribute
+    class avg_story_points attribute
+    class achievement_status attribute
+    class priority,status attribute
+    class story_points,status attribute
+    class included_features attribute
+```
+
+---
+
+### Final Mermaid Diagram (Simplified)
+```mermaid
+graph TD
+    classDef entity fill:#98FB98,stroke:#363636,stroke-width:2px;
+    classDef attribute fill:#ADD8E6,stroke:#363636,stroke-width:1px;
+    classDef relation fill:#FFD700,stroke:#363636,stroke-width:1px;
+
+    class Project entity
+    class Sprint entity
+    class Team entity
+    class Worker entity
+    class Task entity
+    class Blocker entity
+    class Velocity entity
+    class SprintGoal entity
+    class Feature entity
+    class UserStory entity
+    class ReleasePlan entity
+
+    class project_start attribute
+    class project_end attribute
+    class budget attribute
+    class start_date attribute
+    class end_date attribute
+    class duration attribute
+    class team_size attribute
+    class availability attribute
+    class effort attribute
+    class status attribute
+    class severity attribute
+    class resolved_on attribute
+    class avg_story_points attribute
+    class achievement_status attribute
+    class priority attribute
+    class story_points attribute
+    class included_features attribute
+
+    Project --> project_start
+    Project --> project_end
+    Project --> budget
+
+    Sprint --> start_date
+    Sprint --> end_date
+    Sprint --> duration
+
+    Team --> team_size
+    Team --> availability
+
+    Worker --> availability
+
+    Task --> effort
+    Task --> status
+
+    Blocker --> severity
+    Blocker --> resolved_on
+
+    Velocity --> avg_story_points
+
+    SprintGoal --> achievement_status
+
+    Feature --> priority
+    Feature --> status
+
+    UserStory --> story_points
+    UserStory --> status
+
+    ReleasePlan --> included_features
+
+    Project -->|related to| Sprint
+    Project -->|related to| Team
+    Project -->|related to| Worker
+    Project -->|related to| Task
+    Project -->|related to| Blocker
+    Project -->|related to| Velocity
+    Project -->|related to| SprintGoal
+    Project -->|related to| Feature
+    Project -->|related to| UserStory
+    Project -->|related to| ReleasePlan
+```

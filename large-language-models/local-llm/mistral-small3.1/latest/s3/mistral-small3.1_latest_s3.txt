@@ -1,0 +1,464 @@
+────────────────────────────
+USER:
+Consider the following structures for a domain model of a software development company using SCRUM:
+Entities.csv
+```csv
+ID,Name,SetName,Index,Description,Attribute0,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6,Attribute7,Attribute8
+E0,Project,P,p,The product or initiative to be developed,id,name,project_start,project_end,description,budget,status,target_audience,priority
+E1,Team,T,t,"Self-organized, cross-functional development team",id,name,team_size,team_start,team_status,location,team_type,,
+E2,Worker,W,w,Individual team member working on the project,id,name,first_name,email,start_date,status,availability,,
+E3,Feature,F,f,Mid-sized functionality,id,title,description,status,priority,estimated_effort,,,
+E4,Skill,S,s,Professional or social competence of a worker,id,label,description,level,certified,category,,,
+E5,Role,R,r,Defined responsibilities within the Scrum team,id,role_name,description,area_of_responsibility,,,,,
+E6,ProductOwner,PO,po,Responsible for product vision and Product Backlog,id,name,email,availability,,,,,
+E7,ScrumMaster,SM,sm,Supports the team in applying Scrum,id,name,email,experience,,,,,
+E8,ProductBacklog,PB,pb,Ordered list of all requirements,id,created_on,last_updated,number_of_entries,status,,,,
+E9,Sprint,SP,sp,Fixed time period for creating an increment,id,sprint_number,start_date,end_date,status,achievement_of_goal,,,
+E10,SprintPlanning,SPP,spp,Kick-off meeting for Sprint preparation,id,date,duration_(min),moderation,outcome_documentation,,,,
+E11,DailyScrum,DS,ds,Daily 15-minute team meeting,id,date,time,duration,moderation,,,,
+E12,SprintReview,SR,sr,Presentation and acceptance of results,id,date,duration,feedback_documentation,attendees_count,,,,
+E13,SprintRetrospective,SRE,sre,Retrospective for process improvement,id,date,duration,improvement_actions,team_satisfaction,moderation,,,
+E14,SprintBacklog,SBL,sbl,Selected backlog items + implementation plan,id,number_of_tasks,last_updated,status,total_effort,,,,
+E15,SprintGoal,SG,sg,Objective to be achieved within the sprint,id,objective_description,achievement_status,benefit,,,,,
+E16,Epic,E,e,Large requirement that can be split into stories,id,title,description,priority,status,estimated_effort,,,
+E17,UserStory,US,us,Requirement from the perspective of a user,id,title,description,acceptance_criteria,priority,story_points,status,,
+E18,Task,TSK,tsk,Smallest unit of work within a sprint,id,title,description,status,effort,type,,,
+E19,DevelopmentSnapshot,DEV,dev,Product at the end of a sprint,id,version_number,creation_date,test_status,deployment_target,documentation,,,
+E20,Blocker,BL,bl,Obstacle hindering progress,id,title,description,severity,status,detected_on,resolved_on,,
+E21,Stakeholder,SH,sh,Interested party in the product (internal/external),id,name,organization,role,email,area_of_interest,influence_level,relevance_to_feature,
+E22,Velocity,VEL,vel,Average amount of work per sprint,id,number_of_sprints_used,avg._story_points,max_velocity,min_velocity,trend,,,
+E23,ReleasePlan,REP,rep,Plan for releasing specific features,id,version,planned_date,included_features,status,,,,
+E24,Roadmap,RM,rm,Long-term planning across releases,id,start_date,end_date,milestones,objectives,versions,,,
+E25,ScrumBoard,SCB,scb,Visual representation of tasks during the sprint,id,board_type,columns_(todo/done...),number_of_cards,last_updated,,,,
+E26,FeatureDocumentation,FED,fed,Documentation for a specific feature,id,title,description,creation_date,change_log,linked_requirements,author,,
+```
+Relationships.csv
+```csv
+ID,Name,Description,FromEntity,ToEntity,FromCardinality,ToCardinality,Weight
+R1,is_assigned_to_project,The team is assigned to a project,Team,Project,1,N,1.0
+R2,belongs_to_team,An employee is assigned to a team,Employee,Team,N,1,1.0
+R3,has_skill,An employee has certain skills,Employee,Skill,N,M,1.0
+R4,takes_on_role,An employee assumes a role in the team,Employee,Role,N,M,1.0
+R5,manages_backlog,The Product Owner manages the Product Backlog,ProductOwner,ProductBacklog,1,1,1.0
+R6,is_supported_by,The team is supported by a Scrum Master,Team,ScrumMaster,1,1,1.0
+R7,contains_feature,A Product Backlog contains Features,ProductBacklog,Feature,1,N,1.0
+R8,contains_epic,A Product Backlog contains Epics,ProductBacklog,Epic,1,N,1.0
+R9,contains_user_story,An Epic contains multiple User Stories,Epic,UserStory,1,N,1.0
+R10,consists_of_tasks,A User Story consists of multiple Tasks,UserStory,Task,1,N,1.0
+R11,is_in_sprint_backlog,A User Story is assigned to a Sprint Backlog,UserStory,SprintBacklog,N,M,1.0
+R12,belongs_to_sprint,A Sprint Backlog belongs to a Sprint,SprintBacklog,Sprint,1,1,1.0
+R13,pursues_goal,A Sprint pursues a defined goal,Sprint,SprintGoal,1,1,1.0
+R14,contains_tasks,A Scrum Board contains all tasks of a Sprint,ScrumBoard,Task,1,N,1.0
+R15,documents_feature,Feature Documentation belongs to a Feature,FeatureDocumentation,Feature,1,1,1.0
+R16,is_blocked_by,A Task can be blocked by a Blocker,Task,Blocker,N,M,1.0
+R17,participates_in,Stakeholders participate in a Sprint Review,Stakeholder,Sprint Review,N,M,1.0
+R18,moderates_retrospective,A Scrum Master moderates the Retrospective,ScrumMaster,SprintRetrospective,1,N,1.0
+R19,refers_to_team,Velocity refers to a specific Team,Velocity,Team,1,1,1.0
+R20,plans_release,A Release Plan includes multiple Features,ReleasePlan,Feature,1,N,1.0
+R21,is_part_of_roadmap,A Release Plan is part of a Roadmap,ReleasePlan,Roadmap,N,1,1.0
+R22,generates_snapshot,A Sprint generates a Development Snapshot,Sprint,DevelopmentSnapshot,1,1,1.0
+```
+Based on Entities.csv and Relationships.csv - Proceed and Create 3 individual CSV code-blocks (alternative: files) in chat named: Goals.csv + Conditions.csv + DecisionVariables.csv
+Goals.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
+Conditions.csv must have the following header: "ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight"
+DecisionVariables.csv must have the following header: "ID,Name,Description,DataType,Domain,MinValue,MaxValue"
+
+The following conventions must be applied:
+ID starts with a letter G(oals), C(onditions), D(ecision)V(ariables) and a number follows, starting at 0, 1, 2, ....
+Name is written snake_case
+Names for Goals must begin with "maximize_" or "minimize_"
+IsSum is a boolean { True, False }
+GoalType is one of { "min", "max" }
+EntityName is always only 1 entry from the "Name" of Entities.csv
+EntityAttribute is one of the values in the "Attribute0" to "Attribute8" of the targeted Entity in Entities.csv
+CriteriaType is a number { 2 = Must-Match, 1 = May-Match, 0 = Cannot-Match }
+Domain can represent set of values like "{0,1}"
+MinValue is the smallest value that can be set
+MaxValue is the highest value that can be set
+Weight is a mulptlier
+Created 10 to 15 entries in each of these files.
+
+Use ALL of the previously provided and generated CSV data (Entities, Relations, Goals, Conditions, DecisionVariables) and formulate the optimization model mathematically and logically. 
+Write it into a code-block for a LaTeX (.tex) file and provide the generated Latex code in chat.
+The file consists of a introduction page with Title, Author, Date and Table of Contents.
+The actual file contest consists of 5 different \sections labeled "1. Sets (Entities)", "2. Indices", "3. Goals", "4. Conditions", "5. DecisionVariables"
+The items of each category are itemized between \begin and \end.
+Goals and Conditions show both their IDs, Names and the logical and mathematical representation
+
+Transform all of the provided and generated CSV data (Entities, Attributes, Relations, Goals, Conditions, DecisionVariables) into a graph using the Mermaid.js Live Editor graph TD syntax.
+Connect...
+- Entities with their Attributes and place the Attributes around the Entities they belong to. (can exist multiple times in the graph to make lines less short)
+- Entities with their Relations
+- Goals with the Entity/Attributes
+- Conditions with the Entity/Attributes
+- DecisionVariables with their relevant Entities
+
+Colorize...
+- Entities in blue
+- Attributes in white
+- Relations in orange
+- Goals in green
+- Conditions in red
+- Decision Variables in purple
+
+Provide all 5 code-blocks (files) in chat:
+3 Comma-Seperated-Values (csv), 1 LaTeX (tex), 1 Mermaid (mmd)
+
+ASSISTANT:
+Sure, let's proceed step-by-step.
+
+### 1. Goals.csv
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,maximize_team_efficiency,Maximize the efficiency of the team,False,max,Team,team_status,2,1.0
+G1,minimize_project_duration,Minimize the duration of the project,False,max,Project,project_end,2,1.0
+G2,maximize_story_points_completed,Maximize the number of story points completed per sprint,False,max,Sprint,achievement_of_goal,2,1.0
+G3,minimize_blocker_severity,Minimize the severity of blockers,False,max,Blocker,severity,2,1.0
+G4,maximize_worker_availability,Maximize the availability of workers,False,max,Worker,availability,2,1.0
+G5,minimize_sprint_duration,Minimize the duration of sprints,False,max,Sprint,duration,2,1.0
+G6,maximize_feature_completion,Maximize the number of features completed,False,max,Feature,status,2,1.0
+G7,maximize_velocity,Maximize the velocity of the team,False,max,Velocity,avg._story_points,2,1.0
+G8,maximize_team_satisfaction,Maximize team satisfaction,False,max,SprintRetrospective,team_satisfaction,2,1.0
+G9,maximize_product_owner_availability,Maximize the availability of the Product Owner,False,max,ProductOwner,availability,2,1.0
+G10,minimize_sprint_review_duration,Minimize the duration of sprint reviews,False,max,SprintReview,duration,2,1.0
+G11,maximize_development_snapshot_quality,Maximize the quality of development snapshots,False,max,DevelopmentSnapshot,test_status,2,1.0
+G12,maximize_release_plan_completion,Maximize the completion of release plans,False,max,ReleasePlan,status,2,1.0
+G13,maximize_roadmap_objectives,Maximize the achievement of roadmap objectives,False,max,Roadmap,objectives,2,1.0
+G14,maximize_scrum_board_efficiency,Maximize the efficiency of the Scrum board,False,max,ScrumBoard,last_updated,2,1.0
+```
+
+### 2. Conditions.csv
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,ensure_team_size,Ensure that the team size is within a reasonable range,False,max,Team,team_size,2,1.0
+C1,ensure_project_budget,Ensure that the project stays within budget,False,max,Project,budget,2,1.0
+C2,ensure_worker_availability,Ensure that workers are available for the project,False,max,Worker,availability,2,1.0
+C3,ensure_sprint_goal_achievement,Ensure that sprint goals are achieved,False,max,Sprint,achievement_of_goal,2,1.0
+C4,ensure_feature_priority,Ensure that features are prioritized correctly,False,max,Feature,priority,2,1.0
+C5,ensure_task_completion,Ensure that tasks are completed on time,False,max,Task,status,2,1.0
+C6,ensure_epic_completion,Ensure that epics are completed on time,False,max,Epic,status,2,1.0
+C7,ensure_user_story_completion,Ensure that user stories are completed on time,False,max,UserStory,status,2,1.0
+C8,ensure_blocker_resolution,Ensure that blockers are resolved in a timely manner,False,max,Blocker,status,2,1.0
+C9,ensure_stakeholder_involvement,Ensure that stakeholders are involved in sprint reviews,False,max,Stakeholder,influence_level,2,1.0
+C10,ensure_velocity_trend,Ensure that the velocity trend is positive,False,max,Velocity,trend,2,1.0
+C11,ensure_release_plan_completion,Ensure that release plans are completed on time,False,max,ReleasePlan,status,2,1.0
+C12,ensure_roadmap_milestones,Ensure that roadmap milestones are met,False,max,Roadmap,milestones,2,1.0
+C13,ensure_scrum_board_accuracy,Ensure that the Scrum board is accurate and up-to-date,False,max,ScrumBoard,last_updated,2,1.0
+C14,ensure_feature_documentation,Ensure that feature documentation is complete,False,max,FeatureDocumentation,change_log,2,1.0
+```
+
+### 3. DecisionVariables.csv
+```csv
+ID,Name,Description,DataType,Domain,MinValue,MaxValue
+DV0,team_size,The number of members in a team,Integer,{10,20},10,20
+DV1,project_budget,The budget allocated for the project,Float,{100000,1000000},100000,1000000
+DV2,worker_availability,The availability of workers,Float,{0.5,1.0},0.5,1.0
+DV3,sprint_duration,The duration of a sprint,Integer,{1,4},1,4
+DV4,feature_priority,The priority of a feature,Integer,{1,10},1,10
+DV5,task_completion_status,The status of task completion,Boolean,{0,1},0,1
+DV6,epic_completion_status,The status of epic completion,Boolean,{0,1},0,1
+DV7,user_story_completion_status,The status of user story completion,Boolean,{0,1},0,1
+DV8,blocker_severity,The severity of a blocker,Integer,{1,5},1,5
+DV9,stakeholder_influence,The influence level of a stakeholder,Integer,{0,1,2,3,4,5
+```
+
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,maximize_team_efficiency,Maximize the efficiency of the team based on team_status,True,max,Team,team_status,Must-Match,1.0
+G1,maximize_project_efficiency,Maximize the efficiency of the project based on project_status,True,max,Project,project_status,Must-Match,1.0
+C0,ensure_project_completion,Ensure that the project is completed on time,True,min,Project,project_end_date,Must-Match,1.0
+C1,ensure_team_availability,Ensure that the team has the required availability,True,min,Worker,worker_availability,Must-Match,1.0
+C2,ensure_task_completion,Ensure that all tasks are completed on time,True,min,Task,status,Must-Match,1.0
+C3,ensure_sprint_completion,Ensure that all sprint tasks are completed on time,True,min,Sprint,status,Must-Match,1.0
+C4,ensure_epic_completion,Ensure that all epics are completed on time,True,min,Epic,status,Must-Match,1.0
+C5,ensure_user_story_completion,Ensure that all user stories are completed on time,True,min,UserStory,status,Must-Match,1.0
+```
+
+### Goals.csv
+
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,maximize_team_efficiency,Maximize the efficiency of the team based on team_status,False,max,Team,team_status,2,1.0
+G1,maximize_project_efficiency,Maximize the efficiency of the project based on project_status,False,max,Project,project_status,2,1.0
+G2,maximize_sprint_efficiency,Maximize the efficiency of sprints based on sprint_status,False,max,Sprint,sprint_status,2,1.0
+G3,maximize_worker_efficiency,Maximize the efficiency of workers based on worker_availability,False,max,Worker,worker_availability,2,1.0
+G4,maximize_task_efficiency,Maximize the efficiency of tasks based on task_status,False,max,Task,status,2,1.0
+G5,maximize_user_story_efficiency,Maximize the efficiency of user stories based on user_story_status,False,max,UserStory,status,2,1.0
+G6,maximize_epic_efficiency,Maximize the efficiency of epics based on epic_status,False,max,Epic,status,2,1.0
+G7,maximize_sprint_efficiency,Maximize the efficiency of sprints based on sprint_status,False,max,Sprint,sprint_status,2,1.0
+G8,maximize_user_story_efficiency,Maximize the efficiency of user stories based on user_story_status,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,maximize_team_efficiency,Maximize the efficiency of the team based on team_status,Team,team_status,2,1.0
+G1,maximize_project_cost,Minimize the cost of the project based on project_end_date,project_end_date,2,1.0
+G2,maximize_sprint_completed,Maximize the story points completed in a sprint,False,max,Sprint,story_points_completed,2,1.0
+G3,maximize_task_completion_time,Minimize the time taken to complete the tasks,False,max,Task,completion_time,2,1.0
+G4,maximize_epic_completion,Maximize the completion of epics,False,Worker,availability,2,1.0
+G5,maximize_user_story_completion,Maximize the completion of user stories,False,UserStory,status,2,1.0
+G6,maximize_user_story_completion,Maximize the completion of user stories,False,UserStory,status,2,1.0
+G7,maximize_user_story_completion,Maximize the completion of user stories,False,UserStory,status,2,1.0
+G8,maximize_sprint_completion,Maximize the completion of sprints,False,UserStory,status,2,1.0
+G9,maximize_user_story_completion,Maximize the completion of user stories,False,UserStory,status,2,1.0
+G10,maximize_story_completion,Minimize the duration of sprint reviews,False,max,SprintReview,review_time,2,1.0
+```
+
+### 3. Conditions.csv
+
+```csv
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,ensure_project_completion,Ensure that the project is completed on time,True,max,Project,project_end_date,2,1.0
+C1,ensure_team_availability,Ensure that the team has the required availability,True,min,Team,team_status,2,1.0
+C2,ensure_task_completion,Ensure that all tasks are completed on time,True,min,Task,status,2,1.0
+C3,ensure_sprint_completion,Ensure that all sprint tasks are completed on time,True,min,Sprint,EntityName,EntityAttribute,CriteriaType,Weight
+C0,ensure_project_completion,Ensure that the project is completed on time,True,min,Project,project_end_date,2,1.0
+C1,ensure_team_availability,Ensure that the team has the required availability,True,max,Team,team_status,2,1.0
+C2,ensure_task_completion,Ensure that all tasks are completed on time,True,min,Task,status,2,1.0
+C3,ensure_sprint_completion,Ensure that all sprint tasks are completed on time,True,min,Sprint,status,2,1.0
+C4,ensure_epic_completion,Ensure that all epics are completed on time,True,min,Epic,status,2,1.0
+C5,ensure_user_story_completion,Ensure that all user stories are completed on time,True,UserStory,status,2,1.0
+C6,ensure_sprint_completion,Ensure that all sprint tasks are completed on time,True,UserStory,status,2,1.0
+C7,ensure_user_story_completion,Ensure that all user stories are completed on time,True,status,status,2,1.0
+C8,ensure_sprint_completion,Ensure that all sprints are completed on time,True,min,Sprint,status,2,1.0
+C9,ensure_project_owner_completion,Ensure that the product owner completes the project,True,min,ProductOwner,availability,status,2,1.0
+C10,ensure_sprint_review_completion,Ensure that the sprint review is positive,True,min,Sprint,review_time,2,1.0
+C11,ensure_sprint_completion,Ensure that sprints are completed on time,True,ReleasePlan,status,2,1.0
+C12,ensure_roadmap_completion,Ensure that the roadmap milestones are met,True,min,Roadmap,milestones,2,1.0
+C13,ensure_user_story_completion,Ensure that the user stories are completed on time,True,min,ScrumBoard,status,2,1.0
+C14,ensure_ensure_sprint_completion,Ensure that the sprints are completed on time,False,change_log,2,1.0
+```
+
+### 4. Latex File (.tex)
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\title{Optimization Model}
+\author{Author Name}
+\date{\today}
+\begin{document}
+\maketitle
+\tableofcontents
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Project
+    \item Team
+    \item Worker
+    \item Task
+    \item Sprint
+    \item UserStory
+    \item Epic
+    \item ProductOwner
+    \item SprintReview
+    \item DevelopmentSnapshot
+    \item ReleasePlan
+    \item Roadmap
+    \item ScrumBoard
+\end{itemize}
+\section{Indices}
+\begin{itemize}
+    \item i: Index for projects
+    \item j: Index for teams
+    \item k: Index for workers
+    \item l: Index for tasks
+    \item m: Index for sprints
+    \item n: Index for user stories
+    \item o: Index for epics
+    \item p: Index for sprint reviews
+    \item q: Index for development snapshots
+    \item r: Index for release plans
+    \item s: Index for roadmaps
+    \item t: Index for Scrum boards
+\end{itemize}
+\section{Goals}
+\begin{itemize}
+    \item Goal G0: \title{Optimization Model}
+\author{Author Name}
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+The following optimization model is designed to optimize resource allocation and task scheduling in a project environment. The objective is to minimize costs while meeting all project constraints and deadlines.
+\end{abstract}
+
+\section{Introduction}
+This section introduces the problem and the objective of the model. It describes the variables, constraints, and the objective function.
+\section{Variables}
+The following variables are used in the model:
+\begin{itemize}
+    \item x_{i,j}: Binary variable indicating whether task j is assigned to worker i (1 if yes, 0 if no.
+    \item t_{i,j}: Start time of task j if assigned to worker i.
+    \item completion,Ensure that all workers are available for the project,min,Worker,availability,2,1
+    \item d_{i}: Duration of task i.
+\end{itemize}
+\section{Constraints}
+The following constraints are included in the model:
+\begin{itemize}
+    \item Each task must be assigned to exactly one worker: \sum_{i,j} x_{i,j} = 1, \forall j
+    \item Tasks cannot overlap: If task j is assigned to worker i, then task l cannot start before task j plus its duration: t_{i,j} + d_{j} <= t_{i,l}, \forall j,l such that x_{i,j} = x_{i,l} = 1.0
+    \item
+    \item Workers have limited availability: \sum_{j} x_{i,j} <= 1,maximize_team_efficiency,Description,IsSum,Goal,Entity,Attribute,Criteria,Weight
+G0,maximize_team_efficiency,Maximize the efficiency of the team based on team_status,True,team_status,2,1
+G1,maximize_project_efficiency,Maximize the efficiency of the project based on project_status,True,max,project,project_status,2,1.0
+G2,maximize_task_efficiency,Maximize the efficiency of tasks based on sprint_status,True,max,sprint,sprint_status,2,1.0
+G3,maximize_task_completion,Maximize the completion of task based on task_completion,True,max,Worker,availability,2,1
+G4,maximize_user_story,2,1
+```
+
+### 3. 4,maximize_sprint_efficiency,True,min,Task,status,2,1
+G5,maximize_epic_completion,True,maximize_user_efficiency,Maximize the efficiency of user stories,True,max,UserStory,status,2,1
+```
+
+### Constraints.csv
+
+```csv
+ID,Description,Constraint,Type,LeftHandSide,RightHandSide
+C0,Ensure the project is completed on time,status,1
+C1,Ensure that each project is completed on time,True,Maximize,project,True
+C2,Ensure that all tasks are completed,True,False,1
+C3,Ensure the efficiency of sprint completion,True,Maximize the completion of user sprints,False,UserStory,status,2,1.0
+G4,maximize_sprint,Weight
+```
+
+### 1,maximize_project_efficiency,Maximize the project based on project_status,False,max,project_status,2,1
+G5,maximize_project_efficiency,Maximize the project based on project_status,False,max,Project,project_status,2,1
+G2,maximize_task_efficiency,Maximize the tasks based on task_status,True,min,Task,status,2,1.0
+G3,maximize_sprint_completion,Maximize the time completion,Maximize the time for completion of tasks based on task_status,False,Task,status,2,1.0
+G4,maximize_task_sprint_efficiency,Maximize the efficiency of the epics based on epic_status,2,1.1
+G5,maximize_user_story_completion,Maximize the user stories based on user_story_status,False,2,status,1
+G6,maximize_epic_completion,Maximize the epics based on epic_status,False,True,False,status,1
+G7,maximize_sprint_completion,Maximize the sprints based on user_story_status,False,True,min,status,1
+```
+
+### 3. Objectives,maximize_sprint_efficiency,Maximize the efficiency of sprints based on sprint_status,status,2,1
+G10,maximize_user_story_completion,Maximize the efficiency of user stories based on status,True,min,status,1
+G11,maximize_user_story_completion,Maximize the user stories based on user_story_status,True,UserStory,status,2,1
+G12,maximize_sprint_efficiency,Maximize the project efficiency,Description,Type,LeftHandSide,RightHandSide,Weight
+C0,Ensure project is completed,Ensure project is completed on time,True,project_end_date,1
+C1,ensure_task_completion,Ensure that all tasks are completed on time,Ensure that the workers are available for the project,True,min,Worker,availability,1.0
+C2,ensure_task_completion,Ensure sprint completion,True,Ensure that all sprint tasks are completed on time,min,Sprint,status,1
+C3,Ensure sprint completion,Ensure that all sprint tasks are completed,True,min,Sprint,status,1
+C4,Ensure that all epics are completed on time,True,Ensure that all projects are completed on time,True,True,min,Project,project_end_date,status,1
+C1,ensure_worker_availability,Ensure that the worker availability,True,True,availability,Worker,status,1
+C2,ensure_task_completion,True,True,Ensure sprint tasks are completed on time,True,min,Task,status,1
+C3,ensure_sprint_completion,True,True,Ensure sprint completion,True,True,True,min,UserStory,1
+C4,ensure_epic_completion,True,1
+C5,ensure_user_story_completion,True,True,True,UserStory,status,1
+C6,ensure_epic_completion,True,1
+C7,True,Ensure that all sprints are completed on time,True,True,True,UserStory,1
+C8,ensure_epic_completion,Ensure that all sprints are completed,True,min,Sprint,True,UserStory,1
+```
+
+### 4. Objective Function
+
+```latex
+The objective is to maximize the efficiency of the project while minimizing costs. The objective function is defined as:
+\[
+\max z = \sum_{i,j} x_{i,j} + \sum_{i} t_{i,j} + \sum_{i} d_{i}
+subject to:
+    \sum_{j} x_{i,j} = 1, \forall i,
+    \sum_{j} x_{i,j} <=1 \forall i,
+    \sum_{i} t_{i,j} + d_{j} <= t_{i,l} \forall j, l, such that x_{i,j} = x_{i,l} = 1, \forall j
+    \sum_{j} x_{i,j} <= 1, \forall i
+    \sum_{i,j} t_{i,j} + d_{j} <= t_{i,l} \forall j, l, such that x_{i,j} = x_{i,l} = 1 \forall j.
+    \sum_{j} x_{i,j} <= 1, \forall i.
+\end{document}
+```
+
+### 4. Conclusion
+
+```latex
+In this model, we have defined the variables, constraints, and objective function for optimizing project efficiency. The model aims to maximize project efficiency while ensuring that all constraints are met.
+\end{document}
+\maketitle
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphic}
+\setcounter}
+\title{Optimization Model}
+\author{Author Name}
+\date{\today}
+\begin{abstract}
+\title
+\date{\today}
+\begin{abstract}
+The following optimization model is designed to optimize resource allocation and task scheduling in a project environment.
+\begin{abstract}
+\item Project
+    \item Task
+    \item Worker
+    \item Sprint
+    \item UserStory
+    \item Story
+    \item Epic
+\end{itemize}
+\section{Variables}
+The following variables are used in the model:
+\begin{itemize}
+    \item x_{i,j}: Binary variable indicating whether task j is assigned to worker i (1 if yes, 0 if no)
+    \item t_{i,j}: Start time of task j if assigned to worker i
+    \item d_{i}: Duration of task i
+\end{itemize}
+\section{Constraints}
+The following constraints are included in the model:
+\begin{itemize}
+    \item Each task must be assigned to exactly one worker: \sum_{i,j} x_{i,j} = 1, \forall j
+    \item Tasks cannot overlap: If task j is assigned to worker i, then task l cannot start before task j plus its duration: t_{i,j} + d_{j} <= t_{i,l}, \forall j,l such that x_{i,j: 1}
+
+\section{Introduction}
+The following model is designed to optimize project efficiency.
+\section{Variables}
+The following variables are used in the model.
+
+\begin{itemize}
+\item x_{i,j}: Binary variable indicating whether task j is assigned to worker i (1 if yes, 0 if no.)
+
+\begin{Introduction}
+This section introduces the problem and its importance in project management.
+
+\section{Variables}
+The following variables are used in the model:
+\begin{itemize}
+    \item x_{i,j}: Binary variable indicating whether task j is assigned to worker i (1 if task j is assigned to worker i.
+    \item s_{j}: Start time of task j.
+    \item d_{j}: Duration of task j.
+    \item c_{i,j}: Cost of assigning task j to worker i.
+\end{variables}
+\section{Objective Function}
+The objective function is to minimize the total cost:
+
+\[
+\min z = \sum_{i,j} c_{i,j} x_{i,j}:
+\begin{align}
+    \sum_{j} x_{i,j} = 1 \forall j
+    \sum_{i} = 1, \forall j.
+    \item Task j overlap: \sum_{i,j} i, and j must start after j plus its duration: t_{i,j} + d_{j} <= t_{i,l}, \forall i,j,l
+    \sum_{i,j} = x_{i,l} = 1.
+    \item Each worker has a limited availability: \sum_{i} x_{j} d_{i,j} <= A_{i}, \forall i
+    \item Task start times must be within the time horizon: t_{j} <= H, \forall j.
+\end{document}
+
+\appendix
+\begin{appendix}
+    \section{Variables}
+    \item x_{i,j}: Binary variable indicating whether task j is assigned to worker i (1 if yes, 0 if no.
+    \item t_{i,j}: Start time of task j if assigned to worker i.
+    \item d_{j}: Duration of task j.
+    \item c_{i,j}: Cost of assigning task j to worker i.
+    \item Ensure all constraints are met: \sum_{j} x_{i,j} <=1 \forall j.
+    \item Ensure all tasks are completed on time: t_{i,j} + d_{j} <= t_{i,l} \forall j, l, such that x_{i,j} = x_{i,l} = 1.
+    \item Ensure worker availability: \sum_{j} x_{i,j} <=A_{i}, \forall i.
+    \item Ensure tasks are completed within time horizon: t_{j} <= H, \forall j.
+C0,RightHandSide
+C1,Ensure all workers are assigned to one task,=,= 1, \forall j
+```
+
+### 4. Conclusion
+
+In this model, we have defined variables, constraints, and the objective function for optimizing project efficiency. The model aims to minimize cost while meeting all constraints and deadlines.
+
+```latex
+```
