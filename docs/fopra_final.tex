@@ -1,0 +1,298 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.21 of 2022/01/12
+%
+\documentclass[runningheads]{llncs}
+
+%
+\usepackage[T1]{fontenc}
+% T1 fonts will be used to generate the final print and online PDFs,
+% so please use T1 fonts in your manuscript whenever possible.
+% Other font encondings may result in incorrect characters.
+%
+\usepackage{graphicx}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following two lines
+% to display URLs in blue roman font according to Springer's eBook style:
+%\usepackage{color}
+%\renewcommand\UrlFont{\color{blue}\rmfamily}
+%\urlstyle{rm}
+%
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\begin{document}
+%
+
+% TITLE 0 (ALTE IDEE)
+%\title{Die Verwendung von Generativen KIs zur Erstellung von Optmierungs-Sub-Modellen in SCRUM Simulationen: Potenziale, Probleme und Praktikabilität}
+
+% TITLE 1 (Kategorie: GUIDE und STUDIE)
+%\title{\title{Halluzinationen, Indizes, Einheiten: Fehlerkatalog und Leitplanken für LLM-generierte Optimierungsmodelle}
+%\title{Grenzen generativer KI bei der formalen Optimierung: Eine empirische Analyse im Scrum-Setting}
+
+% TITLE 2 (Kategorie LUSTIG aber LEIDER WAHR...)
+\title{Mehr Ziele, weniger Zielwert: Generative KI und die Probleme multi-objektiver Modellierung}
+%\title{Struktur ja, Formulierung nein? Evaluation generativer KI für IP/MO-Submodelle in Scrum-Simulationen}
+
+%
+\titlerunning{Von Generativer KI zu formalisierten Optimierungsmodellen}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+% \orcidID{0000-1111-2222-3333}
+\author{Lars Carpagne\inst{1} \and
+Artur Borowski\inst{1}
+}
+%
+\authorrunning{Lars Carpagne und Artur Borowski}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{Universität Trier - Wirtschaftsinformatik 1 \\
+\email{\{s4lacarp@uni-trier.de, s4arboro@uni-trier.de} \\
+%\url{http://www.springer.com/gp/computer-science/lncs}
+}
+%
+\maketitle              % typeset the header of the contribution
+%
+
+\begin{abstract}
+%Dieses Paper untersucht die Potenziale und Limitierungen von generativer KI bei der %Umwandlung von Anforderungen natürlicher Sprache in die Formulierung von %Optimierungsproblemen der Kategorien Integer Programming (IP) und Multi-Objective (MO). %Ziel ist es Datenblätter, Formeln und Graphen zum Kontext der Softwareentwicklung mittels %SCRUM generieren zu können.  so dass diese ihren Einsatz in Sub-Modellen von Simulationen %finden 
+
+Dieses Paper betrachtet die Potenziale und Limitierungen von generativer KI zur Erstellung und Formulierung von Optimierungsproblemen, insbesondere Integer Programming (IP) und auch Multi-Objective (MO) Modellen, die sich aus Natürlicher Sprache ableiten. Das Designen und Parametrisieren von Sub-Modellen in Simulationen dient dem Entdecken möglicher Entscheidungen in sowohl operativen als auch Business-Kontexten. Die nachfolgend beschriebene Untersuchung fokussiert sich auf den Kontexct der Software-Entwicklung mittels SCRUM als agiler Entwicklungsmethode mit dem Ziel ein Optimierungsproblem komplett durch KI erstellen zu können. Hierzu wurden verschiedene Large-Language-Models (LLMs) lokal und remote in den verschiedensten Teilbereichen getestet. Trotz Entwicklungen passender I/O Formate, einer Pipeline zur Automatisierung und Prompting-Strategien endeten die Ergebnisse alle LLMs gleichermaßen: Sie sind nicht in der Lage ein gesamtes Optimierungsproblem zu erstellen. 
+\keywords{Optimization \and Integer Programming \and Generative AI \and Simulation \and NLP \and LLM}
+\end{abstract}
+
+
+\section{Einleitung}
+Generative Künstlicher Intelligenz (GenKI) und Large Language Models (LLMs) versprechen als Tools der Wissensabfrage und Automatisierung Informationen und Anforderungen aus Natürlicher Sprache in maschinenlesbare Artefakte zu verkürzen. Insbesondere moderne Entwicklungsumgebungen bieten KI-Assistenten für Generierung, Erklärung, Strukturierung und Verbesserung von Code bereits an. Die Potenziale von LLMs wachsen stetig. Unklar bleibt jedoch ob LLMs in großen Problemräumen und Kontexten über längere Interaktionen hinweg konsistente und korrekte liefern. 
+Insbesondere in der betrieblichen Entscheidungsfindung ist die Simulation samt Parametrisierung verschiedener Prozesse mittels passender Modellen entscheidend - von der Personalplanung bis Produktions- und Priorisierungsreihenfolgen. Auch die Softwareentwicklung selbst bietet verschiedene agilen Methoden wie SCRUM, welche nach festgelegten Regeln und Artefakten arbeiten. Für die Optimierte Durchführung dessen bedarf es präzise ausgearbeiteter und konsistenter Optimierungs-Modelle (z.\,B.\ ganzzahlige Optimierungsprobleme, \emph{Integer Programming, IP}, und Mehrzieloptimierung, \emph{MO}), die sich zuverlässig parametrisieren und ausführen lassen.
+
+Im Rahmen dieser Arbeit untersuchen wir die Kompetenzen heutiger LLMs um aus natürlichsprachigen Anforderungen und Scrum-Artefakten vollständige, konsistente und lösbare Modelle hervorbringen zu können. 
+Zentral ist dabei die korrekte Identifikation und Spezifikation aller Bausteine—Mengen mit Entitäten und Attributen, Relationen, Entscheidungsvariablen, Zielfunktion(en) und Nebenbedingungen sowie auch die Überführung in ein formalisiertes Optimierungsmodell und visuelle Darstellung dessen. Ziele und Nebenbedingungen sollen zusätzlich auch in die 3 Kriterien für strukturelle Erweiterungen klassifiziert werden: \emph{Must-Match}, \emph{May-Match} und \emph{Cannot-Match}. Zusätzlich sollen LLMs im Rahmen der Multi-Objective (MO) Optimierung auch eine Gewichtung für diese erzeugen. Desweiteren sind das Erarbeiten passender Naming- und Wertekonventionen sowie die Untersuchung von syntaktischer Korrektheit und semantischer Abdeckung gegen Schlüsselwörter der Literatur samt Darstellung in formalisierter und visualisierter Form der Daten genauer zu betrachten. 
+
+Methodisch vergleichen wir lokale (Ollama-basierte) und gehostete LLMs und cloudbasierte LLMs und variieren Prompting-Strategien von offenen Mehrschritt-Ansätzen bis hin zu einer Ein-Prompt-Variante (s0–s3), um Varianz, Kontextabhängigkeit und Format-Compliance systematisch zu erfassen. 
+
+Vorweggenommen ist unser Ergebnis klar: LLMs sind nur für die Erstellung von Datensätzen, die Modellvorbereitung und das erzeugen CSV-Artefakten geeignet abernicht zuverlässig trotz Konventionen. Sie scheitern an der Formalisierung stabiler Integer Programming (IP) und Multi-Objective(MO) Modellen aufgrund Halluzinationen. Visuelle Darstellungen funktionieren ebenfalls nur semantisch lückenhaft und mit schlechter Lesbarkeit. Remote-Modelle reagieren zwar deutlich schneller, liefern jedoch qualitativ ähnliche Ergebnisse wie die lokalen; Der erhoffte Zeitgewinn scheint aktuell noch unerreichbar selbst mit hohem Ressourcenaufwand. Aus den Erkenntnissen  leiten wir eine pragmatische Konsequenz ab: Statt \emph{End-to-End-Automatisierung} empfehlen wir \emph{LLM-in-the-loop} mit \emph{Schema-First}-Guardrails in Prompts, template-basierten MO-MINLP-Vorlagen sowie automatisierten Struktur- und Einheiten-Checks. Die Arbeit liefert hierfür eine evaluierte Pipeline, einen Fehlerkatalog wiederkehrender Muster und einen möglichen Blueprint für praktikable, hybride Workflows mit LLM Integration.
+
+%
+% WAS MACH ICH MIT DENEN... 
+% Entweder als Unterabschnitt lassen und alle 5 im Ergebnis beantworten ODER in Fließtextform integrieren und auch hinten im Ergebnis als Fließtext beantworten
+%
+
+\subsection{Forschungsfragen}
+\begin{enumerate} 
+  \item \textbf{RQ1:} In welchem Umfang extrahieren LLMs aus Scrum-Texten die Elemente eines IP-/MO-Modells korrekt (Ziele, Nebenbedingungen, Entscheidungsvariablen, Formalisierte Darstellung, Graphenstruktur)? 
+  \item \textbf{RQ2:} Erzeugen LLMs \emph{vollständige und lösbare} Modelle, die ohne manuelle Eingriffe in Standard-Umgebungen (z.\,B.\ LP-Datei, Pyomo/PuLP) lauffähig sind?
+  \item \textbf{RQ3:} Welche Prompting-, Schema- und Pipeline-Strategien -- einschließlich strukturierter I/O-Formate sowie Validierungs- und Konsistenzchecks -- steigern Robustheit und Qualität?
+  \item \textbf{RQ4:} Welche typischen Fehlerbilder treten in den generierten Artefakten auf und wie lassen sie sich automatisiert erkennen, vermeiden oder lösen?
+  \item \textbf{RQ5:} Wie schneidet die LLM-basierte Modellierung hinsichtlich Zeitaufwand, Nachvollziehbarkeit und Wartbarkeit gegenüber einer manuellen Erstellung in realistischen Scrum-Szenarien ab?
+\end{enumerate}
+
+\section{Grundlagen}
+
+\subsection{Simulation und SCRUM}
+SCRUM ist ein agiles Vorgehensmodell, das vor allem in Projekten mit hoher Unsicherheit, komplexen Anforderungen und häufigen Änderungen eingesetzt wird. Es eignet sich insbesondere dann, wenn Anforderungen nicht vollständig im Voraus spezifiziert werden können und klassische Planungsansätze an ihre Grenzen stoßen.~\cite{ref_book1} In der Forschung wird SCRUM häufig in Simulationen untersucht, etwa mithilfe von Agent-Based Models, die Interaktionen zwischen Rollen und Aufgaben abbilden und auch psychologische Faktoren wie Belastung und Motivation berücksichtigen.~\cite{ref_article8} Studien zeigen zudem, dass verschiedene Rollenkonfigurationen (z.\,B.\ Generalisten vs.\ Spezialisten) unmittelbaren Einfluss auf Effizienz und Fehlerquoten haben können.~\cite{ref_article7} Für unsere Arbeit dient SCRUM kombiniert mit Aspekten kognitiver Belastung als Anwendungsszenario, um die Eignung von LLMs zur Modellgenerierung zu evaluieren. Anstelle einer vollständigen agentenbasierten Simulation steht dabei die Übersetzung von SCRUM-Entscheidungen wie Aufgabenpriorisierung oder Ressourcenzuweisung in formale Optimierungsmodelle im Mittelpunkt.
+
+\subsection{Extraktion aus natürlicher Sprache}
+Die Formulierung von Anforderungen ist fehleranfällig; Unklarheit und Unvollständigkeit erhöhen Komplexität und Risiko. Eine Gegenmaßnahme besteht darin, aus natürlicher Sprache strukturierte Informationen (Entitäten, Relationen, Constraints) zu extrahieren und darauf Modelle oder Analysen aufzubauen. Klassische NLP4RE-Ansätze erzeugen hierfür mehrschichtige Strukturen (z.\,B.\ Netzwerke oder Hierarchien), bleiben jedoch in der Abdeckung begrenzt, wie Übersichtsarbeiten berichten.~\cite{vierlboeck2022naturallanguagerequirementsengineering} Neuere Arbeiten nutzen LLMs zur Domänenextraktion und zeigen teils deutliche Vorteile gegenüber Baselines, zugleich aber typische Schwächen: Halluzinationen und Formatinkonsistenzen (u.\,a.\ durch Token-Limits und Datenschutzvorgaben). Strikte Output-Kontrakte (z.\,B.\ JSON/Function-Calling) verbessern die Format-Compliance, eliminieren Fehlerquellen jedoch nicht.~\cite{ref_article5,ref_proc1} Für unsere Arbeit heißt das: Schlüsselstrukturen werden oft korrekt erkannt, eine formal und syntaktisch nutzbare Modellbasis erfordert aber zusätzliche Validierung und Normalisierung der LLM-Ausgaben.
+
+\subsection{Modelle, Simulationen und Optimierungsmodelle}
+
+In der modellbasierten Systementwicklung (MBSE) dienen Modelle als zentrale Artefakte, die den Entwicklungsprozess strukturieren, dokumentieren und analysierbar machen. Sie werden als „single source of truth“ betrachtet und sichern Konsistenz, Nachverfolgbarkeit und Komplexitätsmanagement. Metamodelle definieren dabei die grundlegenden Strukturen einer Domäne – etwa Klassen, Attribute und Relationen – und bilden so das Fundament für Spezifikation und Validierung~\cite{ref_article6}. Darüber hinaus sind Modelle nicht nur statische Strukturbeschreibungen, sondern können in Simulationen eingesetzt werden, um Verhalten zu untersuchen, Fehler frühzeitig zu erkennen oder Szenarien zu testen. Neben technischen Aspekten lassen sich dabei auch menschliche Faktoren wie Motivation oder Belastung berücksichtigen, beispielsweise in agentenbasierten Simulationen zur Analyse von Teamleistung und Organisationserfolg~\cite{ref_proc1}.
+
+
+\subsection{Optimierungsmodelle und -probleme}
+
+Optimierungsmodelle beschreiben reale Entscheidungsprobleme durch Zielfunktionen und Nebenbedingungen und dienen dazu, systematisch Lösungen im Sinne eines definierten Optimums zu bestimmen. Da viele Szenarien sowohl diskrete als auch kontinuierliche Entscheidungen umfassen, entstehen häufig gemischt-ganzzahlige Formulierungen (MIP/MINLP), die in der Regel NP-hart sind. In der Praxis kommen neben exakten Verfahren wie Branch-and-Cut oder Branch-and-Price auch heuristische und matheuristische Ansätze zum Einsatz, um große Instanzen lösbar zu machen.~\cite{ref_article1,ref_article3} Mixed-Integer Programming (MIP/MILP) modelliert dabei diskrete Entscheidungen wie Zuweisungen oder Reihenfolgen gemeinsam mit kontinuierlichen Größen und wird etwa in Schicht- und Dienstplänen in Krankenhäusern eingesetzt, wo harte und weiche Constraints (z.\,B.\ Fairness- und Gesetzesauflagen) berücksichtigt werden müssen~\cite{ref_article2,ref_article3}. In komplexeren Szenarien treten mehrere, teils konkurrierende Ziele gleichzeitig auf, etwa Kosten, Qualität oder Ressourcennutzung. Solche multi-objektiven Modelle führen typischerweise zu Pareto-optimalen Lösungen, die mit Verfahren wie der $\varepsilon$-Constraint-Methode oder gewichteten Summen bestimmt werden~\cite{ref_article1}. Besonders anspruchsvoll sind schließlich Multi-Objective MINLP-Formulierungen, die diskrete und kontinuierliche Variablen mit nichtlinearen Zusammenhängen kombinieren. Diese Modelle sind rechnerisch sehr fordernd und erfordern häufig Relaxationen, Dekomposition oder matheuristische Verfahren, um in der Praxis lösbar zu sein~\cite{ref_article1}. Auch wenn unsere Experimente kein klassisches Scheduling- oder Rostering-Setting adressieren, greifen sie auf dieselben Grundprinzipien zurück: diskrete und kontinuierliche Entscheidungen, harte und weiche Constraints sowie Zielkonflikte, die in Optimierungsmodellen formalisiert und ausgewertet werden.
+
+\subsection{Constraint-Satisfaction-Problem (CSP)}
+
+Ein Constraint-Satisfaction-Problem (CSP) beschreibt die Erfüllbarkeit einer Menge von Nebenbedingungen über Variablen mit endlichen Domänen. Im Unterschied zur Optimierung steht dabei keine Zielfunktion im Vordergrund. In unserer Methodik entspricht dies der Frage, ob die durch LLMs generierten Bedingungen (\emph{Conditions}) gleichzeitig erfüllbar sind. Wir unterscheiden dabei \emph{Must}-Constraints, die zwingend erfüllt werden müssen, \emph{May}-Constraints, die mit Strafkosten verletzt werden dürfen, und \emph{Cannot}-Constraints, die unzulässige Strukturen darstellen~\cite{ref_article2}. Dieses Prinzip übertragen wir in unsere Pipeline: Must-Matches werden als harte Constraints, May-Matches als weiche Bedingungen und Cannot-Matches als Ausschlussregeln interpretiert. Damit fungiert der CSP-Check als Brücke zur Optimierung, da eine erfüllbare CSP-Instanz einer zulässigen MILP-Lösung entspricht, die durch Hinzufügen einer Zielfunktion zu einem Optimierungsproblem erweitert werden kann~\cite{ref_article3}.
+
+\subsection{Darstellung von Optimierungsmodellen/-problemen}
+
+Optimierungsmodelle erfordern eine standardisierte Repräsentation, um nachvollziehbar und prüfbar zu sein. Typisch ist die Kombination aus strukturierten Daten, einer formalen Modellbeschreibung in Formeln und einem Katalog von Constraints. Solche Darstellungen sind in der Literatur etabliert, etwa im Job-Shop-Scheduling mit MILP-Formulierungen~\cite{ref_article3} oder in der Personaleinsatzplanung mit Hard- und Soft-Constraints~\cite{ref_article2}. Auch multi-objektive Varianten lassen sich so dokumentieren, um Zielkonflikte transparent zu machen~\cite{ref_article1}. Graphen bieten eine intuitive Möglichkeit, die Struktur von Problemen darzustellen: Knoten repräsentieren Domänenobjekte, Kanten deren Beziehungen. In der modellgetriebenen Entwicklung werden Modelle ohnehin in Graphstrukturen abgelegt und mit Pattern-Sprachen validiert~\cite{ref_article6}. Dies ermöglicht eine einheitliche Sicht auf Konzepte, Relationen und Regeln und unterstützt insbesondere die Analyse unvollständiger Modelle.
+
+\subsection{Large Language Models (Definition, lokal, Cloud)}
+
+LLMs sind generative Sprachmodelle auf Basis der Transformer-Architektur, deren Kernmechanismus \emph{Self-Attention} lange Abhängigkeiten in Sequenzen erfasst. Während GPT-Modelle eine decoder-only-Variante nutzen, existieren auch Encoder-Decoder-Architekturen (z.\,B.\ T5). Die Leistungsfähigkeit skaliert im Wesentlichen mit der Zahl der Parameter, der Größe der Trainingsdaten und dem verfügbaren Rechenaufwand~\cite{ref_article5,ref_book2_steinig2023}. 
+LLMs zeigen ausgeprägte Zero-Shot- und In-Context-Learning-Fähigkeiten und können neben Text auch Code oder strukturierte Artefakte generieren. Gleichzeitig bestehen jedoch Grenzen: Halluzinationen, inkonsistente Ausgabeformate, Token-Limits und eingeschränkte Reproduzierbarkeit sind häufige Probleme. Im Ingenieurkontext gilt dies insbesondere bei komplexeren Modellgenerierungen, die regelmäßig zu Syntax- oder Strukturfehlern führen, während einfache Fälle meist zuverlässig gelingen~\cite{ref_proc1,ref_article5}.
+
+\subsubsection{Lokale vs.\ Cloud-Modelle}
+
+Vergleichende Studien zeigen, dass Cloud-LLMs lokale Modelle nicht durchgängig übertreffen: Das Reasoning-Modell \emph{DeepSeek-R1} erzielte die höchste Genauigkeit, war jedoch deutlich langsamer~\cite{ref_preprint_wang2025}. Cloud-Modelle bieten meist höhere Rohleistung und bessere Format-Compliance, bringen jedoch Datenschutz- und Abhängigkeitsrisiken mit sich~\cite{ref_book2_steinig2023}. Lokale Modelle gewährleisten Datenhoheit, erfordern aber erhebliche Hardwarekapazitäten und liefern oft geringere Spitzenleistung~\cite{ref_article5}. Insgesamt zeigen die Befunde deutliche Trade-offs zwischen Genauigkeit, Geschwindigkeit und praktischer Einsetzbarkeit.
+
+\subsection{Prompting / Prompt Engineering}
+
+Prompting bezeichnet die gezielte Gestaltung von Eingaben, um LLM-Ausgaben hinsichtlich Inhalt, Struktur und Format zu steuern. Gerade für modellgetriebene Aufgaben ist dies zentral, da klare Prompt-Strukturen Halluzinationen verringern, Formatkonformität erhöhen und Reproduzierbarkeit verbessern können~\cite{ref_article5}. Studien zeigen, dass Techniken wie mehrstufiges Prompting, In-Context Learning (ICL) oder Chain-of-Thought (CoT) die Zielerfüllung verbessern können, während zu lange oder gemischte Prompts häufig zu Genauigkeitsverlust führen~\cite{ref_proc1}. Reasoning-Modelle wie \emph{DeepSeek-R1} erreichen dabei teils höhere Genauigkeit, sind jedoch deutlich langsamer~\cite{ref_preprint_wang2025}.
+
+\section{Methodik}
+Unsere Methodik folgte einem iterativen, aber klar chronologischen Ablauf, der von einer breiten Literaturrecherche über die schrittweise Eingrenzung des Gegenstandsbereichs bis zur Entwicklung und Automatisierung einer Evaluationspipeline reicht.
+
+\subsection{Literaturrecherche und Themenfokus}
+In der ersten Phase wurde zunächst Wissen über verwandte und relevante Literaturen ersichtet. Darunter Grundlagen zu Optimierungsproblemen und -modellen, Partiellen Domänenmodellen, Graphstrukturen, Constraint Satisfaction Problemen (CSP), strukturelle Erweiterungsregeln und -Kritieren für Graphen sowie Natural Language Processing. Im Rahmen dessen wurden als Vorbereitung wichtige Fachbegriffe und Schlüsselwörter notiert wovon auszugehen war, dass LLMs diese nennen. Es folgte eine kontext-bezogene Recherche nach SCRUM spezifischen Informationen wie dessen Struktur, Artefakten, Ablauf sowie auch Themen wie der Stressentwicklung und kognitiver Belastung bei der Umsetzung größerer Software-Projekten.
+
+\subsection{Keyword Analyse und Wissensprüfung}
+Für Terminologieabdeckung und Wissensprüfung wurde aus den wichtigsten Quellen, die zeitgleich auch Vergleichsliteratur für das Warm-Up Prompting sind, jeweils bis zu 30 verschiedene Schlüsselwörter und Fachbegriffe extrahiert. Diese wurden dann in einer CSV Datei auf dem zu der Arbeit gehörenden GitHub Repository zusammengeführt.~\cite{ref_url_repo} Ein LLM gilt als domänenseitig \emph{unterdeckt}, wenn in seinen Ausgaben zentrale Standard-Begriffe fehlen. Für die Auswertung wurden sämtliche LLM-Outputs als JSON mit spaCy vorverarbeitet (Tokenisierung, Lemmatisierung, einfache Normalisierung wie Unicode- und Bindestrich-Varianten). Anschließend wurden die (einzigartigen) Lemma-Mengen der LLM-Outputs gegen die Lemma-Menge des Goldstandards gematcht; die Modellleistung wurde über Präzision, Recall und den daraus abgeleiteten F1-Score verglichen.~\cite{ref_url_spacy} Die Auswertung ergab insgesamt nur eine sehr geringe Terminologieabdeckung (maximal rund 3\,\% Trefferquote); detaillierte Ergebnisse sind im Ergebnisteil dargestellt. \textit{Warum Lemmatisierung (spaCy) statt einfachem \texttt{toLower()+equals}?} Ein reiner Kleinschreibungs-/Stringvergleich verfehlt in beiden Sprachen zahlreiche legitime Variationen: (i) Flexionsformen (\emph{Ziel} vs.\ \emph{Ziele}, \emph{optimieren} vs.\ \emph{Optimierung}), (ii) Großschreibung/Nominalisierung im Deutschen sowie auch (iii) Bindestrichvarianten (\emph{WIP-Limit} vs.\ \emph{WIP Limit}). Mittels der Lemmatisierung wird die Wortvarianz auf ihre Grundformen reduziert und senkt damit die Trefferquote für False Negatives deutlich. Die lexikalische Abdeckung des Domänenvokabulars kann somit robuster werden und ist zwischen Modellen und Versuchen fairer vergleichbar.
+
+\subsection{Ziel-Artefakte der Generierung (Ausgaben, Formate und Pipeline-Integration)}
+Ziele der Generierung sind:
+(i) ER-nahe Strukturen (Entitäten, Attribute, Relationen), 
+(ii) Optimierungsbausteine (Ziele, Nebenbedingungen, Entscheidungsvariablen), 
+(iii) formale Darstellung (LaTeX) des Optimierungsproblems sowie 
+(iv) Graph-Repräsentation (Mermaid, MMD). Gleichzeitig musste sichergestellt werden, dass für Ziele und Nebenbedingungen sowohl die Kriterien für strukturelle Graph-Erweiterungen als auch eine Gewichtung bei der Multi-Objective Optimierung gegeben sind. Zur Erreichung dessen wurden Enumerationen wie "CriteriaType" mit 2=Must-Match, 1=May-Match und 0=Cannot-Match als auch eine Spalte "Weight" Teil der festen Namens- und Wertekonventionen. Bei den erzeugten Outputs gibt es 3 wesentliche Kriterien:
+(a) strukturelle Integrität (Namens- und Wertekonventionen, Referenzierbarkeit, Indexkonsistenz), 
+(b) syntaktische Korrektheit (CSV/LaTeX/MMD), 
+(c) semantische Mindestabdeckung (Keyword-Analyse)
+
+\subsection{Prompting-Strategien (s0--s3)}
+Im nachfolgenden werden nun die verschiedenen Prompting Strategien und ihre Bedeutung beleuchtet. Die konkreten Prompts sind auf dem zur Arbeit gehörenden GitHub-Repository verlinkt.
+
+\subsubsection{s0 -- Die Brainstorming Strategie (deutsch)}\label{subsec:s0}
+Das Ziel von s0 war eine Baseline zur weiteren Erarbeitung und Diskussion, ganz ohne Konventionen oder harte Restriktionen. Ein Einstiegsprompt versetzte das LLM in die Rolle einer Expertin für Optimierungsprobleme. Die daran anschließenden fünf Warmup-Prompts (p1–p5) prüften Wissensstand und Terminologie als Grundlage der späteren Keyword-Analyse. Gleichzeitig ließen diese u.a. gängige agile Methoden aufzählen (Scrum wurde am häufigsten genannt). Die Kernprompts (p6–p10) erzeugten  strukturierte Listen für (\emph{Entitäten}, \emph{Attribute}, \emph{Relationen}, \emph{Goals}, \emph{Conditions}, \emph{DecisionVariables}) sowie eine erste, grobe Formalisierung des Optimierungsproblems im Scrum-Kontext direkt in den Chats der cloudbasierten Modelle. Häufig wurden LaTeX für die formale Darstellung und Mermaid (MMD) für die Graphenrepräsentation vorgeschlagen; parallel diskutierten wir I/O-Formate mit GitHub-Tauglichkeit (CSV/JSON) für eine einfache Vorschau. Der Leitfaden wurde initial mit drei Cloud-LLMs (ChatGPT, Qwen, Copilot) erprobt; die Beobachtungen mündeten in erste Entscheidungen zu Benennungs- und Ausgabeformaten. Die s0-Ergebnisse dienten ausschließlich der Strategieableitung und wurden nicht als endgültige Datensätze gespeichert.
+
+\subsubsection{s0' -- Erster Modellrahmen}\label{subsec:s0prime}
+Mittels der ersten Erkenntnisse aus s0 wurde Entscheidungen für das Modell getroffen: Der Fokus wurde auf die agile Methode \emph{Scrum} verengt. Parallel definierten wir LaTeX (formale Modellierung) und Mermaid (MMD; Graph) als feste Zielartefakte. Um die Streuung der Ausgaben zu reduzieren und eine belastbare ER-Grundlage zu schaffen, ergänzten wir die Prompts um harte Cardinality-Limits: 6--12 Entitäten, 1--8 Attribute, 6--10 Relationen. Limitierungen für Ziele, Nebenbedingungen und Entscheidungsvariablen wurden zunächst bewusst offengelassen, da sie vom zugrunde liegenden ER-Modell abhängen.
+
+\subsubsection{s1 -- Elf-Schritt-Pipeline mit strukturierten CSVs und Formalisierung}\label{subsec:s1}
+Aufbauend auf den Tests aus s0 und s0' wechselten wir auf Englisch mit der gesamten Prompting-Strategie. So kann das (vermutlich) größere Quellenwissen hinter den LLMs deutlich besser genutzt werden und zugleich mit unserer englischen Literatur verglichen werden. Mit Wechsel der Sprache sollte auch die lexikalische Varianz im Vergleich zu Deutsch weiter abnehmen. Zur Vermeidung von Mehrdeutigkeiten und der Stabilisierung weiterer Folgeschritte, definierten wir nun das ER-Modell direkt im Input auf Basis unserer SCRUM Literatur und den ersten Ergebnissen in s0. So erstellten wir eine fest definierte Liste von Scrum-\emph{Entitäten} und \emph{Relationen}. s1 verlagert somit den Schwerpunkt auf die Generierung der Optimierungsmodell-Komponenten (\emph{Goals}, \emph{Conditions}, \emph{DecisionVariables}) sowie deren formale (LaTeX) und visuelle (Mermaid/MMD) Darstellung. Begleitend definierten wir in den Prompts entsprechende Namens- und Wertekonventionen sowie Enumerationen wie beispielsweise (\texttt{CriteriaType} $\in\{\text{Must},\text{May},\text{Cannot}\}$), um Auslegungsspielräume zu reduzieren. Die 11-stufige Prompt-Kette bestand aus: \emph{p0} Rollenaktivierung, \emph{p1--p5} Wissens-/Terminologie-Warmup, \emph{p6--p10} Produktion der drei CSVs (\emph{Goals}, \emph{Conditions}, \emph{DecisionVariables}), der LaTeX-Formulierung und einer MMD-Grafik.
+
+\subsubsection{s2 -- Dreistufige Kurzpipeline: CSV \texorpdfstring{$\rightarrow$}{->} LaTeX \texorpdfstring{$\rightarrow$}{->} Graph}\label{subsec:s2}
+
+Zur Reduktion des Kontextfensters und der Laufzeiten kondensierte s2 die Interaktion auf drei Prompts: (1) Erzeugung der drei CSVs (\emph{Goals}, \emph{Conditions}, \emph{DecisionVariables}) auf Basis des vorgegebenen Domänen-Schemas, (2) deterministische Überführung in eine logische und mathematische LaTeX-Darstellung, (3) Ableitung einer MMD-Graphansicht. 
+
+\subsubsection{s3 -- Single-Prompt End-to-End mit Null-Kontext}\label{subsec:s3}
+In der Literatur wird drauf hingewiesen, das kontextbasierte Chats in Zero-Shots ohne verlust der Qualität umgewandelt werden können, welches die Basis dieser Strategie bildet: Alle Informationen, benötigte CSV Dateien und Aufgaben in einem Prompts zu verfassen.~\cite{ref_article5} s3 prüfte, ob die strikteste Form der Vorgabe die End-to-End-Fähigkeit verbessert: ein einziger Prompt (max.\ 8192 Tokens), der alle Artefakte zugleich fordert (3×CSV, \texttt{Model.tex}, \texttt{Graph.mmd}) und dadurch das Antwort-Kontextfenster auf 0 setzt.
+
+\subsubsection{s2 \& s3 --Triple Prompting und Single Prompt Strategie}
+In der Literatur wird darauf hingewiesen, dass kontextbasierte Chats ohne Qualitätseinbußen der Ergebnisse in Zero-Shot-Prompts überführt werden können, was die Grundlage der folgenden Strategien bildet~\cite{ref_article5}. In Strategie S2 werden alle Schritte, Informationen (z. B. CSV-Dateien) und Aufgaben in drei Prompts gebündelt; in Strategie S3 werden sie zu einem einzigen Zero-Shot-Prompt kondensiert. Wir untersuchen, ob striktere Vorgaben und eine Reduktion des Kontexts zu vergleichbaren Resultaten führen.
+
+\subsection{Systemumgebung, Modelle und Automatisierung}
+Für die lokalen Experimente kamen \emph{Ollama} und \emph{OpenWebUI} auf zwei Systemen (Windows, Linux) zum Einsatz; Remote-Modelle wurden über die Web-Frontends der jeweiligen Anbieter getestet. Zur Reproduzierbarkeit nutzten wir ein GitHub-Repository, Extraktionsskripte und GitHub Actions (automatisches Auslesen von \texttt{chat.json}, Extraktion der CSV/LaTeX/MMD-Artefakte, Durchführung der Keyword-Analyseg). Getestet wurden sowohl Remote-Modelle (u.\,a.\ ChatGPT, Qwen, Meta, Gemini, MS Copilot, DeepSeek, Mistral) als auch lokale LLMs unterschiedlicher Größen (1B–32B), final: \texttt{phi4:14b}, \texttt{dolphin3:8b}, \texttt{mistral:7b}, \texttt{mistral-small3.2:24b}, \texttt{deepseek-r1:32b}, \texttt{deepseek-r1:8b}, \texttt{qwen3:32b}, \texttt{gemma3:27b}, \texttt{llama3.3:latest}, \texttt{mistral-small3.1:latest}, \texttt{qwen3:latest}, \texttt{gemma3:latest}, \texttt{deepseek-r1:latest}, \texttt{gemma3:1b}. Für lokale Versuche wurden Timeouts auf 30\,min erhöht; sehr große Modelle wurden wegen Speicher- oder Laufzeitgrenzen verworfen oder Überschreitung von 120min pro Prompt verworfen.
+
+\section{Experimente und Ergebnisse}
+%Folgend unsere Experimente...
+
+%\subsection{Versuchsdesign und Durchführung}
+Zum Durchführen der Untersuchung wurden zunächst die cloudbasierten und lokalen LLMs festgelegt. Bei den Cloudbasierten Modellen wurde sich für ChatGPT 4 und 5, Qwen, Meta, Gemini, MS Copilot, DeepSeek und Mistal entschieden. Bei den Lokalen Modellen hingegen entschieden wir uns für die folgenden Modelle der Parametergrößen 1B bis 32B: \texttt{phi4:14b}, \texttt{dolphin3:8b}, \texttt{mistral:latest}, \texttt{mistral-small3.2:24b}, \texttt{deepseek-r1:32b}, \texttt{deepseek-r1:8b}, \texttt{qwen3:32b}, \texttt{gemma3:27b}, \texttt{llama3.3:latest}, \texttt{mistral-small3.1:latest}, \texttt{qwen3:latest}, \texttt{gemma3:latest}, \texttt{deepseek-r1:latest}, \texttt{gemma3:1b} Für alle Modelle \emph{m} aus der Modellmenge \emph{M} wurden die Strategien \emph{s} aus der Strategiemenge \emph{S} (\emph{s1}, \emph{s2}, \emph{s3}) mit einer gewissen Anzahl von Versuchen (\emph{v1}, \ldots, \emph{vn}) durchgeführt. Bei den lokalen LLMs entschieden wir uns aufgrund von Laufzeit für 3 Versuche (\emph{v1}, \emph{v2}, \emph{v3}). Bei den cloudbasierten Modellen hingegen haben wir 10 Versuche (\emph{v1}, \ldots, \emph{v10}) gewählt. Die Eingaben enthielten (je nach Strategie) ein partielles Domänenmodell (ER-Anteil), feste Namens- und Wertekonventionen, Mengen und Index-Definitionen sowie auch Limitierungen. Als erwartete Ausgaben waren konsistent strukturierte CSV-Dateien (Goals, Conditions, DecisionVariables), eine LaTeX-Formulierung sowie eine MMD-Graphrepräsentation gefordert.Experimente mittels cloudbasierter LLMs wurden direkt über den Webbrowser Google Chrome ausgeführt und die Extraktion und Einsortierung der generierten CSV, LaTeX und MMD Dateien bzw. Code-Blocken erfolgte händisch.
+Bei den Experimenten über die lokalen LLMs wurden Befehle mittels CLI ausgeführt. Die Ausgaben aller LLMs konnten in einer chat.json samt Metriken wie Nachdenkzeit und Token extrahiert werden. Eine GitHub Action sorgte für automatisierte Extrahierung der CSV Dateien.
+
+%\subsection{Metriken}
+%\begin{itemize}
+%    \item (i) \emph{Strukturelle Integrität} (Referenzen, Indizes, Einheiten, Konventionen)
+%    \item (ii) \emph{Semantische Abdeckung} via Keyword-Analyse (Literatur-Goldstandard)
+%    \item (iii) \emph{Syntaktische Validität} (CSV/JSON/LaTeX/MMD)
+%    \item (iv) \emph{Aufwand/Praktikabilität} (manuelle Korrekturen, Laufzeit, Fehlertypen)
+%    \item (v) \emph{Konformität mit Limits} (z.\,B.\ Anzahl Entitäten/Ziele/Nebenbedingungen/Variablen).
+%\end{itemize}
+
+\subsection{Ergebnisse nach Strategien}
+\subsubsection{Strategie s0 | ChatGPT-4 (Deutsch).}
+Ohne Vorgaben erzeugte die Reihe von Warm-up-Prompts ein breites Antwortspektrum. Die Ausgaben variierten deutlich in Länge und Reihenfolge der Angaben, während die inhaltlichen Kernelemente (z.\,B.\ typische Scrum-Begriffe sowie Kandidaten für Entitäten, Attribute und Relationen) weitgehend konstant blieben. Auffällig war eine hohe Übereinstimmung in wiederkehrenden Schlüsselwörtern, was auf vorhandenes Basiswissen hindeutet; zugleich schwankten Ordnung und Gruppierung der Elemente stark. Halluzinationen waren in dieser Phase nur schwer zu erkennen, da Zielartefakte und Bewertungsmaßstäbe noch nicht festgelegt waren; Parallel schlugen die Modelle oftgenutzte Formate für die Daten und Visualisierungen vor. (z.\,B.\ CSV/JSON/XML für Datenspeicherung). Diese Befunde bildeten die Grundlage für erste Entscheidungen in Richtung der  angepassten Strategie s0'.
+
+\subsubsection{Strategie s0' | ChatGPT-4 und Qwen (Deutsch)}
+Durch die Festlegung auf SCRUM als agile Methode der Softwareentwicklung und festgesetzte Limitierungen in der Anzahl der Ausgaben sowie fixen Dateiformaten und Syntax wurde die Varianz in den Ausgaben reduziert jedoch nicht vollständig entfernt. Die Bezeichnungen von CSV-Spaltennamen und dessen Werten blieben jedoch inkonsistent. Sporadische Auslassungen oder andere Namenskonventionen machten die Portierbarkeit in Folgeschritte unmöglich. 
+
+\subsubsection{Strategie s1 (11 Prompts) \,|\, Alle LLMs (englisch).}
+Die englischsprachige Prompt-Kette mit starken Restriktionen und Vorgaben in den I/O-Schnittstellen reduzierte die lexikalische Varianz und den benötigten Eingabekontext. Vorgegebene Namens- und Wertekonventionen wurden überwiegend eingehalten; die resultierenden CSV-Dateien (\emph{Goals}, \emph{Conditions}, \emph{DecisionVariables}) waren formal konsistent und für die Pipeline nutzbar. Inhaltlich blieb jedoch eine deutliche Streuung bestehen: Gleichnamige bzw.\ semantisch ähnliche Ziele und Nebenbedingungen wurden über die verschiedenen Modelle und Versuche im gleichen Modell hinweg unterschiedlich gewichtet, was die Multi-Objective-Optimierung instabil machte. Die nachgelagerte Formalisierung erwies sich als Hauptfehlerquelle. Bei der Überführung der CSV-Daten in eine mathematisch/logische Darstellung (LaTeX) traten unerwartete Bezeichner, undefinierte Symbole (z.\,B.\ \(\Pi\), \(\Sigma\), \(\Omega\)) und inkonsistente Indizes auf; die Semantik vieler Formeln war fragwürdig und praktisch nicht nutzbar. Zudem verhinderten Syntaxfehler häufig die Kompilierbarkeit (z.\,B.\ in Overleaf). Auch die Ableitung von Mermaid-Graphen (MMD) zeigte Limitierungen: Trotz spezifizierter Elemente entstanden überladene, schlecht lesbare Diagramme (teils >20 Kanten pro Knoten), vereinzelt fehlten Verbindungen; Maßnahmen wie das Deduplizieren von Knoten oder die Kantenreduktion brachten keine signifikante Verbesserung. Leistungsseitig antworteten Remote-Modelle zwar deutlich schneller, unterschieden sich jedoch qualitativ kaum. Lokale Varianten stießen beim Laden größerer Checkpoints (z.\,B.\ \texttt{llama3}/\texttt{llama4}) regelmäßig an Speichergrenzen (Swap), wodurch in der Pipeline teils Prompts nicht eingelesen oder Ausgaben nicht erzeugt wurden. Der standardmäßige HTTP-Timeout von 5\,min wurde sowohl im Web-Client als auch bei Python-Requests wiederholt erreicht und führte zu HTTP-500-Fehlern. Durch Anheben des Timeouts auf 10--30\,min ließ sich die Mehrheit der Prompts verarbeiten; in Einzelfällen reichten selbst 60\,min nicht aus. Kleinere lokale Modelle (1B--4B) verloren zudem wiederholt den Gesprächskontext, sodass die 11-stufige Prompt-Kette faktisch unterbrochen wurde. Die Laufzeiten eines Versuchs variierten von unter 5 Minuten Gesamtzeit für cloudbasierten Modellen und den kleinsten lokalen Modellen bis hin zu über 2 Stunden mit lokalen Modellen. Unerwartete Technische Probleme sorgten bei Verarbeitung über Nacht sogar für mehr als 18 Stunden Laufzeit.
+
+\subsubsection{Strategie s2 (3 Prompts) \& s3 (1 Prompt) \,|\, Alle LLMs (englisch).}
+Die dreistufige s2-Pipeline verzichtet auf Warm-up-Prompts und verkürzte in unseren Messungen die Gesamtverarbeitungszeit insbesondere bei lokalen LLMs; bei Cloud-Modellen war der Effekt geringer. Hinsichtlich der Ergebnisqualität zeigten sich keine statistisch signifikanten Unterschiede, die finalen Artefakte (CSV, LaTeX, MMD) wiesen dieselben Fehlertypen auf; das Begrenzen des Kontextfensters bzw.\ die Reduktion expliziter Chain-of-Thought-Ausgaben brachte keinen messbaren Zusatznutzen. Die Ein-Prompt-Variante s3 verkürzte die Laufzeiten erneut (lokal > Cloud), erzeugte strukturell homogenere Outputs mit etwas besserer Einhaltung von Benennungskonventionen, zeigte jedoch häufiger formale Halluzinationen in der mathematischen Darstellung (undefinierte Symbole, Indexfehler) und führte nur selten zu konsistent lösbaren Modellen; insgesamt ergab sich gegenüber s2 kein statistisch signifikanter Qualitätsunterschied, s3 fungierte primär als Stresstest der Generierungsgrenzen.
+
+\subsection{Lokale vs.\ Remote-Modelle und Laufzeiten}
+Lokale LLMs zeigten stark erhöhte Laufzeiten (bis 30--120\,min/Prompt, teils Timeouts oder Endlosschleifen). Große lokale Modelle waren aus Speicher-/Zeitgründen nicht praktikabel und führten durch ihre instabilität zu nicht messbaren Resultaten. Remote-Modelle antworteten schneller, unterschieden sich aber nicht grundlegend in der Modellqualität. Einige Modelle lieferten zu knappe oder kontextferne Antworten; andere produzierten „bloated“ Texte mit Redundanzen.
+
+\subsection{Zentrale Beobachtungen}
+\begin{itemize}
+  \item \textbf{Daten-Erzeugung:} Die Generierung strukturierter Listen (Entitäten, At-
+tribute, Relationen) sowie die finalen (Goals/Conditions/DecisionVariables) CSV-Dateien klappt unter der exakten Angabe von Naming- und Werte-Konventionen bei sowohl lokalen auch als cloudbasierten Modellen.
+  \item \textbf{Formalisierung:} Die Überführung der generierten Daten in IP-/MO-Formulierungen mathematisch und logisch gespeichert als LaTeX Dokumente scheitert bei sowohl cloudbasierten als auch lokalen Modellen.
+  \item \textbf{Graphen:} MMD-Syntax meist korrekt, Layouts jedoch oft unleserlich; semantische Lücken (fehlende Kanten).
+  \item \textbf{Bewertbarkeit:} Vollständigkeit/Korrektheit bleiben ohne Expertengutachten schwer beurteilbar; Syntax- und Feasibility-Checks reichen nicht für semantische Deckung.
+  \item \textbf{Kosten/Nutzen:} Hoher Laufzeit- und Korrekturaufwand, besonders lokal; der Automatisierungsgewinn bleibt aus.
+\end{itemize} \\
+
+Cloud Modelle: \\
+\begin{tabular}{@{} l c c c c p{7.8cm} @{}}
+\toprule
+\textbf{Modell} & \textbf{Artefakte*} & \textbf{Terminologie} & \textbf{CSV\,-\,Schema} & \textbf{Entity/Attr.} \\
+\midrule
+chat-gpt-4o & teilw. & nein & fehlerhaft & fehlerhaft \\
+chat-gpt-4.1\_8b & fehlend & nein & n/a & n/a \\
+deepseek-r1\_32b & teilw. & nein & fehlerhaft & fehlerhaft \\
+deepseek-r1\_latest & teilw. & nein & fehlerhaft & fehlerhaft \\
+dolphin3\_8b & teilw. & nein & fehlerhaft & fehlerhaft \\
+gemma3\_1b & meist fehlend & nein & fehlerhaft & fehlerhaft \\
+gemma3\_27b & teilw. & (k.\,A.) & fehlerhaft & fehlerhaft \\
+llama3.3\_latest & fehlend & n/a & n/a & n/a \\
+mistral\_latest & teilw. & nein & fehlerhaft & fehlerhaft \\
+mistral-small3.1\_latest & teilw. & nein & fehlerhaft & fehlerhaft \\
+mistral-small3.2\_24b & teilw. & nein & fehlerhaft & fehlerhaft \\
+phi4\_14b & teilw. & nein & fehlerhaft & fehlerhaft \\
+\bottomrule
+\end{tabular}
+
+\paragraph{ }
+
+Lokale Modelle: \\
+\begin{tabular}{@{} l c c c c p{7.8cm} @{}}
+\toprule
+\textbf{Modell} & \textbf{Artefakte*} & \textbf{Terminologie} & \textbf{CSV\,-\,Schema} & \textbf{Entity/Attr.} \\
+\midrule
+chat-gpt 4o & teilw. & nein & fehlerhaft & fehlerhaft \\
+chat-gpt 5.0 & fehlend & nein & n/a & n/a \\
+qwen-ai & teilw. & nein & fehlerhaft & fehlerhaft \\
+ms-copilot & teilw. & nein & fehlerhaft & fehlerhaft \\
+deepseek & teilw. & nein & fehlerhaft & fehlerhaft \\
+gemini 2.5-pro & teilw. & nein & fehlerhaft & fehlerhaft \\
+meta ai & teilw. & nein & fehlerhaft & fehlerhaft \\
+x.ai / grok & teilw. & nein & fehlerhaft & fehlerhaft \\
+\bottomrule
+\end{tabular}
+\\
+*„Artefakte“ = 3$\times$CSV (Goals/Conditions/DecisionVariables) mit je 10–15 Zeilen \,+ LaTeX (5 Abschnitte) \,+ Mermaid \\
+„Terminologie“ = konsistente Verwendung \emph{Worker}/\emph{SprintReview} \\
+„CSV-Schema“ = korrekte IDs/Spalten/Typen/Domains \\
+„Entity/Attr.“ = nur existierende Entitäten/Attribute, keine Relation als Attribut, keine Phantomfelder.
+
+
+\section{Diskussion}
+
+Die Ergebnisse über Strategien s0--s3 und lokale wie cloudbasierte LLMs lassen sich klar einordnen: LLMs sind für die \emph{Teilaufgaben} der Modellvorbereitung nützlich (Struktur-/Listenbildung), versagen jedoch regelmäßig bei der \emph{end-to-end} Erzeugung vollständiger, konsistenter und lösbarer IP/MO-Formulierungen.
+
+\paragraph{Einordnung zu den Forschungsfragen.}
+\begin{itemize}
+    \item \textbf{RQ1:} Die Extraktion von Modellelementen (Mengen, Parametern, Variablen, Zielen, Restriktionen) gelingt grundsätzlich, bleibt aber inkonsistent (Benennungen, Indizes, Einheiten) und ist nicht robust über Läufe/Modelle. 
+    \item \textbf{RQ2:} Vollständige, Erweiterbare und Lösbare Modelle ohne manuelle Nacharbeit wurden nicht erzielt; typische Blocker sind undefinierte Symbole, Indexfehler, verdeckte Nichtlinearitäten und die Minimalistische Art der Antworten von LLMs. 
+    \item \textbf{RQ3:} Strikte Schemas für sowohl Input als auch Output Formate samt Limitierungen der Anzahl reduzieren textuelle Varianz, heben inhaltlich jedoch semantische Fehler nicht auf. 
+    \item \textbf{RQ4:} Wiederkehrende Fehlermuster sind (i) Vermischung hart/weich, (ii) fehlende/mehrdeutige Indizes, (iii) Gewichtungsinkonsistenzen, (iv) LaTeX-Halluzinationen, (v) überladene und semantisch unvollständige Graphen. 
+    \item \textbf{RQ5:} Praktikabilität ist eingeschränkt: Remote-Modelle reagieren schneller, liefern aber qualitativ ähnliche Grenzen wie lokale; lokal dominieren Laufzeit-/Speicherrestriktionen und Integrationsaufwand.
+\end{itemize}
+
+\paragraph{Zur Verengung der Fragestellung.}
+Die Fokussierung auf \emph{Scrum} war sinnvoll, weil sie Messbarkeit durch konstante Artefakte, feste Limits und klare Schemata erst ermöglicht hat. Methodisch stellt diese Eingrenzung keinen Fehler dar; sie reduziert jedoch die \emph{externe Validität}. Eine Übertragbarkeit auf andere Domänen (z.\,B.\ Produktionsplanung, Pflege\-Rostering) ist plausibel, wurde hier aber nicht gezeigt und sollte in künftigen Arbeiten explizit geprüft werden.
+
+\paragraph{Vergleich zu Problemen aus der Literatur}
+Die Literatur zeigt, dass von LLMs generierte Simulationsmodelle zwar nicht immer fehlerfrei sind, in der Praxis jedoch eine spürbare Entlastung bieten, indem sie einen schnellen Einstieg in die Implementierung ermöglichen und die Auseinandersetzung mit komplexen Beschreibungssprachen reduzieren.~\cite{ref_article5} Diese Einschätzung deckt sich mit unseren Beobachtungen: Als vollständige Modelle erweisen sich die durch LLM erzeugten Artefakte als ungeeignet. Sie können jedoch als schnell verfügbare, initiale Skizze bzw. als Einstieg in die Modellbildung dienen. Insbesondere das für die Bewertung psychologischer Werte notwendige Expertenwissen lässt sich durch das LLM nicht adäquat abbilden, wodurch Versuche der Kompensation das ohnehin unvollständige Modell zusätzlich verkompliziert.
+
+\paragraph{Vergleich zu Befunden aus der Literatur.}
+Die Literatur berichtet, dass von LLMs erzeugte Simulations-/Optimierungsmodelle zwar nicht fehlerfrei sind, in der Praxis aber spürbare Entlastung bringen, weil sie rasch einen initialen Implementierungsentwurf liefern und so die Einarbeitung in komplexe Beschreibungssprachen reduzieren; zudem lassen sich auch Teilkomponenten eines Modells generieren \cite{ref_article5}. Unsere Befunde decken sich damit: Die automatisch erzeugten Artefakte reichen für ein vollständiges, ausführbares Modell nicht aus, eignen sich jedoch als schnelle Ausgangsbasis. Besonders dort, wo psychologische oder qualitativ bewertete Größen (etwa Teamzufriedenheit oder Stakeholder\-Engagement) valide Expertinnen- und Expertenurteile erfordern, können LLMs diese Bewertungsdimensionen nicht zuverlässig abbilden; werden sie unkritisch übernommen, erhöhen sie die Komplexität und Fehleranfälligkeit eines ohnehin unvollständigen Modells zusätzlich. Praktisch empfiehlt sich daher ein halbautomatischer Workflow: LLMs liefern Rohentwürfe/Boilerplate, gefolgt von regelbasierten Schema- und Konsistenzprüfungen sowie einer domänenspezifischen Kuratierung durch Fachpersonen; detaillierte Analysen und Beispiele sind im begleitenden Repository verlinkt. Trotz sorgfältiger Gestaltung bleibt es schwierig, die wirksamen Prompt-Elemente eindeutig zu isolieren. Reproduzierbarkeit erfordert deterministische Einstellungen und feste Ausgabeschemata. Der Aufwand lohnt, doch spezialisierte NLP-Pipelines können bei eng umrissenen Extraktionsaufgaben weiterhin überlegen sein~\cite{ref_proc1}.
+
+\section{Zusammenfassung und Ausblick}
+
+Über alle Strategien, Modelle und Versuche hinweg konnte kein einziges LLM ein \emph{vollständiges} Optimierungsmodell erzeugen. Die Frage nach einem vollständigen Modell bleibt ungeklärt aufgrund der Masse an häufigen Ursachen wie Halluzinationen, Fehlinterpretationen, unvollständigen Ausgaben, mangelndes Expertenwissen und auch Syntax-/Indexfehler bei bekannten Dateiformaten. 
+Eine Positive Erkenntnis ist, dass die Teilaufgaben der Datenerzeugung gelingen. Das Erstellen in Listenform und erste Strukturierung sowie die spätere Generierung von Zielen, Nebenbedingungen und Entscheidungsvariablen ist brauchbar unter Angabe von starken Restriktionen. Eine vollständig automatisierte Lösung zur Erzeugung eines Optimierungsmodells kann aber derzeit nicht erzeugt werden. Zukünftige Arbeiten sollten nicht nur mathematisch stärkere Modelle nehmen sondern zugleich auch Modelle deutlich stärker auf Optimierungsprobleme trainieren. Gleichzeitig könnten andere Prompting Strategien wie ein iterativer Ansatz der Modellbildung zu besseren Ergebnissen führen. Eine weitere Möglichkeit wären Prompting-Strategien wie bisher jedoch unter Verwendung von One-Shot bis Few-Shot Prompts. Diese konnten wir nicht durchführen, da uns das Expertenwissen über die korrekte formalisierte Darstellung von Optimierungsproblemen als der Literatur nicht gegeben wurde. Bis dahin empfehlen wir hybride Ansätze: LLMs für Strukturierung und Dokumentation, formale Modellierung und Validierung in einer Template-basierten Toolchain mit menschlicher Aufsicht. Die Kopplung größerer Zusammenhänge mit korrekter mathematischer Formulierung und konsistenter graphischer Repräsentation bleibt jedoch der Hauptengpass.
+\\
+%\section{Danksagung}
+%We thank the contributors and maintainers of the project repository: \url{https://github.com/TruelyMostWanted/a-truely-diabolic-research-work}
+
+\bibliographystyle{splncs04}  % Springer LNCS Style
+\bibliography{references}     % Referenzliste
+%\nocite{*}                    % Später durch echte ersetzen
+
+\end{document}
