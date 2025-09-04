@@ -1,0 +1,185 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\title{Mathematical Optimization Model for Scrum-based Software Development}
+\author{Formulated by Gemini}
+\date{September 4, 2025}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+This section defines the primary sets used in the optimization model, derived from the domain entities.
+
+\begin{itemize}
+    \item $P$: The set of all Projects.
+    \item $T$: The set of all Teams.
+    \item $W$: The set of all Workers.
+    \item $F$: The set of all Features.
+    \item $S$: The set of all Skills.
+    \item $R$: The set of all Roles.
+    \item $PO$: The set of all Product Owners.
+    \item $SM$: The set of all Scrum Masters.
+    \item $PB$: The set of all Product Backlogs.
+    \item $SP$: The set of all Sprints.
+    \item $SPP$: The set of all Sprint Plannings.
+    \item $DS$: The set of all Daily Scrums.
+    \item $SR$: The set of all Sprint Reviews.
+    \item $SRE$: The set of all Sprint Retrospectives.
+    \item $SBL$: The set of all Sprint Backlogs.
+    \item $SG$: The set of all Sprint Goals.
+    \item $E$: The set of all Epics.
+    \item $US$: The set of all User Stories.
+    \item $TSK$: The set of all Tasks.
+    \item $DEV$: The set of all Development Snapshots.
+    \item $BL$: The set of all Blockers.
+    \item $SH$: The set of all Stakeholders.
+    \item $VEL$: The set of all Velocity metrics.
+    \item $REP$: The set of all Release Plans.
+    \item $RM$: The set of all Roadmaps.
+    \item $SCB$: The set of all Scrum Boards.
+    \item $FED$: The set of all Feature Documentations.
+\end{itemize}
+
+\section{Indices}
+This section defines the indices used to refer to specific elements within the sets.
+
+\begin{itemize}
+    \item $p \in P$: An index for a specific project.
+    \item $t \in T$: An index for a specific team.
+    \item $w \in W$: An index for a specific worker.
+    \item $f \in F$: An index for a specific feature.
+    \item $s \in S$: An index for a specific skill.
+    \item $r \in R$: An index for a specific role.
+    \item $po \in PO$: An index for a specific product owner.
+    \item $sm \in SM$: An index for a specific scrum master.
+    \item $pb \in PB$: An index for a specific product backlog.
+    \item $sp \in SP$: An index for a specific sprint.
+    \item $us \in US$: An index for a specific user story.
+    \item $tsk \in TSK$: An index for a specific task.
+    \item $bl \in BL$: An index for a specific blocker.
+    \item $sh \in SH$: An index for a specific stakeholder.
+\end{itemize}
+
+\section{Goals}
+This section outlines the objectives of the optimization model. The final objective function is a weighted sum of these individual goals. Let $\delta_{i, \text{status}}$ be a binary parameter that is 1 if entity $i$ has the specified status, and 0 otherwise.
+
+\begin{itemize}
+    \item[\textbf{G0:}] \textbf{maximize\_completed\_story\_points} \\
+    Maximize the sum of story points from completed user stories.
+    $$ \max \sum_{us \in US} \text{story\_points}_{us} \cdot \delta_{us, \text{done}} $$
+    \item[\textbf{G1:}] \textbf{minimize\_project\_costs} \\
+    Minimize the total budget consumed by a project.
+    $$ \min \: \text{budget}_{p} $$
+    \item[\textbf{G2:}] \textbf{maximize\_feature\_priority\_value} \\
+    Maximize the sum of priorities of completed features.
+    $$ \max \sum_{f \in F} \text{priority}_{f} \cdot \delta_{f, \text{completed}} $$
+    \item[\textbf{G3:}] \textbf{minimize\_blocker\_severity} \\
+    Minimize the cumulative severity of all active blockers.
+    $$ \min \sum_{bl \in BL} \text{severity}_{bl} \cdot \delta_{bl, \text{active}} $$
+    \item[\textbf{G4:}] \textbf{maximize\_team\_velocity} \\
+    Maximize the average velocity for a team.
+    $$ \max \: \text{avg\_story\_points}_{t} $$
+    \item[\textbf{G5:}] \textbf{maximize\_sprint\_goal\_achievement} \\
+    Maximize the number of successfully achieved sprint goals.
+    $$ \max \sum_{sg \in SG} \text{achievement\_status}_{sg} $$
+    \item[\textbf{G6:}] \textbf{minimize\_task\_effort} \\
+    Minimize the total effort for all tasks.
+    $$ \min \sum_{tsk \in TSK} \text{effort}_{tsk} $$
+    \item[\textbf{G7:}] \textbf{maximize\_stakeholder\_satisfaction} \\
+    Maximize the influence level of stakeholders whose features are addressed.
+    $$ \max \sum_{sh \in SH} \text{influence\_level}_{sh} \cdot \delta_{sh, \text{feature\_addressed}} $$
+    \item[\textbf{G8:}] \textbf{minimize\_time\_to\_resolve\_blockers} \\
+    Minimize the time difference between blocker resolution and detection.
+    $$ \min \sum_{bl \in BL} (\text{resolved\_on}_{bl} - \text{detected\_on}_{bl}) $$
+    \item[\textbf{G9:}] \textbf{maximize\_team\_satisfaction} \\
+    Maximize the reported team satisfaction from retrospectives.
+    $$ \max \: \text{team\_satisfaction}_{sre} $$
+\end{itemize}
+
+\section{Conditions}
+This section outlines the constraints that the solution to the optimization model must satisfy. Let $x$, $y$, $z$ represent various binary decision variables defined in the next section.
+
+\begin{itemize}
+    \item[\textbf{C0:}] \textbf{sprint\_backlog\_must\_not\_exceed\_velocity} \\
+    The sum of story points for user stories in a sprint cannot exceed the team's velocity.
+    $$ \sum_{us \in US} \text{story\_points}_{us} \cdot x_{us, sp} \leq \text{velocity}_{t} \quad \forall sp \in SP, \forall t \in T $$
+    \item[\textbf{C1:}] \textbf{worker\_availability\_must\_be\_respected} \\
+    The total effort of tasks assigned to a worker cannot exceed their availability.
+    $$ \sum_{tsk \in TSK} \text{effort}_{tsk} \cdot y_{w, tsk} \leq \text{availability}_{w} \quad \forall w \in W $$
+    \item[\textbf{C2:}] \textbf{project\_budget\_must\_not\_be\_exceeded} \\
+    The total cost of the project cannot exceed its budget.
+    $$ \text{TotalCost}(p) \leq \text{budget}_{p} \quad \forall p \in P $$
+    \item[\textbf{C3:}] \textbf{team\_size\_must\_be\_within\_scrum\_limits} \\
+    The size of any given team must be within a specific range [min, max].
+    $$ 3 \leq \text{team\_size}_{t} \leq 9 \quad \forall t \in T $$
+    \item[\textbf{C4:}] \textbf{task\_must\_have\_required\_skills} \\
+    A worker assigned to a task must have the required skill. Let $S_w$ be the set of skills for worker $w$ and $S_{tsk}$ be the required skills for task $tsk$.
+    $$ y_{w, tsk} = 1 \implies S_{tsk} \subseteq S_w \quad \forall w \in W, \forall tsk \in TSK $$
+    \item[\textbf{C5:}] \textbf{sprint\_must\_have\_a\_goal} \\
+    Every sprint must be associated with at least one sprint goal.
+    $$ \forall sp \in SP, \exists sg \in SG : \text{is\_goal\_for\_sprint}(sg, sp) = 1 $$
+    \item[\textbf{C6:}] \textbf{epic\_must\_be\_broken\_down} \\
+    An epic cannot be assigned to a sprint.
+    $$ \sum_{sp \in SP} \text{assign\_epic\_to\_sprint}_{e, sp} = 0 \quad \forall e \in E $$
+    \item[\textbf{C7:}] \textbf{a\_sprint\_has\_a\_fixed\_duration} \\
+    The duration of a sprint is constant.
+    $$ \text{end\_date}_{sp} - \text{start\_date}_{sp} = \text{Constant} \quad \forall sp \in SP $$
+    \item[\textbf{C8:}] \textbf{a\_worker\_belongs\_to\_one\_team} \\
+    Each worker must be assigned to exactly one team.
+    $$ \sum_{t \in T} z_{w, t} = 1 \quad \forall w \in W $$
+    \item[\textbf{C9:}] \textbf{a\_product\_owner\_manages\_the\_backlog} \\
+    Each product backlog is managed by exactly one product owner.
+    $$ \sum_{po \in PO} \text{manages}_{po, pb} = 1 \quad \forall pb \in PB $$
+\end{itemize}
+
+\section{Decision Variables}
+This section defines the variables that the optimization model will determine.
+
+\begin{itemize}
+    \item[\textbf{DV0:}] \textbf{assign\_user\_story\_to\_sprint} \\
+    Binary variable: 1 if User Story $us$ is assigned to Sprint $sp$, 0 otherwise.
+    $$ x_{us, sp} \in \{0, 1\} \quad \forall us \in US, \forall sp \in SP $$
+    \item[\textbf{DV1:}] \textbf{assign\_worker\_to\_task} \\
+    Binary variable: 1 if Worker $w$ is assigned to Task $tsk$, 0 otherwise.
+    $$ y_{w, tsk} \in \{0, 1\} \quad \forall w \in W, \forall tsk \in TSK $$
+    \item[\textbf{DV2:}] \textbf{assign\_worker\_to\_team} \\
+    Binary variable: 1 if Worker $w$ is assigned to Team $t$, 0 otherwise.
+    $$ z_{w, t} \in \{0, 1\} \quad \forall w \in W, \forall t \in T $$
+    \item[\textbf{DV3:}] \textbf{select\_feature\_for\_release} \\
+    Binary variable: 1 if Feature $f$ is included in Release Plan $rep$, 0 otherwise.
+    $$ \alpha_{f, rep} \in \{0, 1\} \quad \forall f \in F, \forall rep \in REP $$
+    \item[\textbf{DV4:}] \textbf{start\_date\_of\_sprint} \\
+    Integer variable representing the start date of Sprint $sp$.
+    $$ \text{start\_date}_{sp} \in \mathbb{Z}^+ \quad \forall sp \in SP $$
+    \item[\textbf{DV5:}] \textbf{task\_sequence\_order} \\
+    Integer variable defining the execution order of Task $tsk$.
+    $$ \text{order}_{tsk} \in \mathbb{Z}^+ \quad \forall tsk \in TSK $$
+    \item[\textbf{DV6:}] \textbf{team\_size\_for\_project} \\
+    Integer variable for the number of workers in Team $t$.
+    $$ \text{team\_size}_{t} \in \{3, 4, ..., 10\} \quad \forall t \in T $$
+    \item[\textbf{DV7:}] \textbf{effort\_allocated\_to\_task} \\
+    Continuous variable for the hours allocated to Task $tsk$.
+    $$ \text{effort}_{tsk} \in \mathbb{R}^+ \quad \forall tsk \in TSK $$
+    \item[\textbf{DV8:}] \textbf{sprint\_count\_for\_release} \\
+    Integer variable for the number of sprints in Release Plan $rep$.
+    $$ \text{sprint\_count}_{rep} \in \mathbb{Z}^+ \quad \forall rep \in REP $$
+    \item[\textbf{DV9:}] \textbf{budget\_allocated\_to\_feature} \\
+    Continuous variable for the budget allocated to Feature $f$.
+    $$ \text{budget}_{f} \in \mathbb{R}^+ \quad \forall f \in F $$
+    \item[\textbf{DV10:}] \textbf{worker\_availability\_percentage} \\
+    Continuous variable representing the availability of Worker $w$.
+    $$ \text{availability}_{w} \in [0, 1] \quad \forall w \in W $$
+\end{itemize}
+
+\end{document}

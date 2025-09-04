@@ -1,0 +1,122 @@
+%% SCRUM Optimization Domain Model Visualization
+%% This is a representative subset to ensure readability.
+
+graph TD
+    %% -------------------------------------------
+    %% 1. Style Definitions
+    %% -------------------------------------------
+    classDef entityStyle fill:#87CEEB,stroke:#333,stroke-width:2px,color:#000
+    classDef attributeStyle fill:#f9f9f9,stroke:#333,stroke-width:1px,color:#000
+    classDef relationStyle fill:#FFDAB9,stroke:#333,stroke-width:2px,color:#000
+    classDef goalStyle fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
+    classDef conditionStyle fill:#F08080,stroke:#333,stroke-width:2px,color:#000
+    classDef dvStyle fill:#DDA0DD,stroke:#333,stroke-width:2px,color:#000
+
+    %% -------------------------------------------
+    %% 2. Node Declarations
+    %% -------------------------------------------
+
+    %% Entities (Blue)
+    subgraph "Core Entities"
+        E0(Project)
+        E1(Team)
+        E2(Worker)
+        E9(Sprint)
+        E17(UserStory)
+        E18(Task)
+        E20(Blocker)
+        E22(Velocity)
+    end
+
+    %% Attributes (White) - Duplicated for clarity
+    subgraph "Attributes"
+        E0_A5(budget)
+        E1_A2(team_size)
+        E17_A5(story_points)
+        E17_A4(priority)
+        E18_A3(status)
+        E20_A4(status)
+        E22_A2(avg_story_points)
+        
+        %% Duplicates for cleaner lines
+        E17_A5_dup(story_points)
+        E1_A2_dup(team_size)
+    end
+
+    %% Relations (Orange)
+    subgraph "Relationships"
+        R1(is_assigned_to_project)
+        R2(belongs_to_team)
+        R10(consists_of_tasks)
+        R11(is_in_sprint_backlog)
+        R16(is_blocked_by)
+        R19(refers_to_team)
+    end
+
+    %% Goals (Green)
+    subgraph "Goals (Objectives)"
+        G0(G0: maximize_story_points)
+        G3(G3: minimize_open_blockers)
+        G4(G4: maximize_priority)
+    end
+    
+    %% Conditions (Red)
+    subgraph "Conditions (Constraints)"
+        C0(C0: sprint_capacity_limit)
+        C2(C2: team_size_minimum)
+        C9(C9: task_blocked_status)
+    end
+
+    %% Decision Variables (Purple)
+    subgraph "Decision Variables"
+        DV0(DV0: assign_worker_to_team)
+        DV1(DV1: assign_user_story_to_sprint)
+        DV4(DV4: determine_team_size)
+    end
+    
+    %% -------------------------------------------
+    %% 3. Class Assignments
+    %% -------------------------------------------
+    class E0,E1,E2,E9,E17,E18,E20,E22 entityStyle;
+    class E0_A5,E1_A2,E17_A5,E17_A4,E18_A3,E20_A4,E22_A2,E17_A5_dup,E1_A2_dup attributeStyle;
+    class R1,R2,R10,R11,R16,R19 relationStyle;
+    class G0,G3,G4 goalStyle;
+    class C0,C2,C9 conditionStyle;
+    class DV0,DV1,DV4 dvStyle;
+    
+    %% -------------------------------------------
+    %% 4. Connections (Links)
+    %% -------------------------------------------
+
+    %% Entity <--> Attribute Connections
+    E0 --- E0_A5
+    E1 --- E1_A2
+    E17 --- E17_A5 & E17_A4
+    E18 --- E18_A3
+    E20 --- E20_A4
+    E22 --- E22_A2
+    
+    %% Entity <--> Relation <--> Entity Connections
+    E1 -- R1 --o E0
+    E2 -- R2 --o E1
+    E17 -- R10 --o E18
+    E17 -- R11 --o E9
+    E18 -- R16 --o E20
+    E22 -- R19 --o E1
+
+    %% Goals <--> Entity/Attribute Connections
+    G0 -- "optimizes" --> E17_A5
+    G3 -- "optimizes" --> E20_A4
+    G4 -- "optimizes" --> E17_A4
+
+    %% Conditions <--> Entity/Attribute Connections
+    C0 -- "constrains" --> E17_A5_dup
+    C0 -- "references" --> E22
+    C2 -- "constrains" --> E1_A2_dup
+    C9 -- "constrains" --> E18_A3
+    C9 -- "depends on" --> E20
+    
+    %% Decision Variables <--> Entity Connections
+    DV0 -- "affects" --> E1 & E2
+    DV1 -- "affects" --> E17 & E9
+    DV4 -- "affects" --> E1 & E1_A2

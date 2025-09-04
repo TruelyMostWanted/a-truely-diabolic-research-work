@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,constrain_sprint_capacity_by_velocity,"The sum of story points for all user stories in a sprint must not exceed the team's average velocity.",True,min,UserStory,story_points,2,1.0
+C1,constrain_worker_availability,"The total effort of tasks assigned to a worker in a sprint must not exceed their availability.",True,min,Task,effort,2,1.0
+C2,enforce_minimum_team_size,"A development team must have a minimum number of workers to be functional.",False,max,Team,team_size,2,1.0
+C3,enforce_maximum_team_size,"A development team must not exceed the maximum number of workers to remain agile.",False,min,Team,team_size,2,1.0
+C4,require_mandatory_product_owner,"A team must be assigned exactly one Product Owner.",False,max,ProductOwner,id,2,1.0
+C5,require_mandatory_scrum_master,"A team must be assigned exactly one Scrum Master.",False,max,ScrumMaster,id,2,1.0
+C6,prevent_assignment_of_inactive_workers,"A worker with an 'inactive' status cannot be assigned to any tasks.",False,min,Worker,status,0,1.0
+C7,require_sprint_goal,"Every sprint must have one and only one defined sprint goal.",False,max,SprintGoal,id,2,1.0
+C8,task_must_belong_to_sprint_user_story,"A task can only be in the sprint backlog if its parent user story is also in the sprint backlog.",False,min,Task,id,2,1.0
+C9,budget_must_not_be_exceeded,"The total cost of the project must not exceed its allocated budget.",False,min,Project,budget,2,1.0
+C10,epic_cannot_be_in_sprint_backlog,"An Epic, as a large body of work, cannot be directly included in a sprint backlog.",False,min,Epic,id,0,1.0
+C11,certified_skill_for_critical_tasks,"For tasks of type 'critical', the assigned worker must have a certified skill.",False,max,Skill,certified,2,1.0
+C12,feature_must_have_documentation,"A feature cannot be part of a release plan unless it has associated feature documentation.",False,max,FeatureDocumentation,id,2,1.0

@@ -1,0 +1,224 @@
+graph TD;
+
+    %% -----------------------------
+    %% --- STYLE DEFINITIONS
+    %% -----------------------------
+    classDef entity fill:#cceeff,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#ffffff,stroke:#333,stroke-width:1px,color:#333;
+    classDef goal fill:#ccffcc,stroke:#006400,stroke-width:2px;
+    classDef condition fill:#ffcccc,stroke:#b22222,stroke-width:2px;
+    classDef decision fill:#e6ccff,stroke:#4b0082,stroke-width:2px;
+
+    %% -----------------------------
+    %% --- ENTITY & ATTRIBUTE DEFINITIONS
+    %% -----------------------------
+
+    subgraph E0_Project
+        E0[E0: Project];
+        A0_1[name]; A0_2[project_start]; A0_3[project_end]; A0_5[budget]; A0_6[status]; A0_8[priority];
+    end
+
+    subgraph E1_Team
+        E1[E1: Team];
+        A1_2[team_size]; A1_4[team_status];
+    end
+
+    subgraph E2_Worker
+        E2[E2: Worker];
+        A2_6[availability]; A2_5[status];
+    end
+
+    subgraph E3_Feature
+        E3[E3: Feature];
+        A3_4[priority];
+    end
+
+    subgraph E4_Skill
+        E4[E4: Skill];
+        A4_1[label]; A4_3[level];
+    end
+
+    subgraph E17_UserStory
+        E17[E17: UserStory];
+        A17_5[story_points]; A17_6[status];
+    end
+
+    subgraph E18_Task
+        E18[E18: Task];
+        A18_4[effort];
+    end
+    
+    subgraph E20_Blocker
+        E20[E20: Blocker];
+        A20_0[id]; A20_3[severity];
+    end
+    
+    subgraph E21_Stakeholder
+        E21[E21: Stakeholder];
+        A21_6[influence_level];
+    end
+    
+    subgraph E22_Velocity
+        E22[E22: Velocity];
+        A22_2[avg._story_points];
+    end
+
+    subgraph E23_ReleasePlan
+        E23[E23: ReleasePlan];
+        A23_3[included_features];
+    end
+
+    subgraph E9_Sprint
+        E9[E9: Sprint];
+    end
+    
+    subgraph E15_SprintGoal
+        E15[E15: SprintGoal];
+        A15_2[achievement_status];
+    end
+    
+    subgraph E13_SprintRetrospective
+        E13[E13: SprintRetrospective];
+        A13_3[team_satisfaction];
+    end
+
+    %% Apply Entity Styling
+    class E0,E1,E2,E3,E4,E9,E13,E15,E17,E18,E20,E21,E22,E23 entity;
+
+    %% Apply Attribute Styling
+    class A0_1,A0_2,A0_3,A0_5,A0_6,A0_8,A1_2,A1_4,A2_5,A2_6,A3_4,A4_1,A4_3,A13_3,A15_2,A17_5,A17_6,A18_4,A20_0,A20_3,A21_6,A22_2,A23_3 attribute;
+
+    %% Entity to Attribute Connections
+    E0 --> A0_1; E0 --> A0_2; E0 --> A0_3; E0 --> A0_5; E0 --> A0_6; E0 --> A0_8;
+    E1 --> A1_2; E1 --> A1_4;
+    E2 --> A2_6; E2 --> A2_5;
+    E3 --> A3_4;
+    E4 --> A4_1; E4 --> A4_3;
+    E17 --> A17_5; E17 --> A17_6;
+    E18 --> A18_4;
+    E20 --> A20_0; E20 --> A20_3;
+    E21 --> A21_6;
+    E22 --> A22_2;
+    E23 --> A23_3;
+    E15 --> A15_2;
+    E13 --> A13_3;
+
+
+    %% -----------------------------
+    %% --- RELATIONSHIPS (Orange Links)
+    %% -----------------------------
+    E1 -->|R1: is_assigned_to_project| E0;
+    E2 -->|R2: belongs_to_team| E1;
+    E2 -->|R3: has_skill| E4;
+    E17 -->|R10: consists_of_tasks| E18;
+    E18 -->|R16: is_blocked_by| E20;
+    E22 -->|R19: refers_to_team| E1;
+    E23 -->|R20: plans_release| E3;
+    E9 -->|R13: pursues_goal| E15;
+    E9 --> E13; % Implied relationship: Sprint has a Retrospective
+    E17 --o E9; % User Story is in a Sprint
+    
+
+    %% -----------------------------
+    %% --- GOALS (Green Nodes & Links)
+    %% -----------------------------
+    subgraph Goals
+        G0["G0: maximize_feature_priority"];
+        G1["G1: minimize_total_task_effort"];
+        G2["G2: maximize_story_points_in_sprint"];
+        G3["G3: minimize_project_timeline"];
+        G4["G4: maximize_team_satisfaction"];
+        G5["G5: minimize_number_of_blockers"];
+        G6["G6: maximize_sprint_goal_achievement"];
+        G7["G7: minimize_budget_usage"];
+        G8["G8: maximize_stakeholder_influence"];
+        G9["G9: maximize_team_velocity"];
+        G10["G10: minimize_blocker_severity"];
+    end
+    class G0,G1,G2,G3,G4,G5,G6,G7,G8,G9,G10 goal;
+
+    %% Goal Connections
+    G0 -.-> A3_4;
+    G1 -.-> A18_4;
+    G2 -.-> A17_5;
+    G3 -.-> A0_3;
+    G4 -.-> A13_3;
+    G5 -.-> E20;
+    G6 -.-> A15_2;
+    G7 -.-> A0_5;
+    G8 -.-> A21_6;
+    G9 -.-> A22_2;
+    G10 -.-> A20_3;
+
+    %% -----------------------------
+    %% --- CONDITIONS (Red Nodes & Links)
+    %% -----------------------------
+    subgraph Conditions
+        C0["C0: worker_must_have_skill"];
+        C1["C1: project_budget_limit"];
+        C2["C2: team_velocity_capacity"];
+        C3["C3: worker_availability_limit"];
+        C4["C4: prefer_senior_for_complex_tasks"];
+        C6["C6: worker_cannot_be_on_vacation"];
+        C8["C8: feature_must_be_in_release"];
+        C11["C11: team_size_constraints"];
+    end
+    class C0,C1,C2,C3,C4,C6,C8,C11 condition;
+    
+    %% Condition Connections (using duplicated attributes for clarity)
+    A4_1_C0[label]; class A4_1_C0 attribute;
+    C0 -.-> A4_1_C0; E4-->A4_1_C0;
+
+    A0_5_C1[budget]; class A0_5_C1 attribute;
+    C1 -.-> A0_5_C1; E0-->A0_5_C1;
+
+    A22_2_C2[avg._story_points]; class A22_2_C2 attribute;
+    C2 -.-> A22_2_C2; E22-->A22_2_C2;
+
+    A2_6_C3[availability]; class A2_6_C3 attribute;
+    C3 -.-> A2_6_C3; E2-->A2_6_C3;
+    
+    A4_3_C4[level]; class A4_3_C4 attribute;
+    C4 -.-> A4_3_C4; E4-->A4_3_C4;
+
+    A2_5_C6[status]; class A2_5_C6 attribute;
+    C6 -.-> A2_5_C6; E2-->A2_5_C6;
+
+    A23_3_C8[included_features]; class A23_3_C8 attribute;
+    C8 -.-> A23_3_C8; E23-->A23_3_C8;
+    
+    A1_2_C11[team_size]; class A1_2_C11 attribute;
+    C11 -.-> A1_2_C11; E1-->A1_2_C11;
+
+    %% -------------------------------------
+    %% --- DECISION VARIABLES (Purple Nodes & Links)
+    %% -------------------------------------
+    subgraph Decision_Variables
+        DV0["DV0: assign_worker_to_task"];
+        DV1["DV1: assign_user_story_to_sprint"];
+        DV2["DV2: assign_feature_to_release"];
+        DV3["DV3: assign_worker_to_team"];
+        DV5["DV5: determine_team_size"];
+    end
+    class DV0,DV1,DV2,DV3,DV5 decision;
+    
+    %% Decision Variable Connections
+    DV0 -.-> E2;
+    DV0 -.-> E18;
+    DV1 -.-> E17;
+    DV1 -.-> E9;
+    DV2 -.-> E3;
+    DV2 -.-> E23;
+    DV3 -.-> E2;
+
+    %% DV3 also connects to E1, but to avoid line crossing, we can state it logically
+    %% rather than drawing a messy line. The connection is E2->E1.
+    DV3 -.-> E1; 
+    
+    DV5 -.-> E1;
+
+    %% -----------------------------
+    %% --- LINK STYLES
+    %% -----------------------------
+    %% Relations are Orange
+    linkStyle 0,1,2,3,4,5,6,7,8,9 stroke:#ff9933,stroke-width:2px,color:black;

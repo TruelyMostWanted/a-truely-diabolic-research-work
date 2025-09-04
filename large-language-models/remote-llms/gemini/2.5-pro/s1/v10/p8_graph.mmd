@@ -1,0 +1,262 @@
+graph TD
+    %% ------------------------------------------
+    %% 1. Style & Color Definitions
+    %% ------------------------------------------
+    classDef entity fill:#cce5ff,stroke:#333,stroke-width:2px,color:#000;
+    classDef attribute fill:#ffffff,stroke:#666,stroke-width:1px,color:#000;
+    classDef relation fill:#ffe6cc,stroke:#b35900,stroke-width:2px,color:#000;
+    classDef goal fill:#d4edda,stroke:#155724,stroke-width:2px,color:#000;
+    classDef condition fill:#f8d7da,stroke:#721c24,stroke-width:2px,color:#000;
+    classDef dv fill:#e2d9f3,stroke:#493267,stroke-width:2px,color:#000;
+
+    %% ------------------------------------------
+    %% 2. Entities and their Attributes
+    %% ------------------------------------------
+    subgraph "Core Entities & Work Items"
+        E0["E0 Project"]:::entity
+        E0 --> A0_id["id"]:::attribute
+        E0 --> A0_name["name"]:::attribute
+        E0 --> A0_budget["budget"]:::attribute
+        E0 --> A0_status["status"]:::attribute
+        E0 --> A0_priority["priority"]:::attribute
+        E0 --> A0_start["project_start"]:::attribute
+        E0 --> A0_end["project_end"]:::attribute
+
+        E1["E1 Team"]:::entity
+        E1 --> A1_id["id"]:::attribute
+        E1 --> A1_name["name"]:::attribute
+        E1 --> A1_size["team_size"]:::attribute
+
+        E2["E2 Worker"]:::entity
+        E2 --> A2_id["id"]:::attribute
+        E2 --> A2_name["name"]:::attribute
+        E2 --> A2_availability["availability"]:::attribute
+
+        E3["E3 Feature"]:::entity
+        E3 --> A3_id["id"]:::attribute
+        E3 --> A3_status["status"]:::attribute
+        E3 --> A3_priority["priority"]:::attribute
+        E3 --> A3_effort["estimated_effort"]:::attribute
+
+        E16["E16 Epic"]:::entity
+        E17["E17 UserStory"]:::entity
+        E17 --> A17_id["id"]:::attribute
+        E17 --> A17_priority["priority"]:::attribute
+        E17 --> A17_sp["story_points"]:::attribute
+        E17 --> A17_status["status"]:::attribute
+        
+        E18["E18 Task"]:::entity
+        E18 --> A18_id["id"]:::attribute
+        E18 --> A18_status["status"]:::attribute
+        E18 --> A18_effort["effort"]:::attribute
+        E18 --> A18_type["type"]:::attribute
+    end
+
+    subgraph "Supporting Entities & Roles"
+        E4["E4 Skill"]:::entity
+        E4 --> A4_id["id"]:::attribute
+        E4 --> A4_level["level"]:::attribute
+
+        E5["E5 Role"]:::entity
+        E6["E6 ProductOwner"]:::entity
+        E7["E7 ScrumMaster"]:::entity
+        E21["E21 Stakeholder"]:::entity
+        E21 --> A21_influence["influence_level"]:::attribute
+    end
+
+    subgraph "Scrum Artifacts & Events"
+        E8["E8 ProductBacklog"]:::entity
+        E9["E9 Sprint"]:::entity
+        E9 --> A9_start["start_date"]:::attribute
+        E9 --> A9_end["end_date"]:::attribute
+        
+        E12["E12 SprintReview"]:::entity
+        E13["E13 SprintRetrospective"]:::entity
+        E13 --> A13_satisfaction["team_satisfaction"]:::attribute
+        
+        E14["E14 SprintBacklog"]:::entity
+        E15["E15 SprintGoal"]:::entity
+        E15 --> A15_status["achievement_status"]:::attribute
+        
+        E20["E20 Blocker"]:::entity
+        E20 --> A20_id["id"]:::attribute
+        E20 --> A20_status["status"]:::attribute
+        
+        E22["E22 Velocity"]:::entity
+        E22 --> A22_avg["avg._story_points"]:::attribute
+        
+        E23["E23 ReleasePlan"]:::entity
+        E24["E24 Roadmap"]:::entity
+    end
+
+    %% ------------------------------------------
+    %% 3. Relationships between Entities
+    %% ------------------------------------------
+    subgraph "Relationships"
+        R1["R1 is_assigned_to_project"]:::relation
+        E1 -- N --- R1 -- 1 --> E0
+        
+        R2["R2 belongs_to_team"]:::relation
+        E2 -- N --- R2 -- 1 --> E1
+        
+        R3["R3 has_skill"]:::relation
+        E2 -- N --- R3 -- M --> E4
+        
+        R4["R4 takes_on_role"]:::relation
+        E2 -- N --- R4 -- M --> E5
+        
+        R5["R5 manages_backlog"]:::relation
+        E6 -- 1 --- R5 -- 1 --> E8
+        
+        R6["R6 is_supported_by"]:::relation
+        E1 -- 1 --- R6 -- 1 --> E7
+        
+        R8["R8 contains_epic"]:::relation
+        E8 -- 1 --- R8 -- N --> E16
+        
+        R9["R9 contains_user_story"]:::relation
+        E16 -- 1 --- R9 -- N --> E17
+        
+        R10["R10 consists_of_tasks"]:::relation
+        E17 -- 1 --- R10 -- N --> E18
+        
+        R11["R11 is_in_sprint_backlog"]:::relation
+        E17 -- N --- R11 -- M --> E14
+        
+        R12["R12 belongs_to_sprint"]:::relation
+        E14 -- 1 --- R12 -- 1 --> E9
+        
+        R13["R13 pursues_goal"]:::relation
+        E9 -- 1 --- R13 -- 1 --> E15
+        
+        R16["R16 is_blocked_by"]:::relation
+        E18 -- N --- R16 -- M --> E20
+        
+        R17["R17 participates_in"]:::relation
+        E21 -- N --- R17 -- M --> E12
+        
+        R19["R19 refers_to_team"]:::relation
+        E22 -- 1 --- R19 -- 1 --> E1
+        
+        R20["R20 plans_release"]:::relation
+        E23 -- 1 --- R20 -- N --> E3
+        
+        R21["R21 is_part_of_roadmap"]:::relation
+        E23 -- N --- R21 -- 1 --> E24
+    end
+
+    %% ------------------------------------------
+    %% 4. Goals linked to Entities/Attributes
+    %% ------------------------------------------
+    subgraph "Goals (Objectives)"
+        G0["G0 maximize_sprint_priority"]:::goal
+        G0 --> A17_p_G0["priority"]:::attribute
+        E17 --> A17_p_G0
+        
+        G1["G1 maximize_completed_story_points"]:::goal
+        G1 --> A17_sp_G1["story_points"]:::attribute
+        E17 --> A17_sp_G1
+        
+        G2["G2 minimize_release_effort"]:::goal
+        G2 --> A3_e_G2["estimated_effort"]:::attribute
+        E3 --> A3_e_G2
+        
+        G3["G3 maximize_sprint_goal_achievement"]:::goal
+        G3 --> A15_s_G3["achievement_status"]:::attribute
+        E15 --> A15_s_G3
+        
+        G4["G4 minimize_project_duration"]:::goal
+        G4 --> A0_end_G4["project_end"]:::attribute
+        E0 --> A0_end_G4
+        
+        G5["G5 minimize_open_blockers"]:::goal
+        G5 --> A20_s_G5["status"]:::attribute
+        E20 --> A20_s_G5
+        
+        G6["G6 maximize_team_satisfaction"]:::goal
+        G6 --> A13_s_G6["team_satisfaction"]:::attribute
+        E13 --> A13_s_G6
+        
+        G8["G8 minimize_budget_usage"]:::goal
+        G8 --> A0_b_G8["budget"]:::attribute
+        E0 --> A0_b_G8
+    end
+
+    %% ------------------------------------------
+    %% 5. Conditions linked to Entities/Attributes
+    %% ------------------------------------------
+    subgraph "Conditions (Constraints)"
+        C0["C0 sprint_capacity_limit"]:::condition
+        C0 --> A17_sp_C0["story_points"]:::attribute
+        E17 --> A17_sp_C0
+        C0 --> E22
+        
+        C1["C1 project_budget_limit"]:::condition
+        C1 --> A0_b_C1["budget"]:::attribute
+        E0 --> A0_b_C1
+        
+        C2["C2 worker_availability_check"]:::condition
+        C2 --> A2_a_C2["availability"]:::attribute
+        E2 --> A2_a_C2
+        
+        C3["C3 task_skill_requirement"]:::condition
+        C3 --> E4
+        C3 --> E18
+        
+        C4["C4 agile_team_size"]:::condition
+        C4 --> A1_s_C4["team_size"]:::attribute
+        E1 --> A1_s_C4
+        
+        C6["C6 blocked_task_halt"]:::condition
+        C6 --> A20_s_C6["status"]:::attribute
+        E20 --> A20_s_C6
+        C6 --> E18
+        
+        C7["C7 team_scrum_master_assignment"]:::condition
+        C7 --> E1
+        C7 --> E7
+        
+        C8["C8 feature_status_for_release"]:::condition
+        C8 --> A3_s_C8["status"]:::attribute
+        E3 --> A3_s_C8
+        C8 --> E23
+    end
+
+    %% ------------------------------------------
+    %% 6. Decision Variables linked to Entities
+    %% ------------------------------------------
+    subgraph "Decision Variables"
+        DV0["DV0 assign_worker_to_team"]:::dv
+        DV0 --> E2
+        DV0 --> E1
+        
+        DV1["DV1 assign_user_story_to_sprint"]:::dv
+        DV1 --> E17
+        DV1 --> E9
+        
+        DV2["DV2 assign_task_to_worker"]:::dv
+        DV2 --> E18
+        DV2 --> E2
+        
+        DV3["DV3 assign_feature_to_release"]:::dv
+        DV3 --> E3
+        DV3 --> E23
+        
+        DV4["DV4 select_team_size"]:::dv
+        DV4 --> E1
+        
+        DV6["DV6 allocate_worker_availability"]:::dv
+        DV6 --> E2
+        DV6 --> E0
+
+        DV7["DV7 rank_user_story_in_backlog"]:::dv
+        DV7 --> E17
+        DV7 --> E8
+        
+        DV9["DV9 assign_worker_to_role"]:::dv
+        DV9 --> E2
+        DV9 --> E5
+
+        DV11["DV11 determine_story_points"]:::dv
+        DV11 --> E17
+    end

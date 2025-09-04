@@ -1,0 +1,12 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,maximize_skill_match_on_tasks,"Assign tasks to workers who possess the necessary skills at an adequate level.",False,max,Skill,level,1,0.9
+C1,minimize_worker_overload,"Ensure that the total effort of tasks assigned to a worker does not exceed their availability.",True,min,Worker,availability,2,1.0
+C2,maximize_team_size_adherence,"Ensure that the team size stays within the ideal Scrum range (e.g., 3-9 members).",False,max,Team,team_size,2,1.0
+C3,minimize_work_on_low_priority_stories,"Avoid working on tasks that belong to low-priority user stories.",True,min,UserStory,priority,1,0.6
+C4,maximize_use_of_certified_skills,"Prefer assigning tasks to workers who have a certified skill when applicable.",False,max,Skill,certified,1,0.4
+C5,minimize_tasks_without_user_story,"Ensure every task is linked to a parent user story.",False,min,Task,id,2,1.0
+C6,maximize_work_for_active_workers,"Only assign work to workers whose status is 'active'.",False,max,Worker,status,2,1.0
+C7,maximize_clarity_of_acceptance_criteria,"Prioritize User Stories that have well-defined acceptance criteria.",False,max,UserStory,acceptance_criteria,1,0.7
+C8,minimize_sprint_disruption,"Avoid adding new tasks to a sprint backlog once the sprint has started.",True,min,SprintBacklog,last_updated,2,0.8
+C9,maximize_feature_documentation_linkage,"Ensure every completed feature has corresponding documentation.",False,max,FeatureDocumentation,linked_requirements,1,0.5
+C10,minimize_assignment_to_unavailable_teams,"Do not assign new sprints or features to teams with a status of 'inactive' or 'disbanded'.",False,min,Team,team_status,2,1.0

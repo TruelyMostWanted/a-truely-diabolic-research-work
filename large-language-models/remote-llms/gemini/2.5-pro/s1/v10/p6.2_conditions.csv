@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,sprint_capacity_limit,"The sum of story points for all user stories in a sprint must not exceed the team's velocity.",True,max,UserStory,story_points,2,1.0
+C1,project_budget_limit,"The total cost incurred must not exceed the project's allocated budget.",False,max,Project,budget,2,1.0
+C2,worker_availability_check,"A worker can only be assigned to tasks if their availability is greater than zero.",False,min,Worker,availability,2,1.0
+C3,task_skill_requirement,"An assigned worker must possess the specific skill required to complete a task.",False,max,Skill,id,2,1.0
+C4,agile_team_size,"The size of a development team must be between 3 and 9 members.",False,max,Team,team_size,2,1.0
+C5,sprint_timebox_enforced,"The end date of a sprint is fixed and must be strictly adhered to.",False,max,Sprint,end_date,2,1.0
+C6,blocked_task_halt,"A task's status cannot be 'done' if it has an associated blocker with a status of 'open'.",False,max,Blocker,status,2,1.0
+C7,team_scrum_master_assignment,"Every team must have exactly one Scrum Master assigned.",False,min,Team,id,2,1.0
+C8,feature_status_for_release,"A feature must have the status 'done' before it can be included in a release plan.",False,min,Feature,status,2,1.0
+C9,mandatory_sprint_events,"Each sprint must include a Sprint Planning, Review, and Retrospective.",False,min,Sprint,id,2,1.0
+C10,user_story_epic_link,"Every user story must belong to exactly one epic.",False,max,Epic,id,2,1.0
+C11,unique_worker_team_assignment,"A worker can only be a member of one team at any given time.",False,max,Worker,id,2,1.0

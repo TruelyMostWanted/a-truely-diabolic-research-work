@@ -1,0 +1,150 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Optimization Model for Agile Software Development using SCRUM}
+\author{Gemini AI Assistant}
+\date{September 4, 2025}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+
+\newpage
+\section{Sets (Entities)}
+\setcounter{page}{1}
+This section defines the fundamental sets of objects in the domain model, derived from \texttt{Entities.csv}.
+
+\begin{itemize}
+    \item $\mathcal{P}$: Set of all Projects (E0)
+    \item $\mathcal{T}$: Set of all Teams (E1)
+    \item $\mathcal{W}$: Set of all Workers (E2)
+    \item $\mathcal{F}$: Set of all Features (E3)
+    \item $\mathcal{S}$: Set of all Skills (E4)
+    \item $\mathcal{R}$: Set of all Roles (E5)
+    \item $\mathcal{PO}$: Set of all Product Owners (E6)
+    \item $\mathcal{SM}$: Set of all Scrum Masters (E7)
+    \item $\mathcal{PB}$: Set of all Product Backlogs (E8)
+    \item $\mathcal{SP}$: Set of all Sprints (E9)
+    \item $\mathcal{SPP}$: Set of all Sprint Plannings (E10)
+    \item $\mathcal{DS}$: Set of all Daily Scrums (E11)
+    \item $\mathcal{SR}$: Set of all Sprint Reviews (E12)
+    \item $\mathcal{SRE}$: Set of all Sprint Retrospectives (E13)
+    \item $\mathcal{SBL}$: Set of all Sprint Backlogs (E14)
+    \item $\mathcal{SG}$: Set of all Sprint Goals (E15)
+    \item $\mathcal{E}$: Set of all Epics (E16)
+    \item $\mathcal{US}$: Set of all User Stories (E17)
+    \item $\mathcal{TSK}$: Set of all Tasks (E18)
+    \item $\mathcal{DEV}$: Set of all Development Snapshots (E19)
+    \item $\mathcal{BL}$: Set of all Blockers (E20)
+    \item $\mathcal{SH}$: Set of all Stakeholders (E21)
+    \item $\mathcal{VEL}$: Set of all Velocity metrics (E22)
+    \item $\mathcal{REP}$: Set of all Release Plans (E23)
+    \item $\mathcal{RM}$: Set of all Roadmaps (E24)
+    \item $\mathcal{SCB}$: Set of all Scrum Boards (E25)
+    \item $\mathcal{FED}$: Set of all Feature Documentations (E26)
+\end{itemize}
+
+\section{Indices}
+This section defines the indices used to iterate over the sets defined above.
+
+\begin{itemize}
+    \item $p \in \mathcal{P}$: Index for a Project
+    \item $t \in \mathcal{T}$: Index for a Team
+    \item $w \in \mathcal{W}$: Index for a Worker
+    \item $f \in \mathcal{F}$: Index for a Feature
+    \item $s \in \mathcal{S}$: Index for a Skill
+    \item $us \in \mathcal{US}$: Index for a User Story
+    \item $tsk \in \mathcal{TSK}$: Index for a Task
+    \item $sp \in \mathcal{SP}$: Index for a Sprint
+    \item $rep \in \mathcal{REP}$: Index for a Release Plan
+\end{itemize}
+
+\section{Decision Variables}
+This section defines the variables that the optimization model will solve for, derived from \texttt{DecisionVariables.csv}.
+
+\begin{itemize}
+    \item \textbf{DV0 ($X_{us,sp}$)}: Binary variable, 1 if User Story $us$ is assigned to Sprint $sp$, 0 otherwise.
+    \item \textbf{DV1 ($Y_{w,tsk}$)}: Binary variable, 1 if Worker $w$ is assigned to Task $tsk$, 0 otherwise.
+    \item \textbf{DV2 ($A_{t,p}$)}: Binary variable, 1 if Team $t$ is assigned to Project $p$, 0 otherwise.
+    \item \textbf{DV3 ($I_{f,rep}$)}: Binary variable, 1 if Feature $f$ is included in Release Plan $rep$, 0 otherwise.
+    \item \textbf{DV4 ($M_{w,t}$)}: Binary variable, 1 if Worker $w$ is a member of Team $t$, 0 otherwise.
+    \item \textbf{DV5 ($S_{sp}$)}: Integer variable representing the start day of Sprint $sp$.
+    \item \textbf{DV6 ($N_{t}$)}: Integer variable representing the number of members in Team $t$.
+    \item \textbf{DV7 ($P_{us}$)}: Integer variable representing the assigned priority of User Story $us$.
+    \item \textbf{DV8 ($C_{w}$)}: Continuous variable [0,1] representing the capacity allocation of Worker $w$.
+    \item \textbf{DV9 ($B_{p}$)}: Binary variable, 1 if Project $p$ is active, 0 if on hold.
+    \item \textbf{DV10 ($D_{sp}$)}: Integer variable representing the duration in days of Sprint $sp$.
+\end{itemize}
+
+\section{Goals (Objective Functions)}
+This section translates the goals from \texttt{Goals.csv} into mathematical objective functions. We define parameters where necessary (e.g., $StoryPoints_{us}$ is the given story points value for User Story $us$).
+
+\begin{itemize}
+    \item \textbf{G0: maximize\_story\_points\_in\_sprint}
+    $$ \text{Maximize} \sum_{us \in \mathcal{US}} StoryPoints_{us} \cdot X_{us,sp} \quad \forall sp \in \mathcal{SP} $$
+    \item \textbf{G1: minimize\_effort\_for\_features}
+    $$ \text{Minimize} \sum_{f \in \mathcal{F}} EstimatedEffort_{f} \cdot I_{f,rep} \quad \forall rep \in \mathcal{REP} $$
+    \item \textbf{G2: maximize\_priority\_of\_user\_stories}
+    $$ \text{Maximize} \sum_{us \in \mathcal{US}} \sum_{sp \in \mathcal{SP}} Priority_{us} \cdot X_{us,sp} $$
+    \item \textbf{G3: minimize\_number\_of\_blockers}
+    $$ \text{Minimize} \sum_{bl \in \mathcal{BL}} ActiveStatus_{bl} $$
+    \item \textbf{G4: maximize\_team\_satisfaction}
+    $$ \text{Maximize} \; TeamSatisfaction_{sre} \quad \forall sre \in \mathcal{SRE} $$
+    \item \textbf{G5: maximize\_sprint\_goal\_achievement}
+    $$ \text{Maximize} \; AchievementStatus_{sg} \quad \forall sg \in \mathcal{SG} $$
+    \item \textbf{G6: minimize\_project\_timeline\_slippage}
+    $$ \text{Minimize} \; (ActualEndDate_{p} - PlannedEndDate_{p}) \quad \forall p \in \mathcal{P} $$
+    \item \textbf{G7: maximize\_feature\_stakeholder\_relevance}
+    $$ \text{Maximize} \sum_{f \in \mathcal{F}} \sum_{sh \in \mathcal{SH}} Relevance_{f,sh} \cdot Influence_{sh} \cdot I_{f,rep} $$
+    \item \textbf{G8: minimize\_task\_effort\_variance}
+    $$ \text{Minimize} \sum_{tsk \in \mathcal{TSK}} |ActualEffort_{tsk} - EstimatedEffort_{tsk}| $$
+    \item \textbf{G9: maximize\_velocity\_trend}
+    $$ \text{Maximize} \; Trend_{vel} \quad \forall vel \in \mathcal{VEL} $$
+    \item \textbf{G10: maximize\_skill\_level\_on\_tasks}
+    $$ \text{Maximize} \sum_{w \in \mathcal{W}} \sum_{tsk \in \mathcal{TSK}} \sum_{s \in \mathcal{S}} SkillLevel_{w,s} \cdot TaskRequiresSkill_{tsk,s} \cdot Y_{w,tsk} $$
+\end{itemize}
+
+\section{Conditions (Constraints)}
+This section translates the conditions from \texttt{Conditions.csv} into mathematical constraints.
+
+\begin{itemize}
+    \item \textbf{C0: constrain\_sprint\_capacity\_by\_velocity}
+    $$ \sum_{us \in \mathcal{US}} StoryPoints_{us} \cdot X_{us,sp} \leq Velocity_{t} \quad \forall sp \in \mathcal{SP} \text{ (where Team } t \text{ runs Sprint } sp\text{)} $$
+    \item \textbf{C1: constrain\_worker\_availability}
+    $$ \sum_{tsk \in \mathcal{TSK}} TaskEffort_{tsk} \cdot Y_{w,tsk} \leq Availability_{w} \quad \forall w \in \mathcal{W} $$
+    \item \textbf{C2: enforce\_minimum\_team\_size}
+    $$ N_{t} \geq 3 \quad \forall t \in \mathcal{T} $$
+    \item \textbf{C3: enforce\_maximum\_team\_size}
+    $$ N_{t} \leq 9 \quad \forall t \in \mathcal{T} $$
+    \item \textbf{C4: require\_mandatory\_product\_owner}
+    $$ \sum_{w \in \mathcal{PO}} M_{w,t} = 1 \quad \forall t \in \mathcal{T} $$
+    \item \textbf{C5: require\_mandatory\_scrum\_master}
+    $$ \sum_{w \in \mathcal{SM}} M_{w,t} = 1 \quad \forall t \in \mathcal{T} $$
+    \item \textbf{C6: prevent\_assignment\_of\_inactive\_workers}
+    Let $\mathcal{W}_{inactive} = \{w \in \mathcal{W} \mid Status_w = \text{'inactive'}\}$
+    $$ \sum_{tsk \in \mathcal{TSK}} Y_{w,tsk} = 0 \quad \forall w \in \mathcal{W}_{inactive} $$
+    \item \textbf{C7: require\_sprint\_goal}
+    $$ \sum_{sg \in \mathcal{SG}} BelongsToSprint_{sg,sp} = 1 \quad \forall sp \in \mathcal{SP} $$
+    \item \textbf{C8: task\_must\_belong\_to\_sprint\_user\_story}
+    $$ Y_{w,tsk} \leq X_{us,sp} \quad \forall w, tsk, us, sp \text{ (where Task } tsk \text{ belongs to US } us\text{)} $$
+    \item \textbf{C9: budget\_must\_not\_be\_exceeded}
+    $$ \sum_{t \in \mathcal{T}} Cost_{t} + \sum_{\text{other}} OtherCosts \leq Budget_{p} \quad \forall p \in \mathcal{P} $$
+    \item \textbf{C10: epic\_cannot\_be\_in\_sprint\_backlog}
+    No decision variable exists for assigning epics to sprints, enforcing this implicitly.
+    $$ X_{e,sp} \text{ is undefined and assumed to be } 0 \quad \forall e \in \mathcal{E}, sp \in \mathcal{SP} $$
+    \item \textbf{C11: certified\_skill\_for\_critical\_tasks}
+    Let $\mathcal{TSK}_{crit} = \{tsk \in \mathcal{TSK} \mid Type_{tsk} = \text{'critical'}\}$
+    $$ Y_{w,tsk} \cdot (1 - IsCertified_{w,s}) = 0 \quad \forall w \in \mathcal{W}, tsk \in \mathcal{TSK}_{crit}, s \in \mathcal{S} $$
+    \item \textbf{C12: feature\_must\_have\_documentation}
+    $$ I_{f,rep} \leq \exists fed \in \mathcal{FED} \text{ s.t. } Documents_{fed,f} \quad \forall f \in \mathcal{F}, rep \in \mathcal{REP} $$
+\end{itemize}
+
+\end{document}

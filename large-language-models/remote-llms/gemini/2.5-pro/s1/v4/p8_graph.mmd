@@ -1,0 +1,199 @@
+graph TD
+    %% 1. Style Definitions for Node Colors
+    classDef entity fill:#cce5ff,stroke:#333,stroke-width:2px,color:#000;
+    classDef attribute fill:#ffffff,stroke:#b3b3b3,stroke-width:1px,color:#333;
+    classDef relation fill:#ffd8b1,stroke:#333,stroke-width:2px,color:#000;
+    classDef goal fill:#d5e8d4,stroke:#1e811e,stroke-width:2px,color:#000;
+    classDef condition fill:#f8cecc,stroke:#b80000,stroke-width:2px,color:#000;
+    classDef dv fill:#e1d5e7,stroke:#6b268a,stroke-width:2px,color:#000;
+
+    %% 2. Node Definitions
+    %% Entities & Attributes
+    subgraph E0 [E0: Project]
+        E0_node("Project"):::entity
+        E0_attr0("id"):::attribute
+        E0_attr1("name"):::attribute
+        E0_attr2("project_start"):::attribute
+        E0_attr3("project_end"):::attribute
+        E0_attr5("budget"):::attribute
+        E0_attr6("status"):::attribute
+        E0_attr8("priority"):::attribute
+        E0_node --- E0_attr0 & E0_attr1 & E0_attr2 & E0_attr3 & E0_attr5 & E0_attr6 & E0_attr8
+    end
+    subgraph E1 [E1: Team]
+        E1_node("Team"):::entity
+        E1_attr2("team_size"):::attribute
+        E1_attr4("team_status"):::attribute
+        E1_node --- E1_attr2 & E1_attr4
+    end
+    subgraph E2 [E2: Worker]
+        E2_node("Worker"):::entity
+        E2_attr5("status"):::attribute
+        E2_attr6("availability"):::attribute
+        E2_node --- E2_attr5 & E2_attr6
+    end
+    subgraph E3 [E3: Feature]
+        E3_node("Feature"):::entity
+        E3_attr4("priority"):::attribute
+        E3_attr5("estimated_effort"):::attribute
+        E3_node --- E3_attr4 & E3_attr5
+    end
+    subgraph E4 [E4: Skill]
+        E4_node("Skill"):::entity
+        E4_attr3("level"):::attribute
+        E4_attr4("certified"):::attribute
+        E4_node --- E4_attr3 & E4_attr4
+    end
+    E5("Role"):::entity
+    E6("ProductOwner"):::entity
+    E7("ScrumMaster"):::entity
+    E8("ProductBacklog"):::entity
+    subgraph E9 [E9: Sprint]
+        E9_node("Sprint"):::entity
+        E9_attr3("end_date"):::attribute
+        E9_node --- E9_attr3
+    end
+    E12("SprintReview"):::entity
+    E13("SprintRetrospective"):::entity
+    subgraph E14 [E14: SprintBacklog]
+        E14_node("SprintBacklog"):::entity
+        E14_attr2("last_updated"):::attribute
+        E14_node --- E14_attr2
+    end
+    subgraph E15 [E15: SprintGoal]
+        E15_node("SprintGoal"):::entity
+        E15_attr2("achievement_status"):::attribute
+        E15_node --- E15_attr2
+    end
+    E16("Epic"):::entity
+    subgraph E17 [E17: UserStory]
+        E17_node("UserStory"):::entity
+        E17_attr3("acceptance_criteria"):::attribute
+        E17_attr4("priority"):::attribute
+        E17_attr5("story_points"):::attribute
+        E17_node --- E17_attr3 & E17_attr4 & E17_attr5
+    end
+    subgraph E18 [E18: Task]
+        E18_node("Task"):::entity
+        E18_attr0("id"):::attribute
+        E18_attr3("status"):::attribute
+        E18_attr4("effort"):::attribute
+        E18_node --- E18_attr0 & E18_attr3 & E18_attr4
+    end
+    E19("DevelopmentSnapshot"):::entity
+    subgraph E20 [E20: Blocker]
+        E20_node("Blocker"):::entity
+        E20_attr4("status"):::attribute
+        E20_node --- E20_attr4
+    end
+    subgraph E21 [E21: Stakeholder]
+        E21_node("Stakeholder"):::entity
+        E21_attr6("influence_level"):::attribute
+        E21_node --- E21_attr6
+    end
+    subgraph E22 [E22: Velocity]
+        E22_node("Velocity"):::entity
+        E22_attr2("avg._story_points"):::attribute
+        E22_node --- E22_attr2
+    end
+    E23("ReleasePlan"):::entity
+    E24("Roadmap"):::entity
+    E25("ScrumBoard"):::entity
+    subgraph E26 [E26: FeatureDocumentation]
+        E26_node("FeatureDocumentation"):::entity
+        E26_attr5("linked_requirements"):::attribute
+        E26_node --- E26_attr5
+    end
+
+    %% Relations
+    R1("is_assigned_to_project"):::relation
+    R2("belongs_to_team"):::relation
+    R3("has_skill"):::relation
+    R4("takes_on_role"):::relation
+    R9("contains_user_story"):::relation
+    R10("consists_of_tasks"):::relation
+    R12("belongs_to_sprint"):::relation
+    R16("is_blocked_by"):::relation
+    R19("refers_to_team"):::relation
+    R20("plans_release"):::relation
+    
+    %% Goals
+    G0("maximize_completed_story_points"):::goal
+    G1("minimize_project_budget_overrun"):::goal
+    G2("maximize_feature_priority_delivery"):::goal
+    G3("minimize_time_to_market"):::goal
+    G4("maximize_sprint_goal_achievement"):::goal
+    G5("minimize_unresolved_blockers"):::goal
+    G6("maximize_team_velocity"):::goal
+    G7("minimize_total_task_effort"):::goal
+    G8("maximize_stakeholder_value"):::goal
+    G9("minimize_feature_effort_estimation"):::goal
+    G10("maximize_worker_utilization"):::goal
+
+    %% Conditions
+    C0("maximize_skill_match_on_tasks"):::condition
+    C1("minimize_worker_overload"):::condition
+    C2("maximize_team_size_adherence"):::condition
+    C3("minimize_work_on_low_priority_stories"):::condition
+    C4("maximize_use_of_certified_skills"):::condition
+    C5("minimize_tasks_without_user_story"):::condition
+    C6("maximize_work_for_active_workers"):::condition
+    C7("maximize_clarity_of_acceptance_criteria"):::condition
+    C8("minimize_sprint_disruption"):::condition
+    C9("maximize_feature_documentation_linkage"):::condition
+    C10("minimize_assignment_to_unavailable_teams"):::condition
+
+    %% Decision Variables
+    DV0("assign_worker_to_task"):::dv
+    DV1("assign_user_story_to_sprint"):::dv
+    DV2("assign_team_to_project"):::dv
+    DV3("assign_feature_to_release"):::dv
+    DV6("set_team_size"):::dv
+    DV8("set_feature_priority"):::dv
+
+    %% 3. Connections
+    %% Entity-Relation-Entity Links (from Relationships.csv)
+    E1_node --> R1 --> E0_node
+    E2_node --> R2 --> E1_node
+    E2_node --> R3 --> E4_node
+    E2_node --> R4 --> E5
+    E16 --> R9 --> E17_node
+    E17_node --> R10 --> E18_node
+    E14_node --> R12 --> E9_node
+    E18_node -.-> R16 -.-> E20_node
+    E22_node --> R19 --> E1_node
+    E23 --> R20 --> E3_node
+
+    %% Goal Links (from Goals.csv)
+    G0 --> E17_attr5
+    G1 --> E0_attr5
+    G2 --> E3_attr4
+    G3 --> E0_attr3
+    G4 --> E15_attr2
+    G5 --> E20_attr4
+    G6 --> E22_attr2
+    G7 --> E18_attr4
+    G8 --> E21_attr6
+    G9 --> E3_attr5
+    G10 --> E2_attr6
+
+    %% Condition Links (from Conditions.csv)
+    C0 --> E4_attr3
+    C1 --> E2_attr6
+    C2 --> E1_attr2
+    C3 --> E17_attr4
+    C4 --> E4_attr4
+    C5 --> E18_attr0
+    C6 --> E2_attr5
+    C7 --> E17_attr3
+    C8 --> E14_attr2
+    C9 --> E26_attr5
+    C10 --> E1_attr4
+
+    %% Decision Variable Links (from DecisionVariables.csv)
+    DV0 --> E2_node & E18_node
+    DV1 --> E17_node & E9_node
+    DV2 --> E1_node & E0_node
+    DV3 --> E3_node & E23
+    DV6 --> E1_node
+    DV8 --> E3_node

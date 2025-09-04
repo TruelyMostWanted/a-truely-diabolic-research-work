@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+\linespread{1.2}
+
+\title{\textbf{Mathematical Optimization Model for Scrum-based Software Development}}
+\author{Formulated by Gemini AI Assistant}
+\date{September 4, 2025}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+This section defines the fundamental sets used in the model, based on the entities from \texttt{Entities.csv}.
+\begin{itemize}
+    \item $P$: Set of all Projects (E0)
+    \item $T$: Set of all Teams (E1)
+    \item $W$: Set of all Workers (E2)
+    \item $F$: Set of all Features (E3)
+    \item $S$: Set of all Skills (E4)
+    \item $R$: Set of all Roles (E5)
+    \item $PO$: Set of all Product Owners (E6)
+    \item $SM$: Set of all Scrum Masters (E7)
+    \item $PB$: Set of all Product Backlogs (E8)
+    \item $SP$: Set of all Sprints (E9)
+    \item $SBL$: Set of all Sprint Backlogs (E14)
+    \item $SG$: Set of all Sprint Goals (E15)
+    \item $E$: Set of all Epics (E16)
+    \item $US$: Set of all User Stories (E17)
+    \item $TSK$: Set of all Tasks (E18)
+    \item $BL$: Set of all Blockers (E20)
+    \item $SH$: Set of all Stakeholders (E21)
+    \item $VEL$: Set of all Velocity measurements (E22)
+    \item $REP$: Set of all Release Plans (E23)
+\end{itemize}
+
+\section{Indices}
+This section defines the indices used to iterate over the sets defined above.
+\begin{itemize}
+    \item $p \in P$: Index for Projects
+    \item $t \in T$: Index for Teams
+    \item $w \in W$: Index for Workers
+    \item $f \in F$: Index for Features
+    \item $s \in S$: Index for Skills
+    \item $r \in R$: Index for Roles
+    \item $sp \in SP$: Index for Sprints
+    \item $us \in US$: Index for User Stories
+    \item $tsk \in TSK$: Index for Tasks
+    \item $bl \in BL$: Index for Blockers
+    \item $rep \in REP$: Index for Release Plans
+\end{itemize}
+
+\section{Decision Variables}
+This section defines the decision variables of the optimization model, based on \texttt{DecisionVariables.csv}. These are the outputs of the model.
+\begin{itemize}
+    \item \textbf{(DV0) $A_{w,t} \in \{0,1\}$}: Binary variable, 1 if worker $w$ is assigned to team $t$, 0 otherwise.
+    \item \textbf{(DV1) $B_{us,sp} \in \{0,1\}$}: Binary variable, 1 if user story $us$ is assigned to sprint $sp$, 0 otherwise.
+    \item \textbf{(DV2) $C_{tsk,w} \in \{0,1\}$}: Binary variable, 1 if task $tsk$ is assigned to worker $w$, 0 otherwise.
+    \item \textbf{(DV3) $D_{f,rep} \in \{0,1\}$}: Binary variable, 1 if feature $f$ is included in release plan $rep$, 0 otherwise.
+    \item \textbf{(DV4) $TeamSize_t \in \mathbb{Z}^+$}: Integer variable for the number of members in team $t$.
+    \item \textbf{(DV5) $StartDate_{sp} \in \mathbb{R}^+$}: Continuous variable for the start date of sprint $sp$.
+    \item \textbf{(DV6) $Avail_{w,p} \in [0,1]$}: Float variable for the percentage of worker $w$'s availability allocated to project $p$.
+    \item \textbf{(DV7) $Rank_{us} \in \mathbb{Z}^+$}: Integer variable for the rank of user story $us$ in the product backlog.
+    \item \textbf{(DV8) $Duration_{sp} \in \{1,2,3,4\}$}: Integer variable for the duration of sprint $sp$ in weeks.
+    \item \textbf{(DV9) $E_{w,r,t} \in \{0,1\}$}: Binary variable, 1 if worker $w$ takes on role $r$ in team $t$, 0 otherwise.
+    \item \textbf{(DV11) $StoryPoints_{us} \in \{1,2,3,5,8,13,21\}$}: Integer variable for the estimated story points of user story $us$.
+\end{itemize}
+
+\section{Goals (Objective Functions)}
+This section lists the optimization goals from \texttt{Goals.csv}, which can be combined into a multi-objective function, typically using weights.
+\begin{itemize}
+    \item \textbf{(G0) maximize\_sprint\_priority}: Maximize the value from high-priority user stories in sprints.
+    $$ \max \sum_{us \in US} \sum_{sp \in SP} \text{priority}(us) \cdot B_{us,sp} $$
+    \item \textbf{(G1) maximize\_completed\_story\_points}: Maximize the throughput of the team.
+    $$ \max \sum_{us \in US} \sum_{sp \in SP} \text{StoryPoints}_{us} \cdot B_{us,sp} $$
+    \item \textbf{(G2) minimize\_release\_effort}: Minimize the total effort for a release.
+    $$ \min \sum_{f \in F} \sum_{rep \in REP} \text{estimated\_effort}(f) \cdot D_{f,rep} $$
+    \item \textbf{(G4) minimize\_project\_duration}: Minimize the time-to-market.
+    $$ \min (\text{project\_end}(p) - \text{project\_start}(p)) $$
+    \item \textbf{(G5) minimize\_open\_blockers}: Minimize impediments to progress.
+    $$ \min \sum_{bl \in BL} \mathbb{I}(\text{status}(bl) = \text{'open'}) $$
+    where $\mathbb{I}(\cdot)$ is the indicator function.
+    \item \textbf{(G8) minimize\_budget\_usage}: Ensure the project is cost-effective.
+    $$ \min \sum_{w \in W} \sum_{p \in P} \text{cost}(w) \cdot \text{Avail}_{w,p} $$
+\end{itemize}
+
+\section{Conditions (Constraints)}
+This section lists the constraints from \texttt{Conditions.csv} that the solution must adhere to.
+\begin{itemize}
+    \item \textbf{(C0) sprint\_capacity\_limit}: The work assigned to a sprint must not exceed the team's velocity. Let $V_t$ be the velocity for team $t$.
+    $$ \forall sp \in SP, \forall t \in T: \sum_{us \in US} \text{StoryPoints}_{us} \cdot B_{us,sp} \leq V_t $$
+    \item \textbf{(C1) project\_budget\_limit}: Total project costs must not exceed the budget.
+    $$ \forall p \in P: \sum_{w \in W} \text{cost}(w) \cdot \text{Avail}_{w,p} \leq \text{budget}(p) $$
+    \item \textbf{(C3) task\_skill\_requirement}: A worker assigned to a task must have the required skills. Let $\text{HasSkill}_{w,s}$ and $\text{ReqSkill}_{tsk,s}$ be binary parameters.
+    $$ \forall tsk \in TSK, w \in W, s \in S: \text{ReqSkill}_{tsk,s} \cdot C_{tsk,w} \leq \text{HasSkill}_{w,s} $$
+    \item \textbf{(C4) agile\_team\_size}: Team size must be within defined agile limits.
+    $$ \forall t \in T: 3 \leq \sum_{w \in W} A_{w,t} \leq 9 $$
+    \item \textbf{(C6) blocked\_task\_halt}: A task cannot be assigned if it is blocked. Let $\text{IsBlocked}_{tsk}$ be a binary parameter.
+    $$ \forall tsk \in TSK: \sum_{w \in W} C_{tsk,w} \leq 1 - \text{IsBlocked}_{tsk} $$
+    \item \textbf{(C7) team\_scrum\_master\_assignment}: Each team must have one Scrum Master.
+    $$ \forall t \in T: \sum_{w \in W} E_{w, \text{'ScrumMaster'}, t} = 1 $$
+    \item \textbf{(C11) unique\_worker\_team\_assignment}: Each worker can be on at most one team.
+    $$ \forall w \in W: \sum_{t \in T} A_{w,t} \leq 1 $$
+\end{itemize}
+
+\end{document}

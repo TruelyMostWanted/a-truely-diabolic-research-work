@@ -1,0 +1,150 @@
+\documentclass[11pt]{article}
+
+% Preamble: Required Packages
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lmodern}
+
+% Document Information
+\title{Mathematical Optimization Model for Scrum-based Software Development}
+\author{Gemini AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+These sets are derived from the \texttt{Entities.csv} file and represent the foundational components of the domain model.
+\begin{itemize}
+    \item \textbf{Projects (P)}: The set of all projects.
+    \item \textbf{Teams (T)}: The set of all development teams.
+    \item \textbf{Workers (W)}: The set of all individual workers.
+    \item \textbf{Features (F)}: The set of all features.
+    \item \textbf{Skills (S)}: The set of all professional skills.
+    \item \textbf{Sprints (SP)}: The set of all sprints.
+    \item \textbf{User Stories (US)}: The set of all user stories.
+    \item \textbf{Tasks (TSK)}: The set of all tasks, the smallest units of work.
+    \item \textbf{Blockers (BL)}: The set of all potential blockers.
+    \item \textbf{Stakeholders (SH)}: The set of all stakeholders.
+    \item \textbf{Release Plans (REP)}: The set of all release plans.
+\end{itemize}
+
+\section{Indices}
+These indices are used throughout the mathematical model to refer to specific elements within the sets defined above.
+\begin{itemize}
+    \item $p \in P$: Index for the set of Projects.
+    \item $t \in T$: Index for the set of Teams.
+    \item $w \in W$: Index for the set of Workers.
+    \item $f \in F$: Index for the set of Features.
+    \item $s \in S$: Index for the set of Skills.
+    \item $sp \in SP$: Index for the set of Sprints.
+    \item $us \in US$: Index for the set of User Stories.
+    \item $tsk \in TSK$: Index for the set of Tasks.
+    \item $bl \in BL$: Index for the set of Blockers.
+    \item $sh \in SH$: Index for the set of Stakeholders.
+    \item $rep \in REP$: Index for the set of Release Plans.
+\end{itemize}
+
+\section{Decision Variables}
+These variables represent the choices that the optimization model can make. They are derived from \texttt{DecisionVariables.csv}.
+\begin{itemize}
+    \item [DV0] \textbf{assign\_worker\_to\_task} ($X_{w, tsk}$):
+    $$ X_{w, tsk} \in \{0, 1\}, \quad \forall w \in W, \forall tsk \in TSK $$
+    (1 if worker $w$ is assigned to task $tsk$, 0 otherwise)
+
+    \item [DV1] \textbf{assign\_user\_story\_to\_sprint} ($Y_{us, sp}$):
+    $$ Y_{us, sp} \in \{0, 1\}, \quad \forall us \in US, \forall sp \in SP $$
+    (1 if user story $us$ is assigned to sprint $sp$, 0 otherwise)
+
+    \item [DV2] \textbf{assign\_team\_to\_project} ($A_{t, p}$):
+    $$ A_{t, p} \in \{0, 1\}, \quad \forall t \in T, \forall p \in P $$
+    (1 if team $t$ is assigned to project $p$, 0 otherwise)
+
+    \item [DV3] \textbf{assign\_feature\_to\_release} ($B_{f, rep}$):
+    $$ B_{f, rep} \in \{0, 1\}, \quad \forall f \in F, \forall rep \in REP $$
+    (1 if feature $f$ is assigned to release $rep$, 0 otherwise)
+    
+    \item [DV6] \textbf{set\_team\_size} ($Size_t$):
+    $$ Size_t \in \mathbb{Z}^+, \quad \forall t \in T $$
+    (The number of workers assigned to team $t$)
+
+    \item [DV8] \textbf{set\_feature\_priority} ($P_f$):
+    $$ P_f \in \{1, ..., 10\}, \quad \forall f \in F $$
+    (The priority level assigned to feature $f$)
+\end{itemize}
+
+\section{Goals}
+The goals represent the objective function of the optimization model. The overall aim is to find a solution that performs best against a weighted sum of these individual objectives, derived from \texttt{Goals.csv}. Let $W_g$ be the weight for goal $g$. The multi-objective function is:
+$$ \text{Optimize} \quad Z = \sum_{g} W_g \cdot Z_g $$
+
+\subsection*{Parameters for Goals}
+\begin{itemize}
+    \item $StoryPoints_{us}$: Story points for user story $us$.
+    \item $Budget_p$: Allocated budget for project $p$.
+    \item $Priority_f$: Priority score for feature $f$.
+    \item $Influence_{sh}$: Influence level of stakeholder $sh$.
+    \item $Effort_{tsk}$: Effort required for task $tsk$.
+\end{itemize}
+
+\subsection*{Goal Formulations}
+\begin{itemize}
+    \item [G0] \textbf{maximize\_completed\_story\_points}:
+    $$ \text{maximize} \sum_{us \in US} \sum_{sp \in SP} StoryPoints_{us} \cdot Y_{us, sp} $$
+
+    \item [G1] \textbf{minimize\_project\_budget\_overrun}: We model this by minimizing total cost, where cost is a function of assigned workers. Let $Cost_w$ be the cost of worker $w$.
+    $$ \text{minimize} \sum_{w \in W} \sum_{tsk \in TSK} Cost_w \cdot X_{w, tsk} $$
+    
+    \item [G2] \textbf{maximize\_feature\_priority\_delivery}:
+    $$ \text{maximize} \sum_{f \in F} P_f $$
+    (Where $P_f$ is the decision variable for setting priority)
+
+    \item [G7] \textbf{minimize\_total\_task\_effort}:
+    $$ \text{minimize} \sum_{tsk \in TSK} Effort_{tsk} $$
+    (This is minimizing the effort of *selected* tasks. Assuming task selection is implicit via worker assignment)
+    $$ \text{minimize} \sum_{w \in W} \sum_{tsk \in TSK} Effort_{tsk} \cdot X_{w, tsk} $$
+
+    \item [G8] \textbf{maximize\_stakeholder\_value}: Assumes a link between features and stakeholders. Let $Rel_{f,sh}$ be a parameter (1 if feature $f$ is relevant to stakeholder $sh$).
+    $$ \text{maximize} \sum_{f \in F} \sum_{rep \in REP} \sum_{sh \in SH} (Influence_{sh} \cdot Rel_{f,sh}) \cdot B_{f, rep} $$
+\end{itemize}
+
+\section{Conditions}
+The conditions represent the constraints that a valid solution must adhere to. They are derived from \texttt{Conditions.csv}.
+
+\subsection*{Parameters for Conditions}
+\begin{itemize}
+    \item $Availability_w$: The availability (e.g., in hours) of worker $w$.
+    \item $HasSkill_{w,s}$: Binary parameter, 1 if worker $w$ has skill $s$.
+    \item $NeedsSkill_{tsk,s}$: Binary parameter, 1 if task $tsk$ requires skill $s$.
+    \item $Status_w$: The current status of worker $w$ (e.g., 1 for active, 0 for inactive).
+\end{itemize}
+
+\subsection*{Condition Formulations}
+\begin{itemize}
+    \item [C0] \textbf{maximize\_skill\_match\_on\_tasks} (Soft Constraint): This is a preference. It can be modeled as a goal to be maximized within the objective function.
+    $$ \text{maximize} \sum_{w \in W} \sum_{tsk \in TSK} \sum_{s \in S} (HasSkill_{w,s} \cdot NeedsSkill_{tsk,s}) \cdot X_{w, tsk} $$
+
+    \item [C1] \textbf{minimize\_worker\_overload} (Hard Constraint):
+    $$ \sum_{tsk \in TSK} Effort_{tsk} \cdot X_{w, tsk} \leq Availability_w, \quad \forall w \in W $$
+
+    \item [C2] \textbf{maximize\_team\_size\_adherence} (Hard Constraint):
+    $$ 3 \leq Size_t \leq 9, \quad \forall t \in T $$
+
+    \item [C5] \textbf{minimize\_tasks\_without\_user\_story} (Hard Constraint): Every assigned task must belong to an assigned user story. Let $BelongsTo_{tsk,us}$ be a binary parameter.
+    $$ X_{w,tsk} \cdot BelongsTo_{tsk,us} \leq Y_{us,sp} \quad \forall w, tsk, us, sp $$
+    (A simpler formulation is to ensure each task is assigned to exactly one worker).
+    $$ \sum_{w \in W} X_{w, tsk} \leq 1, \quad \forall tsk \in TSK $$
+
+    \item [C6] \textbf{maximize\_work\_for\_active\_workers} (Hard Constraint):
+    $$ \sum_{tsk \in TSK} X_{w, tsk} \leq M \cdot Status_w, \quad \forall w \in W $$
+    (Where $M$ is a large number. If $Status_w$ is 0, the sum of assignments for worker $w$ must be 0.)
+
+\end{itemize}
+
+\end{document}

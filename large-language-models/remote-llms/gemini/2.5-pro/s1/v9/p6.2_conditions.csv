@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,sprint_backlog_must_not_exceed_velocity,"The total story points of user stories assigned to a sprint must not exceed the team's established velocity.",True,min,UserStory,story_points,2,1.0
+C1,worker_availability_must_be_respected,"The total effort of tasks assigned to a worker in a sprint must not exceed their available capacity.",True,min,Worker,availability,2,1.0
+C2,project_budget_must_not_be_exceeded,"The total cost incurred by the project must remain at or below the allocated budget.",False,min,Project,budget,2,1.0
+C3,team_size_must_be_within_scrum_limits,"The number of workers on a team should be within the effective range for a Scrum team (e.g., 3 to 9 members).",False,min,Team,team_size,2,1.0
+C4,task_must_have_required_skills,"A worker assigned to a task must possess the necessary skill required for that task.",False,min,Worker,id,2,1.0
+C5,sprint_must_have_a_goal,"Every sprint that is planned must have a clearly defined Sprint Goal.",False,max,Sprint,id,2,1.0
+C6,epic_must_be_broken_down,"An Epic cannot be directly placed into a Sprint Backlog; it must first be broken down into User Stories.",False,min,Epic,status,0,1.0
+C7,a_sprint_has_a_fixed_duration,"The duration between the start and end date of a sprint is fixed and cannot be changed once started.",False,min,Sprint,end_date,2,1.0
+C8,a_worker_belongs_to_one_team,"Each worker must be assigned to exactly one team at any given time to ensure focus.",False,min,Worker,id,2,1.0
+C9,a_product_owner_manages_the_backlog,"Every Product Backlog must be managed by exactly one Product Owner.",False,min,ProductBacklog,id,2,1.0
+C10,blocker_must_be_resolved_to_close_task,"A task with an active blocker cannot have its status set to 'done'.",False,min,Blocker,status,2,1.0
+C11,user_story_must_have_acceptance_criteria,"A user story cannot be considered 'ready' for a sprint unless it has defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0

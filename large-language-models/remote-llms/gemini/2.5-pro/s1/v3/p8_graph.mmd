@@ -1,0 +1,159 @@
+graph TD
+    %% ----------------------------------------------------
+    %% --- Style Definitions
+    %% ----------------------------------------------------
+    classDef entity fill:#cce5ff,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#f8f9fa,stroke:#333,stroke-width:1px;
+    classDef relation fill:#ffe5cc,stroke:#333,stroke-width:1px,color:#000;
+    classDef goal fill:#d4edda,stroke:#28a745,stroke-width:2px;
+    classDef condition fill:#f8d7da,stroke:#dc3545,stroke-width:2px;
+    classDef dv fill:#e2d9f3,stroke:#6f42c1,stroke-width:2px;
+
+    %% ====================================================
+    %% === SUBGRAPH: CORE PROJECT & TEAM ENTITIES
+    %% ====================================================
+    subgraph Core Project & Team
+        E0["E0: Project"]:::entity
+        E1["E1: Team"]:::entity
+        E2["E2: Worker"]:::entity
+        E4["E4: Skill"]:::entity
+        E5["E5: Role"]:::entity
+        E6["E6: ProductOwner"]:::entity
+        E7["E7: ScrumMaster"]:::entity
+        E21["E21: Stakeholder"]:::entity
+        E22["E22: Velocity"]:::entity
+
+        %% Project Attributes
+        E0 --> A0_0["attr: id"]; E0 --> A0_1["attr: name"]; E0 --> A0_2["attr: project_start"]; E0 --> A0_3["attr: project_end"]; E0 --> A0_4["attr: budget"];
+        %% Team Attributes
+        E1 --> A1_0["attr: id"]; E1 --> A1_1["attr: name"]; E1 --> A1_2["attr: team_size"];
+        %% Worker Attributes
+        E2 --> A2_0["attr: id"]; E2 --> A2_1["attr: name"]; E2 --> A2_6["attr: availability"];
+        %% Skill Attributes
+        E4 --> A4_0["attr: id"]; E4 --> A4_1["attr: label"];
+        %% Role Attributes
+        E5 --> A5_0["attr: id"]; E5 --> A5_1["attr: role_name"];
+    end
+
+    %% ====================================================
+    %% === SUBGRAPH: BACKLOG & REQUIREMENT ENTITIES
+    %% ====================================================
+    subgraph Backlog & Requirements
+        E3["E3: Feature"]:::entity
+        E8["E8: ProductBacklog"]:::entity
+        E16["E16: Epic"]:::entity
+        E17["E17: UserStory"]:::entity
+        E18["E18: Task"]:::entity
+        E20["E20: Blocker"]:::entity
+        E26["E26: FeatureDocumentation"]:::entity
+
+        %% Feature Attributes
+        E3 --> A3_0["attr: id"]; E3 --> A3_3["attr: status"];
+        %% UserStory Attributes
+        E17 --> A17_0["attr: id"]; E17 --> A17_3["attr: acceptance_criteria"]; E17 --> A17_4["attr: priority"]; E17 --> A17_5["attr: story_points"];
+        %% Task Attributes
+        E18 --> A18_0["attr: id"]; E18 --> A18_4["attr: effort"];
+        %% Blocker Attributes
+        E20 --> A20_0["attr: id"]; E20 --> A20_3["attr: severity"]; E20 --> A20_4["attr: status"];
+    end
+
+    %% ====================================================
+    %% === SUBGRAPH: SPRINT & PLANNING ENTITIES
+    %% ====================================================
+    subgraph Sprint & Planning
+        E9["E9: Sprint"]:::entity
+        E14["E14: SprintBacklog"]:::entity
+        E15["E15: SprintGoal"]:::entity
+        E23["E23: ReleasePlan"]:::entity
+        E24["E24: Roadmap"]:::entity
+
+        %% Sprint Attributes
+        E9 --> A9_0["attr: id"]; E9 --> A9_5["attr: achievement_of_goal"];
+        %% SprintBacklog Attributes
+        E14 --> A14_0["attr: id"]; E14 --> A14_4["attr: total_effort"];
+    end
+
+    %% ====================================================
+    %% === RELATIONSHIPS
+    %% ====================================================
+    subgraph Relationships
+        direction LR
+        R1["R1: is_assigned_to_project"]:::relation
+        R2["R2: belongs_to_team"]:::relation
+        R3["R3: has_skill"]:::relation
+        R4["R4: takes_on_role"]:::relation
+        R5["R5: manages_backlog"]:::relation
+        R6["R6: is_supported_by"]:::relation
+        R7["R7: contains_feature"]:::relation
+        R8["R8: contains_epic"]:::relation
+        R9["R9: contains_user_story"]:::relation
+        R10["R10: consists_of_tasks"]:::relation
+        R12["R12: belongs_to_sprint"]:::relation
+        R13["R13: pursues_goal"]:::relation
+        R15["R15: documents_feature"]:::relation
+        R16["R16: is_blocked_by"]:::relation
+        R19["R19: refers_to_team"]:::relation
+        R20["R20: plans_release"]:::relation
+    end
+    E1 --> R1 --> E0; E2 --> R2 --> E1; E2 --> R3 --> E4; E2 --> R4 --> E5;
+    E6 --> R5 --> E8; E1 --> R6 --> E7; E8 --> R7 --> E3; E8 --> R8 --> E16;
+    E16 --> R9 --> E17; E17 --> R10 --> E18; E14 --> R12 --> E9; E9 --> R13 --> E15;
+    E26 --> R15 --> E3; E18 --> R16 --> E20; E22 --> R19 --> E1; E23 --> R20 --> E3;
+
+    %% ====================================================
+    %% === DECISION VARIABLES
+    %% ====================================================
+    subgraph Decision Variables
+        DV0["DV0: select_user_story_for_sprint"]:::dv
+        DV1["DV1: assign_worker_to_task"]:::dv
+        DV2["DV2: assign_feature_to_release"]:::dv
+        DV7["DV7: resolve_blocker_in_sprint"]:::dv
+    end
+    DV0 -- "influences" --> E17; DV0 -- "for" --> E9;
+    DV1 -- "assigns" --> E2; DV1 -- "to" --> E18;
+    DV2 -- "influences" --> E3; DV2 -- "for" --> E23;
+    DV7 -- "influences" --> E20;
+
+    %% ====================================================
+    %% === GOALS (OBJECTIVES)
+    %% ====================================================
+    subgraph Goals
+        G0["G0: maximize_total_priority"]:::goal
+        G1["G1: minimize_total_effort"]:::goal
+        G2["G2: maximize_feature_completion"]:::goal
+        G5["G5: minimize_number_of_open_blockers"]:::goal
+        G6["G6: maximize_sprint_goal_achievement"]:::goal
+    end
+    G0 -- "evaluates" --> A17_4_copy["attr: priority"];
+    G1 -- "evaluates" --> A17_5_copy["attr: story_points"];
+    G2 -- "evaluates" --> A3_3_copy["attr: status"];
+    G5 -- "evaluates" --> A20_4_copy["attr: status"];
+    G6 -- "evaluates" --> A9_5_copy["attr: achievement_of_goal"];
+    class A17_4_copy,A17_5_copy,A3_3_copy,A20_4_copy,A9_5_copy attribute;
+
+    %% ====================================================
+    %% === CONDITIONS (CONSTRAINTS)
+    %% ====================================================
+    subgraph Conditions
+        C0["C0: total_effort_must_not_exceed_velocity"]:::condition
+        C1["C1: worker_availability_must_be_respected"]:::condition
+        C2["C2: project_must_stay_within_budget"]:::condition
+        C4["C4: user_story_requires_acceptance_criteria"]:::condition
+    end
+    C0 -- "constrains" --> A14_4_copy["attr: total_effort"]; C0 -- "against" --> E22_copy["E22: Velocity"];
+    C1 -- "constrains" --> A2_6_copy["attr: availability"];
+    C2 -- "constrains" --> A0_4_copy["attr: budget"];
+    C4 -- "constrains" --> A17_3_copy["attr: acceptance_criteria"];
+    class A14_4_copy,E22_copy,A2_6_copy,A0_4_copy,A17_3_copy attribute;
+    class E22_copy entity;
+
+
+    %% ----------------------------------------------------
+    %% --- Class Assignments
+    %% ----------------------------------------------------
+    class E0,E1,E2,E3,E4,E5,E6,E7,E8,E9,E14,E15,E16,E17,E18,E20,E21,E22,E23,E24,E26 entity;
+    class A0_0,A0_1,A0_2,A0_3,A0_4,A1_0,A1_1,A1_2,A2_0,A2_1,A2_6,A3_0,A3_3,A4_0,A4_1,A5_0,A5_1,A9_0,A9_5,A14_0,A14_4,A17_0,A17_3,A17_4,A17_5,A18_0,A18_4,A20_0,A20_3,A20_4 attribute;
+    class R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R12,R13,R15,R16,R19,R20 relation;
+    class G0,G1,G2,G5,G6 goal;
+    class C0,C1,C2,C4 condition;
+    class DV0,DV1,DV2,DV7 dv;

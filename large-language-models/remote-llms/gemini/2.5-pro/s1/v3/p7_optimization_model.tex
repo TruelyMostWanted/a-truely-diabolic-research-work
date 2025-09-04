@@ -1,0 +1,234 @@
+\documentclass[11pt]{article}
+
+% Preamble: Packages for formatting, math, and layout
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+% Document Information
+\title{\textbf{Mathematical Optimization Model for Scrum Project Planning}}
+\author{Gemini AI Assistant}
+\date{September 4, 2025}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+
+\newpage
+\setcounter{page}{1}
+
+%========================================================================================
+% SECTION 1: SETS (ENTITIES)
+%========================================================================================
+\section{Sets (Entities)}
+\label{sec:sets}
+This section defines the fundamental sets used in the model, derived from the entities in the domain.
+
+\begin{itemize}
+    \item $P$: Set of all Projects
+    \item $T$: Set of all Teams
+    \item $W$: Set of all Workers
+    \item $F$: Set of all Features
+    \item $S$: Set of all Skills
+    \item $R$: Set of all Roles
+    \item $PO$: Set of all Product Owners
+    \item $SM$: Set of all Scrum Masters
+    \item $PB$: Set of all Product Backlogs
+    \item $SP$: Set of all Sprints
+    \item $SPP$: Set of all Sprint Planning meetings
+    \item $DS$: Set of all Daily Scrums
+    \item $SR$: Set of all Sprint Reviews
+    \item $SRE$: Set of all Sprint Retrospectives
+    \item $SBL$: Set of all Sprint Backlogs
+    \item $SG$: Set of all Sprint Goals
+    \item $E$: Set of all Epics
+    \item $US$: Set of all User Stories
+    \item $TSK$: Set of all Tasks
+    \item $DEV$: Set of all Development Snapshots
+    \item $BL$: Set of all Blockers
+    \item $SH$: Set of all Stakeholders
+    \item $VEL$: Set of all Velocity records
+    \item $REP$: Set of all Release Plans
+    \item $RM$: Set of all Roadmaps
+    \item $SCB$: Set of all Scrum Boards
+    \item $FED$: Set of all Feature Documentations
+\end{itemize}
+
+%========================================================================================
+% SECTION 2: INDICES
+%========================================================================================
+\section{Indices}
+\label{sec:indices}
+This section defines the indices used to iterate over the sets defined in Section \ref{sec:sets}.
+
+\begin{itemize}
+    \item Let $p \in P$ be an index for the set of Projects.
+    \item Let $t \in T$ be an index for the set of Teams.
+    \item Let $w \in W$ be an index for the set of Workers.
+    \item Let $f \in F$ be an index for the set of Features.
+    \item Let $s \in S$ be an index for the set of Skills.
+    \item Let $r \in R$ be an index for the set of Roles.
+    \item Let $po \in PO$ be an index for the set of Product Owners.
+    \item Let $sm \in SM$ be an index for the set of Scrum Masters.
+    \item Let $pb \in PB$ be an index for the set of Product Backlogs.
+    \item Let $sp \in SP$ be an index for the set of Sprints.
+    \item Let $spp \in SPP$ be an index for the set of Sprint Planning meetings.
+    \item Let $ds \in DS$ be an index for the set of Daily Scrums.
+    \item Let $sr \in SR$ be an index for the set of Sprint Reviews.
+    \item Let $sre \in SRE$ be an index for the set of Sprint Retrospectives.
+    \item Let $sbl \in SBL$ be an index for the set of Sprint Backlogs.
+    \item Let $sg \in SG$ be an index for the set of Sprint Goals.
+    \item Let $e \in E$ be an index for the set of Epics.
+    \item Let $us \in US$ be an index for the set of User Stories.
+    \item Let $tsk \in TSK$ be an index for the set of Tasks.
+    \item Let $dev \in DEV$ be an index for the set of Development Snapshots.
+    \item Let $bl \in BL$ be an index for the set of Blockers.
+    \item Let $sh \in SH$ be an index for the set of Stakeholders.
+    \item Let $vel \in VEL$ be an index for the set of Velocity records.
+    \item Let $rep \in REP$ be an index for the set of Release Plans.
+    \item Let $rm \in RM$ be an index for the set of Roadmaps.
+    \item Let $scb \in SCB$ be an index for the set of Scrum Boards.
+    \item Let $fed \in FED$ be an index for the set of Feature Documentations.
+\end{itemize}
+
+%========================================================================================
+% SECTION 3: GOALS
+%========================================================================================
+\section{Goals}
+\label{sec:goals}
+This section defines the objective functions of the optimization model. The model can be configured to optimize for one or more of these goals, often as a weighted sum. Decision variables used here (e.g., $X_{us,sp}, Y_{f,rep}$) are formally defined in Section \ref{sec:decision_variables}.
+
+\begin{itemize}
+    \item \textbf{(G0) maximize\_total\_priority}:
+    \begin{description}
+        \item[Description:] Maximize the sum of priorities for all selected User Stories to deliver the highest business value.
+        \item[Mathematical Formulation:]
+        $$ \text{maximize} \quad Z_0 = \sum_{us \in US} \sum_{sp \in SP} \text{priority}_{us} \cdot X_{us, sp} $$
+    \end{description}
+
+    \item \textbf{(G1) minimize\_total\_effort}:
+    \begin{description}
+        \item[Description:] Minimize the sum of story points for all selected User Stories to achieve goals with the least amount of work.
+        \item[Mathematical Formulation:]
+        $$ \text{minimize} \quad Z_1 = \sum_{us \in US} \sum_{sp \in SP} \text{story\_points}_{us} \cdot X_{us, sp} $$
+    \end{description}
+
+    \item \textbf{(G2) maximize\_feature\_completion}:
+    \begin{description}
+        \item[Description:] Maximize the number of Features that reach a 'done' status within the planning period. Let $S_{f}$ be 1 if feature $f$ is completed, 0 otherwise.
+        \item[Mathematical Formulation:]
+        $$ \text{maximize} \quad Z_2 = \sum_{f \in F} S_{f} $$
+    \end{description}
+
+    \item \textbf{(G5) minimize\_number\_of\_open\_blockers}:
+    \begin{description}
+        \item[Description:] Minimize the count of active Blockers with a status other than 'resolved'. Let $R_{bl}$ be 1 if blocker $bl$ is to be resolved.
+        \item[Mathematical Formulation:]
+        $$ \text{minimize} \quad Z_5 = |BL| - \sum_{bl \in BL} R_{bl} $$
+    \end{description}
+    
+    \item \textbf{(G6) maximize\_sprint\_goal\_achievement}:
+    \begin{description}
+        \item[Description:] Maximize the number of Sprints where the primary Sprint Goal is successfully achieved. Let $G_{sp}$ be 1 if the goal for sprint $sp$ is achieved.
+        \item[Mathematical Formulation:]
+        $$ \text{maximize} \quad Z_6 = \sum_{sp \in SP} G_{sp} $$
+    \end{description}
+\end{itemize}
+
+%========================================================================================
+% SECTION 4: CONDITIONS
+%========================================================================================
+\section{Conditions}
+\label{sec:conditions}
+This section lists the constraints that the solution to the optimization problem must satisfy.
+
+\begin{itemize}
+    \item \textbf{(C0) total\_effort\_must\_not\_exceed\_velocity}:
+    \begin{description}
+        \item[Description:] The sum of story points in a Sprint Backlog must not exceed the team's average Velocity. Let $T_{sp}$ be the team assigned to sprint $sp$.
+        \item[Mathematical Formulation:]
+        $$ \sum_{us \in US} \text{story\_points}_{us} \cdot X_{us, sp} \le \text{avg\_story\_points}_{\text{vel}_{T_{sp}}} \quad \forall sp \in SP $$
+    \end{description}
+
+    \item \textbf{(C1) worker\_availability\_must\_be\_respected}:
+    \begin{description}
+        \item[Description:] The sum of effort for tasks assigned to a Worker must not exceed their specified availability. Let $\text{dur}_{sp}$ be the duration of sprint $sp$.
+        \item[Mathematical Formulation:]
+        $$ \sum_{tsk \in TSK} \text{effort}_{tsk} \cdot A_{w, tsk} \le \text{availability}_{w} \cdot \text{dur}_{sp} \quad \forall w \in W, \forall sp \in SP $$
+    \end{description}
+
+    \item \textbf{(C2) project\_must\_stay\_within\_budget}:
+    \begin{description}
+        \item[Description:] The total cost incurred cannot exceed the allocated project budget. Let $\text{cost}_{tsk}$ be the cost of a task.
+        \item[Mathematical Formulation:]
+        $$ \sum_{w \in W} \sum_{tsk \in TSK} \text{cost}_{tsk} \cdot A_{w, tsk} \le \text{budget}_{p} \quad \forall p \in P $$
+    \end{description}
+    
+    \item \textbf{(C4) user\_story\_requires\_acceptance\_criteria}:
+    \begin{description}
+        \item[Description:] A User Story cannot be selected for a sprint unless its acceptance\_criteria field is filled. Let $\text{has\_ac}_{us}$ be a binary parameter (1 if criteria exist, 0 otherwise).
+        \item[Mathematical Formulation:]
+        $$ X_{us, sp} \le \text{has\_ac}_{us} \quad \forall us \in US, \forall sp \in SP $$
+    \end{description}
+
+    \item \textbf{(C5) task\_must\_belong\_to\_a\_user\_story}:
+    \begin{description}
+        \item[Description:] A Task can only be assigned to a worker if its parent User Story is selected for the sprint. Let $US_{tsk}$ be the parent user story of task $tsk$.
+        \item[Mathematical Formulation:]
+        $$ A_{w, tsk} \le X_{US_{tsk}, sp} \quad \forall w \in W, \forall tsk \in TSK, \forall sp \in SP $$
+    \end{description}
+\end{itemize}
+
+%========================================================================================
+% SECTION 5: DECISION VARIABLES
+%========================================================================================
+\section{Decision Variables}
+\label{sec:decision_variables}
+This section provides the formal mathematical definition for the variables used in the model's goals and conditions.
+
+\begin{itemize}
+    \item \textbf{(DV0) select\_user\_story\_for\_sprint}:
+    \begin{description}
+        \item[Description:] Binary decision variable to determine if a User Story ($us$) is selected for the current sprint ($sp$).
+        \item[Mathematical Definition:]
+        $$ X_{us, sp} \in \{0, 1\} \quad \forall us \in US, \forall sp \in SP $$
+    \end{description}
+
+    \item \textbf{(DV1) assign\_worker\_to\_task}:
+    \begin{description}
+        \item[Description:] Variable to assign a specific Worker ($w$) to a specific Task ($tsk$).
+        \item[Mathematical Definition:]
+        $$ A_{w, tsk} \in \{0, 1\} \quad \forall w \in W, \forall tsk \in TSK $$
+    \end{description}
+    
+    \item \textbf{(DV2) assign\_feature\_to\_release}:
+    \begin{description}
+        \item[Description:] Binary decision to include a Feature ($f$) in a specific Release Plan ($rep$).
+        \item[Mathematical Definition:]
+        $$ Y_{f, rep} \in \{0, 1\} \quad \forall f \in F, \forall rep \in REP $$
+    \end{description}
+
+    \item \textbf{(DV3) set\_sprint\_start\_date}:
+    \begin{description}
+        \item[Description:] Decision on which date a specific Sprint ($sp$) should begin.
+        \item[Mathematical Definition:]
+        $$ D_{sp} \ge 0 \quad \forall sp \in SP \quad (\text{Integer or Date type}) $$
+    \end{description}
+
+    \item \textbf{(DV7) resolve\_blocker\_in\_sprint}:
+    \begin{description}
+        \item[Description:] Binary decision on whether to allocate resources to resolve a Blocker ($bl$) in the current sprint ($sp$).
+        \item[Mathematical Definition:]
+        $$ R_{bl, sp} \in \{0, 1\} \quad \forall bl \in BL, \forall sp \in SP $$
+    \end{description}
+\end{itemize}
+
+\end{document}

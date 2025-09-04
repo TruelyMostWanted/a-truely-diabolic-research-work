@@ -1,0 +1,179 @@
+graph TD
+    %% ------------------------------------------
+    %% 1. Style Definitions
+    %% ------------------------------------------
+    classDef entity fill:#cce5ff,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#ffffff,stroke:#333,stroke-width:1px;
+    classDef relation fill:#ffd8b1,stroke:#333,stroke-width:2px,color:black;
+    classDef goal fill:#d5e8d4,stroke:#82b366,stroke-width:2px;
+    classDef condition fill:#f8cecc,stroke:#b85450,stroke-width:2px;
+    classDef dv fill:#e1d5e7,stroke:#9673a6,stroke-width:2px;
+
+    %% ------------------------------------------
+    %% 2. Node Definitions
+    %% ------------------------------------------
+    
+    subgraph "Core Entities & Artifacts"
+        direction LR
+        E0("E0: Project"); E1("E1: Team"); E3("E3: Feature"); E8("E8: ProductBacklog"); E9("E9: Sprint"); E14("E14: SprintBacklog"); E16("E16: Epic"); E17("E17: UserStory"); E18("E18: Task"); E19("E19: DevelopmentSnapshot"); E20("E20: Blocker"); E22("E22: Velocity"); E23("E23: ReleasePlan"); E24("E24: Roadmap"); E25("E25: ScrumBoard");
+    end
+
+    subgraph "People & Roles"
+        direction LR
+        E2("E2: Worker"); E4("E4: Skill"); E5("E5: Role"); E6("E6: ProductOwner"); E7("E7: ScrumMaster"); E21("E21: Stakeholder");
+    end
+
+    subgraph "Scrum Events"
+        direction LR
+        E10("E10: SprintPlanning"); E11("E11: DailyScrum"); E12("E12: SprintReview"); E13("E13: SprintRetrospective");
+    end
+
+    subgraph "Goals (Objectives)"
+        direction LR
+        G0("G0: maximize_total_feature_priority"); G1("G1: maximize_total_story_points_in_sprint"); G2("G2: minimize_total_project_budget"); G3("G3: minimize_project_end_date"); G4("G4: maximize_stakeholder_influence"); G5("G5: minimize_blocker_severity"); G8("G8: maximize_sprint_goal_achievement"); G11("G11: maximize_team_satisfaction");
+    end
+
+    subgraph "Conditions (Constraints)"
+        direction LR
+        C0("C0: worker_must_be_available"); C2("C2: team_capacity_not_exceeded"); C3("C3: worker_must_have_skill"); C8("C8: team_must_be_active"); C9("C9: epic_must_be_approved"); C10("C10: project_must_be_in_progress");
+    end
+
+    subgraph "Decision Variables"
+        direction LR
+        DV0("DV0: assign_worker_to_task"); DV1("DV1: select_user_story_for_sprint"); DV2("DV2: select_feature_for_release"); DV3("DV3: assign_team_to_sprint"); DV4("DV4: sprint_start_date"); DV6("DV6: worker_allocation_percentage"); DV7("DV7: budget_allocated_to_epic");
+    end
+    
+    %% ------------------------------------------
+    %% 3. Node Styling
+    %% ------------------------------------------
+    class E0,E1,E2,E3,E4,E5,E6,E7,E8,E9,E10,E11,E12,E13,E14,E16,E17,E18,E19,E20,E21,E22,E23,E24,E25 entity;
+    class G0,G1,G2,G3,G4,G5,G8,G11 goal;
+    class C0,C2,C3,C8,C9,C10 condition;
+    class DV0,DV1,DV2,DV3,DV4,DV6,DV7 dv;
+    
+    %% ------------------------------------------
+    %% 4. Entity-to-Entity Relationships
+    %% ------------------------------------------
+    subgraph "Relationships"
+      direction TB
+      R1("R1: is_assigned_to_project"); R2("R2: belongs_to_team"); R8("R8: contains_epic"); R9("R9: contains_user_story"); R10("R10: consists_of_tasks"); R11("R11: is_in_sprint_backlog"); R12("R12: belongs_to_sprint"); R16("R16: is_blocked_by"); R17("R17: participates_in"); R19("R19: refers_to_team"); R20("R20: plans_release"); R21("R21: is_part_of_roadmap"); R22("R22: generates_snapshot");
+    end
+    class R1,R2,R8,R9,R10,R11,R12,R16,R17,R19,R20,R21,R22 relation;
+
+    E24 --> R21 --> E23;
+    E23 --> R20 --> E3;
+    E0 --> R1 --> E1;
+    E1 --> R2 --> E2;
+    E8 --> R8 --> E16;
+    E16 --> R9 --> E17;
+    E17 --> R10 --> E18;
+    E17 --> R11 --> E14;
+    E14 --> R12 --> E9;
+    E9 --> R22 --> E19;
+    E18 --> R16 --> E20;
+    E21 --> R17 --> E12;
+    E1 --> R19 --> E22;
+
+    %% Link Events to Sprint
+    E9 --> E10 & E11 & E12 & E13;
+    
+    %% ------------------------------------------
+    %% 5. Attributes (Placed near relevant connections)
+    %% ------------------------------------------
+
+    subgraph "Project Attributes"
+        E0_A2("project_start"); E0_A3("project_end"); E0_A6("status"); E0_A5("budget");
+    end
+    E0 --- E0_A2 & E0_A3 & E0_A6 & E0_A5;
+    class E0_A2,E0_A3,E0_A6,E0_A5 attribute;
+
+    subgraph "Feature Attributes"
+        E3_A4("priority"); E3_A5("estimated_effort");
+    end
+    E3 --- E3_A4 & E3_A5;
+    class E3_A4,E3_A5 attribute;
+    
+    subgraph "UserStory Attributes"
+        E17_A6("story_points");
+    end
+    E17 --- E17_A6;
+    class E17_A6 attribute;
+
+    subgraph "Worker Attributes"
+        E2_A6("status"); E2_A7("availability");
+    end
+    E2 --- E2_A6 & E2_A7;
+    class E2_A6,E2_A7 attribute;
+    
+    subgraph "Team Attributes"
+        E1_A4("team_status");
+    end
+    E1 --- E1_A4;
+    class E1_A4 attribute;
+
+    subgraph "Epic Attributes"
+        E16_A4("status");
+    end
+    E16 --- E16_A4;
+    class E16_A4 attribute;
+    
+    subgraph "Blocker Attributes"
+      E20_A3("severity");
+    end
+    E20 --- E20_A3;
+    class E20_A3 attribute;
+    
+    subgraph "Sprint Attributes"
+      E9_A5("achievement_of_goal");
+    end
+    E9 --- E9_A5;
+    class E9_A5 attribute;
+    
+    subgraph "Sprint Retrospective Attributes"
+      E13_A3("team_satisfaction");
+    end
+    E13 --- E13_A3;
+    class E13_A3 attribute;
+
+    subgraph "Stakeholder Attributes"
+      E21_A6("influence_level");
+    end
+    E21 --- E21_A6;
+    class E21_A6 attribute;
+    
+    subgraph "Velocity Attributes"
+      E22_A2("avg. story_points");
+    end
+    E22 --- E22_A2;
+    class E22_A2 attribute;
+
+    %% ------------------------------------------
+    %% 6. Connecting Goals, Conditions, and DVs
+    %% ------------------------------------------
+
+    %% Goals
+    G0 --> E3_A4;
+    G1 --> E17_A6;
+    G2 --> E0_A5;
+    G3 --> E0_A3;
+    G4 --> E21_A6;
+    G5 --> E20_A3;
+    G8 --> E9_A5;
+    G11 --> E13_A3;
+
+    %% Conditions
+    C0 --> E2_A6;
+    C2 --> E22_A2;
+    C3 --> E2 & E4;
+    C8 --> E1_A4;
+    C9 --> E16_A4;
+    C10 --> E0_A6;
+
+    %% Decision Variables
+    DV0 --> E2 & E18;
+    DV1 --> E17 & E9;
+    DV2 --> E3 & E23;
+    DV3 --> E1 & E9;
+    DV4 --> E9;
+    DV6 --> E2 & E9;
+    DV7 --> E16;

@@ -1,0 +1,143 @@
+%% Software Development Optimization Model Graph
+graph TD;
+
+    %% 1. Style Definitions
+    classDef entityStyle fill:#A8D8EA,stroke:#333,stroke-width:2px,color:#000;
+    classDef attributeStyle fill:#FFFFFF,stroke:#333,stroke-width:1px,color:#000;
+    classDef relationStyle fill:#F9B572,stroke:#333,stroke-width:2px,color:#000;
+    classDef goalStyle fill:#C3E2C2,stroke:#333,stroke-width:2px,color:#000;
+    classDef conditionStyle fill:#FF6969,stroke:#333,stroke-width:2px,color:#000;
+    classDef dvStyle fill:#D5B4B4,stroke:#333,stroke-width:2px,color:#000;
+
+    %% 2. Core Entities
+    subgraph "Core Entities"
+        E0[Project];
+        E1[Team];
+        E2[Worker];
+        E3[Feature];
+        E4[Skill];
+        E17[UserStory];
+        E18[Task];
+        E21[Stakeholder];
+        E22[Velocity];
+    end
+    class E0,E1,E2,E3,E4,E17,E18,E21,E22 entityStyle;
+
+    %% 3. Entity Attributes (Placed near their entities)
+    %% Project Attributes
+    E0_priority[priority];
+    E0_budget[budget];
+    E0 --- E0_priority & E0_budget;
+    class E0_priority,E0_budget attributeStyle;
+
+    %% Team Attributes
+    E1_size[team_size];
+    E1 --- E1_size;
+    class E1_size attributeStyle;
+
+    %% Worker Attributes
+    E2_status[status];
+    E2_availability[availability];
+    E2 --- E2_status & E2_availability;
+    class E2_status,E2_availability attributeStyle;
+
+    %% Feature Attributes
+    E3_priority[priority];
+    E3_effort[estimated_effort];
+    E3 --- E3_priority & E3_effort;
+    class E3_priority,E3_effort attributeStyle;
+
+    %% Skill Attributes
+    E4_label[label];
+    E4 --- E4_label;
+    class E4_label attributeStyle;
+    
+    %% UserStory Attributes
+    E17_points[story_points];
+    E17 --- E17_points;
+    class E17_points attributeStyle;
+    
+    %% Stakeholder Attributes
+    E21_influence[influence_level];
+    E21 --- E21_influence;
+    class E21_influence attributeStyle;
+
+    %% Velocity Attributes
+    E22_avg_sp[avg._story_points];
+    E22_trend[trend];
+    E22 --- E22_avg_sp & E22_trend;
+    class E22_avg_sp,E22_trend attributeStyle;
+
+
+    %% 4. Relationships between Entities
+    subgraph "Relationships"
+        R1[is_assigned_to];
+        R2[belongs_to];
+        R3[has_skill];
+        R10[consists_of];
+        R11[is_in_sprint_backlog];
+        R19[refers_to];
+    end
+    class R1,R2,R3,R10,R11,R19 relationStyle;
+    
+    E1 -- R1 --> E0;
+    E2 -- R2 --> E1;
+    E2 -- R3 --> E4;
+    E17 -- R10 --> E18;
+    E22 -- R19 --> E1;
+
+
+    %% 5. Goals (connecting to the attributes they influence)
+    subgraph "Optimization Goals"
+        G0[G0: maximize_feature_priority];
+        G1[G1: minimize_feature_estimated_effort];
+        G2[G2: maximize_project_priority];
+        G3[G3: minimize_project_budget];
+        G4[G4: maximize_stakeholder_influence];
+        G9[G9: maximize_velocity_trend];
+    end
+    class G0,G1,G2,G3,G4,G9 goalStyle;
+    
+    G0 --> E3_priority;
+    G1 --> E3_effort;
+    G2 --> E0_priority;
+    G3 --> E0_budget;
+    G4 --> E21_influence;
+    G9 --> E22_trend;
+
+
+    %% 6. Conditions (connecting to the attributes they constrain)
+    subgraph "Optimization Conditions"
+        C0[C0: enforce_team_size_limits];
+        C1[C1: respect_sprint_capacity];
+        C2[C2: worker_must_be_active];
+        C3[C3: assign_skilled_worker];
+        C4[C4: respect_project_budget];
+    end
+    class C0,C1,C2,C3,C4 conditionStyle;
+    
+    C0 --> E1_size;
+    C1 --> E22_avg_sp;
+    C2 --> E2_status;
+    C3 --> E4_label;
+    C4 --> E0_budget;
+
+
+    %% 7. Decision Variables (connecting to the entities they control)
+    subgraph "Decision Variables"
+        DV0[DV0: assign_team_to_project];
+        DV1[DV1: assign_worker_to_team];
+        DV2[DV2: select_feature_for_release];
+        DV3[DV3: select_user_story_for_sprint];
+        DV4[DV4: assign_task_to_worker];
+    end
+    class DV0,DV1,DV2,DV3,DV4 dvStyle;
+    
+    DV0 -- affects --> E1;
+    DV0 -- affects --> E0;
+    DV1 -- affects --> E2;
+    DV1 -- affects --> E1;
+    DV2 -- affects --> E3;
+    DV3 -- affects --> E17;
+    DV4 -- affects --> E18;
+    DV4 -- affects --> E2;

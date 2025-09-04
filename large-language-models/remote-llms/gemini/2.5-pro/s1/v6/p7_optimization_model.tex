@@ -1,0 +1,151 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\title{Mathematical Optimization Model for Scrum-based Software Development}
+\author{Formulated by Gemini AI}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+
+\newpage
+\section{Sets (Entities)}
+\label{sec:sets}
+This section defines the fundamental sets used in the model, based on the provided \texttt{Entities.csv}. Each set represents a collection of a specific type of entity within the software development process.
+
+\begin{itemize}
+    \item $P$: The set of all projects.
+    \item $T$: The set of all teams.
+    \item $W$: The set of all workers.
+    \item $F$: The set of all features.
+    \item $S$: The set of all skills.
+    \item $R$: The set of all roles.
+    \item $PO$: The set of all Product Owners.
+    \item $SM$: The set of all Scrum Masters.
+    \item $PB$: The set of all Product Backlogs.
+    \item $SP$: The set of all Sprints.
+    \item $SPP$: The set of all Sprint Planning meetings.
+    \item $DS$: The set of all Daily Scrums.
+    \item $SR$: The set of all Sprint Reviews.
+    \item $SRE$: The set of all Sprint Retrospectives.
+    \item $SBL$: The set of all Sprint Backlogs.
+    \item $SG$: The set of all Sprint Goals.
+    \item $E$: The set of all Epics.
+    \item $US$: The set of all User Stories.
+    \item $TSK$: The set of all Tasks.
+    \item $DEV$: The set of all Development Snapshots.
+    \item $BL$: The set of all Blockers.
+    \item $SH$: The set of all Stakeholders.
+    \item $VEL$: The set of all Velocity records.
+    \item $REP$: The set of all Release Plans.
+    \item $RM$: The set of all Roadmaps.
+    \item $SCB$: The set of all Scrum Boards.
+    \item $FED$: The set of all Feature Documentations.
+\end{itemize}
+
+\section{Indices}
+\label{sec:indices}
+This section defines the indices used to refer to specific elements within the sets defined in Section \ref{sec:sets}.
+
+\begin{itemize}
+    \item $p \in P$: An index for a specific project.
+    \item $t \in T$: An index for a specific team.
+    \item $w \in W$: An index for a specific worker.
+    \item $f \in F$: An index for a specific feature.
+    \item $s \in S$: An index for a specific skill.
+    \item $r \in R$: An index for a specific role.
+    \item $po \in PO$: An index for a specific Product Owner.
+    \item $sm \in SM$: An index for a specific Scrum Master.
+    \item $pb \in PB$: An index for a specific Product Backlog.
+    \item $sp \in SP$: An index for a specific Sprint.
+    \item $us \in US$: An index for a specific User Story.
+    \item $tsk \in TSK$: An index for a specific Task.
+    \item $rep \in REP$: An index for a specific Release Plan.
+\end{itemize}
+
+\section{Goals}
+\label{sec:goals}
+The primary objective of the model is to find a solution that optimizes a weighted combination of the following goals. The overall objective function is a summation of these individual terms, where each term is multiplied by its corresponding weight from \texttt{Goals.csv}. Let $Z$ be the objective function value. The overall goal is to maximize $Z$.
+
+Let $\text{prio}_{f}$, $\text{effort}_{f}$, $\text{prio}_{p}$, $\text{budget}_{p}$, etc., be the parameters representing the attributes of the entities.
+
+\begin{itemize}
+    \item \textbf{maximize\_feature\_priority (G0)}: Maximize the total priority of all implemented features.
+    \\ \textit{Mathematical Form:} $+ w_{G0} \cdot \sum_{f \in F} \sum_{rep \in REP} \text{prio}_{f} \cdot \text{select\_feature\_for\_release}_{f,rep}$
+
+    \item \textbf{minimize\_feature\_estimated\_effort (G1)}: Minimize the total effort of implemented features.
+    \\ \textit{Mathematical Form:} $- w_{G1} \cdot \sum_{f \in F} \sum_{rep \in REP} \text{effort}_{f} \cdot \text{select\_feature\_for\_release}_{f,rep}$
+    
+    \item \textbf{maximize\_project\_priority (G2)}: Maximize the priority of selected projects.
+    \\ \textit{Mathematical Form:} $+ w_{G2} \cdot \sum_{p \in P} \text{prio}_{p} \cdot \text{start\_project}_{p}$
+    
+    \item \textbf{minimize\_project\_budget (G3)}: Minimize the budget of selected projects.
+    \\ \textit{Mathematical Form:} $- w_{G3} \cdot \sum_{p \in P} \text{budget}_{p} \cdot \text{start\_project}_{p}$
+    
+    \item \textbf{maximize\_stakeholder\_influence\_satisfaction (G4)}: Maximize the influence level of stakeholders whose desired features are selected.
+    \\ \textit{Mathematical Form:} $+ w_{G4} \cdot \sum_{f \in F} \sum_{sh \in SH} \text{influence\_level}_{sh} \cdot \text{relevance}_{f,sh} \cdot \text{select\_feature\_for\_release}_{f,rep}$
+    
+    \item \textbf{maximize\_sprint\_goal\_achievement (G10)}: Maximize the achievement status of sprint goals.
+    \\ \textit{Mathematical Form:} $+ w_{G10} \cdot \sum_{sp \in SP} \text{achievement\_status}_{sp}$
+\end{itemize}
+
+\section{Conditions}
+\label{sec:conditions}
+These are the constraints that any feasible solution must satisfy. They represent the rules, limits, and logical dependencies of the Scrum process.
+
+\begin{itemize}
+    \item \textbf{enforce\_team\_size\_limits (C0)}: The number of workers assigned to any given team must be between 3 and 9.
+    \\ \textit{Mathematical Form:} $3 \le \sum_{w \in W} \text{assign\_worker\_to\_team}_{w,t} \le 9 \quad \forall t \in T$
+
+    \item \textbf{respect\_sprint\_capacity (C1)}: The sum of story points from user stories selected for a sprint cannot exceed the velocity of the team assigned to that sprint.
+    \\ \textit{Mathematical Form:} $\sum_{us \in US} \text{points}_{us} \cdot \text{select\_user\_story\_for\_sprint}_{us,sp} \le \text{velocity}_{t} \quad \forall sp \in SP, \forall t \in T$ where team $t$ is assigned to sprint $sp$.
+
+    \item \textbf{worker\_must\_be\_active (C2)}: Tasks cannot be assigned to a worker unless their status is 'active'. Let $\text{IsActive}_w \in \{0,1\}$ be a parameter.
+    \\ \textit{Mathematical Form:} $\text{assign\_task\_to\_worker}_{tsk,w} \le \text{IsActive}_w \quad \forall tsk \in TSK, \forall w \in W$
+
+    \item \textbf{assign\_skilled\_worker (C3)}: A worker can only be assigned to a task if they possess the required skill. Let $\text{HasSkill}_{w,s} \in \{0,1\}$ and $\text{NeedsSkill}_{tsk,s} \in \{0,1\}$ be parameters.
+    \\ \textit{Mathematical Form:} $\text{NeedsSkill}_{tsk,s} \cdot \text{assign\_task\_to\_worker}_{tsk,w} \le \text{HasSkill}_{w,s} \quad \forall tsk \in TSK, \forall w \in W, \forall s \in S$
+
+    \item \textbf{respect\_project\_budget (C4)}: The total cost of resources (e.g., worker-hours) for a project must not exceed the project's budget.
+    \\ \textit{Mathematical Form:} $\sum_{t \in T} \sum_{w \in W} (\text{cost}_w \cdot \text{assign\_worker\_to\_team}_{w,t} \cdot \text{assign\_team\_to\_project}_{t,p}) \le \text{budget}_p \quad \forall p \in P$
+
+    \item \textbf{worker\_assigned\_to\_one\_team\_only (C5)}: Each worker can be assigned to at most one team.
+    \\ \textit{Mathematical Form:} $\sum_{t \in T} \text{assign\_worker\_to\_team}_{w,t} \le 1 \quad \forall w \in W$
+
+    \item \textbf{sprint\_must\_have\_a\_goal (C6)}: Every active sprint must have one associated sprint goal.
+    \\ \textit{Mathematical Form:} $\sum_{sg \in SG} \text{assign\_goal\_to\_sprint}_{sg,sp} = 1 \quad \forall sp \in SP$ where sprint $sp$ is active.
+\end{itemize}
+
+\section{Decision Variables}
+\label{sec:dvs}
+These are the variables that the optimization model will determine. They represent the decisions that need to be made.
+
+\begin{itemize}
+    \item \textbf{assign\_team\_to\_project (DV0)}: $\text{assign\_team\_to\_project}_{t,p} \in \{0, 1\} \quad \forall t \in T, p \in P$. Binary variable: 1 if team $t$ is assigned to project $p$, 0 otherwise.
+
+    \item \textbf{assign\_worker\_to\_team (DV1)}: $\text{assign\_worker\_to\_team}_{w,t} \in \{0, 1\} \quad \forall w \in W, t \in T$. Binary variable: 1 if worker $w$ is assigned to team $t$, 0 otherwise.
+
+    \item \textbf{select\_feature\_for\_release (DV2)}: $\text{select\_feature\_for\_release}_{f,rep} \in \{0, 1\} \quad \forall f \in F, rep \in REP$. Binary variable: 1 if feature $f$ is included in release plan $rep$, 0 otherwise.
+
+    \item \textbf{select\_user\_story\_for\_sprint (DV3)}: $\text{select\_user\_story\_for\_sprint}_{us,sp} \in \{0, 1\} \quad \forall us \in US, sp \in SP$. Binary variable: 1 if user story $us$ is selected for sprint $sp$, 0 otherwise.
+
+    \item \textbf{assign\_task\_to\_worker (DV4)}: $\text{assign\_task\_to\_worker}_{tsk,w} \in \{0, 1\} \quad \forall tsk \in TSK, w \in W$. Binary variable: 1 if task $tsk$ is assigned to worker $w$, 0 otherwise.
+
+    \item \textbf{start\_project (DV5)}: $\text{start\_project}_{p} \in \{0, 1\} \quad \forall p \in P$. Binary variable: 1 if project $p$ is started, 0 otherwise.
+    
+    \item \textbf{number\_of\_workers\_in\_team (DV6)}: $\text{num\_workers}_{t} \in \mathbb{Z}^+ \quad \forall t \in T$. Integer variable for the number of workers in team $t$. Note: This is an auxiliary variable, often defined by constraints on other variables (see C0).
+\end{itemize}
+
+\end{document}

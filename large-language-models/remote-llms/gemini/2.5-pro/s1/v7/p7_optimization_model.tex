@@ -1,0 +1,147 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{hyperref}
+
+\title{Mathematical Optimization Model for a Scrum-based Software Development Process}
+\author{Gemini AI Assistant}
+\date{September 4, 2025}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\label{sec:sets}
+\begin{itemize}
+    \item Project ($P$): The product or initiative to be developed.
+    \item Team ($T$): Self-organized, cross-functional development team.
+    \item Worker ($W$): Individual team member working on the project.
+    \item Feature ($F$): Mid-sized functionality.
+    \item Skill ($S$): Professional or social competence of a worker.
+    \item Role ($R$): Defined responsibilities within the Scrum team.
+    \item ProductOwner ($PO$): Responsible for product vision and Product Backlog.
+    \item ScrumMaster ($SM$): Supports the team in applying Scrum.
+    \item ProductBacklog ($PB$): Ordered list of all requirements.
+    \item Sprint ($SP$): Fixed time period for creating an increment.
+    \item SprintPlanning ($SPP$): Kick-off meeting for Sprint preparation.
+    \item DailyScrum ($DS$): Daily 15-minute team meeting.
+    \item SprintReview ($SR$): Presentation and acceptance of results.
+    \item SprintRetrospective ($SRE$): Retrospective for process improvement.
+    \item SprintBacklog ($SBL$): Selected backlog items + implementation plan.
+    \item SprintGoal ($SG$): Objective to be achieved within the sprint.
+    \item Epic ($E$): Large requirement that can be split into stories.
+    \item UserStory ($US$): Requirement from the perspective of a user.
+    \item Task ($TSK$): Smallest unit of work within a sprint.
+    \item DevelopmentSnapshot ($DEV$): Product at the end of a sprint.
+    \item Blocker ($BL$): Obstacle hindering progress.
+    \item Stakeholder ($SH$): Interested party in the product (internal/external).
+    \item Velocity ($VEL$): Average amount of work per sprint for a team.
+    \item ReleasePlan ($REP$): Plan for releasing specific features.
+    \item Roadmap ($RM$): Long-term planning across releases.
+    \item ScrumBoard ($SCB$): Visual representation of tasks during the sprint.
+    \item FeatureDocumentation ($FED$): Documentation for a specific feature.
+\end{itemize}
+
+\section{Indices}
+\label{sec:indices}
+\begin{itemize}
+    \item $p \in P$: Index for the set of Projects.
+    \item $t \in T$: Index for the set of Teams.
+    \item $w \in W$: Index for the set of Workers.
+    \item $f \in F$: Index for the set of Features.
+    \item $s \in S$: Index for the set of Skills.
+    \item $r \in R$: Index for the set of Roles.
+    \item $po \in PO$: Index for the set of Product Owners.
+    \item $sm \in SM$: Index for the set of Scrum Masters.
+    \item $pb \in PB$: Index for the set of Product Backlogs.
+    \item $sp \in SP$: Index for the set of Sprints.
+    \item $spp \in SPP$: Index for the set of Sprint Plannings.
+    \item $ds \in DS$: Index for the set of Daily Scrums.
+    \item $sr \in SR$: Index for the set of Sprint Reviews.
+    \item $sre \in SRE$: Index for the set of Sprint Retrospectives.
+    \item $sbl \in SBL$: Index for the set of Sprint Backlogs.
+    \item $sg \in SG$: Index for the set of Sprint Goals.
+    \item $e \in E$: Index for the set of Epics.
+    \item $us \in US$: Index for the set of User Stories.
+    \item $tsk \in TSK$: Index for the set of Tasks.
+    \item $dev \in DEV$: Index for the set of Development Snapshots.
+    \item $bl \in BL$: Index for the set of Blockers.
+    \item $sh \in SH$: Index for the set of Stakeholders.
+    \item $vel \in VEL$: Index for the set of Velocities.
+    \item $rep \in REP$: Index for the set of Release Plans.
+    \item $rm \in RM$: Index for the set of Roadmaps.
+    \item $scb \in SCB$: Index for the set of Scrum Boards.
+    \item $fed \in FED$: Index for the set of Feature Documentations.
+\end{itemize}
+
+\section{Decision Variables}
+\label{sec:decisionvariables}
+\begin{itemize}
+    \item[DV0] \textbf{assign\_worker\_to\_task} ($assign_{w,tsk}$): A binary variable indicating if worker $w$ is assigned to task $tsk$.
+    $$ assign_{w,tsk} \in \{0,1\} \quad \forall w \in W, \forall tsk \in TSK $$
+    \item[DV1] \textbf{select\_user\_story\_for\_sprint} ($select_{us,sp}$): A binary variable indicating if user story $us$ is selected for sprint $sp$.
+    $$ select_{us,sp} \in \{0,1\} \quad \forall us \in US, \forall sp \in SP $$
+    \item[DV2] \textbf{select\_feature\_for\_release} ($select_{f,rep}$): A binary variable indicating if feature $f$ is included in release plan $rep$.
+    $$ select_{f,rep} \in \{0,1\} \quad \forall f \in F, \forall rep \in REP $$
+    \item[DV3] \textbf{assign\_team\_to\_sprint} ($assign_{t,sp}$): A binary variable indicating if team $t$ is assigned to work on sprint $sp$.
+    $$ assign_{t,sp} \in \{0,1\} \quad \forall t \in T, \forall sp \in SP $$
+    \item[DV4] \textbf{sprint\_start\_date} ($start\_date_{sp}$): An integer variable representing the start day of sprint $sp$.
+    $$ start\_date_{sp} \in \mathbb{Z}^+ \quad \forall sp \in SP $$
+    \item[DV5] \textbf{feature\_priority\_value} ($set\_priority_{f}$): An integer variable to set the priority level of a feature $f$.
+    $$ set\_priority_{f} \in \{1, ..., 5\} \quad \forall f \in F $$
+    \item[DV6] \textbf{worker\_allocation\_percentage} ($alloc_{w,sp}$): A continuous variable for the percentage of worker $w$'s capacity allocated to sprint $sp$.
+    $$ 0 \le alloc_{w,sp} \le 1 \quad \forall w \in W, \forall sp \in SP $$
+    \item[DV7] \textbf{budget\_allocated\_to\_epic} ($budget_{e}$): A continuous variable representing the amount of budget assigned to epic $e$.
+    $$ budget_{e} \ge 0 \quad \forall e \in E $$
+\end{itemize}
+
+\section{Goals}
+\label{sec:goals}
+Let parameters such as $priority_f$, $story\_points_{us}$, $budget_p$, etc., be the attribute values of the respective entities.
+\begin{itemize}
+    \item[G0] \textbf{maximize\_total\_feature\_priority}: Maximize the sum of priorities for all features selected for implementation.
+    $$ \max \sum_{f \in F} \sum_{rep \in REP} priority_f \cdot select_{f,rep} $$
+    \item[G1] \textbf{maximize\_total\_story\_points\_in\_sprint}: Maximize the total story points of user stories completed within a sprint.
+    $$ \max \sum_{us \in US} \sum_{sp \in SP} story\_points_{us} \cdot select_{us,sp} $$
+    \item[G2] \textbf{minimize\_total\_project\_budget}: Minimize the overall budget spent on the project. This can be modeled as the sum of budgets allocated to epics.
+    $$ \min \sum_{e \in E} budget_{e} $$
+    \item[G3] \textbf{minimize\_project\_end\_date}: Minimize the end date of the last sprint.
+    $$ \min \left( \max_{sp \in SP} (start\_date_{sp} + duration_{sp}) \right) $$
+    \item[G4] \textbf{maximize\_stakeholder\_influence\_satisfaction}: Maximize the value delivered to stakeholders, weighted by their influence. Assumes a parameter $value_{f,sh}$ for the value of a feature to a stakeholder.
+    $$ \max \sum_{f \in F} \sum_{rep \in REP} \sum_{sh \in SH} (influence_{sh} \cdot value_{f,sh} \cdot select_{f,rep}) $$
+    \item[G5] \textbf{minimize\_blocker\_severity}: Minimize the severity of unresolved blockers. Let $is\_active_{bl}$ be a binary parameter.
+    $$ \min \sum_{bl \in BL} severity_{bl} \cdot is\_active_{bl} $$
+    \item[G7] \textbf{minimize\_total\_task\_effort}: Minimize the sum of effort for all tasks associated with selected user stories. Let $part\_of_{tsk,us}$ be a binary parameter.
+    $$ \min \sum_{tsk \in TSK} \sum_{us \in US} \sum_{sp \in SP} effort_{tsk} \cdot part\_of_{tsk,us} \cdot select_{us,sp} $$
+\end{itemize}
+
+\section{Conditions}
+\label{sec:conditions}
+Let parameters be derived from entity attributes and relationships. $M$ is a large constant (Big-M method).
+\begin{itemize}
+    \item[C0] \textbf{worker\_must\_be\_available}: A worker can only be assigned to tasks if their status is available. Let $is\_available_w$ be a binary parameter.
+    $$ assign_{w,tsk} \le is\_available_w \quad \forall w \in W, \forall tsk \in TSK $$
+    \item[C2] \textbf{team\_capacity\_not\_exceeded}: The sum of story points for a team in a sprint must not exceed the team's velocity. Let $velocity_t$ be the team's average velocity.
+    $$ \sum_{us \in US} story\_points_{us} \cdot select_{us,sp} \le velocity_t \cdot assign_{t,sp} \quad \forall t \in T, \forall sp \in SP $$
+    \item[C3] \textbf{worker\_must\_have\_skill}: A worker can only be assigned to a task if they possess the required skill. Let $requires_{tsk,s}$ and $has_{w,s}$ be binary parameters.
+    $$ requires_{tsk,s} \cdot assign_{w,tsk} \le has_{w,s} \quad \forall w \in W, \forall tsk \in TSK, \forall s \in S $$
+    \item[C4] \textbf{prefer\_high\_priority\_stories}: This is a soft constraint, better modeled as a weighted goal. Included in G0/G1. For a hard constraint: only stories above a certain priority $P_{min}$ can be selected.
+    $$ (priority_{us} - P_{min}) \cdot select_{us,sp} \ge 0 \quad \forall us \in US, \forall sp \in SP $$
+    \item[C6] \textbf{sprint\_must\_have\_goal}: Every sprint must have an associated goal. Modeled by ensuring a sprint is active only if a goal is defined.
+    $$ \sum_{sg \in SG} defined_{sp,sg} = 1 \quad \forall sp \in SP $$
+    \item[C8] \textbf{team\_must\_be\_active}: Only active teams can be assigned to sprints. Let $is\_active_t$ be a binary parameter.
+    $$ assign_{t,sp} \le is\_active_t \quad \forall t \in T, \forall sp \in SP $$
+    \item[C9] \textbf{epic\_must\_be\_approved}: A user story can only be selected if its parent epic is approved. Let $belongs_{us,e}$ and $is\_approved_e$ be binary parameters.
+    $$ select_{us,sp} \le is\_approved_e \quad \forall us \in US, \forall sp \in SP, \forall e \in E \text{ where } belongs_{us,e}=1 $$
+    \item[C10] \textbf{project\_must\_be\_in\_progress}: Sprints can only be active if the project is in progress. Let $is\_active_p$ be a binary parameter.
+    $$ assign_{t,sp} \le is\_active_p \quad \forall t \in T, \forall sp \in SP, \forall p \in P $$
+    
+\end{itemize}
+
+\end{document}

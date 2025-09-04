@@ -1,0 +1,12 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,total_effort_must_not_exceed_velocity,"The sum of story points in a Sprint Backlog must not exceed the team's average Velocity.",True,min,SprintBacklog,total_effort,2,1.0
+C1,worker_availability_must_be_respected,"The sum of effort for tasks assigned to a Worker must not exceed their specified availability.",True,min,Worker,availability,2,1.0
+C2,project_must_stay_within_budget,"The total cost incurred cannot exceed the allocated project budget.",False,min,Project,budget,2,1.0
+C3,sprint_must_have_a_goal,"Every Sprint must be associated with at least one Sprint Goal.",False,max,Sprint,sprint_number,2,1.0
+C4,user_story_requires_acceptance_criteria,"A User Story cannot be selected for a sprint unless its acceptance_criteria field is filled.",False,max,UserStory,acceptance_criteria,2,1.0
+C5,task_must_belong_to_a_user_story,"Every Task must be a decomposition of a User Story that is part of the Sprint Backlog.",False,max,Task,type,2,1.0
+C6,team_size_must_be_within_scrum_limits,"The size of any given Team must be within the typical agile range (e.g., 3 to 9).",False,min,Team,team_size,2,1.0
+C7,high_severity_blocker_cannot_be_ignored,"Any Blocker with the highest severity level must be addressed in the current sprint.",False,max,Blocker,severity,2,1.0
+C8,feature_must_have_documentation,"A Feature cannot be considered 'done' until corresponding Feature Documentation exists.",False,max,FeatureDocumentation,linked_requirements,2,1.0
+C9,a_team_must_have_a_scrum_master,"Every active Team must have an assigned Scrum Master.",False,max,Team,team_status,2,1.0
+C10,product_owner_must_manage_backlog,"A Product Backlog must be managed by one and only one Product Owner.",False,max,ProductBacklog,last_updated,2,1.0

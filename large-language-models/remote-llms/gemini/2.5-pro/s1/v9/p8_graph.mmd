@@ -1,0 +1,129 @@
+graph TD
+    %% --- Style Definitions ---
+    classDef entity fill:#cce5ff,stroke:#333,stroke-width:2px,color:#000
+    classDef attribute fill:#f8f9fa,stroke:#6c757d,stroke-width:1px,color:#000
+    classDef relation fill:#ffe5cc,stroke:#e67e22,stroke-width:2px,color:#000
+    classDef goal fill:#d4edda,stroke:#155724,stroke-width:2px,color:#000
+    classDef condition fill:#f8d7da,stroke:#721c24,stroke-width:2px,color:#000
+    classDef dv fill:#e2d9f3,stroke:#5a2d8d,stroke-width:2px,color:#000
+
+    %% --- 1. ENTITIES ---
+    subgraph Entities
+        E0[E0: Project]; E1[E1: Team]; E2[E2: Worker]; E3[E3: Feature]; E4[E4: Skill]; E5[E5: Role]; E6[E6: ProductOwner]; E7[E7: ScrumMaster]; E8[E8: ProductBacklog]; E9[E9: Sprint]; E10[E10: SprintPlanning]; E11[E11: DailyScrum]; E12[E12: SprintReview]; E13[E13: SprintRetrospective]; E14[E14: SprintBacklog]; E15[E15: SprintGoal]; E16[E16: Epic]; E17[E17: UserStory]; E18[E18: Task]; E19[E19: DevelopmentSnapshot]; E20[E20: Blocker]; E21[E21: Stakeholder]; E22[E22: Velocity]; E23[E23: ReleasePlan]; E24[E24: Roadmap]; E25[E25: ScrumBoard]; E26[E26: FeatureDocumentation];
+    end
+
+    %% --- 2. ATTRIBUTES (with unique IDs) ---
+    subgraph Attributes
+        E0_attr1[id]; E0_attr2[name]; E0_attr3[project_start]; E0_attr4[project_end]; E0_attr5[budget]; E0_attr6[status];
+        E1_attr1[id]; E1_attr2[name]; E1_attr3[team_size]; E1_attr4[team_status];
+        E2_attr1[id]; E2_attr2[name]; E2_attr3[email]; E2_attr4[availability];
+        E3_attr1[id]; E3_attr2[title]; E3_attr3[status]; E3_attr4[priority]; E3_attr5[estimated_effort];
+        E4_attr1[id]; E4_attr2[label]; E4_attr3[level];
+        E9_attr1[id]; E9_attr2[start_date]; E9_attr3[end_date];
+        E17_attr1[id]; E17_attr2[title]; E17_attr3[acceptance_criteria]; E17_attr4[priority]; E17_attr5[story_points]; E17_attr6[status];
+        E18_attr1[id]; E18_attr2[title]; E18_attr3[status]; E18_attr4[effort];
+        E20_attr1[id]; E20_attr2[title]; E20_attr3[severity]; E20_attr4[status]; E20_attr5[detected_on]; E20_attr6[resolved_on];
+        E21_attr1[id]; E21_attr2[name]; E21_attr3[influence_level];
+        E13_attr1[id]; E13_attr2[team_satisfaction];
+        E22_attr1[id]; E22_attr2["avg._story_points"];
+        E15_attr1[id]; E15_attr2[achievement_status];
+    end
+
+    %% --- 3. RELATIONS (as nodes) ---
+    subgraph Relations
+        R1(R1: is_assigned_to_project); R2(R2: belongs_to_team); R3(R3: has_skill); R4(R4: takes_on_role); R5(R5: manages_backlog); R6(R6: is_supported_by); R7(R7: contains_feature); R8(R8: contains_epic); R9(R9: contains_user_story); R10(R10: consists_of_tasks); R11(R11: is_in_sprint_backlog); R12(R12: belongs_to_sprint); R13(R13: pursues_goal); R16(R16: is_blocked_by); R17(R17: participates_in); R19(R19: refers_to_team); R20(R20: plans_release); R21(R21: is_part_of_roadmap);
+    end
+
+    %% --- 4. GOALS ---
+    subgraph Goals
+        G0[G0: maximize_completed_story_points]; G1[G1: minimize_project_costs]; G2[G2: maximize_feature_priority_value]; G3[G3: minimize_blocker_severity]; G4[G4: maximize_team_velocity]; G5[G5: maximize_sprint_goal_achievement]; G6[G6: minimize_task_effort]; G7[G7: maximize_stakeholder_satisfaction]; G8[G8: minimize_time_to_resolve_blockers]; G9[G9: maximize_team_satisfaction];
+    end
+
+    %% --- 5. CONDITIONS ---
+    subgraph Conditions
+        C0[C0: sprint_backlog_must_not_exceed_velocity]; C1[C1: worker_availability_must_be_respected]; C2[C2: project_budget_must_not_be_exceeded]; C3[C3: team_size_must_be_within_scrum_limits]; C4[C4: task_must_have_required_skills]; C5[C5: sprint_must_have_a_goal]; C6[C6: epic_must_be_broken_down]; C7[C7: a_sprint_has_a_fixed_duration]; C8[C8: a_worker_belongs_to_one_team]; C10[C10: blocker_must_be_resolved_to_close_task]; C11[C11: user_story_must_have_acceptance_criteria];
+    end
+
+    %% --- 6. DECISION VARIABLES ---
+    subgraph "Decision Variables"
+        DV0[DV0: assign_user_story_to_sprint]; DV1[DV1: assign_worker_to_task]; DV2[DV2: assign_worker_to_team]; DV3[DV3: select_feature_for_release]; DV4[DV4: start_date_of_sprint]; DV6[DV6: team_size_for_project]; DV7[DV7: effort_allocated_to_task]; DV10[DV10: worker_availability_percentage];
+    end
+
+    %% --- CONNECTIONS: Entity -> Attributes ---
+    E0 --- E0_attr1 & E0_attr2 & E0_attr3 & E0_attr4 & E0_attr5 & E0_attr6;
+    E1 --- E1_attr1 & E1_attr2 & E1_attr3 & E1_attr4;
+    E2 --- E2_attr1 & E2_attr2 & E2_attr3 & E2_attr4;
+    E3 --- E3_attr1 & E3_attr2 & E3_attr3 & E3_attr4 & E3_attr5;
+    E4 --- E4_attr1 & E4_attr2 & E4_attr3;
+    E9 --- E9_attr1 & E9_attr2 & E9_attr3;
+    E17 --- E17_attr1 & E17_attr2 & E17_attr3 & E17_attr4 & E17_attr5 & E17_attr6;
+    E18 --- E18_attr1 & E18_attr2 & E18_attr3 & E18_attr4;
+    E20 --- E20_attr1 & E20_attr2 & E20_attr3 & E20_attr4 & E20_attr5 & E20_attr6;
+    E21 --- E21_attr1 & E21_attr2 & E21_attr3;
+    E13 --- E13_attr1 & E13_attr2;
+    E22 --- E22_attr1 & E22_attr2;
+    E15 --- E15_attr1 & E15_attr2;
+
+    %% --- CONNECTIONS: Entity -> Relation -> Entity ---
+    E1 --> R1 --> E0;
+    E2 --> R2 --> E1;
+    E2 --> R3 --> E4;
+    E2 --> R4 --> E5;
+    E6 --> R5 --> E8;
+    E1 --> R6 --> E7;
+    E8 --> R7 --> E3;
+    E8 --> R8 --> E16;
+    E16 --> R9 --> E17;
+    E17 --> R10 --> E18;
+    E17 --> R11 --> E14;
+    E14 --> R12 --> E9;
+    E9 --> R13 --> E15;
+    E18 --> R16 --> E20;
+    E21 --> R17 --> E12;
+    E22 --> R19 --> E1;
+    E23 --> R20 --> E3;
+    E23 --> R21 --> E24;
+
+    %% --- CONNECTIONS: Goals -> Entities/Attributes ---
+    G0 --> E17; G0 --.-> E17_attr5; G0 --.-> E17_attr6;
+    G1 --> E0; G1 --.-> E0_attr5;
+    G2 --> E3; G2 --.-> E3_attr4;
+    G3 --> E20; G3 --.-> E20_attr3 & E20_attr4;
+    G4 --> E22; G4 --.-> E22_attr2;
+    G5 --> E15; G5 --.-> E15_attr2;
+    G6 --> E18; G6 --.-> E18_attr4;
+    G7 --> E21; G7 --.-> E21_attr3;
+    G8 --> E20; G8 --.-> E20_attr5 & E20_attr6;
+    G9 --> E13; G9 --.-> E13_attr2;
+
+    %% --- CONNECTIONS: Conditions -> Entities/Attributes ---
+    C0 --> E17_attr5 & E22;
+    C1 --> E2_attr4; C1 --.-> E18_attr4;
+    C2 --> E0_attr5;
+    C3 --> E1_attr3;
+    C4 --> E2 & E18 & E4;
+    C5 --> E9 & E15;
+    C6 --> E16 & E14;
+    C7 --> E9_attr2 & E9_attr3;
+    C8 --> E2 & E1;
+
+    C10 --> E18_attr3 & E20_attr4;
+    C11 --> E17_attr3;
+
+    %% --- CONNECTIONS: DecisionVariables -> Entities/Attributes ---
+    DV0 --> E17 & E9;
+    DV1 --> E2 & E18;
+    DV2 --> E2 & E1;
+    DV3 --> E3 & E23;
+    DV4 --> E9_attr2;
+    DV6 --> E1_attr3;
+    DV7 --> E18_attr4;
+    DV10 --> E2_attr4;
+
+    %% --- Class Applications ---
+    class E0,E1,E2,E3,E4,E5,E6,E7,E8,E9,E10,E11,E12,E13,E14,E15,E16,E17,E18,E19,E20,E21,E22,E23,E24,E25,E26 entity;
+    class E0_attr1,E0_attr2,E0_attr3,E0_attr4,E0_attr5,E0_attr6,E1_attr1,E1_attr2,E1_attr3,E1_attr4,E2_attr1,E2_attr2,E2_attr3,E2_attr4,E3_attr1,E3_attr2,E3_attr3,E3_attr4,E3_attr5,E4_attr1,E4_attr2,E4_attr3,E9_attr1,E9_attr2,E9_attr3,E17_attr1,E17_attr2,E17_attr3,E17_attr4,E17_attr5,E17_attr6,E18_attr1,E18_attr2,E18_attr3,E18_attr4,E20_attr1,E20_attr2,E20_attr3,E20_attr4,E20_attr5,E20_attr6,E21_attr1,E21_attr2,E21_attr3,E13_attr1,E13_attr2,E22_attr1,E22_attr2,E15_attr1,E15_attr2 attribute;
+    class R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R16,R17,R19,R20,R21 relation;
+    class G0,G1,G2,G3,G4,G5,G6,G7,G8,G9 goal;
+    class C0,C1,C2,C3,C4,C5,C6,C7,C8,C10,C11 condition;
+    class DV0,DV1,DV2,DV3,DV4,DV6,DV7,DV10 dv;

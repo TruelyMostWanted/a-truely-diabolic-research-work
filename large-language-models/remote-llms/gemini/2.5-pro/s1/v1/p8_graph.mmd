@@ -1,0 +1,121 @@
+graph TD
+
+    %% == Subgraphs for Organization ==
+    subgraph "Core Entities & People"
+        E0(Project); E1(Team); E2(Worker); E4(Skill); E5(Role); E21(Stakeholder);
+        E6(ProductOwner); E7(ScrumMaster);
+    end
+
+    subgraph "Work Items & Backlogs"
+        E3(Feature); E8(ProductBacklog); E14(SprintBacklog); E16(Epic); E17(UserStory); E18(Task); E20(Blocker);
+    end
+
+    subgraph "Scrum Process & Events"
+        E9(Sprint); E10(SprintPlanning); E11(DailyScrum); E12(SprintReview); E13(SprintRetrospective); E15(SprintGoal);
+    end
+
+    subgraph "Planning & Measurement"
+        E22(Velocity); E23(ReleasePlan); E24(Roadmap);
+    end
+
+    subgraph "Optimization Model"
+        direction LR
+        subgraph "Goals (Objectives)"
+            G0(maximize_story_points_in_sprint); G2(maximize_feature_priority_in_release); G3(minimize_budget_overrun);
+        end
+        subgraph "Conditions (Constraints)"
+            C0(sprint_effort_must_not_exceed_velocity); C1(team_size_must_be_within_scrum_limits); C2(worker_must_not_exceed_availability);
+        end
+        subgraph "Decision Variables"
+            DV0(assign_story_to_sprint); DV1(assign_worker_to_task); DV2(select_feature_for_release); DV3(assign_worker_to_team); DV4(set_team_size);
+        end
+    end
+
+    %% == Attributes Definition (as nodes) ==
+    %% Project Attributes
+    E0_attr_id(id); E0_attr_name(name); E0_attr_budget(budget); E0_attr_priority(priority);
+    %% Team Attributes
+    E1_attr_id(id); E1_attr_name(name); E1_attr_size(team_size);
+    %% Worker Attributes
+    E2_attr_id(id); E2_attr_name(name); E2_attr_avail(availability);
+    %% Feature Attributes
+    E3_attr_id(id); E3_attr_priority(priority);
+    %% Skill Attributes
+    E4_attr_id(id); E4_attr_level(level); E4_attr_certified(certified);
+    %% UserStory Attributes
+    E17_attr_id(id); E17_attr_sp(story_points); E17_attr_ac(acceptance_criteria);
+    %% Task Attributes
+    E18_attr_id(id); E18_attr_effort(effort);
+    %% Blocker Attributes
+    E20_attr_id(id);
+    %% Velocity Attributes
+    E22_attr_id(id); E22_attr_avg(avg._story_points);
+
+    %% == Entity to Attribute Connections ==
+    E0 --- E0_attr_id; E0 --- E0_attr_name; E0 --- E0_attr_budget; E0 --- E0_attr_priority;
+    E1 --- E1_attr_id; E1 --- E1_attr_name; E1 --- E1_attr_size;
+    E2 --- E2_attr_id; E2 --- E2_attr_name; E2 --- E2_attr_avail;
+    E3 --- E3_attr_id; E3 --- E3_attr_priority;
+    E4 --- E4_attr_id; E4 --- E4_attr_level; E4 --- E4_attr_certified;
+    E17 --- E17_attr_id; E17 --- E17_attr_sp; E17 --- E17_attr_ac;
+    E18 --- E18_attr_id; E18 --- E18_attr_effort;
+    E20 --- E20_attr_id;
+    E22 --- E22_attr_id; E22 --- E22_attr_avg;
+
+    %% == Relations (as labeled links) ==
+    E1 -- "R1: is_assigned_to_project" --> E0;
+    E2 -- "R2: belongs_to_team" --> E1;
+    E2 -- "R3: has_skill" --> E4;
+    E2 -- "R4: takes_on_role" --> E5;
+    E6 -- "R5: manages_backlog" --> E8;
+    E1 -- "R6: is_supported_by" --> E7;
+    E8 -- "R7: contains_feature" --> E3;
+    E8 -- "R8: contains_epic" --> E16;
+    E16 -- "R9: contains_user_story" --> E17;
+    E17 -- "R10: consists_of_tasks" --> E18;
+    E17 -- "R11: is_in_sprint_backlog" --> E14;
+    E14 -- "R12: belongs_to_sprint" --> E9;
+    E9 -- "R13: pursues_goal" --> E15;
+    E18 -- "R16: is_blocked_by" --> E20;
+    E21 -- "R17: participates_in" --> E12;
+    E7 -- "R18: moderates_retrospective" --> E13;
+    E22 -- "R19: refers_to_team" --> E1;
+    E23 -- "R20: plans_release" --> E3;
+    E23 -- "R21: is_part_of_roadmap" --> E24;
+
+    %% == Optimization Model Connections ==
+    %% Goals to Entities/Attributes
+    G0 --> E17; G0 -.-> E17_attr_sp;
+    G2 --> E3; G2 -.-> E3_attr_priority;
+    G3 --> E0; G3 -.-> E0_attr_budget;
+
+    %% Conditions to Entities/Attributes
+    C0 --> E17; C0 --> E22; C0 -.-> E17_attr_sp; C0 -.-> E22_attr_avg;
+    C1 --> E1; C1 -.-> E1_attr_size;
+    C2 --> E2; C2 --> E18; C2 -.-> E2_attr_avail; C2 -.-> E18_attr_effort;
+
+    %% Decision Variables to Entities
+    DV0 --> E17; DV0 --> E9;
+    DV1 --> E2; DV1 --> E18;
+    DV2 --> E3; DV2 --> E23;
+    DV3 --> E2; DV3 --> E1;
+    DV4 --> E1;
+
+    %% == Style Definitions ==
+    classDef entity fill:#cce5ff,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#ffffff,stroke:#333,stroke-width:1px;
+    classDef goal fill:#d1fae5,stroke:#065f46,stroke-width:2px;
+    classDef condition fill:#fee2e2,stroke:#991b1b,stroke-width:2px;
+    classDef dv fill:#f3e8ff,stroke:#581c87,stroke-width:2px;
+
+    %% == Class Assignments ==
+    %% Entities
+    class E0,E1,E2,E3,E4,E5,E6,E7,E8,E9,E10,E11,E12,E13,E14,E15,E16,E17,E18,E20,E21,E22,E23,E24 entity;
+    %% Attributes
+    class E0_attr_id,E0_attr_name,E0_attr_budget,E0_attr_priority,E1_attr_id,E1_attr_name,E1_attr_size,E2_attr_id,E2_attr_name,E2_attr_avail,E3_attr_id,E3_attr_priority,E4_attr_id,E4_attr_level,E4_attr_certified,E17_attr_id,E17_attr_sp,E17_attr_ac,E18_attr_id,E18_attr_effort,E20_attr_id,E22_attr_id,E22_attr_avg attribute;
+    %% Goals
+    class G0,G2,G3 goal;
+    %% Conditions
+    class C0,C1,C2 condition;
+    %% Decision Variables
+    class DV0,DV1,DV2,DV3,DV4 dv;

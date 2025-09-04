@@ -1,0 +1,205 @@
+graph TD
+    %% ------------------------------------------
+    %% 1. Style Definitions
+    %% ------------------------------------------
+    classDef entity fill:#cce5ff,stroke:#66a3ff,stroke-width:2px;
+    classDef attribute fill:#f8f9fa,stroke:#adb5bd,stroke-width:1px;
+    classDef relation fill:#ffe8cc,stroke:#ffb366,stroke-width:2px;
+    classDef goal fill:#d4edda,stroke:#5cb85c,stroke-width:2px;
+    classDef condition fill:#f8d7da,stroke:#d9534f,stroke-width:2px;
+    classDef decision fill:#e9d8fd,stroke:#9656f9,stroke-width:2px;
+
+    %% ------------------------------------------
+    %% 2. Node Declarations
+    %% ------------------------------------------
+    
+    %% Entities
+    E0[Project]:::entity;
+    E1[Team]:::entity;
+    E2[Worker]:::entity;
+    E3[Feature]:::entity;
+    E4[Skill]:::entity;
+    E5[Role]:::entity;
+    E6[ProductOwner]:::entity;
+    E7[ScrumMaster]:::entity;
+    E8[ProductBacklog]:::entity;
+    E9[Sprint]:::entity;
+    E12[SprintReview]:::entity;
+    E13[SprintRetrospective]:::entity;
+    E14[SprintBacklog]:::entity;
+    E15[SprintGoal]:::entity;
+    E16[Epic]:::entity;
+    E17[UserStory]:::entity;
+    E18[Task]:::entity;
+    E19[DevelopmentSnapshot]:::entity;
+    E20[Blocker]:::entity;
+    E21[Stakeholder]:::entity;
+    E22[Velocity]:::entity;
+    E23[ReleasePlan]:::entity;
+    E24[Roadmap]:::entity;
+    E25[ScrumBoard]:::entity;
+    E26[FeatureDocumentation]:::entity;
+
+    %% Attributes (with unique IDs like E{id}_A{id})
+    E0_A0(id):::attribute; E0_A1(name):::attribute; E0_A2(project_end):::attribute; E0_A3(budget):::attribute; E0_A4(status):::attribute;
+    E1_A0(id):::attribute; E1_A1(name):::attribute; E1_A2(team_size):::attribute;
+    E2_A0(id):::attribute; E2_A1(name):::attribute; E2_A2(status):::attribute; E2_A3(availability):::attribute;
+    E3_A0(id):::attribute; E3_A1(priority):::attribute; E3_A2(estimated_effort):::attribute;
+    E4_A0(id):::attribute; E4_A1(level):::attribute; E4_A2(certified):::attribute;
+    E13_A0(team_satisfaction):::attribute;
+    E15_A0(achievement_status):::attribute;
+    E17_A0(id):::attribute; E17_A1(priority):::attribute; E17_A2(story_points):::attribute;
+    E18_A0(id):::attribute; E18_A1(effort):::attribute; E18_A2(status):::attribute;
+    E20_A0(status):::attribute;
+    E21_A0(relevance_to_feature):::attribute;
+    E22_A0(trend):::attribute;
+
+    %% Relations
+    R1{{is_assigned_to_project}}:::relation;
+    R2{{belongs_to_team}}:::relation;
+    R3{{has_skill}}:::relation;
+    R4{{takes_on_role}}:::relation;
+    R5{{manages_backlog}}:::relation;
+    R6{{is_supported_by}}:::relation;
+    R7{{contains_feature}}:::relation;
+    R8{{contains_epic}}:::relation;
+    R9{{contains_user_story}}:::relation;
+    R10{{consists_of_tasks}}:::relation;
+    R11{{is_in_sprint_backlog}}:::relation;
+    R12{{belongs_to_sprint}}:::relation;
+    R13{{pursues_goal}}:::relation;
+    R14{{contains_tasks}}:::relation;
+    R15{{documents_feature}}:::relation;
+    R16{{is_blocked_by}}:::relation;
+    R17{{participates_in}}:::relation;
+    R18{{moderates_retrospective}}:::relation;
+    R19{{refers_to_team}}:::relation;
+    R20{{plans_release}}:::relation;
+    R21{{is_part_of_roadmap}}:::relation;
+    R22{{generates_snapshot}}:::relation;
+
+    %% Goals
+    G0((maximize_story_points_in_sprint)):::goal;
+    G1((minimize_effort_for_features)):::goal;
+    G2((maximize_priority_of_user_stories)):::goal;
+    G3((minimize_number_of_blockers)):::goal;
+    G4((maximize_team_satisfaction)):::goal;
+    G5((maximize_sprint_goal_achievement)):::goal;
+    G6((minimize_project_timeline_slippage)):::goal;
+    G7((maximize_feature_stakeholder_relevance)):::goal;
+    G8((minimize_task_effort_variance)):::goal;
+    G9((maximize_velocity_trend)):::goal;
+    G10((maximize_skill_level_on_tasks)):::goal;
+
+    %% Conditions
+    C0((constrain_sprint_capacity_by_velocity)):::condition;
+    C1((constrain_worker_availability)):::condition;
+    C2((enforce_minimum_team_size)):::condition;
+    C3((enforce_maximum_team_size)):::condition;
+    C4((require_mandatory_product_owner)):::condition;
+    C5((require_mandatory_scrum_master)):::condition;
+    C6((prevent_assignment_of_inactive_workers)):::condition;
+    C7((require_sprint_goal)):::condition;
+    C8((task_must_belong_to_sprint_user_story)):::condition;
+    C9((budget_must_not_be_exceeded)):::condition;
+    C10((epic_cannot_be_in_sprint_backlog)):::condition;
+    C11((certified_skill_for_critical_tasks)):::condition;
+    C12((feature_must_have_documentation)):::condition;
+
+    %% Decision Variables
+    DV0>assign_user_story_to_sprint]:::decision;
+    DV1>assign_worker_to_task]:::decision;
+    DV2>assign_team_to_project]:::decision;
+    DV3>include_feature_in_release]:::decision;
+    DV4>select_worker_for_team]:::decision;
+    DV5>set_sprint_start_date]:::decision;
+    DV6>set_team_size]:::decision;
+    DV7>set_user_story_priority]:::decision;
+    DV8>allocate_worker_availability]:::decision;
+    DV9>start_or_stop_project]:::decision;
+    DV10>choose_sprint_duration]:::decision;
+
+    %% ------------------------------------------
+    %% 3. Connections
+    %% ------------------------------------------
+
+    subgraph "Core Entities & Attributes"
+        E0 --- E0_A0 & E0_A1 & E0_A2 & E0_A3 & E0_A4;
+        E1 --- E1_A0 & E1_A1 & E1_A2;
+        E2 --- E2_A0 & E2_A1 & E2_A2 & E2_A3;
+        E3 --- E3_A0 & E3_A1 & E3_A2;
+        E4 --- E4_A0 & E4_A1 & E4_A2;
+        E17 --- E17_A0 & E17_A1 & E17_A2;
+        E18 --- E18_A0 & E18_A1 & E18_A2;
+    end
+
+    subgraph "Entity Relationships"
+        E1 -- R1 --> E0;
+        E2 -- R2 --> E1;
+        E2 -- R3 --> E4;
+        E2 -- R4 --> E5;
+        E6 -- R5 --> E8;
+        E1 -- R6 --> E7;
+        E8 -- R7 --> E3;
+        E8 -- R8 --> E16;
+        E16 -- R9 --> E17;
+        E17 -- R10 --> E18;
+        E17 -- R11 --> E14;
+        E14 -- R12 --> E9;
+        E9 -- R13 --> E15;
+        E25 -- R14 --> E18;
+        E26 -- R15 --> E3;
+        E18 -- R16 --> E20;
+        E21 -- R17 --> E12;
+        E7 -- R18 --> E13;
+        E22 -- R19 --> E1;
+        E23 -- R20 --> E3;
+        E23 -- R21 --> E24;
+        E9 -- R22 --> E19;
+    end
+    
+    subgraph "Goals (Green) influencing Attributes"
+        G0 -.-> E17_A2;
+        G1 -.-> E3_A2;
+        G2 -.-> E17_A1;
+        G3 -.-> E20_A0;
+        G4 -.-> E13_A0;
+        G5 -.-> E15_A0;
+        G6 -.-> E0_A2;
+        G7 -.-> E21_A0;
+        G8 -.-> E18_A1;
+        G9 -.-> E22_A0;
+        G10 -.-> E4_A1;
+    end
+
+    subgraph "Conditions (Red) constraining Attributes & Entities"
+        C0 -.-> E17_A2;
+        C1 -.-> E2_A3;
+        C2 -.-> E1_A2;
+        C3 -.-> E1_A2;
+        C4 -.-> E6;
+        C5 -.-> E7;
+        C6 -.-> E2_A2;
+        C7 -.-> E15;
+        C8 -.-> E18; C8 -.-> E17;
+        C9 -.-> E0_A3;
+        C10 -.-> E16;
+        C11 -.-> E4_A2;
+
+        C12 -.-> E3; C12 -.-> E26;
+    end
+
+    subgraph "Decision Variables (Purple) linking Entities"
+        DV0 -.-> E17; DV0 -.-> E9;
+        DV1 -.-> E2; DV1 -.-> E18;
+        DV2 -.-> E1; DV2 -.-> E0;
+        DV3 -.-> E3; DV3 -.-> E23;
+        DV4 -.-> E2; DV4 -.-> E1;
+        DV5 -.-> E9;
+
+        DV6 -.-> E1_A2;
+        DV7 -.-> E17_A1;
+        DV8 -.-> E2_A3;
+        DV9 -.-> E0_A4;
+        DV10 -.-> E9;
+    end

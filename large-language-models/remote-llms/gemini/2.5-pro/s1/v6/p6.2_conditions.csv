@@ -1,0 +1,12 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,enforce_team_size_limits,"A development team must have a size that is within the allowed range (e.g., 3-9 members).",False,min,Team,team_size,2,1.0
+C1,respect_sprint_capacity,"The sum of story points of all user stories in a sprint cannot exceed the team's average velocity.",True,max,Velocity,"avg._story_points",2,1.0
+C2,worker_must_be_active,"A worker must have an 'active' status to be assigned to any tasks.",False,max,Worker,status,2,1.0
+C3,assign_skilled_worker,"A worker assigned to a task requiring a specific skill must possess that skill.",False,max,Skill,label,2,1.0
+C4,respect_project_budget,"The total consumed budget for a project cannot exceed the allocated budget.",True,max,Project,budget,2,1.0
+C5,worker_assigned_to_one_team_only,"A single worker can only belong to one team at any given time.",True,max,Worker,id,2,1.0
+C6,sprint_must_have_a_goal,"Every sprint must be associated with exactly one sprint goal.",False,min,Sprint,sprint_number,2,1.0
+C7,avoid_high_severity_blockers,"A development snapshot cannot be released if it is associated with any unresolved high-severity blockers.",False,min,Blocker,severity,0,1.0
+C8,feature_must_be_documented,"A feature cannot be considered 'Done' unless it has associated feature documentation.",False,max,FeatureDocumentation,title,2,1.0
+C9,po_manages_one_backlog,"A Product Owner is responsible for exactly one Product Backlog.",False,min,ProductOwner,id,2,1.0
+C10,task_must_be_in_sprint_backlog,"A task being worked on must be part of the current sprint's backlog.",False,max,SprintBacklog,id,2,1.0

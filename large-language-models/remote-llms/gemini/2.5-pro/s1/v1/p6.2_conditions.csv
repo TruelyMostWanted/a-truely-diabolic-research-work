@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,sprint_effort_must_not_exceed_velocity,"The sum of story points for all user stories in a sprint must be less than or equal to the team's velocity.",True,max,UserStory,story_points,2,1.0
+C1,team_size_must_be_within_scrum_limits,"The size of a development team must be between 3 and 9 members.",False,max,Team,team_size,2,1.0
+C2,worker_must_not_exceed_availability,"A worker's total assigned task effort cannot exceed their availability for the sprint.",True,max,Task,effort,2,1.0
+C3,sprint_must_have_one_goal,"Each sprint must be associated with exactly one sprint goal.",False,max,Sprint,id,2,1.0
+C4,user_story_must_have_criteria,"A user story can only be added to a sprint if its acceptance criteria are defined.",False,min,UserStory,acceptance_criteria,2,1.0
+C5,team_must_have_scrum_master,"Every team must have a designated Scrum Master.",False,min,Team,id,2,1.0
+C6,task_cannot_be_done_if_blocked,"A task's status cannot be 'done' if it has an active, unresolved blocker linked to it.",False,max,Task,status,2,1.0
+C7,prefer_certified_skills,"When assigning workers, it is preferable to use a worker who has a certification for the required skill.",False,max,Skill,certified,1,0.6
+C8,avoid_low_priority_epics,"Epics with the lowest priority level should not be scheduled in the current release plan.",False,min,Epic,priority,1,0.8
+C9,project_must_adhere_to_end_date,"All sprints and releases for a project must be completed before the project's official end date.",False,max,Project,project_end,2,1.0
+C10,product_owner_manages_one_backlog,"A Product Owner should be responsible for one and only one Product Backlog.",False,max,ProductOwner,id,2,1.0
+C11,daily_scrum_must_be_short,"The duration of a Daily Scrum meeting should not exceed 15 minutes.",False,max,DailyScrum,duration,2,1.0
