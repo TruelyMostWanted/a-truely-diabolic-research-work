@@ -1,0 +1,11 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_availability,A team's status must be 'Available' to be assigned to a new project,False,min,Team,team_status,2,
+C1,sprint_goal_must_be_met,The Sprint Goal achievement_status must be 'Achieved' for the sprint to be considered successful,False,min,SprintGoal,achievement_status,2,
+C2,worker_availability,A worker can only be assigned to tasks if their availability is > 0,False,min,Worker,availability,2,
+C3,budget_not_exceeded,The total cost of a project must not exceed its allocated budget,True,max,Project,budget,2,
+C4,story_points_per_sprint,The total story points in a Sprint Backlog must not exceed 1.5x the team's velocity,True,max,SprintBacklog,total_effort,2,
+C5,cross_functional_team,Each team must have at least one member with each required role (e.g., PO, SM, Developer),False,min,Role,role_name,2,
+C6,definition_of_done,A User Story can only be marked 'Done' if all its acceptance criteria are met,False,min,UserStory,acceptance_criteria,2,
+C7,no_active_blockers,A task cannot be marked 'Done' if it has an active blocker (status != 'Resolved'),False,min,Blocker,status,2,
+C8,feature_dependency,Feature B cannot start until Feature A is complete,False,min,Feature,status,2,
+C9,maximum_team_size,A team cannot have more than 10 members,True,max,Team,team_size,2,

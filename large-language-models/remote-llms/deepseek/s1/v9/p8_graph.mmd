@@ -1,0 +1,232 @@
+graph TD
+    %% Style Definitions
+    classDef entityStyle fill:#6BB5FF,stroke:#333,stroke-width:2px,color:#000;
+    classDef attrStyle fill:#fff,stroke:#333,stroke-width:1px,color:#000;
+    classDef relStyle fill:#FFA500,stroke:#333,stroke-width:2px,color:#000;
+    classDef goalStyle fill:#90EE90,stroke:#333,stroke-width:2px,color:#000;
+    classDef condStyle fill:#FF7070,stroke:#333,stroke-width:2px,color:#000;
+    classDef varStyle fill:#D9B3FF,stroke:#333,stroke-width:2px,color:#000;
+
+    %% *********************** ENTITIES & ATTRIBUTES ***********************
+    subgraph Entities
+        E_Project("E0: Project"):::entityStyle
+        A_p_id("id"):::attrStyle
+        A_p_name("name"):::attrStyle
+        A_p_start("project_start"):::attrStyle
+        A_p_end("project_end"):::attrStyle
+        A_p_budget("budget"):::attrStyle
+        A_p_status("status"):::attrStyle
+
+        E_Team("E1: Team"):::entityStyle
+        A_t_id("id"):::attrStyle
+        A_t_name("name"):::attrStyle
+        A_t_size("team_size"):::attrStyle
+
+        E_Worker("E2: Worker"):::entityStyle
+        A_w_id("id"):::attrStyle
+        A_w_name("name"):::attrStyle
+        A_w_avail("availability"):::attrStyle
+
+        E_Feature("E3: Feature"):::entityStyle
+        A_f_id("id"):::attrStyle
+        A_f_status("status"):::attrStyle
+        A_f_prio("priority"):::attrStyle
+
+        E_Skill("E4: Skill"):::entityStyle
+        A_s_id("id"):::attrStyle
+        A_s_label("label"):::attrStyle
+
+        E_UserStory("E17: UserStory"):::entityStyle
+        A_us_id("id"):::attrStyle
+        A_us_acc("acceptance_criteria"):::attrStyle
+        A_us_prio("priority"):::attrStyle
+        A_us_points("story_points"):::attrStyle
+        A_us_status("status"):::attrStyle
+
+        E_Task("E18: Task"):::entityStyle
+        A_tsk_id("id"):::attrStyle
+        A_tsk_effort("effort"):::attrStyle
+        A_tsk_type("type"):::attrStyle
+        A_tsk_status("status"):::attrStyle
+
+        E_SprintBacklog("E14: SprintBacklog"):::entityStyle
+        A_sbl_id("id"):::attrStyle
+        A_sbl_effort("total_effort"):::attrStyle
+
+        E_Sprint("E9: Sprint"):::entityStyle
+        E_SprintGoal("E15: SprintGoal"):::entityStyle
+        A_sg_ach("achievement_status"):::attrStyle
+
+        E_Blocker("E20: Blocker"):::entityStyle
+        A_bl_id("id"):::attrStyle
+        A_bl_sev("severity"):::attrStyle
+        A_bl_status("status"):::attrStyle
+
+        E_Velocity("E22: Velocity"):::entityStyle
+        A_vel_avg("avg._story_points"):::attrStyle
+
+        E_ScrumMaster("E7: ScrumMaster"):::entityStyle
+        E_ProductOwner("E6: ProductOwner"):::entityStyle
+        E_ProductBacklog("E8: ProductBacklog"):::entityStyle
+    end
+
+    %% *********************** RELATIONS ***********************
+    R1("R1: is_assigned_to_project"):::relStyle
+    R2("R2: belongs_to_team"):::relStyle
+    R3("R3: has_skill"):::relStyle
+    R4("R4: takes_on_role"):::relStyle
+    R6("R6: is_supported_by"):::relStyle
+    R10("R10: consists_of_tasks"):::relStyle
+    R11("R11: is_in_sprint_backlog"):::relStyle
+    R12("R12: belongs_to_sprint"):::relStyle
+    R13("R13: pursues_goal"):::relStyle
+    R16("R16: is_blocked_by"):::relStyle
+    R19("R19: refers_to_team"):::relStyle
+
+    %% *********************** GOALS ***********************
+    G0("G0: maximize_team_velocity"):::goalStyle
+    G1("G1: minimize_project_duration"):::goalStyle
+    G2("G2: minimize_blocker_severity"):::goalStyle
+    G3("G3: maximize_feature_completion"):::goalStyle
+    G4("G4: minimize_task_effort_variance"):::goalStyle
+    G5("G5: maximize_worker_utilization"):::goalStyle
+    G6("G6: minimize_sprint_goal_failure"):::goalStyle
+
+    %% *********************** CONDITIONS ***********************
+    C0("C0: team_has_scrum_master"):::condStyle
+    C1("C1: worker_availability_not_exceeded"):::condStyle
+    C2("C2: sprint_backlog_effort_within_velocity"):::condStyle
+    C3("C3: feature_requires_documentation"):::condStyle
+    C4("C4: task_assigned_to_skilled_worker"):::condStyle
+    C5("C5: project_budget_not_exceeded"):::condStyle
+    C6("C6: user_story_has_acceptance_criteria"):::condStyle
+    C7("C7: minimize_context_switching"):::condStyle
+    C8("C8: prefer_high_priority_features"):::condStyle
+
+    %% *********************** DECISION VARIABLES ***********************
+    DV0("DV0: task_assignment"):::varStyle
+    DV1("DV1: sprint_start_date"):::varStyle
+    DV2("DV2: feature_priority"):::varStyle
+    DV3("DV3: worker_utilization_rate"):::varStyle
+    DV4("DV4: story_point_allocation"):::varStyle
+    DV5("DV5: team_velocity_target"):::varStyle
+    DV6("DV6: project_status"):::varStyle
+    DV7("DV7: sprint_goal_achieved"):::varStyle
+    DV8("DV8: blocker_resolution_time"):::varStyle
+    DV9("DV9: skill_requirement_level"):::varStyle
+
+    %% *********************** CONNECTIONS ***********************
+
+    %% Entity-Attribute Links
+    E_Project --- A_p_id
+    E_Project --- A_p_name
+    E_Project --- A_p_start
+    E_Project --- A_p_end
+    E_Project --- A_p_budget
+    E_Project --- A_p_status
+
+    E_Team --- A_t_id
+    E_Team --- A_t_name
+    E_Team --- A_t_size
+
+    E_Worker --- A_w_id
+    E_Worker --- A_w_name
+    E_Worker --- A_w_avail
+
+    E_Feature --- A_f_id
+    E_Feature --- A_f_status
+    E_Feature --- A_f_prio
+
+    E_UserStory --- A_us_id
+    E_UserStory --- A_us_acc
+    E_UserStory --- A_us_prio
+    E_UserStory --- A_us_points
+    E_UserStory --- A_us_status
+
+    E_Task --- A_tsk_id
+    E_Task --- A_tsk_effort
+    E_Task --- A_tsk_type
+    E_Task --- A_tsk_status
+
+    E_SprintBacklog --- A_sbl_id
+    E_SprintBacklog --- A_sbl_effort
+
+    E_SprintGoal --- A_sg_ach
+
+    E_Blocker --- A_bl_id
+    E_Blocker --- A_bl_sev
+    E_Blocker --- A_bl_status
+
+    E_Velocity --- A_vel_avg
+
+    %% Relation-Entity Links
+    R1 --> E_Team
+    R1 --> E_Project
+
+    R2 --> E_Worker
+    R2 --> E_Team
+
+    R3 --> E_Worker
+    R3 --> E_Skill
+
+    R4 --> E_Worker
+    R4 --> E_Role
+
+    R6 --> E_Team
+    R6 --> E_ScrumMaster
+
+    R10 --> E_UserStory
+    R10 --> E_Task
+
+    R11 --> E_UserStory
+    R11 --> E_SprintBacklog
+
+    R12 --> E_SprintBacklog
+    R12 --> E_Sprint
+
+    R13 --> E_Sprint
+    R13 --> E_SprintGoal
+
+    R16 --> E_Task
+    R16 --> E_Blocker
+
+    R19 --> E_Velocity
+    R19 --> E_Team
+
+    %% Goal-Entity/Attribute Links
+    G0 --> A_vel_avg
+    G1 --> A_p_start
+    G1 --> A_p_end
+    G2 --> A_bl_sev
+    G3 --> A_f_status
+    G4 --> A_tsk_effort
+    G5 --> A_w_avail
+    G6 --> A_sg_ach
+
+    %% Condition-Entity/Attribute Links
+    C0 --> R6
+    C1 --> A_w_avail
+    C1 --> A_tsk_effort
+    C2 --> A_sbl_effort
+    C2 --> A_vel_avg
+    C3 --> A_f_status
+    C4 --> A_tsk_type
+    C5 --> A_p_budget
+    C6 --> A_us_acc
+    C7 --> A_w_avail
+    C8 --> A_f_prio
+
+    %% DecisionVariable-Entity Links
+    DV0 --> E_Task
+    DV0 --> E_Worker
+    DV1 --> E_Sprint
+    DV2 --> E_Feature
+    DV3 --> E_Worker
+    DV4 --> E_UserStory
+    DV5 --> E_Team
+    DV5 --> E_Sprint
+    DV6 --> E_Project
+    DV7 --> E_SprintGoal
+    DV8 --> E_Blocker
+    DV9 --> E_Task
+    DV9 --> E_Skill

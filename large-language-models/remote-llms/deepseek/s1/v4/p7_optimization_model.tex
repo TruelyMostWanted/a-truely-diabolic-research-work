@@ -1,0 +1,114 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Optimization Model},
+    bookmarks=true,
+}
+
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p | p \text{ is a Project}\}$, described by: $id, name, \dots, priority$
+    \item $\text{Team} = \{t | t \text{ is a Team}\}$, described by: $id, name, \dots, team\_type$
+    \item $\text{Worker} = \{w | w \text{ is a Worker}\}$, described by: $id, name, \dots, availability$
+    \item $\text{Feature} = \{f | f \text{ is a Feature}\}$, described by: $id, title, \dots, estimated\_effort$
+    \item $\text{Skill} = \{s | s \text{ is a Skill}\}$, described by: $id, label, \dots, category$
+    \item $\text{Role} = \{r | r \text{ is a Role}\}$, described by: $id, role\_name, \dots, area\_of\_responsibility$
+    \item $\text{ProductOwner} = \{po | po \text{ is a ProductOwner}\}$, described by: $id, name, email, availability$
+    \item $\text{ScrumMaster} = \{sm | sm \text{ is a ScrumMaster}\}$, described by: $id, name, email, experience$
+    \item $\text{ProductBacklog} = \{pb | pb \text{ is a ProductBacklog}\}$, described by: $id, created\_on, \dots, status$
+    \item $\text{Sprint} = \{sp | sp \text{ is a Sprint}\}$, described by: $id, sprint\_number, \dots, achievement\_of\_goal$
+    \item $\text{SprintBacklog} = \{sbl | sbl \text{ is a SprintBacklog}\}$, described by: $id, number\_of\_tasks, \dots, total\_effort$
+    \item $\text{UserStory} = \{us | us \text{ is a UserStory}\}$, described by: $id, title, \dots, status$
+    \item $\text{Task} = \{tsk | tsk \text{ is a Task}\}$, described by: $id, title, \dots, type$
+    \item $\text{Blocker} = \{bl | bl \text{ is a Blocker}\}$, described by: $id, title, \dots, resolved\_on$
+    \item $\text{Velocity} = \{vel | vel \text{ is a Velocity}\}$, described by: $id, number\_of\_sprints\_used, \dots, trend$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, t, w, f, s, r, po, sm, pb, sp, sbl, us, tsk, bl, vel$: Index over elements in their respective sets.
+    \item $i, j, k$: General numerical indices.
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_skill\_coverage} - Maximize the cumulative skill level of the team for the project's required features.
+        \[ \text{Maximize } Z_0 = \sum_{w} \sum_{s} \text{skill\_level}(w, s) \cdot x_{w}^{assign} \]
+    \item \textbf{G1: minimize\_sprint\_overcommitment} - Minimize the difference between planned sprint effort and team capacity.
+        \[ \text{Minimize } Z_1 = | \sum_{us \in sp} \text{story\_points}(us) - \text{velocity}(t, sp) | \]
+    \item \textbf{G2: maximize\_velocity\_consistency} - Maximize the team's average velocity to ensure predictable planning.
+        \[ \text{Maximize } Z_2 = \frac{1}{|SP_t|} \sum_{sp \in SP_t} \text{story\_points\_completed}(sp) \]
+    \item \textbf{G3: minimize\_blocker\_resolution\_time} - Minimize the average time taken to resolve blockers.
+        \[ \text{Minimize } Z_3 = \frac{1}{|BL_{active}|} \sum_{bl} (\text{resolved\_on}(bl) - \text{detected\_on}(bl)) \]
+    \item \textbf{G4: maximize\_stakeholder\_satisfaction} - Maximize the positive feedback from sprint reviews.
+        \[ \text{Maximize } Z_4 = \text{sentiment\_score}(\text{feedback\_documentation}(sr)) \]
+    \item \textbf{G5: minimize\_context\_switching} - Minimize the number of different features a developer works on in a single sprint.
+        \[ \text{Minimize } Z_5 = \sum_{w} |\{ f : x_{w, f}^{works\_on} = 1 \}| \]
+    \item \textbf{G6: maximize\_feature\_completion} - Maximize the number of high-priority features completed per release.
+        \[ \text{Maximize } Z_6 = \sum_{f} \text{priority}(f) \cdot \delta(\text{status}(f), \text{'Done'}) \]
+    \item \textbf{G7: minimize\_technical\_debt\_growth} - Minimize the introduction of new tasks marked as 'debt' or 'refactoring'.
+        \[ \text{Minimize } Z_7 = \sum_{tsk} \delta(\text{type}(tsk), \text{'debt'}) \]
+    \item \textbf{G8: maximize\_team\_availability} - Maximize the cumulative available working hours of the team for the sprint.
+        \[ \text{Maximize } Z_8 = \sum_{w \in t} \text{availability}(w) \]
+    \item \textbf{G9: minimize\_planning\_duration} - Minimize the time spent in sprint planning meetings.
+        \[ \text{Minimize } Z_9 = \text{duration}(\text{spp}) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: mandatory\_scrum\_master} - The team must have exactly one Scrum Master assigned.
+        \[ \sum_{sm} x_{sm, t}^{assigned} = 1 \quad \forall t \in \text{Team} \]
+    \item \textbf{C1: mandatory\_product\_owner} - The project must have exactly one Product Owner assigned.
+        \[ \sum_{po} x_{po, p}^{assigned} = 1 \quad \forall p \in \text{Project} \]
+    \item \textbf{C2: team\_capacity\_not\_exceeded} - The total story points in the sprint backlog must not exceed the team's velocity.
+        \[ \sum_{us \in sbl} \text{story\_points}(us) \leq \text{velocity}(t) \quad \forall sbl, t \]
+    \item \textbf{C3: feature\_requires\_skills} - A feature can only be assigned to a sprint if the team's skill level meets the feature's requirements.
+        \[ \sum_{w \in t} \text{skill\_level}(w, s) \geq \text{required\_skill}(f, s) \quad \forall f, s \text{ if } x_{f, sp}^{selected} = 1 \]
+    \item \textbf{C4: worker\_availability\_limit} - No single worker can be assigned more than 40 hours of work in a sprint.
+        \[ \text{assigned\_hours}(w) \leq 40 \quad \forall w \in \text{Worker}, \forall sp \in \text{Sprint} \]
+    \item \textbf{C5: unique\_worker\_assignment} - A worker can only be assigned to one primary team.
+        \[ \sum_{t} x_{w, t}^{assigned} = 1 \quad \forall w \in \text{Worker} \]
+    \item \textbf{C6: sprint\_goal\_must\_be\_defined} - Every sprint must have exactly one defined sprint goal.
+        \[ \sum_{sg} x_{sg, sp}^{defined} = 1 \quad \forall sp \in \text{Sprint} \]
+    \item \textbf{C7: user\_story\_requires\_acceptance\_criteria} - No user story can be added to a sprint without defined acceptance criteria.
+        \[ x_{us, sbl}^{added} \leq \delta(\text{acceptance\_criteria}(us) \neq \emptyset) \quad \forall us \in \text{UserStory} \]
+    \item \textbf{C8: blocker\_severity\_high\_priority} - Blockers with 'critical' severity must be resolved before any new feature development.
+        \[ \sum_{tsk}^{new\_feature} x_{tsk}^{started} = 0 \quad \text{if } \exists bl \in \text{Blocker} | \text{severity}(bl)=\text{critical} \wedge \text{status}(bl)\neq\text{resolved} \]
+    \item \textbf{C9: budget\_not\_exceeded} - The total cost of the project (based on worker time) must not exceed the project budget.
+        \[ \sum_{w} \sum_{sp} \text{cost}(w) \cdot \text{assigned\_hours}(w, sp) \leq \text{budget}(p) \]
+    \item \textbf{C10: task\_must\_have\_owner} - Every task in the sprint backlog must be assigned to a worker.
+        \[ \sum_{w} x_{tsk, w}^{assigned} = 1 \quad \forall tsk \in \text{SprintBacklog} \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{DV0:} $x_{w, t}^{assign} \in \{0, 1\}$ - Binary assignment of worker $w$ to team $t$.
+    \item \textbf{DV1:} $x_{f, sp}^{select} \in \{0, 1\}$ - Binary selection of feature $f$ for sprint $sp$.
+    \item \textbf{DV2:} $x_{tsk, w}^{assign} \in \{0, 1\}$ - Binary assignment of task $tsk$ to worker $w$.
+    \item \textbf{DV3:} $a_w \in [0, 40]$ - Continuous variable for worker $w$'s available hours in a sprint.
+    \item \textbf{DV4:} $p_{us} \in \mathbb{Z}^+, p_{us} \in [1, 20]$ - Integer variable for the story points of user story $us$.
+    \item \textbf{DV5:} $d_{sp} \in \mathbb{Z}^+, d_{sp} \in [1, 4]$ - Integer variable for the duration of sprint $sp$ in weeks.
+    \item \textbf{DV6:} $n_t \in \mathbb{Z}^+, n_t \in [3, 9]$ - Integer variable for the size of team $t$.
+    \item \textbf{DV7:} $prio_f \in \{1, 2, 3\}$ - Integer priority level for feature $f$.
+    \item \textbf{DV8:} $l_{w,s} \in \{1, 2, 3, 4, 5\}$ - Integer proficiency level of worker $w$ in skill $s$.
+    \item \textbf{DV9:} $c_{t}^{blocker} \in [0.0, 1.0]$ - Continuous variable for team $t$'s capacity dedicated to resolving blockers.
+\end{itemize}
+
+\end{document}

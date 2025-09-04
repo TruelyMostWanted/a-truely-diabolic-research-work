@@ -1,0 +1,11 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_availability,The total assigned effort for a team member cannot exceed their availability.,True,max,Worker,availability,2,1.0
+C1,sprint_capacity,The total story points in a sprint backlog must not exceed the team's velocity.,True,max,SprintBacklog,total_effort,2,1.0
+C2,critical_blocker,No task with a 'Critical' severity blocker can be in status 'In Progress'.,False,min,Blocker,severity,2,1.0
+C3,role_requirement,Every user story must have at least one team member assigned with a required role.,False,min,Role,role_name,2,1.0
+C4,budget_constraint,The total cost of the project must not exceed the allocated budget.,True,max,Project,budget,2,1.0
+C5,sprint_duration,Sprint length must be between 1 and 4 weeks.,False,min,Sprint,end_date,2,1.0
+C6,definition_of_done,All tasks for a user story must be 'Done' for the story to be 'Done'.,True,min,Task,status,2,1.0
+C7,product_owner_approval,No feature can be added to a release plan without Product Owner approval.,False,min,Feature,status,2,1.0
+C8,skill_requirement,A task requiring a certified skill can only be assigned to a worker with that certification.,False,min,Skill,certified,2,1.0
+C9,min_velocity,The team's calculated velocity must be greater than a minimum threshold.,False,min,Velocity,min_velocity,2,1.0

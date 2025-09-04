@@ -1,0 +1,12 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,mandatory_scrum_master,The team must have exactly one Scrum Master assigned.,False,min,ScrumMaster,id,2,999.0
+C1,mandatory_product_owner,The project must have exactly one Product Owner assigned.,False,min,ProductOwner,id,2,999.0
+C2,team_capacity_not_exceeded,The total story points in the sprint backlog must not exceed the team's velocity.,True,max,SprintBacklog,total_effort,1,999.0
+C3,feature_requires_skills,A feature can only be assigned to a sprint if the team's skill level meets the feature's requirements.,False,min,Feature,estimated_effort,2,999.0
+C4,worker_availability_limit,No single worker can be assigned more than 40 hours of work in a sprint.,False,max,Worker,availability,1,999.0
+C5,unique_worker_assignment,A worker can only be assigned to one primary team.,False,min,Worker,team,2,999.0
+C6,sprint_goal_must_be_defined,Every sprint must have exactly one defined sprint goal.,False,min,SprintGoal,id,2,999.0
+C7,user_story_requires_acceptance_criteria,No user story can be added to a sprint without defined acceptance criteria.,False,min,UserStory,acceptance_criteria,2,999.0
+C8,blocker_severity_high_priority,Blockers with 'critical' severity must be resolved before any new feature development.,False,min,Blocker,severity,2,999.0
+C9,budget_not_exceeded,The total cost of the project (based on worker time) must not exceed the project budget.,True,max,Project,budget,1,999.0
+C10,task_must_have_owner,Every task in the sprint backlog must be assigned to a worker.,False,min,Task,status,2,999.0

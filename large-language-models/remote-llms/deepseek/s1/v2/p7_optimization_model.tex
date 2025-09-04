@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage[english]{babel}
+\usepackage{titling}
+\usepackage{graphicx}
+\usepackage{tocloft}
+
+\geometry{a4paper, margin=1in}
+\renewcommand{\contentsname}{Table of Contents}
+
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\begin{titlingpage}
+    \maketitle
+    \begin{abstract}
+        This document presents a formal mathematical optimization model for a software development process utilizing the SCRUM framework. The model integrates entities, relationships, goals, and constraints to facilitate optimal decision-making in areas such as sprint planning, team assignment, and resource allocation. The objective is to minimize project duration and cost while maximizing team utilization, feature delivery, and overall process efficiency.
+    \end{abstract}
+    \tableofcontents
+\end{titlingpage}
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p | p \text{ is a project}\}$, described by: $\text{id}, \text{name}, \text{project\_start}, \text{project\_end}, \text{description}, \text{budget}, \text{status}, \text{target\_audience}, \text{priority}$
+    \item $\text{Team} = \{t | t \text{ is a team}\}$, described by: $\text{id}, \text{name}, \text{team\_size}, \text{team\_start}, \text{team\_status}, \text{location}, \text{team\_type}$
+    \item $\text{Worker} = \{w | w \text{ is a worker}\}$, described by: $\text{id}, \text{name}, \text{first\_name}, \text{email}, \text{start\_date}, \text{status}, \text{availability}$
+    \item $\text{Feature} = \{f | f \text{ is a feature}\}$, described by: $\text{id}, \text{title}, \text{description}, \text{status}, \text{priority}, \text{estimated\_effort}$
+    \item $\text{Skill} = \{s | s \text{ is a skill}\}$, described by: $\text{id}, \text{label}, \text{description}, \text{level}, \text{certified}, \text{category}$
+    \item $\text{UserStory} = \{us | us \text{ is a user story}\}$, described by: $\text{id}, \text{title}, \text{description}, \text{acceptance\_criteria}, \text{priority}, \text{story\_points}, \text{status}$
+    \item $\text{Task} = \{tsk | tsk \text{ is a task}\}$, described by: $\text{id}, \text{title}, \text{description}, \text{status}, \text{effort}, \text{type}$
+    \item $\text{Sprint} = \{sp | sp \text{ is a sprint}\}$, described by: $\text{id}, \text{sprint\_number}, \text{start\_date}, \text{end\_date}, \text{status}, \text{achievement\_of\_goal}$
+    \item $\text{SprintBacklog} = \{sbl | sbl \text{ is a sprint backlog}\}$, described by: $\text{id}, \text{number\_of\_tasks}, \text{last\_updated}, \text{status}, \text{total\_effort}$
+    \item $\text{Blocker} = \{bl | bl \text{ is a blocker}\}$, described by: $\text{id}, \text{title}, \text{description}, \text{severity}, \text{status}, \text{detected\_on}, \text{resolved\_on}$
+    \item $\text{SprintGoal} = \{sg | sg \text{ is a sprint goal}\}$, described by: $\text{id}, \text{objective\_description}, \text{achievement\_status}, \text{benefit}$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $w \in \text{Worker}$: Index over workers.
+    \item $t \in \text{Team}$: Index over teams.
+    \item $tsk \in \text{Task}$: Index over tasks.
+    \item $us \in \text{UserStory}$: Index over user stories.
+    \item $f \in \text{Feature}$: Index over features.
+    \item $sp \in \text{Sprint}$: Index over sprints.
+    \item $sbl \in \text{SprintBacklog}$: Index over sprint backlogs.
+    \item $bl \in \text{Blocker}$: Index over blockers.
+    \item $s \in \text{Skill}$: Index over skills.
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item[\textbf{G0}] \textbf{minimize\_total\_project\_duration}: Minimize the overall calendar time from project start to end. \\
+    Mathematical Form: $\min\, (\max_{sp \in \text{Sprint}} \text{sp.end\_date} - \text{Project.project\_start})$
+
+    \item[\textbf{G1}] \textbf{maximize\_team\_utilization}: Maximize the average percentage of time team members are working on tasks. \\
+    Mathematical Form: $\max\, \frac{1}{|\text{Worker}|} \sum_{w \in \text{Worker}} \text{w.availability}$
+
+    \item[\textbf{G2}] \textbf{minimize\_total\_development\_cost}: Minimize the total cost based on worker time and fixed budgets. \\
+    Mathematical Form: $\min\, \left( \sum_{w, tsk} \text{cost}_w \cdot \text{DV0}_{w, tsk} \cdot \text{tsk.effort} + \text{Project.budget} \right)$
+
+    \item[\textbf{G3}] \textbf{maximize\_feature\_delivery}: Maximize the number of high-priority features delivered. \\
+    Mathematical Form: $\max\, \sum_{f \in \text{Feature}} \mathbb{I}(\text{f.status} = \text{"Done"} \land \text{f.priority} \geq 4)$
+
+    \item[\textbf{G4}] \textbf{minimize\_context\_switching}: Minimize the number of different tasks a worker is assigned to within a sprint. \\
+    Mathematical Form: $\min\, \sum_{w \in \text{Worker}} \left( \sum_{tsk \in \text{Task}} \text{DV0}_{w, tsk} \right)$
+
+    \item[\textbf{G5}] \textbf{maximize\_skill\_task\_match}: Maximize the alignment between tasks and the skills of the workers assigned to them. \\
+    Mathematical Form: $\max\, \sum_{w, tsk} \text{DV0}_{w, tsk} \cdot \text{match}(w.\text{skills}, \text{tsk}.\text{required\_skills})$
+
+    \item[\textbf{G6}] \textbf{minimize\_blocker\_impact}: Minimize the total severity and duration of blockers. \\
+    Mathematical Form: $\min\, \sum_{bl \in \text{Blocker}} \text{bl.severity} \cdot (\text{bl.resolved\_on} - \text{bl.detected\_on})$
+
+    \item[\textbf{G7}] \textbf{maximize\_sprint\_goal\_achievement}: Maximize the rate of successfully achieved sprint goals. \\
+    Mathematical Form: $\max\, \frac{1}{|\text{Sprint}|} \sum_{sp \in \text{Sprint}} \mathbb{I}(\text{sp.achievement\_of\_goal} = \text{"Achieved"})$
+
+    \item[\textbf{G8}] \textbf{minimize\_technical\_debt}: Minimize the effort estimated for tasks marked as technical debt. \\
+    Mathematical Form: $\min\, \sum_{\substack{tsk \in \text{Task} \\ \text{tsk.type} = \text{"TechDebt"}}} \text{tsk.effort}$
+
+    \item[\textbf{G9}] \textbf{balance\_team\_workload}: Minimize the variance in assigned story points across all team members. \\
+    Mathematical Form: $\min\, \frac{1}{|\text{Team}|} \sum_{t \in \text{Team}} \left( \text{load}_t - \overline{\text{load}} \right)^2$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item[\textbf{C0}] \textbf{sprint\_velocity\_not\_exceeded}: The total story points in a sprint backlog must not exceed the team's known velocity. \\
+    Logical Form: $\forall_{sbl \in \text{SprintBacklog}}, \sum_{us \in \text{sbl}} \text{us.story\_points} \leq \text{DV5}_{\text{team}(sbl)}$
+
+    \item[\textbf{C1}] \textbf{worker\_availability\_not\_exceeded}: The sum of effort of tasks assigned to a worker cannot exceed their available capacity. \\
+    Logical Form: $\forall_{w \in \text{Worker}}, \forall_{sp \in \text{Sprint}}, \sum_{tsk \in \text{sp}} \text{DV0}_{w, tsk} \cdot \text{tsk.effort} \leq \text{DV6}_{w, sp}$
+
+    \item[\textbf{C2}] \textbf{critical\_feature\_must\_be\_included}: Certain features with a 'Critical' priority must be included in the release plan. \\
+    Logical Form: $\forall_{f \in \text{Feature} | f.\text{priority}=5}, \exists_{sp \in \text{Sprint}} \, \text{DV1}_{f, sp} = 1$
+
+    \item[\textbf{C3}] \textbf{task\_assigned\_to\_one\_worker}: A single task can only be assigned to one worker at a time. \\
+    Logical Form: $\forall_{tsk \in \text{Task}}, \sum_{w \in \text{Worker}} \text{DV0}_{w, tsk} = 1$
+
+    \item[\textbf{C4}] \textbf{blocked\_task\_cannot\_be\_started}: Tasks that are linked to an active blocker cannot be in an 'In Progress' state. \\
+    Logical Form: $\forall_{tsk \in \text{Task}}, \exists_{bl} \, \text{R16}(tsk, bl) \land \text{bl.status} = \text{"Active"} \implies \text{tsk.status} \neq \text{"In Progress"}$
+
+    \item[\textbf{C5}] \textbf{user\_story\_requires\_tasks}: Every user story in a sprint backlog must be broken down into at least one task. \\
+    Logical Form: $\forall_{us \in \text{UserStory}}, \text{DV1}_{us, sp} = 1 \implies \sum_{tsk \in \text{us}} \mathbb{I}(\text{tsk} \text{ is assigned}) \geq 1$
+
+    \item[\textbf{C6}] \textbf{sprint\_duration\_fixed}: The duration of a sprint (end\_date - start\_date) is a fixed value and cannot be changed. \\
+    Logical Form: $\forall_{sp \in \text{Sprint}}, \text{sp.end\_date} - \text{sp.start\_date} = \text{Constant}$
+
+    \item[\textbf{C7}] \textbf{team\_has\_scrum\_master}: Every active team must have exactly one Scrum Master assigned. \\
+    Logical Form: $\forall_{t \in \text{Team}}, \sum_{sm \in \text{ScrumMaster}} \mathbb{I}(\text{R6}(t, sm)) = 1$
+
+    \item[\textbf{C8}] \textbf{product\_owner\_manages\_backlog}: The product backlog must be managed by exactly one Product Owner. \\
+    Logical Form: $\exists!_{\text{po} \in \text{ProductOwner}} \, \text{R5}(\text{po}, \text{PB})$
+
+    \item[\textbf{C9}] \textbf{feature\_has\_documentation}: Every completed feature must have linked documentation. \\
+    Logical Form: $\forall_{f \in \text{Feature}}, \text{f.status} = \text{"Done"} \implies \exists_{\text{fed}} \, \text{R15}(\text{fed}, f)$
+\end{itemize}
+
+\section{DecisionVariables}
+\begin{itemize}
+    \item[\textbf{DV0}] $\text{assign\_worker\_to\_task}_{w, tsk} \in \{0, 1\}$: Binary variable indicating if worker $w$ is assigned to task $tsk$.
+    \item[\textbf{DV1}] $\text{include\_feature\_in\_sprint}_{f, sp} \in \{0, 1\}$: Binary variable indicating if feature $f$ is planned for sprint $sp$.
+    \item[\textbf{DV2}] $\text{start\_date\_for\_task}_{tsk} \in [\text{proj\_start}, \text{proj\_end}]$: The planned start date for task $tsk$.
+    \item[\textbf{DV3}] $\text{end\_date\_for\_task}_{tsk} \in [\text{proj\_start}, \text{proj\_end}]$: The planned end date for task $tsk$.
+    \item[\textbf{DV4}] $\text{assign\_story\_points}_{us} \in [0.5, 20.0]$: The story points assigned to user story $us$.
+    \item[\textbf{DV5}] $\text{team\_velocity}_{t, sp} \in [0, 50]$: The estimated velocity for team $t$ in sprint $sp$.
+    \item[\textbf{DV6}] $\text{worker\_availability}_{w, sp} \in [0.0, 1.0]$: The percentage of time worker $w$ is available in sprint $sp$.
+    \item[\textbf{DV7}] $\text{task\_effort\_estimate}_{tsk} \in [1, 40]$: The estimated effort (in person-hours) for task $tsk$.
+    \item[\textbf{DV8}] $\text{blocker\_resolution\_time}_{bl} \in \{1, 2, ..., 14\}$: The days estimated to resolve blocker $bl$.
+    \item[\textbf{DV9}] $\text{skill\_proficiency\_level}_{w, s} \in \{1, 2, 3, 4, 5\}$: The proficiency level of worker $w$ for skill $s$.
+    \item[\textbf{DV10}] $\text{feature\_priority}_{f} \in \{1, 2, 3, 4, 5\}$: The business priority of feature $f$.
+\end{itemize}
+
+\end{document}

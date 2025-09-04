@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{titling}
+\usepackage{tocloft}
+\usepackage{enumitem}
+
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\begin{titlingpage}
+    \maketitle
+    \begin{abstract}
+        This document presents a formal mathematical optimization model for resource allocation and project planning within a software development company utilizing the SCRUM framework. The model is derived from a defined domain of entities (e.g., Teams, Workers, Tasks) and their relationships. It aims to maximize efficiency and output while minimizing delays and blockers through a set of goals, constraints, and decision variables.
+    \end{abstract}
+    \tableofcontents
+\end{titlingpage}
+
+\section{Sets (Entities)}
+\begin{itemize}[label=--]
+    \item $\text{P} = \{p_1, p_2, ..., p_n\}$: Set of all Projects.
+    \item $\text{T} = \{t_1, t_2, ..., t_n\}$: Set of all Teams.
+    \item $\text{W} = \{w_1, w_2, ..., w_n\}$: Set of all Workers.
+    \item $\text{F} = \{f_1, f_2, ..., f_n\}$: Set of all Features.
+    \item $\text{S} = \{s_1, s_2, ..., s_n\}$: Set of all Skills.
+    \item $\text{US} = \{us_1, us_2, ..., us_n\}$: Set of all User Stories.
+    \item $\text{TSK} = \{tsk_1, tsk_2, ..., tsk_n\}$: Set of all Tasks.
+    \item $\text{SP} = \{sp_1, sp_2, ..., sp_n\}$: Set of all Sprints.
+    \item $\text{SBL} = \{sbl_1, sbl_2, ..., sbl_n\}$: Set of all Sprint Backlogs.
+    \item $\text{BL} = \{bl_1, bl_2, ..., bl_n\}$: Set of all Blockers.
+    \item $\text{PO} = \{po_1, po_2, ..., po_n\}$: Set of all Product Owners.
+    \item $\text{SM} = \{sm_1, sm_2, ..., sm_n\}$: Set of all Scrum Masters.
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}[label=--]
+    \item $p, p' \in \text{P}$: Index over Projects.
+    \item $t \in \text{T}$: Index over Teams.
+    \item $w \in \text{W}$: Index over Workers.
+    \item $f \in \text{F}$: Index over Features.
+    \item $s \in \text{S}$: Index over Skills.
+    \item $us \in \text{US}$: Index over User Stories.
+    \item $tsk \in \text{TSK}$: Index over Tasks.
+    \item $sp \in \text{SP}$: Index over Sprints.
+    \item $sbl \in \text{SBL}$: Index over Sprint Backlogs.
+    \item $bl \in \text{BL}$: Index over Blockers.
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item[\textbf{G0}] \textbf{maximize\_team\_velocity}: Maximize the average velocity of all teams.
+    \\ Mathematical: $\max \sum_{t \in T} \text{velocity}_{t}$
+    \item[\textbf{G1}] \textbf{minimize\_project\_duration}: Minimize the total duration of all projects.
+    \\ Mathematical: $\min \sum_{p \in P} (\text{project\_end}_p - \text{project\_start}_p)$
+    \item[\textbf{G2}] \textbf{minimize\_blocker\_severity}: Minimize the total severity of all active blockers.
+    \\ Mathematical: $\min \sum_{bl \in BL} \text{severity}_{bl} \cdot \mathbb{I}(\text{status}_{bl} = \text{active})$
+    \item[\textbf{G3}] \textbf{maximize\_feature\_completion}: Maximize the number of features with status 'done'.
+    \\ Mathematical: $\max \sum_{f \in F} \mathbb{I}(\text{status}_f = \text{done})$
+    \item[\textbf{G4}] \textbf{minimize\_task\_effort\_variance}: Minimize the variance in estimated effort across all tasks in a sprint.
+    \\ Mathematical: $\min \quad \text{Var}(\{\text{effort}_{tsk} \mid tsk \in \text{TSK}, \text{sprint}_{tsk} = sp\})$
+    \item[\textbf{G5}] \textbf{maximize\_worker\_utilization}: Maximize the average utilization of all workers.
+    \\ Mathematical: $\max \frac{1}{|\text{W}|} \sum_{w \in W} \text{utilization\_rate}_w$
+    \item[\textbf{G6}] \textbf{minimize\_sprint\_goal\_failure}: Minimize the number of sprints where the goal was not achieved.
+    \\ Mathematical: $\min \sum_{sp \in SP} (1 - \text{achievement\_status}_{sp})$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item[\textbf{C0}] \textbf{team\_has\_scrum\_master}: Every team must have exactly one Scrum Master assigned.
+    \\ Logical: $\forall t \in T, \exists! sm \in SM : \text{is\_supported\_by}(t, sm)$
+    \item[\textbf{C1}] \textbf{worker\_availability\_not\_exceeded}: The sum of effort from tasks assigned to a worker must not exceed their availability.
+    \\ Mathematical: $\forall w \in W, \sum_{\substack{tsk \in TSK \\ \text{assigned}(tsk, w)}} \text{effort}_{tsk} \leq \text{availability}_w$
+    \item[\textbf{C2}] \textbf{sprint\_backlog\_effort\_within\_velocity}: The total effort of tasks in a sprint backlog must not exceed the team's historical velocity.
+    \\ Mathematical: $\forall sbl \in SBL, \sum_{tsk \in sbl} \text{effort}_{tsk} \leq \text{velocity}_{\text{team}(sbl)}$
+    \item[\textbf{C3}] \textbf{feature\_requires\_documentation}: Every feature with status 'done' must have linked documentation.
+    \\ Logical: $\forall f \in F, \text{status}_f = \text{done} \implies \exists \text{doc} \in \text{FED} : \text{documents\_feature}(\text{doc}, f)$
+    \item[\textbf{C4}] \textbf{task\_assigned\_to\_skilled\_worker}: A task can only be assigned to a worker who has a required skill.
+    \\ Logical: $\forall tsk \in TSK, \forall w \in W, \text{assigned}(tsk, w) \implies \text{has\_skill}(w, \text{required\_skill}(tsk))$
+    \item[\textbf{C5}] \textbf{project\_budget\_not\_exceeded}: The total cost of all resources on a project must not exceed the project budget.
+    \\ Mathematical: $\forall p \in P, \sum_{w \in \text{team}(p)} (\text{cost}_w \cdot \text{time}_w) \leq \text{budget}_p$
+    \item[\textbf{C6}] \textbf{user\_story\_has\_acceptance\_criteria}: No user story can be added to a sprint backlog without defined acceptance criteria.
+    \\ Logical: $\forall us \in US, \text{in\_sprint\_backlog}(us) \implies \text{acceptance\_criteria}_{us} \neq \emptyset$
+    \item[\textbf{C7}] \textbf{minimize\_context\_switching}: Prefer assigning a worker to fewer concurrent tasks.
+    \\ Mathematical: $\min \sum_{w \in W} \text{number\_of\_concurrent\_tasks}_w$ (Soft Constraint)
+    \item[\textbf{C8}] \textbf{prefer\_high\_priority\_features}: Assign resources to higher priority features first.
+    \\ Logical: $\forall f, f' \in F, \text{priority}_f > \text{priority}_{f'} \implies \text{resources\_assigned}(f) \geq \text{resources\_assigned}(f')$ (Soft Constraint)
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}[label=--]
+    \item $\text{assign}_{tsk, w} \in \{0, 1\}$: (DV0) Binary assignment of Task $tsk$ to Worker $w$.
+    \item $\text{start}_{sp} \in \mathbb{Z}^+$: (DV1) Start date of Sprint $sp$.
+    \item $\text{prio}_{f} \in \{1, 2, 3, 4, 5\}$: (DV2) Numerical priority of Feature $f$.
+    \item $\text{util}_{w} \in [0, 1]$: (DV3) Utilization rate of Worker $w$.
+    \item $\text{points}_{us} \in \{1, 2, 3, 5, 8, 13\}$: (DV4) Story points for User Story $us$.
+    \item $\text{target\_vel}_{t, sp} \in [5, 50]$: (DV5) Target velocity for Team $t$ in Sprint $sp$.
+    \item $\text{stat}_{p} \in \{0, 1, 2\}$: (DV6) Status of Project $p$.
+    \item $\text{goal}_{sp} \in \{0, 1\}$: (DV7) Achievement of Sprint Goal for Sprint $sp$.
+    \item $\text{resolve}_{bl} \in [0, 30]$: (DV8) Resolution time for Blocker $bl$.
+    \item $\text{req\_level}_{tsk, s} \in \{1, 2, 3, 4, 5\}$: (DV9) Required skill level for Task $tsk$.
+\end{itemize}
+
+\end{document}

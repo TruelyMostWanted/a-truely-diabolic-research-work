@@ -1,0 +1,10 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_has_scrum_master,Every team must have exactly one Scrum Master assigned,False,min,Team,team_status,2,999.0
+C1,worker_availability_not_exceeded,The sum of effort from tasks assigned to a worker must not exceed their availability,True,min,Worker,availability,2,999.0
+C2,sprint_backlog_effort_within_velocity,The total effort of tasks in a sprint backlog must not exceed the team's historical velocity,True,min,SprintBacklog,total_effort,2,999.0
+C3,feature_requires_documentation,Every feature with status 'done' must have linked documentation,False,min,Feature,status,2,999.0
+C4,task_assigned_to_skilled_worker,A task can only be assigned to a worker who has a required skill (e.g., matching the task type),False,min,Task,type,2,999.0
+C5,project_budget_not_exceeded,The total cost of all resources on a project must not exceed the project budget,True,min,Project,budget,2,999.0
+C6,user_story_has_acceptance_criteria,No user story can be added to a sprint backlog without defined acceptance criteria,False,min,UserStory,acceptance_criteria,2,999.0
+C7,minimize_context_switching,Prefer assigning a worker to fewer concurrent tasks to minimize context switching (soft constraint),True,min,Worker,availability,1,1.5
+C8,prefer_high_priority_features,Assign resources to higher priority features first (soft constraint),False,max,Feature,priority,1,1.2

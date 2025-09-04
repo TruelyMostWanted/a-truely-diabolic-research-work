@@ -1,0 +1,12 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_size_constraint,The size of a team must be within a specified range (e.g., 5-9 members).,False,min,Team,team_size,2,1.0
+C1,project_deadline_must_be_met,The project end date must not exceed a fixed deadline.,False,max,Project,project_end,2,1.0
+C2,sprint_duration_fixed,A sprint must have a fixed duration (e.g., 2 weeks).,False,max,Sprint,end_date,2,1.0
+C3,worker_availability_limit,An individual worker's availability cannot exceed 100%.,False,max,Worker,availability,2,1.0
+C4,budget_not_exceeded,The total cost of all projects must not exceed the overall organizational budget.,True,max,Project,budget,2,1.0
+C5,feature_requires_skills,A feature can only be assigned to a team if the team's collective skills meet the feature's requirements.,False,max,Feature,id,2,1.0
+C6,unique_worker_assignment,A worker can only be assigned to one primary team at a time.,False,max,Worker,id,2,1.0
+C7,sprint_scope_capacity,The total story points in a sprint backlog cannot exceed the team's known velocity.,True,max,SprintBacklog,total_effort,2,1.0
+C8,blocker_severity_requires_attention,Blockers with 'Critical' severity must be resolved within 24 hours.,False,min,Blocker,severity,2,1.0
+C9,definition_of_done_met,A user story cannot be marked 'Done' unless all acceptance criteria are met.,False,max,UserStory,status,2,1.0
+C10,product_owner_approval_required,A feature cannot be included in a release plan without Product Owner approval.,False,max,Feature,status,2,1.0

@@ -1,0 +1,11 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,sprint_velocity_not_exceeded,The total story points in a sprint backlog must not exceed the team's known velocity.,True,max,SprintBacklog,total_effort,2,1.0
+C1,worker_availability_not_exceeded,The sum of effort of tasks assigned to a worker cannot exceed their available capacity.,True,max,Worker,availability,2,1.0
+C2,critical_feature_must_be_included,Certain features with a 'Critical' priority must be included in the release plan.,False,min,Feature,priority,2,1.0
+C3,task_assigned_to_one_worker,A single task can only be assigned to one worker at a time.,False,min,Task,id,2,1.0
+C4,blocked_task_cannot_be_started,Tasks that are linked to an active blocker cannot be in an 'In Progress' state.,False,min,Blocker,status,2,1.0
+C5,user_story_requires_tasks,Every user story in a sprint backlog must be broken down into at least one task.,True,min,UserStory,id,2,1.0
+C6,sprint_duration_fixed,The duration of a sprint (end_date - start_date) is a fixed value and cannot be changed.,False,min,Sprint,end_date,2,1.0
+C7,team_has_scrum_master,Every active team must have exactly one Scrum Master assigned.,False,min,Team,id,2,1.0
+C8,product_owner_manages_backlog,The product backlog must be managed by exactly one Product Owner.,False,min,ProductBacklog,id,2,1.0
+C9,feature_has_documentation,Every completed feature must have linked documentation.,False,min,Feature,status,2,1.0

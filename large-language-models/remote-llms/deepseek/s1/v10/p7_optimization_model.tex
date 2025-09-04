@@ -1,0 +1,125 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\title{Mathematical Optimization Model for Scrum-Based Software Development}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p | p \text{ is a project}\}$, with attributes $\text{id}, \text{name}, \text{project\_start}, \text{project\_end}, \text{description}, \text{budget}, \text{status}, \text{target\_audience}, \text{priority}$
+    \item $\text{Team} = \{t | t \text{ is a team}\}$, with attributes $\text{id}, \text{name}, \text{team\_size}, \text{team\_start}, \text{team\_status}, \text{location}, \text{team\_type}$
+    \item $\text{Worker} = \{w | w \text{ is a worker}\}$, with attributes $\text{id}, \text{name}, \text{first\_name}, \text{email}, \text{start\_date}, \text{status}, \text{availability}$
+    \item $\text{Feature} = \{f | f \text{ is a feature}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{status}, \text{priority}, \text{estimated\_effort}$
+    \item $\text{Skill} = \{s | s \text{ is a skill}\}$, with attributes $\text{id}, \text{label}, \text{description}, \text{level}, \text{certified}, \text{category}$
+    \item $\text{Role} = \{r | r \text{ is a role}\}$, with attributes $\text{id}, \text{role\_name}, \text{description}, \text{area\_of\_responsibility}$
+    \item $\text{ProductOwner} = \{po | po \text{ is a product owner}\}$, with attributes $\text{id}, \text{name}, \text{email}, \text{availability}$
+    \item $\text{ScrumMaster} = \{sm | sm \text{ is a scrum master}\}$, with attributes $\text{id}, \text{name}, \text{email}, \text{experience}$
+    \item $\text{ProductBacklog} = \{pb | pb \text{ is a product backlog}\}$, with attributes $\text{id}, \text{created\_on}, \text{last\_updated}, \text{number\_of\_entries}, \text{status}$
+    \item $\text{Sprint} = \{sp | sp \text{ is a sprint}\}$, with attributes $\text{id}, \text{sprint\_number}, \text{start\_date}, \text{end\_date}, \text{status}, \text{achievement\_of\_goal}$
+    \item $\text{SprintPlanning} = \{spp | spp \text{ is a sprint planning}\}$, with attributes $\text{id}, \text{date}, \text{duration\_(min)}, \text{moderation}, \text{outcome\_documentation}$
+    \item $\text{DailyScrum} = \{ds | ds \text{ is a daily scrum}\}$, with attributes $\text{id}, \text{date}, \text{time}, \text{duration}, \text{moderation}$
+    \item $\text{SprintReview} = \{sr | sr \text{ is a sprint review}\}$, with attributes $\text{id}, \text{date}, \text{duration}, \text{feedback\_documentation}, \text{attendees\_count}$
+    \item $\text{SprintRetrospective} = \{sre | sre \text{ is a sprint retrospective}\}$, with attributes $\text{id}, \text{date}, \text{duration}, \text{improvement\_actions}, \text{team\_satisfaction}, \text{moderation}$
+    \item $\text{SprintBacklog} = \{sbl | sbl \text{ is a sprint backlog}\}$, with attributes $\text{id}, \text{number\_of\_tasks}, \text{last\_updated}, \text{status}, \text{total\_effort}$
+    \item $\text{SprintGoal} = \{sg | sg \text{ is a sprint goal}\}$, with attributes $\text{id}, \text{objective\_description}, \text{achievement\_status}, \text{benefit}$
+    \item $\text{Epic} = \{e | e \text{ is an epic}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{priority}, \text{status}, \text{estimated\_effort}$
+    \item $\text{UserStory} = \{us | us \text{ is a user story}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{acceptance\_criteria}, \text{priority}, \text{story\_points}, \text{status}$
+    \item $\text{Task} = \{tsk | tsk \text{ is a task}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{status}, \text{effort}, \text{type}$
+    \item $\text{DevelopmentSnapshot} = \{dev | dev \text{ is a development snapshot}\}$, with attributes $\text{id}, \text{version\_number}, \text{creation\_date}, \text{test\_status}, \text{deployment\_target}, \text{documentation}$
+    \item $\text{Blocker} = \{bl | bl \text{ is a blocker}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{severity}, \text{status}, \text{detected\_on}, \text{resolved\_on}$
+    \item $\text{Stakeholder} = \{sh | sh \text{ is a stakeholder}\}$, with attributes $\text{id}, \text{name}, \text{organization}, \text{role}, \text{email}, \text{area\_of\_interest}, \text{influence\_level}, \text{relevance\_to\_feature}$
+    \item $\text{Velocity} = \{vel | vel \text{ is a velocity}\}$, with attributes $\text{id}, \text{number\_of\_sprints\_used}, \text{avg.\_story\_points}, \text{max\_velocity}, \text{min\_velocity}, \text{trend}$
+    \item $\text{ReleasePlan} = \{rep | rep \text{ is a release plan}\}$, with attributes $\text{id}, \text{version}, \text{planned\_date}, \text{included\_features}, \text{status}$
+    \item $\text{Roadmap} = \{rm | rm \text{ is a roadmap}\}$, with attributes $\text{id}, \text{start\_date}, \text{end\_date}, \text{milestones}, \text{objectives}, \text{versions}$
+    \item $\text{ScrumBoard} = \{scb | scb \text{ is a scrum board}\}$, with attributes $\text{id}, \text{board\_type}, \text{columns\_(todo/done...)}, \text{number\_of\_cards}, \text{last\_updated}$
+    \item $\text{FeatureDocumentation} = \{fed | fed \text{ is a feature documentation}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{creation\_date}, \text{change\_log}, \text{linked\_requirements}, \text{author}$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, t, w, f, s, r, po, sm, pb, sp, spp, ds, sr, sre, sbl, sg, e, us, tsk, dev, bl, sh, vel, rep, rm, scb, fed$ (index over their respective sets)
+    \item $i, j, k$ (general indices)
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_velocity} - Maximize the average story points completed per sprint.
+        \[ \text{maximize } \sum_{vel \in \text{Velocity}} \omega_{G0} \cdot \text{avg.\_story\_points}_{vel} \]
+    \item \textbf{G1: minimize\_sprint\_overhead} - Minimize time spent in meetings to maximize development time.
+        \[ \text{minimize } \sum_{spp \in \text{SprintPlanning}} \omega_{G1} \cdot \text{duration}_{spp} + \sum_{sr \in \text{SprintReview}} \omega_{G1} \cdot \text{duration}_{sr} + \sum_{sre \in \text{SprintRetrospective}} \omega_{G1} \cdot \text{duration}_{sre} \]
+    \item \textbf{G2: minimize\_blocker\_severity} - Minimize the impact and severity of blockers that occur.
+        \[ \text{minimize } \sum_{bl \in \text{Blocker}} \omega_{G2} \cdot \text{severity}_{bl} \]
+    \item \textbf{G3: maximize\_feature\_priority\_alignment} - Maximize the sum of priorities for features selected in a release.
+        \[ \text{maximize } \sum_{f \in \text{Feature}} \omega_{G3} \cdot \text{priority}_{f} \cdot x^{\text{release}}_{f} \quad \text{where } x^{\text{release}}_{f} \in \{0,1\} \]
+    \item \textbf{G4: minimize\_budget\_variance} - Minimize the difference between planned and actual project budget.
+        \[ \text{minimize } \omega_{G4} \cdot | \text{budget}_{\text{planned}} - \text{budget}_{\text{actual}} | \]
+    \item \textbf{G5: maximize\_team\_stability} - Maximize the number of workers with high availability status.
+        \[ \text{maximize } \sum_{w \in \text{Worker}} \omega_{G5} \cdot \text{availability}_{w} \]
+    \item \textbf{G6: minimize\_story\_effort\_variance} - Minimize the difference between estimated and actual story effort.
+        \[ \text{minimize } \sum_{us \in \text{UserStory}} \omega_{G6} \cdot | \text{story\_points}^{\text{est}}_{us} - \text{story\_points}^{\text{actual}}_{us} | \]
+    \item \textbf{G7: maximize\_sprint\_goal\_achievement} - Maximize the rate at which sprint goals are successfully met.
+        \[ \text{maximize } \sum_{sg \in \text{SprintGoal}} \omega_{G7} \cdot \mathbb{I}(\text{achievement\_status}_{sg} = \text{Done}) \]
+    \item \textbf{G8: minimize\_context\_switching} - Minimize the number of different tasks a worker is assigned to in a sprint.
+        \[ \text{minimize } \sum_{w \in \text{Worker}} \omega_{G8} \cdot \left( \sum_{tsk \in \text{Task}} x^{\text{assign}}_{w, tsk} \right) \]
+    \item \textbf{G9: maximize\_skill\_utilization} - Maximize the use of certified skills within the team for assigned tasks.
+        \[ \text{maximize } \sum_{s \in \text{Skill}} \sum_{tsk \in \text{Task}} \omega_{G9} \cdot \text{certified}_{s} \cdot x^{\text{req}}_{s, tsk} \cdot x^{\text{assign}}_{w(s), tsk} \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: team\_has\_scrum\_master} - A team must be supported by exactly one Scrum Master.
+        \[ \sum_{sm \in \text{ScrumMaster}} \mathbb{I}(\text{supported\_team}_{sm} = t) = 1 \quad \forall t \in \text{Team} \]
+    \item \textbf{C1: sprint\_has\_goal} - Every sprint must have exactly one defined sprint goal.
+        \[ \sum_{sg \in \text{SprintGoal}} \mathbb{I}(\text{parent\_sprint}_{sg} = sp) = 1 \quad \forall sp \in \text{Sprint} \]
+    \item \textbf{C2: user\_story\_has\_acceptance\_criteria} - Every user story must have defined acceptance criteria before entering a sprint.
+        \[ \text{acceptance\_criteria}_{us} \neq \emptyset \quad \forall us \in \text{UserStory} \text{ where } \text{status}_{us} \neq \text{Backlog} \]
+    \item \textbf{C3: task\_belongs\_to\_only\_one\_story} - A task can only be associated with a single user story.
+        \[ \sum_{us \in \text{UserStory}} x^{\text{part\_of}}_{tsk, us} \leq 1 \quad \forall tsk \in \text{Task} \]
+    \item \textbf{C4: product\_owner\_manages\_backlog} - The product backlog must be managed by exactly one Product Owner.
+        \[ \sum_{po \in \text{ProductOwner}} \mathbb{I}(\text{manages\_backlog}_{po} = pb) = 1 \quad \forall pb \in \text{ProductBacklog} \]
+    \item \textbf{C5: worker\_availability\_not\_zero} - A worker cannot be assigned tasks if their availability is zero.
+        \[ \text{availability}_{w} = 0 \implies \sum_{tsk \in \text{Task}} x^{\text{assign}}_{w, tsk} = 0 \quad \forall w \in \text{Worker} \]
+    \item \textbf{C6: sprint\_duration\_fixed} - The duration of a sprint must be a fixed value (e.g., 14 days).
+        \[ \text{end\_date}_{sp} - \text{start\_date}_{sp} = \text{DURATION}_{\text{FIXED}} \quad \forall sp \in \text{Sprint} \]
+    \item \textbf{C7: blocker\_must\_have\_severity} - Every blocker must have a severity level assigned when detected.
+        \[ \text{severity}_{bl} \in \{1, 2, 3, 4, 5\} \quad \forall bl \in \text{Blocker} \text{ where } \text{status}_{bl} = \text{Active} \]
+    \item \textbf{C8: feature\_in\_release\_planned} - A feature can only be included in a release if its status is 'planned' or 'done'.
+        \[ x^{\text{release}}_{f} = 1 \implies \text{status}_{f} \in \{\text{Planned}, \text{Done}\} \quad \forall f \in \text{Feature} \]
+    \item \textbf{C9: budget\_must\_be\_positive} - The project budget must be a positive value.
+        \[ \text{budget}_{p} > 0 \quad \forall p \in \text{Project} \]
+    \item \textbf{C10: story\_points\_positive} - Story points for a user story must be a positive integer.
+        \[ \text{story\_points}_{us} \in \mathbb{Z}^{+} \quad \forall us \in \text{UserStory} \]
+    \item \textbf{C11: team\_has\_minimum\_size} - A team must have at least 3 members to be viable.
+        \[ \text{team\_size}_{t} \geq 3 \quad \forall t \in \text{Team} \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{DV0:} $x^{\text{assign}}_{w, tsk} \in \{0, 1\}$ - Binary assignment of worker $w$ to task $tsk$.
+    \item \textbf{DV1:} $x^{\text{sprint}}_{us} \in \{0, 1\}$ - Binary selection of user story $us$ for the sprint backlog.
+    \item \textbf{DV2:} $x^{\text{release}}_{f} \in \{0, 1\}$ - Binary selection of feature $f$ for a release plan.
+    \item \textbf{DV3:} $\text{story\_points}^{\text{est}}_{us} \in \mathbb{Z}^{+}, \text{ where } 1 \leq \text{story\_points}^{\text{est}}_{us} \leq 20$ - Story points estimation.
+    \item \textbf{DV4:} $\text{availability}_{w} \in \mathbb{R}, \text{ where } 0.0 \leq \text{availability}_{w} \leq 1.0$ - Worker availability percentage.
+    \item \textbf{DV5:} $\text{DURATION}_{\text{FIXED}} \in \mathbb{Z}^{+}, \text{ where } 7 \leq \text{DURATION}_{\text{FIXED}} \leq 21$ - Sprint duration in days.
+    \item \textbf{DV6:} $\text{priority}_{f} \in \mathbb{Z}^{+}, \text{ where } 1 \leq \text{priority}_{f} \leq 10$ - Feature priority level.
+    \item \textbf{DV7:} $\text{severity}_{bl} \in \mathbb{Z}^{+}, \text{ where } 1 \leq \text{severity}_{bl} \leq 5$ - Blocker severity level.
+    \item \textbf{DV8:} $\text{team\_size}_{t} \in \mathbb{Z}^{+}, \text{ where } 3 \leq \text{team\_size}_{t} \leq 9$ - Team size.
+    \item \textbf{DV9:} $\text{budget}_{p} \in \mathbb{R}^{+}, \text{ where } 0.0 \leq \text{budget}_{p} \leq 1,000,000.0$ - Project budget.
+    \item \textbf{DV10:} $x^{\text{req}}_{s, tsk} \in \{0, 1\}$ - Binary requirement of skill $s$ for task $tsk$.
+\end{itemize}
+
+\end{document}

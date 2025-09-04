@@ -1,0 +1,194 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Optimization Model},
+}
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\title{Mathematical Formulation of a SCRUM-Based \\ Software Development Optimization Model}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+This document provides a formal mathematical formulation of an optimization model for a software development company using the SCRUM framework. The model is derived from a defined domain of entities, their relationships, and a set of objectives (goals), constraints (conditions), and variables. The purpose is to aid in automated decision-making for tasks such as resource allocation, sprint planning, and risk mitigation.
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p_1, p_2, ..., p_{|\text{P}|}\}$: The set of all projects.
+    \item $\text{Team} = \{t_1, t_2, ..., t_{|\text{T}|}\}$: The set of all teams.
+    \item $\text{Worker} = \{w_1, w_2, ..., w_{|\text{W}|}\}$: The set of all workers/employees.
+    \item $\text{Feature} = \{f_1, f_2, ..., f_{|\text{F}|}\}$: The set of all features.
+    \item $\text{Skill} = \{s_1, s_2, ..., s_{|\text{S}|}\}$: The set of all skills.
+    \item $\text{Role} = \{r_1, r_2, ..., r_{|\text{R}|}\}$: The set of all roles.
+    \item $\text{ProductBacklog} = \{pb_1, pb_2, ..., pb_{|\text{PB}|}\}$: The set of all product backlogs.
+    \item $\text{Sprint} = \{sp_1, sp_2, ..., sp_{|\text{SP}|}\}$: The set of all sprints.
+    \item $\text{UserStory} = \{us_1, us_2, ..., us_{|\text{US}|}\}$: The set of all user stories.
+    \item $\text{Task} = \{tsk_1, tsk_2, ..., tsk_{|\text{TSK}|}\}$: The set of all tasks.
+    \item $\text{Blocker} = \{bl_1, bl_2, ..., bl_{|\text{BL}|}\}$: The set of all blockers.
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, p' \in \text{Project}$
+    \item $t \in \text{Team}$
+    \item $w \in \text{Worker}$
+    \item $f \in \text{Feature}$
+    \item $s \in \text{Skill}$
+    \item $sp \in \text{Sprint}$
+    \item $us \in \text{UserStory}$
+    \item $tsk \in \text{Task}$
+    \item $bl \in \text{Blocker}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: minimize\_project\_duration} \\
+    Minimize the total duration of all projects. \\
+    $\min \sum_{p \in \text{Project}} (p.\text{project\_end} - p.\text{project\_start})$
+
+    \item \textbf{G1: maximize\_team\_utilization} \\
+    Maximize the average utilization of all teams. \\
+    $\max \frac{1}{|\text{Team}|} \sum_{t \in \text{Team}} t.\text{team\_status}$
+
+    \item \textbf{G2: minimize\_blocker\_severity} \\
+    Minimize the total severity of all active blockers. \\
+    $\min \sum_{\substack{bl \in \text{Blocker} \\ bl.\text{status} = \text{active}}} bl.\text{severity}$
+
+    \item \textbf{G3: maximize\_feature\_completion} \\
+    Maximize the number of features marked as 'Done'. \\
+    $\max \sum_{\substack{f \in \text{Feature} \\ f.\text{status} = \text{Done}}} 1$
+
+    \item \textbf{G4: minimize\_sprint\_overhead} \\
+    Minimize the total time spent in meetings per sprint. \\
+    $\min \sum_{sp \in \text{Sprint}} (\text{SPP}_{sp}.\text{duration} + \text{SR}_{sp}.\text{duration} + \text{SRE}_{sp}.\text{duration})$
+
+    \item \textbf{G5: maximize\_velocity\_consistency} \\
+    Maximize the consistency (minimize deviation) of team velocity. \\
+    $\max \left( -\left| \text{VEL}.\text{avg\_story\_points} - \text{VEL}.\text{target} \right| \right)$
+
+    \item \textbf{G6: minimize\_context\_switch} \\
+    Minimize the number of different tasks a worker is assigned to. \\
+    $\min \sum_{w \in \text{Worker}} \sum_{tsk \in \text{Task}} \mathbb{1}_{\text{assigned}(w, tsk)}$
+
+    \item \textbf{G7: maximize\_skill\_match} \\
+    Maximize the alignment between task requirements and worker skills. \\
+    $\max \sum_{w \in \text{Worker}} \sum_{tsk \in \text{Task}} \text{assigned}(w, tsk) \cdot \text{match}(w.\text{skills}, tsk.\text{required\_skills})$
+
+    \item \textbf{G8: minimize\_budget\_overrun} \\
+    Minimize the total financial overrun across all projects. \\
+    $\min \sum_{p \in \text{Project}} \max(0, (\text{actualCost}(p) - p.\text{budget}))$
+
+    \item \textbf{G9: maximize\_stakeholder\_satisfaction} \\
+    Maximize the average influence level of satisfied stakeholders. \\
+    $\max \frac{1}{|\text{Stakeholder}|} \sum_{\substack{sh \in \text{Stakeholder} \\ \text{satisfied}(sh)}} sh.\text{influence\_level}$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: team\_has\_scrum\_master} \\
+    A team must have exactly one Scrum Master assigned. \\
+    $\forall t \in \text{Team}, \sum_{sm \in \text{ScrumMaster}} \mathbb{1}_{\text{assigned}(sm, t)} = 1$
+
+    \item \textbf{C1: user\_story\_has\_tasks} \\
+    Every User Story in a sprint must be broken down into at least one task. \\
+    $\forall us \in \text{UserStory}_{\text{in sprint}}, \sum_{tsk \in \text{Task}} \mathbb{1}_{\text{partOf}(tsk, us)} \geq 1$
+
+    \item \textbf{C2: sprint\_goal\_defined} \\
+    Every sprint must have a defined sprint goal. \\
+    $\forall sp \in \text{Sprint}, sp.\text{SprintGoal} \neq \emptyset$
+
+    \item \textbf{C3: worker\_availability} \\
+    No worker can be assigned more tasks than their availability permits. \\
+    $\forall w \in \text{Worker}, \sum_{tsk \in \text{Task}} \text{assigned}(w, tsk) \cdot \text{effort}(tsk) \leq w.\text{availability}$
+
+    \item \textbf{C4: project\_budget} \\
+    The total cost of a project must not exceed its allocated budget. \\
+    $\forall p \in \text{Project}, \text{actualCost}(p) \leq p.\text{budget}$
+
+    \item \textbf{C5: task\_blocked} \\
+    No task with an active, high-severity blocker can be in an 'In Progress' status. \\
+    $\forall tsk \in \text{Task}, \exists bl \in \text{Blocker}: (\text{blocks}(bl, tsk) \land bl.\text{severity} \geq \text{high} \land bl.\text{status}=\text{active}) \implies tsk.\text{status} \neq \text{In Progress}$
+
+    \item \textbf{C6: sprint\_length} \\
+    A sprint's length must be exactly 2 weeks (14 days). \\
+    $\forall sp \in \text{Sprint}, (sp.\text{end\_date} - sp.\text{start\_date}) = 14$
+
+    \item \textbf{C7: definition\_of\_done} \\
+    Every task must meet the team's 'Definition of Done' to be marked complete. \\
+    $\forall tsk \in \text{Task}, tsk.\text{status} = \text{Done} \iff \text{done}(tsk)$
+
+    \item \textbf{C8: product\_owner\_backlog} \\
+    The Product Backlog must be managed by exactly one Product Owner. \\
+    $\forall pb \in \text{ProductBacklog}, \sum_{po \in \text{ProductOwner}} \mathbb{1}_{\text{manages}(po, pb)} = 1$
+
+    \item \textbf{C9: retrospective\_actions} \\
+    At least one improvement action must result from each sprint retrospective. \\
+    $\forall sp \in \text{Sprint}, |\text{SRE}_{sp}.\text{improvement\_actions}| \geq 1$
+
+    \item \textbf{C10: feature\_priority} \\
+    Features with 'Critical' priority must be completed before lower-priority ones. \\
+    $\forall f_i, f_j \in \text{Feature}: (f_i.\text{priority} = \text{Critical} \land f_j.\text{priority} \neq \text{Critical}) \implies \text{end}(f_i) \leq \text{start}(f_j)$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{DV0: worker\_task\_assignment} \\
+    $x_{w, tsk} \in \{0, 1\}$ \\
+    Binary variable indicating if worker $w$ is assigned to task $tsk$.
+
+    \item \textbf{DV1: feature\_sprint\_assignment} \\
+    $y_{f, sp} \in \{1, 2, ..., 20\}$ \\
+    Integer variable representing the sprint number $sp$ to which feature $f$ is assigned.
+
+    \item \textbf{DV2: story\_point\_estimate} \\
+    $z_{us} \in \{1, 2, 3, 5, 8, 13\}$ \\
+    Integer variable for the story points estimated for user story $us$.
+
+    \item \textbf{DV3: team\_size} \\
+    $n_t \in \{3, 4, 5, 6, 7, 8, 9\}$ \\
+    Integer variable for the number of workers in team $t$.
+
+    \item \textbf{DV4: sprint\_goal\_priority} \\
+    $g_{sp} \in \{1, 2, 3\}$ \\
+    Integer variable representing the priority level of the goal for sprint $sp$.
+
+    \item \textbf{DV5: task\_sequence\_order} \\
+    $o_{tsk} \in \{1, 2, 3, ..., 100\}$ \\
+    Integer variable defining the execution order of task $tsk$.
+
+    \item \textbf{DV6: skill\_requirement\_level} \\
+    $l_{s, tsk} \in \{1, 2, 3, 4, 5\}$ \\
+    Integer variable for the required proficiency level of skill $s$ for task $tsk$.
+
+    \item \textbf{DV7: meeting\_duration\_min} \\
+    $d_{sp, mtg} \in \{15, 30, 45, 60\}$ \\
+    Integer variable for the duration in minutes of meeting type $mtg$ in sprint $sp$.
+
+    \item \textbf{DV8: worker\_availability\_pct} \\
+    $a_w \in [0.0, 1.0]$ \\
+    Continuous variable for the percentage of time worker $w$ is available.
+
+    \item \textbf{DV9: budget\_allocation} \\
+    $b_{f} \in [0.0, 1000000.0]$ \\
+    Continuous variable for the amount of budget allocated to feature $f$.
+
+    \item \textbf{DV10: blocker\_resolution\_sprint} \\
+    $r_{bl} \in \{0, 1, 2, ..., 20\}$ \\
+    Integer variable representing the target sprint for resolving blocker $bl$.
+\end{itemize}
+
+\end{document}

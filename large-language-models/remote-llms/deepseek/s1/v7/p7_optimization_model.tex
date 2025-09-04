@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\title{Mathematical Formulation of a SCRUM-Based Software Development Optimization Model}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+This document provides a complete mathematical formulation for optimizing project planning and team management within a software development company using the SCRUM framework. The model is derived from a defined domain model consisting of Entities, Relationships, Goals, Conditions, and Decision Variables. The purpose is to find an optimal assignment of resources and scheduling of work that maximizes productivity and stakeholder satisfaction while adhering to SCRUM constraints and budgetary limits.
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p_1, p_2, ..., p_n\}$ : Set of all projects.
+    \item $\text{Team} = \{t_1, t_2, ..., t_m\}$ : Set of all teams.
+    \item $\text{Worker} = \{w_1, w_2, ..., w_k\}$ : Set of all workers/employees.
+    \item $\text{Feature} = \{f_1, f_2, ..., f_l\}$ : Set of all features.
+    \item $\text{Skill} = \{s_1, s_2, ..., s_o\}$ : Set of all skills.
+    \item $\text{ProductOwner} = \{po_1, po_2, ...\}$ : Set of all Product Owners.
+    \item $\text{ScrumMaster} = \{sm_1, sm_2, ...\}$ : Set of all Scrum Masters.
+    \item $\text{Sprint} = \{sp_1, sp_2, ..., sp_q\}$ : Set of all sprints.
+    \item $\text{UserStory} = \{us_1, us_2, ..., us_r\}$ : Set of all user stories.
+    \item $\text{Task} = \{tsk_1, tsk_2, ..., tsk_s\}$ : Set of all tasks.
+    \item $\text{Blocker} = \{bl_1, bl_2, ..., bl_t\}$ : Set of all blockers.
+    \item $\text{Stakeholder} = \{sh_1, sh_2, ..., sh_u\}$ : Set of all stakeholders.
+    \item $\text{Velocity} = \{vel_1, vel_2, ...\}$ : Set of velocity records per team.
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, i \in \text{Project}$
+    \item $t, j \in \text{Team}$
+    \item $w, k \in \text{Worker}$
+    \item $f, l \in \text{Feature}$
+    \item $s, o \in \text{Skill}$
+    \item $po \in \text{ProductOwner}$
+    \item $sm \in \text{ScrumMaster}$
+    \item $sp, q \in \text{Sprint}$
+    \item $us, r \in \text{UserStory}$
+    \item $tsk, s' \in \text{Task}$
+    \item $bl, t' \in \text{Blocker}$
+    \item $sh, u \in \text{Stakeholder}$
+    \item $vel \in \text{Velocity}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item[\textbf{G0}] \textbf{maximize\_team\_utilization}
+        \begin{flalign*}
+        & \text{Maximize } Z_0 = \sum_{w \in \text{Worker}} \text{availability}(w) \times \text{Weight}
+        \end{flalign*}
+        
+    \item[\textbf{G1}] \textbf{maximize\_feature\_throughput}
+        \begin{flalign*}
+        & \text{Let } \delta(f) = \begin{cases}
+        1, & \text{if status}(f) = \text{"Done"} \wedge \text{priority}(f) = \text{"High"} \\
+        0, & \text{otherwise}
+        \end{cases} \\
+        & \text{Maximize } Z_1 = \sum_{f \in \text{Feature}} \delta(f) \times 1.5
+        \end{flalign*}
+        
+    \item[\textbf{G2}] \textbf{minimize\_project\_cost}
+        \begin{flalign*}
+        & \text{Minimize } Z_2 = \sum_{p \in \text{Project}} \text{budget}(p) \times 0.8
+        \end{flalign*}
+        
+    \item[\textbf{G3}] \textbf{maximize\_sprint\_goal\_achievement}
+        \begin{flalign*}
+        & \text{Let } \gamma(sg) = \begin{cases}
+        1, & \text{if achievement\_status}(sg) = \text{"Achieved"} \\
+        0, & \text{otherwise}
+        \end{cases} \\
+        & \text{Maximize } Z_3 = \sum_{sg \in \text{SprintGoal}} \gamma(sg) \times 1.2
+        \end{flalign*}
+        
+    \item[\textbf{G4}] \textbf{minimize\_blocker\_resolution\_time}
+        \begin{flalign*}
+        & \text{Minimize } Z_4 = \sum_{bl \in \text{Blocker}} (\text{resolved\_on}(bl) - \text{detected\_on}(bl)) \times 1.0
+        \end{flalign*}
+        
+    \item[\textbf{G5}] \textbf{maximize\_velocity\_consistency}
+        \begin{flalign*}
+        & \text{Maximize } Z_5 = \min_{vel \in \text{Velocity}} \{ \text{min\_velocity}(vel) \} \times 0.9
+        \end{flalign*}
+        
+    \item[\textbf{G6}] \textbf{minimize\_sprint\_overhead}
+        \begin{flalign*}
+        & \text{Let } T_{overhead} = \text{duration}(spp) + \text{duration}(ds) + \text{duration}(sr) + \text{duration}(sre) \\
+        & \text{Minimize } Z_6 = \sum_{sp \in \text{Sprint}} T_{overhead}(sp) \times 0.7
+        \end{flalign*}
+        
+    \item[\textbf{G7}] \textbf{maximize\_stakeholder\_satisfaction}
+        \begin{flalign*}
+        & \text{Maximize } Z_7 = \sum_{sh \in \text{Stakeholder}} \text{influence\_level}(sh) \times \text{satisfaction}(sh) \times 1.1
+        \end{flalign*}
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item[\textbf{C0}] \textbf{team\_has\_scrum\_master}
+        \[
+        \forall t \in \text{Team}, \exists! sm \in \text{ScrumMaster} : \text{is\_supported\_by}(t, sm) = \text{True}
+        \]
+        
+    \item[\textbf{C1}] \textbf{team\_has\_product\_owner}
+        \[
+        \forall t \in \text{Team}, \exists! po \in \text{ProductOwner} : \text{manages\_backlog}(po, pb_t) = \text{True}
+        \]
+        
+    \item[\textbf{C2}] \textbf{feature\_has\_acceptance\_criteria}
+        \[
+        \forall us \in \text{UserStory} \text{ planned for a sprint}, \text{acceptance\_criteria}(us) \neq \emptyset
+        \]
+        
+    \item[\textbf{C3}] \textbf{sprint\_duration\_fixed}
+        \[
+        \forall sp \in \text{Sprint}, (\text{end\_date}(sp) - \text{start\_date}(sp)) = 10080 \text{ minutes}
+        \]
+        
+    \item[\textbf{C4}] \textbf{budget\_not\_exceeded}
+        \[
+        \forall p \in \text{Project}, \sum_{tsk \in \text{Tasks}(p)} \text{cost}(tsk) \leq \text{budget}(p)
+        \]
+        
+    \item[\textbf{C5}] \textbf{worker\_availability\_limit}
+        \[
+        \forall w \in \text{Worker}, \sum_{tsk \in \text{Tasks}(w)} \text{effort}(tsk) \leq \text{availability}(w)
+        \]
+        
+    \item[\textbf{C6}] \textbf{skill\_requirement\_met}
+        \[
+        \forall tsk \in \text{Task}, \forall s \in \text{Skills}(tsk), \text{level}(s, w) \geq \text{required\_level}(s, tsk) \text{ for assigned worker } w
+        \]
+        
+    \item[\textbf{C7}] \textbf{story\_points\_capacity}
+        \[
+        \forall sp \in \text{Sprint}, \sum_{us \in \text{UserStories}(sp)} \text{story\_points}(us) \leq \text{avg\_story\_points}(vel_t)
+        \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item[\textbf{DV0}] \textbf{assign\_worker\_to\_task}: $x_{w, tsk} \in \{0, 1\}$ \\ Binary variable indicating if worker $w$ is assigned to task $tsk$.
+    \item[\textbf{DV1}] \textbf{select\_feature\_for\_sprint}: $y_{f, sp} \in \{0, 1\}$ \\ Binary variable indicating if feature $f$ is selected for sprint $sp$.
+    \item[\textbf{DV2}] \textbf{set\_sprint\_goal}: $g_{sp} \in \text{String}$ \\ The objective description for sprint $sp$.
+    \item[\textbf{DV3}] \textbf{allocated\_sprint\_budget}: $b_{sp} \in \mathbb{R}_{\geq 0}$ \\ The budget amount allocated to sprint $sp$.
+    \item[\textbf{DV4}] \textbf{team\_size}: $n_t \in \mathbb{Z}, 3 \leq n_t \leq 9$ \\ The number of workers in team $t$.
+    \item[\textbf{DV5}] \textbf{worker\_availability}: $a_w \in \mathbb{R}, 0.0 \leq a_w \leq 1.0$ \\ The percentage availability of worker $w$.
+    \item[\textbf{DV6}] \textbf{story\_point\_estimate}: $p_{us} \in \mathbb{Z}, 1 \leq p_{us} \leq 20$ \\ The story point estimate for user story $us$.
+    \item[\textbf{DV7}] \textbf{task\_effort\_estimate}: $e_{tsk} \in \mathbb{R}, 0.5 \leq e_{tsk} \leq 40.0$ \\ The effort estimate in hours for task $tsk$.
+    \item[\textbf{DV8}] \textbf{feature\_priority}: $pr_f \in \{\text{Critical}, \text{High}, \text{Medium}, \text{Low}\}$ \\ The priority level of feature $f$.
+    \item[\textbf{DV9}] \textbf{blocker\_severity}: $sev_{bl} \in \{\text{Blocking}, \text{Major}, \text{Minor}\}$ \\ The severity level of blocker $bl$.
+    \item[\textbf{DV10}] \textbf{sprint\_duration}: $d_{sp} \in \mathbb{Z}, 5 \leq d_{sp} \leq 30$ \\ The duration of sprint $sp$ in days.
+    \item[\textbf{DV11}] \textbf{deployment\_target}: $dt_{dev} \in \{\text{Staging}, \text{Production}\}$ \\ The target environment for development snapshot $dev$.
+\end{itemize}
+
+\end{document}

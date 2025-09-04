@@ -1,0 +1,10 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,sprint_goal_must_be_met,The Sprint Goal achievement status must be marked as 'Achieved'.,False,max,SprintGoal,achievement_status,2,1.0
+C1,worker_availability_not_exceeded,A worker's total assigned task effort cannot exceed their availability.,True,min,Worker,availability,2,1.0
+C2,critical_skills_must_be_covered,For any task requiring a certified skill (level>=4), a worker with that skill must be assigned.,False,max,Skill,certified,2,1.0
+C3,high_severity_blockers_must_resolved,No active blocker with severity greater than 8 (on a scale of 10) is allowed at sprint end.,True,max,Blocker,severity,0,1.0
+C4,team_must_have_scrum_master,Every active team must have exactly one Scrum Master assigned.,False,max,Team,id,2,1.0
+C5,user_story_must_have_acceptance,No User Story in the sprint backlog can have empty acceptance_criteria.,False,max,UserStory,acceptance_criteria,2,1.0
+C6,task_must_have_assignee,Every task in the 'In Progress' or 'To Do' column of the Scrum Board must be assigned to at least one worker.,False,max,Task,status,2,1.0
+C7,budget_not_exceeded,The total cost of the project (derived from effort * cost rate) must not exceed the project budget.,True,min,Project,budget,2,1.0
+C8,feature_documentation_complete,Any feature marked for release must have its documentation status marked as 'Complete'.,False,max,FeatureDocumentation,change_log,2,1.0

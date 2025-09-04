@@ -1,0 +1,132 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+This document presents a formal mathematical optimization model for managing and improving the processes of a software development company utilizing the SCRUM framework. The model is derived from a detailed domain model encompassing entities, relationships, goals, constraints, and decision variables. The purpose of this model is to provide a structured approach for solving complex decision-making problems such as resource allocation, sprint planning, and release management.
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p | p \text{ is a project}\}$
+    \item $\text{Team} = \{t | t \text{ is a team}\}$
+    \item $\text{Worker} = \{w | w \text{ is a worker}\}$
+    \item $\text{Feature} = \{f | f \text{ is a feature}\}$
+    \item $\text{Skill} = \{s | s \text{ is a skill}\}$
+    \item $\text{Role} = \{r | r \text{ is a role}\}$
+    \item $\text{ProductOwner} = \{po | po \text{ is a product owner}\}$
+    \item $\text{ScrumMaster} = \{sm | sm \text{ is a scrum master}\}$
+    \item $\text{ProductBacklog} = \{pb | pb \text{ is a product backlog}\}$
+    \item $\text{Sprint} = \{sp | sp \text{ is a sprint}\}$
+    \item $\text{SprintGoal} = \{sg | sg \text{ is a sprint goal}\}$
+    \item $\text{UserStory} = \{us | us \text{ is a user story}\}$
+    \item $\text{Task} = \{tsk | tsk \text{ is a task}\}$
+    \item $\text{Blocker} = \{bl | bl \text{ is a blocker}\}$
+    \item $\text{Stakeholder} = \{sh | sh \text{ is a stakeholder}\}$
+    \item $\text{Velocity} = \{vel | vel \text{ is a velocity record}\}$
+    \item $\text{ReleasePlan} = \{rep | rep \text{ is a release plan}\}$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $w \in \text{Worker}$
+    \item $t \in \text{Team}$
+    \item $tsk \in \text{Task}$
+    \item $f \in \text{Feature}$
+    \item $us \in \text{UserStory}$
+    \item $bl \in \text{Blocker}$
+    \item $s \in \text{Skill}$
+    \item $sh \in \text{Stakeholder}$
+    \item $sp \in \text{Sprint}$
+    \item $sg \in \text{SprintGoal}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item[\textbf{G0}] \textbf{minimize\_total\_effort}
+    \[ \text{Minimize } Z_{G0} = \sum_{tsk \in \text{Task}} \text{effort}(tsk) \]
+    
+    \item[\textbf{G1}] \textbf{maximize\_team\_availability}
+    \[ \text{Maximize } Z_{G1} = \sum_{w \in \text{Worker}} \text{availability}(w) \]
+    
+    \item[\textbf{G2}] \textbf{maximize\_feature\_priority\_score}
+    \[ \text{Maximize } Z_{G2} = \sum_{f \in \text{Feature}} \text{priority}(f) \]
+    
+    \item[\textbf{G3}] \textbf{minimize\_blocker\_severity}
+    \[ \text{Minimize } Z_{G3} = \sum_{bl \in \text{Blocker}} \text{severity}(bl) \]
+    
+    \item[\textbf{G4}] \textbf{maximize\_velocity\_consistency}
+    \[ \text{Maximize } Z_{G4} = \text{avg\_story\_points}(vel) \quad \text{for the current team's velocity } vel \]
+    
+    \item[\textbf{G5}] \textbf{minimize\_context\_switching}
+    \[ \text{Minimize } Z_{G5} = \sum_{w \in \text{Worker}} \mathbb{I}[\text{numberOfFeatures}(w) > 1] \]
+    
+    \item[\textbf{G6}] \textbf{maximize\_skill\_task\_match}
+    \[ \text{Maximize } Z_{G6} = \sum_{w \in \text{Worker}} \sum_{s \in \text{Skill}(w)} \text{level}(s) \]
+    
+    \item[\textbf{G7}] \textbf{minimize\_sprint\_overcommit}
+    \[ \text{Minimize } Z_{G7} = | \text{committed\_story\_points}(sp) - \text{avg\_story\_points}(vel) | \]
+    
+    \item[\textbf{G8}] \textbf{maximize\_stakeholder\_satisfaction}
+    \[ \text{Maximize } Z_{G8} = \sum_{sh \in \text{Stakeholder}} \text{influence\_level}(sh) \cdot \text{satisfied}(sh) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item[\textbf{C0}] \textbf{sprint\_goal\_must\_be\_met}
+    \[ \text{achievement\_status}(sg_{current}) = \text{'Achieved'} \quad \forall sg_{current} \in \text{SprintGoal} \]
+    
+    \item[\textbf{C1}] \textbf{worker\_availability\_not\_exceeded}
+    \[ \sum_{tsk \in \text{Task}(w)} \text{effort}(tsk) \leq \text{availability}(w) \quad \forall w \in \text{Worker} \]
+    
+    \item[\textbf{C2}] \textbf{critical\_skills\_must\_be\_covered}
+    \[ \forall tsk \text{ requiring skill } s^* \text{ with } \text{level}(s^*) \geq 4, \exists w \text{ assigned to } tsk \text{ with } \text{certified}(s^*) = \text{True} \]
+    
+    \item[\textbf{C3}] \textbf{high\_severity\_blockers\_must\_resolved}
+    \[ \text{severity}(bl) \leq 8 \quad \forall bl \in \text{Blocker} \]
+    
+    \item[\textbf{C4}] \textbf{team\_must\_have\_scrum\_master}
+    \[ \sum_{sm \in \text{ScrumMaster}} \text{assignedTo}(sm, t) = 1 \quad \forall t \in \text{Team} \]
+    
+    \item[\textbf{C5}] \textbf{user\_story\_must\_have\_acceptance}
+    \[ \text{acceptance\_criteria}(us) \neq \emptyset \quad \forall us \in \text{UserStory} \text{ in the sprint backlog} \]
+    
+    \item[\textbf{C6}] \textbf{task\_must\_have\_assignee}
+    \[ \sum_{w \in \text{Worker}} \text{assign\_worker\_to\_task}(w, tsk) \geq 1 \quad \forall tsk \text{ where } \text{status}(tsk) \in \{\text{'To Do'}, \text{'In Progress'}\} \]
+    
+    \item[\textbf{C7}] \textbf{budget\_not\_exceeded}
+    \[ \sum_{w \in \text{Worker}} \sum_{tsk \in \text{Task}} \text{effort}(tsk) \cdot \text{cost\_rate}(w) \leq \text{budget}(p) \quad \text{for project } p \]
+    
+    \item[\textbf{C8}] \textbf{feature\_documentation\_complete}
+    \[ \text{documentation\_status}(fed) = \text{'Complete'} \quad \forall f \in \text{Feature} \text{ marked for release, with doc } fed \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item[\textbf{DV0}] $\text{assign\_worker\_to\_task}(w, tsk) \in \{0, 1\} \quad \forall w \in \text{Worker}, \forall tsk \in \text{Task}$
+    \item[\textbf{DV1}] $\text{include\_feature\_in\_sprint}(f) \in \{0, 1\} \quad \forall f \in \text{Feature}$
+    \item[\textbf{DV2}] $\text{select\_user\_story\_for\_release}(us) \in \{0, 1\} \quad \forall us \in \text{UserStory}$
+    \item[\textbf{DV3}] $\text{set\_sprint\_duration} \in \mathbb{Z}^+,\ [7, 21]$
+    \item[\textbf{DV4}] $\text{assign\_story\_points}(us) \in \mathbb{Z}^+,\ [1, 13] \quad \forall us \in \text{UserStory}$
+    \item[\textbf{DV5}] $\text{team\_size}(t) \in \mathbb{Z}^+,\ [3, 9] \quad \forall t \in \text{Team}$
+    \item[\textbf{DV6}] $\text{worker\_availability\_factor}(w) \in \mathbb{R},\ [0.2, 1.0] \quad \forall w \in \text{Worker}$
+    \item[\textbf{DV7}] $\text{task\_effort\_estimate}(tsk) \in \mathbb{Z}^+,\ [1, 40] \quad \forall tsk \in \text{Task}$
+    \item[\textbf{DV8}] $\text{blocker\_severity\_score}(bl) \in \mathbb{Z}^+,\ [1, 10] \quad \forall bl \in \text{Blocker}$
+    \item[\textbf{DV9}] $\text{feature\_priority}(f) \in \mathbb{Z}^+,\ [1, 100] \quad \forall f \in \text{Feature}$
+    \item[\textbf{DV10}] $\text{stakeholder\_influence\_weight}(sh) \in \mathbb{R},\ [0.0, 1.0] \quad \forall sh \in \text{Stakeholder}$
+    \item[\textbf{DV11}] $\text{skill\_proficiency\_level}(w, s) \in \mathbb{Z}^+,\ [1, 5] \quad \forall w \in \text{Worker}, \forall s \in \text{Skill}$
+\end{itemize}
+
+\end{document}

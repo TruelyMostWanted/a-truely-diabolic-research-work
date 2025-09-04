@@ -1,0 +1,394 @@
+graph TD
+    %% Style Definitions
+    classDef entityStyle fill:#a4c2f4,stroke:#333,stroke-width:2px,color:black;
+    classDef attrStyle fill:#ffffff,stroke:#333,stroke-width:1px,color:black;
+    classDef relStyle fill:#f6b26b,stroke:#333,stroke-width:2px,color:black;
+    classDef goalStyle fill:#b6d7a8,stroke:#333,stroke-width:2px,color:black;
+    classDef condStyle fill:#ea9999,stroke:#333,stroke-width:2px,color:black;
+    classDef decvarStyle fill:#d9d2e9,stroke:#333,stroke-width:2px,color:black;
+
+    %% ******************** ENTITIES & ATTRIBUTES ********************
+    subgraph Entities
+        E0[Project]
+        E0_attr1("id")
+        E0_attr2("name")
+        E0_attr3("project_start")
+        E0_attr4("project_end")
+        E0_attr5("description")
+        E0_attr6("budget")
+        E0_attr7("status")
+        E0_attr8("target_audience")
+        E0_attr9("priority")
+
+        E1[Team]
+        E1_attr1("id")
+        E1_attr2("name")
+        E1_attr3("team_size")
+        E1_attr4("team_start")
+        E1_attr5("team_status")
+        E1_attr6("location")
+        E1_attr7("team_type")
+
+        E2[Worker]
+        E2_attr1("id")
+        E2_attr2("name")
+        E2_attr3("first_name")
+        E2_attr4("email")
+        E2_attr5("start_date")
+        E2_attr6("status")
+        E2_attr7("availability")
+
+        E3[Feature]
+        E3_attr1("id")
+        E3_attr2("title")
+        E3_attr3("description")
+        E3_attr4("status")
+        E3_attr5("priority")
+        E3_attr6("estimated_effort")
+
+        E4[Skill]
+        E4_attr1("id")
+        E4_attr2("label")
+        E4_attr3("description")
+        E4_attr4("level")
+        E4_attr5("certified")
+        E4_attr6("category")
+
+        E17[UserStory]
+        E17_attr1("id")
+        E17_attr2("title")
+        E17_attr3("description")
+        E17_attr4("acceptance_criteria")
+        E17_attr5("priority")
+        E17_attr6("story_points")
+        E17_attr7("status")
+
+        E18[Task]
+        E18_attr1("id")
+        E18_attr2("title")
+        E18_attr3("description")
+        E18_attr4("status")
+        E18_attr5("effort")
+        E18_attr6("type")
+
+        E9[Sprint]
+        E9_attr1("id")
+        E9_attr2("sprint_number")
+        E9_attr3("start_date")
+        E9_attr4("end_date")
+        E9_attr5("status")
+        E9_attr6("achievement_of_goal")
+
+        E14[SprintBacklog]
+        E14_attr1("id")
+        E14_attr2("number_of_tasks")
+        E14_attr3("last_updated")
+        E14_attr4("status")
+        E14_attr5("total_effort")
+
+        E20[Blocker]
+        E20_attr1("id")
+        E20_attr2("title")
+        E20_attr3("description")
+        E20_attr4("severity")
+        E20_attr5("status")
+        E20_attr6("detected_on")
+        E20_attr7("resolved_on")
+
+        E15[SprintGoal]
+        E15_attr1("id")
+        E15_attr2("objective_description")
+        E15_attr3("achievement_status")
+        E15_attr4("benefit")
+    end
+
+    %% ******************** RELATIONS ********************
+    R1("R1: is_assigned_to_project")
+    R2("R2: belongs_to_team")
+    R3("R3: has_skill")
+    R4("R4: takes_on_role")
+    R7("R7: contains_feature")
+    R9("R9: contains_user_story")
+    R10("R10: consists_of_tasks")
+    R11("R11: is_in_sprint_backlog")
+    R12("R12: belongs_to_sprint")
+    R13("R13: pursues_goal")
+    R16("R16: is_blocked_by")
+
+    %% ******************** GOALS ********************
+    G0("G0: minimize_total_project_duration")
+    G1("G1: maximize_team_utilization")
+    G2("G2: minimize_total_development_cost")
+    G3("G3: maximize_feature_delivery")
+    G4("G4: minimize_context_switching")
+    G5("G5: maximize_skill_task_match")
+    G6("G6: minimize_blocker_impact")
+    G7("G7: maximize_sprint_goal_achievement")
+    G8("G8: minimize_technical_debt")
+    G9("G9: balance_team_workload")
+
+    %% ******************** CONDITIONS ********************
+    C0("C0: sprint_velocity_not_exceeded")
+    C1("C1: worker_availability_not_exceeded")
+    C2("C2: critical_feature_must_be_included")
+    C3("C3: task_assigned_to_one_worker")
+    C4("C4: blocked_task_cannot_be_started")
+    C5("C5: user_story_requires_tasks")
+    C6("C6: sprint_duration_fixed")
+    C7("C7: team_has_scrum_master")
+    C8("C8: product_owner_manages_backlog")
+    C9("C9: feature_has_documentation")
+
+    %% ******************** DECISION VARIABLES ********************
+    DV0("DV0: assign_worker_to_task")
+    DV1("DV1: include_feature_in_sprint")
+    DV2("DV2: start_date_for_task")
+    DV3("DV3: end_date_for_task")
+    DV4("DV4: assign_story_points")
+    DV5("DV5: team_velocity")
+    DV6("DV6: worker_availability")
+    DV7("DV7: task_effort_estimate")
+    DV8("DV8: blocker_resolution_time")
+    DV9("DV9: skill_proficiency_level")
+    DV10("DV10: feature_priority")
+
+    %% ******************** ENTITY-ATTRIBUTE CONNECTIONS ********************
+    E0 --- E0_attr1
+    E0 --- E0_attr2
+    E0 --- E0_attr3
+    E0 --- E0_attr4
+    E0 --- E0_attr5
+    E0 --- E0_attr6
+    E0 --- E0_attr7
+    E0 --- E0_attr8
+    E0 --- E0_attr9
+
+    E1 --- E1_attr1
+    E1 --- E1_attr2
+    E1 --- E1_attr3
+    E1 --- E1_attr4
+    E1 --- E1_attr5
+    E1 --- E1_attr6
+    E1 --- E1_attr7
+
+    E2 --- E2_attr1
+    E2 --- E2_attr2
+    E2 --- E2_attr3
+    E2 --- E2_attr4
+    E2 --- E2_attr5
+    E2 --- E2_attr6
+    E2 --- E2_attr7
+
+    E3 --- E3_attr1
+    E3 --- E3_attr2
+    E3 --- E3_attr3
+    E3 --- E3_attr4
+    E3 --- E3_attr5
+    E3 --- E3_attr6
+
+    E17 --- E17_attr1
+    E17 --- E17_attr2
+    E17 --- E17_attr3
+    E17 --- E17_attr4
+    E17 --- E17_attr5
+    E17 --- E17_attr6
+    E17 --- E17_attr7
+
+    E18 --- E18_attr1
+    E18 --- E18_attr2
+    E18 --- E18_attr3
+    E18 --- E18_attr4
+    E18 --- E18_attr5
+    E18 --- E18_attr6
+
+    E9 --- E9_attr1
+    E9 --- E9_attr2
+    E9 --- E9_attr3
+    E9 --- E9_attr4
+    E9 --- E9_attr5
+    E9 --- E9_attr6
+
+    E14 --- E14_attr1
+    E14 --- E14_attr2
+    E14 --- E14_attr3
+    E14 --- E14_attr4
+    E14 --- E14_attr5
+
+    E20 --- E20_attr1
+    E20 --- E20_attr2
+    E20 --- E20_attr3
+    E20 --- E20_attr4
+    E20 --- E20_attr5
+    E20 --- E20_attr6
+    E20 --- E20_attr7
+
+    E15 --- E15_attr1
+    E15 --- E15_attr2
+    E15 --- E15_attr3
+    E15 --- E15_attr4
+
+    %% ******************** RELATION CONNECTIONS ********************
+    E1 --o R1
+    R1 o-- E0
+
+    E2 --o R2
+    R2 o-- E1
+
+    E2 --o R3
+    R3 o-- E4
+
+    E2 --o R4
+
+    E3 --o R7
+
+    E17 --o R9
+    R9 o-- E3
+
+    E18 --o R10
+    R10 o-- E17
+
+    E17 --o R11
+    R11 o-- E14
+
+    E14 --o R12
+    R12 o-- E9
+
+    E9 --o R13
+    R13 o-- E15
+
+    E18 --o R16
+    R16 o-- E20
+
+    %% ******************** GOAL CONNECTIONS ********************
+    G0 -.-> E0
+    G0 -.-> E0_attr4
+    G0 -.-> E0_attr3
+
+    G1 -.-> E2
+    G1 -.-> E2_attr7
+
+    G2 -.-> E0
+    G2 -.-> E0_attr6
+    G2 -.-> DV0
+    G2 -.-> E18_attr5
+
+    G3 -.-> E3
+    G3 -.-> E3_attr4
+    G3 -.-> E3_attr5
+
+    G4 -.-> E2
+    G4 -.-> DV0
+
+    G5 -.-> E4
+    G5 -.-> E4_attr4
+    G5 -.-> DV0
+
+    G6 -.-> E20
+    G6 -.-> E20_attr4
+    G6 -.-> E20_attr6
+    G6 -.-> E20_attr7
+
+    G7 -.-> E9
+    G7 -.-> E9_attr6
+    G7 -.-> E15
+    G7 -.-> E15_attr3
+
+    G8 -.-> E18
+    G8 -.-> E18_attr5
+    G8 -.-> E18_attr6
+
+    G9 -.-> E1
+    G9 -.-> E1_attr3
+
+    %% ******************** CONDITION CONNECTIONS ********************
+    C0 -.-> E14
+    C0 -.-> E14_attr5
+    C0 -.-> E17
+    C0 -.-> E17_attr6
+    C0 -.-> DV5
+
+    C1 -.-> E2
+    C1 -.-> E2_attr7
+    C1 -.-> E9
+    C1 -.-> E18
+    C1 -.-> E18_attr5
+    C1 -.-> DV0
+    C1 -.-> DV6
+
+    C2 -.-> E3
+    C2 -.-> E3_attr5
+    C2 -.-> DV1
+
+    C3 -.-> E18
+    C3 -.-> DV0
+
+    C4 -.-> E18
+    C4 -.-> E18_attr4
+    C4 -.-> E20
+    C4 -.-> E20_attr5
+    C4 -.-> R16
+
+    C5 -.-> E17
+    C5 -.-> DV1
+    C5 -.-> E18
+
+    C6 -.-> E9
+    C6 -.-> E9_attr3
+    C6 -.-> E9_attr4
+
+    C7 -.-> E1
+    C7 -.-> R6
+
+    C8 -.-> R5
+
+    C9 -.-> E3
+    C9 -.-> E3_attr4
+    C9 -.-> R15
+
+    %% ******************** DECISION VARIABLE CONNECTIONS ********************
+    DV0 -.-> E2
+    DV0 -.-> E18
+
+    DV1 -.-> E3
+    DV1 -.-> E9
+
+    DV2 -.-> E18
+    DV2 -.-> E0_attr3
+    DV2 -.-> E0_attr4
+
+    DV3 -.-> E18
+    DV3 -.-> E0_attr3
+    DV3 -.-> E0_attr4
+
+    DV4 -.-> E17
+    DV4 -.-> E17_attr6
+
+    DV5 -.-> E1
+    DV5 -.-> E9
+    DV5 -.-> E14_attr5
+
+    DV6 -.-> E2
+    DV6 -.-> E2_attr7
+    DV6 -.-> E9
+
+    DV7 -.-> E18
+    DV7 -.-> E18_attr5
+
+    DV8 -.-> E20
+    DV8 -.-> E20_attr6
+    DV8 -.-> E20_attr7
+
+    DV9 -.-> E2
+    DV9 -.-> E4
+    DV9 -.-> E4_attr4
+
+    DV10 -.-> E3
+    DV10 -.-> E3_attr5
+
+    %% ******************** APPLY STYLES ********************
+    class E0,E1,E2,E3,E4,E17,E18,E9,E14,E20,E15 entityStyle;
+    class E0_attr1,E0_attr2,E0_attr3,E0_attr4,E0_attr5,E0_attr6,E0_attr7,E0_attr8,E0_attr9,E1_attr1,E1_attr2,E1_attr3,E1_attr4,E1_attr5,E1_attr6,E1_attr7,E2_attr1,E2_attr2,E2_attr3,E2_attr4,E2_attr5,E2_attr6,E2_attr7,E3_attr1,E3_attr2,E3_attr3,E3_attr4,E3_attr5,E3_attr6,E17_attr1,E17_attr2,E17_attr3,E17_attr4,E17_attr5,E17_attr6,E17_attr7,E18_attr1,E18_attr2,E18_attr3,E18_attr4,E18_attr5,E18_attr6,E9_attr1,E9_attr2,E9_attr3,E9_attr4,E9_attr5,E9_attr6,E14_attr1,E14_attr2,E14_attr3,E14_attr4,E14_attr5,E20_attr1,E20_attr2,E20_attr3,E20_attr4,E20_attr5,E20_attr6,E20_attr7,E15_attr1,E15_attr2,E15_attr3,E15_attr4 attrStyle;
+    class R1,R2,R3,R4,R7,R9,R10,R11,R12,R13,R16 relStyle;
+    class G0,G1,G2,G3,G4,G5,G6,G7,G8,G9 goalStyle;
+    class C0,C1,C2,C3,C4,C5,C6,C7,C8,C9 condStyle;
+    class DV0,DV1,DV2,DV3,DV4,DV5,DV6,DV7,DV8,DV9,DV10 decvarStyle;

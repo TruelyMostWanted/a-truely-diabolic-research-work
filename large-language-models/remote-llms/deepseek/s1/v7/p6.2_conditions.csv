@@ -1,0 +1,9 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_has_scrum_master,Every active team must have exactly one Scrum Master assigned.,False,min,ScrumMaster,id,2,1.0
+C1,team_has_product_owner,Every active team must have exactly one Product Owner assigned.,False,min,ProductOwner,id,2,1.0
+C2,feature_has_acceptance_criteria,No user story can be planned for a sprint without defined acceptance criteria.,False,min,UserStory,acceptance_criteria,2,1.0
+C3,sprint_duration_fixed,The duration of a sprint (end_date - start_date) must be exactly 2 weeks (10080 minutes).,False,min,Sprint,end_date,2,1.0
+C4,budget_not_exceeded,The total cost of all tasks in a project must not exceed the project's budget.,True,min,Project,budget,2,1.0
+C5,worker_availability_limit,No individual worker can be assigned tasks that exceed their stated availability.,False,min,Worker,availability,2,1.0
+C6,skill_requirement_met,A task requiring a specific skill and level can only be assigned to a worker with that skill at that level.,False,min,Skill,level,2,1.0
+C7,story_points_capacity,The total story points of user stories committed to a sprint must not exceed the team's known velocity.,True,min,Velocity,avg._story_points,2,1.0

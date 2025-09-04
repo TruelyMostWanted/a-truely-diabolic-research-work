@@ -1,0 +1,12 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_has_scrum_master,A team must have exactly one Scrum Master assigned.,False,min,Team,team_status,2,
+C1,user_story_has_tasks,Every User Story in a sprint must be broken down into at least one task.,False,min,UserStory,status,2,
+C2,sprint_goal_defined,Every sprint must have a defined sprint goal.,False,min,Sprint,status,2,
+C3,worker_availability,No worker can be assigned more tasks than their availability permits.,False,max,Worker,availability,2,
+C4,project_budget,The total cost of a project must not exceed its allocated budget.,True,max,Project,budget,2,
+C5,task_blocked,No task with an active, high-severity blocker can be in an 'In Progress' status.,False,min,Task,status,2,
+C6,sprint_length,A sprint's length (end_date - start_date) must be exactly 2 weeks.,False,min,Sprint,start_date,2,
+C7,definition_of_done,Every task must meet the team's 'Definition of Done' to be marked complete.,False,min,Task,status,2,
+C8,product_owner_backlog,The Product Backlog must be managed by exactly one Product Owner.,False,min,ProductBacklog,status,2,
+C9,retrospective_actions,At least one improvement action must result from each sprint retrospective.,False,min,SprintRetrospective,improvement_actions,2,
+C10,feature_priority,Features with 'Critical' priority must be completed before lower-priority ones.,False,min,Feature,priority,2,

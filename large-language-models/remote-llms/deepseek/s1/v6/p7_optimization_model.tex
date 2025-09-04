@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $P$: Set of all Projects
+    \item $T$: Set of all Teams
+    \item $W$: Set of all Workers
+    \item $F$: Set of all Features
+    \item $S$: Set of all Skills
+    \item $R$: Set of all Roles
+    \item $PO$: Set of all ProductOwners
+    \item $SM$: Set of all ScrumMasters
+    \item $PB$: Set of all ProductBacklogs
+    \item $SP$: Set of all Sprints
+    \item $SPP$: Set of all SprintPlannings
+    \item $DS$: Set of all DailyScrums
+    \item $SR$: Set of all SprintReviews
+    \item $SRE$: Set of all SprintRetrospectives
+    \item $SBL$: Set of all SprintBacklogs
+    \item $SG$: Set of all SprintGoals
+    \item $E$: Set of all Epics
+    \item $US$: Set of all UserStories
+    \item $TSK$: Set of all Tasks
+    \item $DEV$: Set of all DevelopmentSnapshots
+    \item $BL$: Set of all Blockers
+    \item $SH$: Set of all Stakeholders
+    \item $VEL$: Set of all Velocities
+    \item $REP$: Set of all ReleasePlans
+    \item $RM$: Set of all Roadmaps
+    \item $SCB$: Set of all ScrumBoards
+    \item $FED$: Set of all FeatureDocumentations
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$: Index for a Project
+    \item $t \in T$: Index for a Team
+    \item $w \in W$: Index for a Worker
+    \item $f \in F$: Index for a Feature
+    \item $s \in S$: Index for a Skill
+    \item $r \in R$: Index for a Role
+    \item $us \in US$: Index for a UserStory
+    \item $tsk \in TSK$: Index for a Task
+    \item $bl \in BL$: Index for a Blocker
+    \item $sp \in SP$: Index for a Sprint
+    \item $sbl \in SBL$: Index for a SprintBacklog
+    \item $vel \in VEL$: Index for a Velocity
+    \item $rep \in REP$: Index for a ReleasePlan
+    \item $sg \in SG$: Index for a SprintGoal
+    \item $sr \in SR$: Index for a SprintReview
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: minimize\_total\_effort} - Minimize the total estimated effort of all tasks in the active sprint backlog.
+        \[ \text{minimize} \quad \sum_{tsk \in TSK} \text{effort}(tsk) \cdot x^{sbl}_{tsk} \]
+        Where $x^{sbl}_{tsk}$ is a binary variable indicating if task $tsk$ is in the active sprint backlog.
+
+    \item \textbf{G1: maximize\_team\_velocity} - Maximize the average velocity of the team to improve throughput.
+        \[ \text{maximize} \quad \text{avg\_story\_points}(vel_t) \]
+        Where $vel_t$ is the velocity entity associated with team $t$.
+
+    \item \textbf{G2: minimize\_blocker\_severity} - Minimize the maximum severity of any active blocker in the sprint.
+        \[ \text{minimize} \quad \max_{bl \in BL} \left( \text{severity}(bl) \cdot (1 - \text{resolved\_on}(bl)) \right) \]
+
+    \item \textbf{G3: maximize\_feature\_priority} - Maximize the total priority score of features included in the release plan.
+        \[ \text{maximize} \quad \sum_{f \in F} \text{priority}(f) \cdot x^{rep}_f \]
+        Where $x^{rep}_f$ is a binary decision variable (DV3) indicating if feature $f$ is included in the release plan.
+
+    \item \textbf{G4: minimize\_sprint\_duration} - Minimize the duration of sprints to increase feedback frequency.
+        \[ \text{minimize} \quad (\text{end\_date}(sp) - \text{start\_date}(sp)) \]
+
+    \item \textbf{G5: maximize\_skill\_match} - Maximize the alignment between task requirements and worker skills.
+        \[ \text{maximize} \quad \sum_{w \in W} \sum_{tsk \in TSK} \text{skill\_match}(w, tsk) \cdot x^{assign}_{w, tsk} \]
+        Where $x^{assign}_{w, tsk}$ is the assignment decision variable (DV0).
+
+    \item \textbf{G6: minimize\_budget\_deviation} - Minimize the deviation of the actual spend from the project budget.
+        \[ \text{minimize} \quad | \text{budget}(p) - \text{actual\_cost}(p) | \]
+
+    \item \textbf{G7: maximize\_stakeholder\_satisfaction} - Maximize the satisfaction level of stakeholders from the sprint review.
+        \[ \text{maximize} \quad \text{sentiment\_score}(\text{feedback\_documentation}(sr)) \]
+
+    \item \textbf{G8: minimize\_context\_switching} - Minimize the number of different story types a single worker is assigned to.
+        \[ \text{minimize} \quad \sum_{w \in W} \text{num\_unique\_story\_types}(w) \]
+
+    \item \textbf{G9: maximize\_sprint\_goal\_achievement} - Maximize the rate of successfully achieved sprint goals.
+        \[ \text{maximize} \quad \frac{1}{|SG|} \sum_{sg \in SG} \text{achievement\_status}(sg) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: team\_availability} - The total assigned effort for a team member cannot exceed their availability.
+        \[ \sum_{tsk \in TSK} \text{effort}(tsk) \cdot x^{assign}_{w, tsk} \leq \text{availability}(w) \cdot \text{capacity}, \quad \forall w \in W \]
+
+    \item \textbf{C1: sprint\_capacity} - The total story points in a sprint backlog must not exceed the team's velocity.
+        \[ \sum_{us \in US} \text{story\_points}(us) \cdot x^{sbl}_{us} \leq \text{avg\_story\_points}(vel_t), \quad \forall sbl \in SBL \]
+
+    \item \textbf{C2: critical\_blocker} - No task with a 'Critical' severity blocker can be in status 'In Progress'.
+        \[ \text{status}(tsk) \neq \text{'In Progress'}, \quad \forall tsk \in TSK \; \text{where} \; \exists bl \in BL: \text{severity}(bl) = \text{Critical} \land \text{is\_blocked\_by}(tsk, bl) \]
+
+    \item \textbf{C3: role\_requirement} - Every user story must have at least one team member assigned with a required role.
+        \[ \sum_{w \in W} x^{assign}_{w, tsk} \cdot \mathbb{1}[\text{has\_role}(w, r_{req})] \geq 1, \quad \forall us \in US, \; \forall tsk \in TSK(us) \]
+
+    \item \textbf{C4: budget\_constraint} - The total cost of the project must not exceed the allocated budget.
+        \[ \text{actual\_cost}(p) \leq \text{budget}(p), \quad \forall p \in P \]
+
+    \item \textbf{C5: sprint\_duration} - Sprint length must be between 1 and 4 weeks.
+        \[ 7 \leq (\text{end\_date}(sp) - \text{start\_date}(sp)) \leq 28, \quad \forall sp \in SP \]
+
+    \item \textbf{C6: definition\_of\_done} - All tasks for a user story must be 'Done' for the story to be 'Done'.
+        \[ \text{status}(us) = \text{'Done'} \iff \text{status}(tsk) = \text{'Done'}, \quad \forall tsk \in TSK(us), \; \forall us \in US \]
+
+    \item \textbf{C7: product\_owner\_approval} - No feature can be added to a release plan without Product Owner approval.
+        \[ x^{rep}_f \leq \mathbb{1}[\text{status}(f) = \text{'PO Approved'}], \quad \forall f \in F \]
+
+    \item \textbf{C8: skill\_requirement} - A task requiring a certified skill can only be assigned to a worker with that certification.
+        \[ x^{assign}_{w, tsk} \leq \mathbb{1}[\text{certified}(s, w) = True], \quad \forall w \in W, \; \forall tsk \in TSK \; \text{requiring certified skill } s \]
+
+    \item \textbf{C9: min\_velocity} - The team's calculated velocity must be greater than a minimum threshold.
+        \[ \text{avg\_story\_points}(vel_t) \geq \text{min\_velocity}(vel_t), \quad \forall vel_t \in VEL \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{DV0:} $x^{assign}_{w, tsk} \in \{0, 1\}$ - Binary assignment of worker $w$ to task $tsk$.
+    \item \textbf{DV1:} $\text{story\_points}(us) \in \mathbb{Z}^+$ - Story points for user story $us$, bounded $[1, 20]$.
+    \item \textbf{DV2:} $\text{duration}(sp) \in \mathbb{Z}^+$ - Duration of sprint $sp$ in days, bounded $[7, 28]$.
+    \item \textbf{DV3:} $x^{rep}_f \in \{0, 1\}$ - Binary inclusion of feature $f$ in the release plan.
+    \item \textbf{DV4:} $\text{start\_day}(tsk) \in \mathbb{Z}^+$ - Start day of task $tsk$ within its sprint, bounded $[1, 28]$.
+    \item \textbf{DV5:} $\text{size}(t) \in \mathbb{Z}^+$ - Size of team $t$, bounded $[3, 9]$.
+    \item \textbf{DV6:} $\text{availability}(w) \in \mathbb{R}$ - Availability of worker $w$, bounded $[0.0, 1.0]$.
+    \item \textbf{DV7:} $x^{resolve}_{bl} \in \{0, 1\}$ - Binary resolution status of blocker $bl$.
+    \item \textbf{DV8:} $\text{level}(s, w) \in \mathbb{Z}^+$ - Skill level of worker $w$ for skill $s$, bounded $[1, 5]$.
+    \item \textbf{DV9:} $x^{achieved}_{sg} \in \{0, 1\}$ - Binary achievement status of sprint goal $sg$.
+\end{itemize}
+
+\end{document}

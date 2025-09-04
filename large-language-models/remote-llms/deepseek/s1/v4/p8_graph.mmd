@@ -1,0 +1,390 @@
+graph TD
+    %% Style Definitions
+    classDef entityStyle fill:#6AB0DE,color:black,stroke:#333,stroke-width:2px
+    classDef attrStyle fill:white,color:black,stroke:#333,stroke-width:1px
+    classDef relStyle fill:orange,color:black,stroke:#333,stroke-width:2px
+    classDef goalStyle fill:lightgreen,color:black,stroke:#333,stroke-width:2px
+    classDef condStyle fill:#F9BEC0,color:black,stroke:#333,stroke-width:2px
+    classDef decvarStyle fill:#D6B3F4,color:black,stroke:#333,stroke-width:2px
+
+    %% ========== ENTITIES & ATTRIBUTES ==========
+    %% --- Project ---
+    E0("E0: Project"):::entityStyle
+    E0_attr0("id"):::attrStyle
+    E0_attr1("name"):::attrStyle
+    E0_attr2("project_start"):::attrStyle
+    E0_attr3("project_end"):::attrStyle
+    E0_attr4("description"):::attrStyle
+    E0_attr5("budget"):::attrStyle
+    E0_attr6("status"):::attrStyle
+    E0_attr7("target_audience"):::attrStyle
+    E0_attr8("priority"):::attrStyle
+    E0 --> E0_attr0
+    E0 --> E0_attr1
+    E0 --> E0_attr2
+    E0 --> E0_attr3
+    E0 --> E0_attr4
+    E0 --> E0_attr5
+    E0 --> E0_attr6
+    E0 --> E0_attr7
+    E0 --> E0_attr8
+
+    %% --- Team ---
+    E1("E1: Team"):::entityStyle
+    E1_attr0("id"):::attrStyle
+    E1_attr1("name"):::attrStyle
+    E1_attr2("team_size"):::attrStyle
+    E1_attr3("team_start"):::attrStyle
+    E1_attr4("team_status"):::attrStyle
+    E1_attr5("location"):::attrStyle
+    E1_attr6("team_type"):::attrStyle
+    E1 --> E1_attr0
+    E1 --> E1_attr1
+    E1 --> E1_attr2
+    E1 --> E1_attr3
+    E1 --> E1_attr4
+    E1 --> E1_attr5
+    E1 --> E1_attr6
+
+    %% --- Worker ---
+    E2("E2: Worker"):::entityStyle
+    E2_attr0("id"):::attrStyle
+    E2_attr1("name"):::attrStyle
+    E2_attr2("first_name"):::attrStyle
+    E2_attr3("email"):::attrStyle
+    E2_attr4("start_date"):::attrStyle
+    E2_attr5("status"):::attrStyle
+    E2_attr6("availability"):::attrStyle
+    E2 --> E2_attr0
+    E2 --> E2_attr1
+    E2 --> E2_attr2
+    E2 --> E2_attr3
+    E2 --> E2_attr4
+    E2 --> E2_attr5
+    E2 --> E2_attr6
+
+    %% --- Feature ---
+    E3("E3: Feature"):::entityStyle
+    E3_attr0("id"):::attrStyle
+    E3_attr1("title"):::attrStyle
+    E3_attr2("description"):::attrStyle
+    E3_attr3("status"):::attrStyle
+    E3_attr4("priority"):::attrStyle
+    E3_attr5("estimated_effort"):::attrStyle
+    E3 --> E3_attr0
+    E3 --> E3_attr1
+    E3 --> E3_attr2
+    E3 --> E3_attr3
+    E3 --> E3_attr4
+    E3 --> E3_attr5
+
+    %% --- SprintBacklog ---
+    E14("E14: SprintBacklog"):::entityStyle
+    E14_attr0("id"):::attrStyle
+    E14_attr1("number_of_tasks"):::attrStyle
+    E14_attr2("last_updated"):::attrStyle
+    E14_attr3("status"):::attrStyle
+    E14_attr4("total_effort"):::attrStyle
+    E14 --> E14_attr0
+    E14 --> E14_attr1
+    E14 --> E14_attr2
+    E14 --> E14_attr3
+    E14 --> E14_attr4
+
+    %% --- Sprint ---
+    E9("E9: Sprint"):::entityStyle
+    E9_attr0("id"):::attrStyle
+    E9_attr1("sprint_number"):::attrStyle
+    E9_attr2("start_date"):::attrStyle
+    E9_attr3("end_date"):::attrStyle
+    E9_attr4("status"):::attrStyle
+    E9_attr5("achievement_of_goal"):::attrStyle
+    E9 --> E9_attr0
+    E9 --> E9_attr1
+    E9 --> E9_attr2
+    E9 --> E9_attr3
+    E9 --> E9_attr4
+    E9 --> E9_attr5
+
+    %% --- Velocity ---
+    E22("E22: Velocity"):::entityStyle
+    E22_attr0("id"):::attrStyle
+    E22_attr1("number_of_sprints_used"):::attrStyle
+    E22_attr2("avg._story_points"):::attrStyle
+    E22_attr3("max_velocity"):::attrStyle
+    E22_attr4("min_velocity"):::attrStyle
+    E22_attr5("trend"):::attrStyle
+    E22 --> E22_attr0
+    E22 --> E22_attr1
+    E22 --> E22_attr2
+    E22 --> E22_attr3
+    E22 --> E22_attr4
+    E22 --> E22_attr5
+
+    %% --- Blocker ---
+    E20("E20: Blocker"):::entityStyle
+    E20_attr0("id"):::attrStyle
+    E20_attr1("title"):::attrStyle
+    E20_attr2("description"):::attrStyle
+    E20_attr3("severity"):::attrStyle
+    E20_attr4("status"):::attrStyle
+    E20_attr5("detected_on"):::attrStyle
+    E20_attr6("resolved_on"):::attrStyle
+    E20 --> E20_attr0
+    E20 --> E20_attr1
+    E20 --> E20_attr2
+    E20 --> E20_attr3
+    E20 --> E20_attr4
+    E20 --> E20_attr5
+    E20 --> E20_attr6
+
+    %% --- SprintReview ---
+    E12("E12: SprintReview"):::entityStyle
+    E12_attr0("id"):::attrStyle
+    E12_attr1("date"):::attrStyle
+    E12_attr2("duration"):::attrStyle
+    E12_attr3("feedback_documentation"):::attrStyle
+    E12_attr4("attendees_count"):::attrStyle
+    E12 --> E12_attr0
+    E12 --> E12_attr1
+    E12 --> E12_attr2
+    E12 --> E12_attr3
+    E12 --> E12_attr4
+
+    %% --- Task ---
+    E18("E18: Task"):::entityStyle
+    E18_attr0("id"):::attrStyle
+    E18_attr1("title"):::attrStyle
+    E18_attr2("description"):::attrStyle
+    E18_attr3("status"):::attrStyle
+    E18_attr4("effort"):::attrStyle
+    E18_attr5("type"):::attrStyle
+    E18 --> E18_attr0
+    E18 --> E18_attr1
+    E18 --> E18_attr2
+    E18 --> E18_attr3
+    E18 --> E18_attr4
+    E18 --> E18_attr5
+
+    %% --- Skill ---
+    E4("E4: Skill"):::entityStyle
+    E4_attr0("id"):::attrStyle
+    E4_attr1("label"):::attrStyle
+    E4_attr2("description"):::attrStyle
+    E4_attr3("level"):::attrStyle
+    E4_attr4("certified"):::attrStyle
+    E4_attr5("category"):::attrStyle
+    E4 --> E4_attr0
+    E4 --> E4_attr1
+    E4 --> E4_attr2
+    E4 --> E4_attr3
+    E4 --> E4_attr4
+    E4 --> E4_attr5
+
+    %% --- ScrumMaster ---
+    E7("E7: ScrumMaster"):::entityStyle
+    E7_attr0("id"):::attrStyle
+    E7_attr1("name"):::attrStyle
+    E7_attr2("email"):::attrStyle
+    E7_attr3("experience"):::attrStyle
+    E7 --> E7_attr0
+    E7 --> E7_attr1
+    E7 --> E7_attr2
+    E7 --> E7_attr3
+
+    %% --- ProductOwner ---
+    E6("E6: ProductOwner"):::entityStyle
+    E6_attr0("id"):::attrStyle
+    E6_attr1("name"):::attrStyle
+    E6_attr2("email"):::attrStyle
+    E6_attr3("availability"):::attrStyle
+    E6 --> E6_attr0
+    E6 --> E6_attr1
+    E6 --> E6_attr2
+    E6 --> E6_attr3
+
+    %% --- SprintGoal ---
+    E15("E15: SprintGoal"):::entityStyle
+    E15_attr0("id"):::attrStyle
+    E15_attr1("objective_description"):::attrStyle
+    E15_attr2("achievement_status"):::attrStyle
+    E15_attr3("benefit"):::attrStyle
+    E15 --> E15_attr0
+    E15 --> E15_attr1
+    E15 --> E15_attr2
+    E15 --> E15_attr3
+
+    %% --- UserStory ---
+    E17("E17: UserStory"):::entityStyle
+    E17_attr0("id"):::attrStyle
+    E17_attr1("title"):::attrStyle
+    E17_attr2("description"):::attrStyle
+    E17_attr3("acceptance_criteria"):::attrStyle
+    E17_attr4("priority"):::attrStyle
+    E17_attr5("story_points"):::attrStyle
+    E17_attr6("status"):::attrStyle
+    E17 --> E17_attr0
+    E17 --> E17_attr1
+    E17 --> E17_attr2
+    E17 --> E17_attr3
+    E17 --> E17_attr4
+    E17 --> E17_attr5
+    E17 --> E17_attr6
+
+    %% ========== RELATIONS ==========
+    R1("R1: is_assigned_to_project"):::relStyle
+    R1 --> E1
+    R1 --> E0
+
+    R2("R2: belongs_to_team"):::relStyle
+    R2 --> E2
+    R2 --> E1
+
+    R3("R3: has_skill"):::relStyle
+    R3 --> E2
+    R3 --> E4
+
+    R5("R5: manages_backlog"):::relStyle
+    R5 --> E6
+    R5 --> E8
+
+    R6("R6: is_supported_by"):::relStyle
+    R6 --> E1
+    R6 --> E7
+
+    R7("R7: contains_feature"):::relStyle
+    R7 --> E8
+    R7 --> E3
+
+    R11("R11: is_in_sprint_backlog"):::relStyle
+    R11 --> E17
+    R11 --> E14
+
+    R12("R12: belongs_to_sprint"):::relStyle
+    R12 --> E14
+    R12 --> E9
+
+    R13("R13: pursues_goal"):::relStyle
+    R13 --> E9
+    R13 --> E15
+
+    R16("R16: is_blocked_by"):::relStyle
+    R16 --> E18
+    R16 --> E20
+
+    R17("R17: participates_in"):::relStyle
+    R17 --> E21
+    R17 --> E12
+
+    R19("R19: refers_to_team"):::relStyle
+    R19 --> E22
+    R19 --> E1
+
+    %% ========== GOALS ==========
+    G0("G0: maximize_team_skill_coverage"):::goalStyle
+    G0 --> E2
+    G0 --> E4_attr3("level"):::attrStyle
+
+    G1("G1: minimize_sprint_overcommitment"):::goalStyle
+    G1 --> E9_attr5("achievement_of_goal"):::attrStyle
+
+    G2("G2: maximize_velocity_consistency"):::goalStyle
+    G2 --> E22_attr2("avg._story_points"):::attrStyle
+
+    G3("G3: minimize_blocker_resolution_time"):::goalStyle
+    G3 --> E20_attr6("resolved_on"):::attrStyle
+    G3 --> E20_attr5("detected_on"):::attrStyle
+
+    G4("G4: maximize_stakeholder_satisfaction"):::goalStyle
+    G4 --> E12_attr3("feedback_documentation"):::attrStyle
+
+    G5("G5: minimize_context_switching"):::goalStyle
+    G5 --> E2_attr6("availability"):::attrStyle
+
+    G6("G6: maximize_feature_completion"):::goalStyle
+    G6 --> E3_attr3("status"):::attrStyle
+
+    G7("G7: minimize_technical_debt_growth"):::goalStyle
+    G7 --> E18_attr5("type"):::attrStyle
+
+    G8("G8: maximize_team_availability"):::goalStyle
+    G8 --> E2_attr6("availability"):::attrStyle
+
+    G9("G9: minimize_planning_duration"):::goalStyle
+    G9 --> E10_attr2("duration_(min)"):::attrStyle
+
+    %% ========== CONDITIONS ==========
+    C0("C0: mandatory_scrum_master"):::condStyle
+    C0 --> E7_attr0("id"):::attrStyle
+    C0 --> E1
+
+    C1("C1: mandatory_product_owner"):::condStyle
+    C1 --> E6_attr0("id"):::attrStyle
+    C1 --> E0
+
+    C2("C2: team_capacity_not_exceeded"):::condStyle
+    C2 --> E14_attr4("total_effort"):::attrStyle
+    C2 --> E22_attr2("avg._story_points"):::attrStyle
+
+    C3("C3: feature_requires_skills"):::condStyle
+    C3 --> E3_attr5("estimated_effort"):::attrStyle
+    C3 --> E4_attr3("level"):::attrStyle
+
+    C4("C4: worker_availability_limit"):::condStyle
+    C4 --> E2_attr6("availability"):::attrStyle
+
+    C5("C5: unique_worker_assignment"):::condStyle
+    C5 --> E2
+    C5 --> E1
+
+    C6("C6: sprint_goal_must_be_defined"):::condStyle
+    C6 --> E15_attr0("id"):::attrStyle
+
+    C7("C7: user_story_requires_acceptance_criteria"):::condStyle
+    C7 --> E17_attr3("acceptance_criteria"):::attrStyle
+
+    C8("C8: blocker_severity_high_priority"):::condStyle
+    C8 --> E20_attr3("severity"):::attrStyle
+
+    C9("C9: budget_not_exceeded"):::condStyle
+    C9 --> E0_attr5("budget"):::attrStyle
+
+    C10("C10: task_must_have_owner"):::condStyle
+    C10 --> E18_attr3("status"):::attrStyle
+    C10 --> E2
+
+    %% ========== DECISION VARIABLES ==========
+    DV0("DV0: assign_worker_to_team"):::decvarStyle
+    DV0 --> E2
+    DV0 --> E1
+
+    DV1("DV1: select_feature_for_sprint"):::decvarStyle
+    DV1 --> E3
+    DV1 --> E9
+
+    DV2("DV2: assign_task_to_worker"):::decvarStyle
+    DV2 --> E18
+    DV2 --> E2
+
+    DV3("DV3: worker_sprint_availability"):::decvarStyle
+    DV3 --> E2_attr6("availability"):::attrStyle
+
+    DV4("DV4: story_point_estimate"):::decvarStyle
+    DV4 --> E17_attr5("story_points"):::attrStyle
+
+    DV5("DV5: sprint_duration"):::decvarStyle
+    DV5 --> E9_attr2("start_date"):::attrStyle
+    DV5 --> E9_attr3("end_date"):::attrStyle
+
+    DV6("DV6: team_size"):::decvarStyle
+    DV6 --> E1_attr2("team_size"):::attrStyle
+
+    DV7("DV7: priority_level"):::decvarStyle
+    DV7 --> E3_attr4("priority"):::attrStyle
+
+    DV8("DV8: skill_proficiency_level"):::decvarStyle
+    DV8 --> E4_attr3("level"):::attrStyle
+
+    DV9("DV9: blocker_resolution_capacity"):::decvarStyle
+    DV9 --> E1
+    DV9 --> E20

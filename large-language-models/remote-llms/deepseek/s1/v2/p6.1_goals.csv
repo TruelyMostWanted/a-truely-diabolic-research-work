@@ -1,0 +1,11 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+G0,minimize_total_project_duration,Minimize the overall calendar time from project start to end.,False,min,Project,project_end,2,1.0
+G1,maximize_team_utilization,Maximize the average percentage of time team members are working on tasks.,True,max,Worker,availability,2,0.9
+G2,minimize_total_development_cost,Minimize the total cost based on worker time and fixed budgets.,True,min,Project,budget,2,1.2
+G3,maximize_feature_delivery,Maximize the number of high-priority features delivered.,True,max,Feature,priority,2,1.0
+G4,minimize_context_switching,Minimize the number of different tasks a worker is assigned to within a sprint.,False,min,Worker,id,1,0.8
+G5,maximize_skill_task_match,Maximize the alignment between tasks and the skills of the workers assigned to them.,True,max,Skill,level,1,1.1
+G6,minimize_blocker_impact,Minimize the total severity and duration of blockers.,True,min,Blocker,severity,2,1.0
+G7,maximize_sprint_goal_achievement,Maximize the rate of successfully achieved sprint goals.,True,max,SprintGoal,achievement_status,2,1.0
+G8,minimize_technical_debt,Minimize the effort estimated for tasks marked as technical debt.,True,min,Task,effort,1,0.7
+G9,balance_team_workload,Minimize the variance in assigned story points across all team members.,False,min,Team,team_size,1,0.9
