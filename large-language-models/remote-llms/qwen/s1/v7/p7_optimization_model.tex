@@ -1,0 +1,202 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{datetime}
+
+\geometry{margin=1in}
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titleformat{\subsection}{\itshape}{}{0em}{}
+
+\title{\Huge Optimization Model for Scrum-Based Software Development \\ \Large Integrating Entities, Goals, Constraints, and Decision Structure}
+\author{\textbf{AI Assistant} \\ Domain Modeling & Optimization Consultant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\item $ \mathcal{P} $: Set of Projects, where each $ p \in \mathcal{P} $ has attributes: id, name, project\_start, project\_end, description, budget, status, target\_audience, priority.
+    \item $ \mathcal{T} $: Set of Teams, where each $ t \in \mathcal{T} $ has attributes: id, name, team\_size, team\_start, team\_status, location, team\_type.
+    \item $ \mathcal{W} $: Set of Workers, where each $ w \in \mathcal{W} $ has attributes: id, name, first\_name, email, start\_date, status, availability.
+    \item $ \mathcal{F} $: Set of Features, where each $ f \in \mathcal{F} $ has attributes: id, title, description, status, priority, estimated\_effort.
+    \item $ \mathcal{S} $: Set of Skills, where each $ s \in \mathcal{S} $ has attributes: id, label, description, level, certified, category.
+    \item $ \mathcal{R} $: Set of Roles, where each $ r \in \mathcal{R} $ has attributes: id, role\_name, description, area\_of\_responsibility.
+    \item $ \mathcal{PO} $: Set of Product Owners, where each $ po \in \mathcal{PO} $ has attributes: id, name, email, availability.
+    \item $ \mathcal{SM} $: Set of Scrum Masters, where each $ sm \in \mathcal{SM} $ has attributes: id, name, email, experience.
+    \item $ \mathcal{PB} $: Set of Product Backlogs, where each $ pb \in \mathcal{PB} $ has attributes: id, created\_on, last\_updated, number\_of\_entries, status.
+    \item $ \mathcal{SP} $: Set of Sprints, where each $ sp \in \mathcal{SP} $ has attributes: id, sprint\_number, start\_date, end\_date, status, achievement\_of\_goal.
+    \item $ \mathcal{SPP} $: Set of Sprint Plannings, where each $ spp \in \mathcal{SPP} $ has attributes: id, date, duration\_(min), moderation, outcome\_documentation.
+    \item $ \mathcal{DS} $: Set of Daily Scrums, where each $ ds \in \mathcal{DS} $ has attributes: id, date, time, duration, moderation.
+    \item $ \mathcal{SR} $: Set of Sprint Reviews, where each $ sr \in \mathcal{SR} $ has attributes: id, date, duration, feedback\_documentation, attendees\_count.
+    \item $ \mathcal{SRE} $: Set of Sprint Retrospectives, where each $ sre \in \mathcal{SRE} $ has attributes: id, date, duration, improvement\_actions, team\_satisfaction, moderation.
+    \item $ \mathcal{SBL} $: Set of Sprint Backlogs, where each $ sbl \in \mathcal{SBL} $ has attributes: id, number\_of\_tasks, last\_updated, status, total\_effort.
+    \item $ \mathcal{SG} $: Set of Sprint Goals, where each $ sg \in \mathcal{SG} $ has attributes: id, objective\_description, achievement\_status, benefit.
+    \item $ \mathcal{E} $: Set of Epics, where each $ e \in \mathcal{E} $ has attributes: id, title, description, priority, status, estimated\_effort.
+    \item $ \mathcal{US} $: Set of User Stories, where each $ us \in \mathcal{US} $ has attributes: id, title, description, acceptance\_criteria, priority, story\_points, status.
+    \item $ \mathcal{TSK} $: Set of Tasks, where each $ tsk \in \mathcal{TSK} $ has attributes: id, title, description, status, effort, type.
+    \item $ \mathcal{DEV} $: Set of Development Snapshots, where each $ dev \in \mathcal{DEV} $ has attributes: id, version\_number, creation\_date, test\_status, deployment\_target, documentation.
+    \item $ \mathcal{BL} $: Set of Blockers, where each $ bl \in \mathcal{BL} $ has attributes: id, title, description, severity, status, detected\_on, resolved\_on.
+    \item $ \mathcal{SH} $: Set of Stakeholders, where each $ sh \in \mathcal{SH} $ has attributes: id, name, organization, role, email, area\_of\_interest, influence\_level, relevance\_to\_feature.
+    \item $ \mathcal{VEL} $: Set of Velocity Records, where each $ vel \in \mathcal{VEL} $ has attributes: id, number\_of\_sprints\_used, avg.\_story\_points, max\_velocity, min\_velocity, trend.
+    \item $ \mathcal{REP} $: Set of Release Plans, where each $ rep \in \mathcal{REP} $ has attributes: id, version, planned\_date, included\_features, status.
+    \item $ \mathcal{RM} $: Set of Roadmaps, where each $ rm \in \mathcal{RM} $ has attributes: id, start\_date, end\_date, milestones, objectives, versions.
+    \item $ \mathcal{SCB} $: Set of Scrum Boards, where each $ scb \in \mathcal{SCB} $ has attributes: id, board\_type, columns\_(todo/done...), number\_of\_cards, last\_updated.
+    \item $ \mathcal{FED} $: Set of Feature Documentations, where each $ fed \in \mathcal{FED} $ has attributes: id, title, description, creation\_date, change\_log, linked\_requirements, author.
+
+\section{2. Indices}
+\item $ p \in \mathcal{P} $: Index for Projects
+    \item $ t \in \mathcal{T} $: Index for Teams
+    \item $ w \in \mathcal{W} $: Index for Workers
+    \item $ f \in \mathcal{F} $: Index for Features
+    \item $ s \in \mathcal{S} $: Index for Skills
+    \item $ r \in \mathcal{R} $: Index for Roles
+    \item $ sp \in \mathcal{SP} $: Index for Sprints
+    \item $ us \in \mathcal{US} $: Index for User Stories
+    \item $ tsk \in \mathcal{TSK} $: Index for Tasks
+    \item $ bl \in \mathcal{BL} $: Index for Blockers
+    \item $ sh \in \mathcal{SH} $: Index for Stakeholders
+    \item $ vel \in \mathcal{VEL} $: Index for Velocity records
+    \item $ rep \in \mathcal{REP} $: Index for Release Plans
+
+\section{3. Goals}
+\item[G0] \texttt{maximize\_team\_velocity}: Maximize average story points per sprint.
+    \[
+    \max \sum_{vel \in \mathcal{VEL}} \omega_{G0} \cdot \text{avg\_story\_points}_{vel}, \quad \omega_{G0} = 1.0
+    \]
+
+    \item[G1] \texttt{maximize\_feature\_completion}: Maximize number of completed features.
+    \[
+    \max \sum_{f \in \mathcal{F}} \mathbb{I}(\text{status}_f = \text{``completed''}) \cdot \omega_{G1}, \quad \omega_{G1} = 0.9
+    \]
+
+    \item[G2] \texttt{minimize\_sprint\_blockers}: Minimize active blockers.
+    \[
+    \min \sum_{bl \in \mathcal{BL}} \mathbb{I}(\text{status}_{bl} = \text{``active''}) \cdot \omega_{G2}, \quad \omega_{G2} = 1.0
+    \]
+
+    \item[G3] \texttt{maximize\_worker\_utilization}: Maximize weighted availability usage.
+    \[
+    \max \sum_{w \in \mathcal{W}} \text{availability}_w \cdot \omega_{G3}, \quad \omega_{G3} = 0.7
+    \]
+
+    \item[G4] \texttt{maximize\_backlog\_refinement}: Maximize refined backlog entries.
+    \[
+    \max \sum_{pb \in \mathcal{PB}} \text{number\_of\_entries}_{pb} \cdot \omega_{G4}, \quad \omega_{G4} = 0.8
+    \]
+
+    \item[G5] \texttt{minimize\_sprint\_goal\_failures}: Minimize failed sprint goals.
+    \[
+    \min \sum_{sp \in \mathcal{SP}} \mathbb{I}(\text{achievement\_of\_goal}_{sp} = \text{``failed''}) \cdot \omega_{G5}, \quad \omega_{G5} = 1.0
+    \]
+
+    \item[G6] \texttt{maximize\_stakeholder\_satisfaction}: Maximize feedback satisfaction.
+    \[
+    \max \sum_{sr \in \mathcal{SR}} \text{team\_satisfaction}_{sr} \cdot \omega_{G6}, \quad \omega_{G6} = 0.9
+    \]
+
+    \item[G7] \texttt{minimize\_technical\_debt}: Minimize poor test status in snapshots.
+    \[
+    \min \sum_{dev \in \mathcal{DEV}} \mathbb{I}(\text{test\_status}_{dev} = \text{``failed''}) \cdot \omega_{G7}, \quad \omega_{G7} = 0.8
+    \]
+
+    \item[G8] \texttt{maximize\_documentation\_coverage}: Maximize documented features.
+    \[
+    \max \sum_{fed \in \mathcal{FED}} \mathbb{I}(\text{linked\_requirements}_{fed} \neq \emptyset) \cdot \omega_{G8}, \quad \omega_{G8} = 0.6
+    \]
+
+    \item[G9] \texttt{maximize\_sprint\_effort\_accuracy}: Reward accurate task effort estimation.
+    \[
+    \max \sum_{tsk \in \mathcal{TSK}} \left(1 - \frac{| \text{effort}_{tsk} - \text{actual\_hours} |}{\text{effort}_{tsk} + 1}\right) \cdot \omega_{G9}, \quad \omega_{G9} = 0.7
+    \]
+
+    \item[G10] \texttt{minimize\_task\_context\_switching}: Reduce fragmented task assignment.
+    \[
+    \min \frac{1}{|\mathcal{US}|} \sum_{us \in \mathcal{US}} |\{ tsk \in \mathcal{TSK} \mid tsk \in us \}| \cdot \omega_{G10}, \quad \omega_{G10} = 0.6
+    \]
+
+\section{4. Conditions}
+\item[C0] \texttt{require\_worker\_skill\_match}: Only assign workers with required skill level.
+    \[
+    \forall w \in \mathcal{W}, tsk \in \mathcal{TSK}: \text{assign\_worker\_to\_task}_{w,tsk} \Rightarrow \exists s \in \mathcal{S}: \text{has\_skill}(w,s) \land \text{level}_s \geq \text{required\_level}_{tsk}
+    \]
+
+    \item[C1] \texttt{enforce\_sprint\_capacity\_limit}: Total effort ≤ team capacity.
+    \[
+    \forall sbl \in \mathcal{SBL}, sp \in \mathcal{SP}: \text{total\_effort}_{sbl} \leq \sum_{w \in \mathcal{W}} \text{availability}_w \cdot H_{\text{weekly}}, \quad H_{\text{weekly}} = 40
+    \]
+
+    \item[C2] \texttt{require\_product\_owner\_approval}: Only approved items in backlog.
+    \[
+    \forall us \in \mathcal{US}: \text{include\_user\_story\_in\_sprint}_{us} \Rightarrow \text{status}_{us} = \text{``approved''}
+    \]
+
+    \item[C3] \texttt{enforce\_sprint\_duration}: Sprint duration fixed to 14 days.
+    \[
+    \forall sp \in \mathcal{SP}: \text{end\_date}_{sp} - \text{start\_date}_{sp} = 14
+    \]
+
+    \item[C4] \texttt{require\_unique\_sprint\_goals}: Each sprint has a non-empty goal.
+    \[
+    \forall sp \in \mathcal{SP}: \text{objective\_description}_{\text{sg}(sp)} \neq \texttt{null}
+    \]
+
+    \item[C5] \texttt{limit\_worker\_assignments}: Max 3 tasks per worker per sprint.
+    \[
+    \forall w \in \mathcal{W}, sp \in \mathcal{SP}: \sum_{tsk \in \mathcal{TSK}} \text{assign\_worker\_to\_task}_{w,tsk} \leq 3
+    \]
+
+    \item[C6] \texttt{require\_blocker\_resolution}: High-severity blockers resolved in 48h.
+    \[
+    \forall bl \in \mathcal{BL}: \text{severity}_{bl} = 3 \Rightarrow (\text{resolved\_on}_{bl} - \text{detected\_on}_{bl}) \leq 2
+    \]
+
+    \item[C7] \texttt{enforce\_backlog\_order}: Higher priority items selected first.
+    \[
+    \forall us_1, us_2 \in \mathcal{US}: \text{priority}_{us_1} < \text{priority}_{us_2} \Rightarrow \text{include\_user\_story\_in\_sprint}_{us_1} \geq \text{include\_user\_story\_in\_sprint}_{us_2}
+    \]
+
+    \item[C8] \texttt{require\_daily\_scrum\_attendance}: Attendance ≥ 90\%.
+    \[
+    \forall w \in \mathcal{W}, sp \in \mathcal{SP}: \frac{|\{ ds \in \mathcal{DS} \mid w \in \text{attendees}(ds) \}|}{|\mathcal{DS}_{sp}|} \geq 0.9
+    \]
+
+    \item[C9] \texttt{require\_retrospective\_action\_closure}: ≥70\% actions completed.
+    \[
+    \forall sre \in \mathcal{SRE}: \frac{|\{ a \in \text{improvement\_actions}_{sre} \mid \text{status}_a = \text{``done''} \}|}{|\text{improvement\_actions}_{sre}|} \geq 0.7
+    \]
+
+    \item[C10] \texttt{limit\_feature\_overlap}: Features in only one release.
+    \[
+    \forall f \in \mathcal{F}: \sum_{rep \in \mathcal{REP}} \mathbb{I}(f \in \text{included\_features}_{rep}) \leq 1
+    \]
+
+    \item[C11] \texttt{require\_epic\_decomposition}: Epics must be split into user stories.
+    \[
+    \forall e \in \mathcal{E}: \text{status}_e \neq \text{``active''} \lor |\{ us \in \mathcal{US} \mid us \in e \}| \geq 1
+    \]
+
+\section{5. DecisionVariables}
+\item[DV0] $ \text{assign\_worker\_to\_task}_{w,tsk} \in \{0,1\} $: Binary assignment of worker to task.
+    \item[DV1] $ \text{include\_user\_story\_in\_sprint}_{us} \in \{0,1\} $: Whether a user story is in the sprint.
+    \item[DV2] $ \text{estimated\_story\_points}_{us} \in [1, 13] $: Effort estimate for a user story.
+    \item[DV3] $ \text{task\_effort\_hours}_{tsk} \in [0, 16] $: Planned hours for a task.
+    \item[DV4] $ \text{sprint\_start\_date}_{sp} \in [\text{2024-01-01}, \text{2025-12-31}] $: Start date of sprint.
+    \item[DV5] $ \text{sprint\_end\_date}_{sp} \in [\text{2024-01-15}, \text{2026-01-15}] $: End date of sprint.
+    \item[DV6] $ \text{worker\_availability\_fraction}_{w} \in [0.0, 1.0] $: Fraction of full-time availability.
+    \item[DV7] $ \text{feature\_priority\_rank}_{f} \in \{1,2,3\} $: Priority level of a feature.
+    \item[DV8] $ \text{documentation\_status\_flag}_{fed} \in \{0,1\} $: Whether documentation is complete.
+    \item[DV9] $ \text{blocker\_severity\_level}_{bl} \in \{1,2,3\} $: Severity of a blocker.
+    \item[DV10] $ \text{release\_version\_number}_{rep} \in [1.0, 10.0] $: Version number (e.g., 2.1).
+    \item[DV11] $ \text{goal\_achievement\_score}_{sg} \in [0.0, 1.0] $: Fraction of goal achieved.
+    \item[DV12] $ \text{retrospective\_satisfaction}_{sre} \in [1.0, 5.0] $: Team satisfaction rating.
+    \item[DV13] $ \text{planned\_release\_date}_{rep} \in [\text{2024-01-01}, \text{2027-12-31}] $: Planned release date.
+    \item[DV14] $ \text{velocity\_trend\_direction}_{vel} \in \{-1, 0, 1\} $: Trend of velocity over time.
+
+\end{document}

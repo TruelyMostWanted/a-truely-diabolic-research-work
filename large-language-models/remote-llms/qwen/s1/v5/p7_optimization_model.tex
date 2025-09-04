@@ -1,0 +1,174 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\geometry{margin=1in}
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titleformat{\subsection}{\bfseries}{}{0em}{}
+
+\title{
+    \textbf{Optimization Model for Scrum-Based Software Development} \\
+    \large Integrating Entities, Goals, Constraints, and Decision Variables
+}
+\author{Agile Process Optimization Team}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\item $\mathcal{P}$: Set of Projects ($E0$) — with attributes: id, name, project\_start, project\_end, budget, status, priority
+    \item $\mathcal{T}$: Set of Teams ($E1$) — attributes: id, name, team\_size, team\_start, team\_status, location
+    \item $\mathcal{W}$: Set of Workers ($E2$) — attributes: id, name, first\_name, email, start\_date, status, availability
+    \item $\mathcal{F}$: Set of Features ($E16$) — attributes: id, title, description, status, priority, estimated\_effort
+    \item $\mathcal{E}$: Set of Epics ($E16$) — attributes: id, title, description, priority, status
+    \item $\mathcal{US}$: Set of User Stories ($E17$) — attributes: title, description, acceptance\_criteria, story\_points, status
+    \item $\mathcal{TSK}$: Set of Tasks ($E18$) — attributes: id, title, description, status, effort, type
+    \item $\mathcal{SP}$: Set of Sprints ($E9$) — attributes: sprint\_number, start\_date, end\_date, status, achievement\_of\_goal
+    \item $\mathcal{PB}$: Set of Product Backlogs ($E8$) — attributes: created\_on, last\_updated, number\_of\_entries
+    \item $\mathcal{SBL}$: Set of Sprint Backlogs ($E14$) — attributes: number\_of\_tasks, total\_effort, status
+    \item $\mathcal{SG}$: Set of Sprint Goals ($E15$) — attributes: objective\_description, achievement\_status
+    \item $\mathcal{DEV}$: Set of Development Snapshots ($E19$) — attributes: version\_number, creation\_date, test\_status
+    \item $\mathcal{BL}$: Set of Blockers ($E20$) — attributes: title, description, severity, status, detected\_on
+    \item $\mathcal{SK}$: Set of Skills ($E4$) — attributes: label, description, level, certified, category
+    \item $\mathcal{R}$: Set of Roles ($E5$) — attributes: role\_name, description, area\_of\_responsibility
+    \item $\mathcal{SH}$: Set of Stakeholders ($E21$) — attributes: name, organization, influence\_level, relevance\_to\_feature
+    \item $\mathcal{VEL}$: Set of Velocity Records ($E22$) — attributes: avg.\_story\_points, max\_velocity, min\_velocity, trend
+    \item $\mathcal{REP}$: Set of Release Plans ($E23$) — attributes: version, planned\_date, status
+    \item $\mathcal{RM}$: Set of Roadmaps ($E24$) — attributes: start\_date, end\_date, milestones, objectives
+    \item $\mathcal{SCB}$: Set of Scrum Boards ($E25$) — attributes: board\_type, columns, number\_of\_cards
+    \item $\mathcal{FED}$: Set of Feature Documentations ($E26$) — attributes: title, creation\_date, linked\_requirements
+
+\section{2. Indices}
+\item $p \in \mathcal{P}$: Index over projects
+    \item $t \in \mathcal{T}$: Index over teams
+    \item $w \in \mathcal{W}$: Index over workers
+    \item $f \in \mathcal{F}$: Index over features
+    \item $e \in \mathcal{E}$: Index over epics
+    \item $u \in \mathcal{US}$: Index over user stories
+    \item $k \in \mathcal{TSK}$: Index over tasks
+    \item $s \in \mathcal{SP}$: Index over sprints
+    \item $b \in \mathcal{PB}$: Index over product backlogs
+    \item $bl \in \mathcal{BL}$: Index over blockers
+    \item $sk \in \mathcal{SK}$: Index over skills
+    \item $r \in \mathcal{R}$: Index over roles
+    \item $sh \in \mathcal{SH}$: Index over stakeholders
+    \item $v \in \mathcal{VEL}$: Index over velocity records
+    \item $rp \in \mathcal{REP}$: Index over release plans
+
+\section{3. Goals}
+\item \textbf{G0: maximize\_velocity} \\
+    Maximize average story points completed per sprint. \\
+    $\max \sum_{v \in \mathcal{VEL}} \text{avg\_story\_points}_v \quad \text{(Weight: 1.0)}$
+
+    \item \textbf{G1: minimize\_blocker\_count} \\
+    Minimize unresolved blockers. \\
+    $\min \sum_{bl \in \mathcal{BL}} \mathbb{I}(\text{status}_{bl} \neq \text{'resolved'}) \quad \text{(Weight: 1.5)}$
+
+    \item \textbf{G2: maximize\_team\_utilization} \\
+    Maximize total worker availability. \\
+    $\max \sum_{w \in \mathcal{W}} \text{availability}_w \quad \text{(Weight: 0.8)}$
+
+    \item \textbf{G3: minimize\_sprint\_goal\_failure} \\
+    Minimize sprints where goal was not achieved. \\
+    $\min \sum_{s \in \mathcal{SP}} \mathbb{I}(\text{achievement\_of\_goal}_s = \text{'failed'}) \quad \text{(Weight: 1.2)}$
+
+    \item \textbf{G4: maximize\_backlog\_stability} \\
+    Maximize consistent backlog size over time. \\
+    $\max \sum_{b \in \mathcal{PB}} \text{number\_of\_entries}_b \quad \text{(Weight: 0.7)}$
+
+    \item \textbf{G5: minimize\_requirement\_ambiguity} \\
+    Reduce user stories missing acceptance criteria. \\
+    $\min \sum_{u \in \mathcal{US}} \mathbb{I}(\text{acceptance\_criteria}_u = \emptyset) \quad \text{(Weight: 1.3)}$
+
+    \item \textbf{G6: maximize\_documentation\_coverage} \\
+    Maximize features with linked documentation. \\
+    $\max \sum_{f \in \mathcal{F}} \mathbb{I}(\exists d \in \mathcal{FED} : \text{linked\_requirements}_d \ni f) \quad \text{(Weight: 0.9)}$
+
+    \item \textbf{G7: minimize\_task\_effort\_deviation} \\
+    Minimize deviation between planned and actual effort. \\
+    $\min \sum_{k \in \mathcal{TSK}} |\text{actual\_effort}_k - \text{effort}_k| \quad \text{(Weight: 1.1)}$
+
+    \item \textbf{G8: maximize\_stakeholder\_satisfaction} \\
+    Maximize influence-weighted stakeholder relevance. \\
+    $\max \sum_{sh \in \mathcal{SH}} \text{influence\_level}_{sh} \cdot \text{relevance\_to\_feature}_{sh} \quad \text{(Weight: 1.0)}$
+
+    \item \textbf{G9: minimize\_technical\_debt} \\
+    Reduce tasks categorized as technical debt. \\
+    $\min \sum_{k \in \mathcal{TSK}} \mathbb{I}(\text{type}_k = \text{'tech\_debt'}) \quad \text{(Weight: 1.4)}$
+
+    \item \textbf{G10: maximize\_sprint\_completion\_rate} \\
+    Maximize ratio of completed sprints. \\
+    $\max \sum_{s \in \mathcal{SP}} \mathbb{I}(\text{status}_s = \text{'completed'}) \quad \text{(Weight: 1.0)}$
+
+\section{4. Conditions}
+\item \textbf{C0: require\_product\_owner\_assigned} \\
+    Each project must have a Product Owner. \\
+    $\forall p \in \mathcal{P}, \exists \text{PO}_p : \text{status}_{\text{PO}_p} = \text{'active'} \quad \text{(Weight: 2.0)}$
+
+    \item \textbf{C1: team\_size\_minimum} \\
+    Minimum team size of 5. \\
+    $\forall t \in \mathcal{T}, \text{team\_size}_t \geq 5 \quad \text{(Weight: 1.8)}$
+
+    \item \textbf{C2: worker\_max\_load} \\
+    Worker availability must not drop below 50\%. \\
+    $\forall w \in \mathcal{W}, \text{availability}_w \geq 0.5 \quad \text{(Weight: 1.6)}$
+
+    \item \textbf{C3: sprint\_duration\_fixed} \\
+    Sprint duration fixed at 2 weeks. \\
+    $\forall s \in \mathcal{SP}, (\text{end\_date}_s - \text{start\_date}_s) = 14\,\text{days} \quad \text{(Weight: 1.5)}$
+
+    \item \textbf{C4: backlog\_refinement\_mandatory} \\
+    Backlog must be updated before sprint start. \\
+    $\forall s \in \mathcal{SP}, \text{last\_updated}_{\mathcal{PB}} < \text{start\_date}_s \quad \text{(Weight: 1.3)}$
+
+    \item \textbf{C5: scrum\_board\_must\_exist} \\
+    Every sprint must have a Scrum Board. \\
+    $\forall s \in \mathcal{SP}, \exists \text{SCB}_s \in \mathcal{SCB} \quad \text{(Weight: 1.2)}$
+
+    \item \textbf{C6: velocity\_based\_estimation} \\
+    Total effort in sprint backlog must not exceed max historical velocity. \\
+    $\sum_{u \in \mathcal{SBL}_s} \text{story\_points}_u \leq \max(\text{max\_velocity}_v), v \in \mathcal{VEL} \quad \text{(Weight: 1.4)}$
+
+    \item \textbf{C7: all\_stories\_have\_points} \\
+    All user stories in sprint must have story points. \\
+    $\forall u \in \mathcal{SBL}_s, \text{story\_points}_u > 0 \quad \text{(Weight: 1.7)}$
+
+    \item \textbf{C8: no\_duplicate\_user\_stories} \\
+    No two user stories with identical title in same backlog. \\
+    $\forall u_1, u_2 \in \mathcal{US}, u_1 \neq u_2 \Rightarrow \text{title}_{u_1} \neq \text{title}_{u_2} \quad \text{(Weight: 1.1)}$
+
+    \item \textbf{C9: required\_skills\_for\_tasks} \\
+    Worker assigned to task must have required skill. \\
+    $\forall k \in \mathcal{TSK}, \forall w \in \mathcal{W}, \text{assigned}(w,k) \Rightarrow \exists sk \in \mathcal{SK} : \text{level}_{sk} \geq \text{required\_level}_{k} \quad \text{(Weight: 1.9)}$
+
+    \item \textbf{C10: sprint\_review\_participation} \\
+    At least 3 stakeholders attend sprint review. \\
+    $\forall s \in \mathcal{SP}, \text{attendees\_count}_{SR_s} \geq 3 \quad \text{(Weight: 1.0)}$
+
+\section{5. DecisionVariables}
+\item \textbf{DV0: task\_assignment} — $x_{w,k} \in \{0,1\}$: 1 if worker $w$ assigned to task $k$
+    \item \textbf{DV1: sprint\_inclusion} — $y_{u,s} \in \{0,1\}$: 1 if user story $u$ is in sprint $s$
+    \item \textbf{DV2: story\_point\_estimate} — $z_u \in \mathbb{Z}^+$: estimated story points for user story $u$, $1 \leq z_u \leq 13$
+    \item \textbf{DV3: task\_effort\_planned} — $e_k \in \mathbb{R}^+$: planned effort in hours for task $k$, $0 \leq e_k \leq 40$
+    \item \textbf{DV4: team\_composition\_selection} — $c_{w,t} \in \{0,1\}$: 1 if worker $w$ is in team $t$
+    \item \textbf{DV5: release\_version\_selection} — $r_{f,rp} \in \{0,1\}$: 1 if feature $f$ is in release $rp$
+    \item \textbf{DV6: refinement\_effort\_per\_story} — $ref_u \in \mathbb{R}^+$: hours spent refining story $u$, $0 \leq ref_u \leq 8$
+    \item \textbf{DV7: scrum\_master\_workload} — $sm_h \in \mathbb{R}^+$: weekly hours SM spends, $0 \leq sm_h \leq 20$
+    \item \textbf{DV8: product\_owner\_availability} — $po_h \in \mathbb{R}^+$: weekly PO availability, $0 \leq po_h \leq 40$
+    \item \textbf{DV9: documentation\_effort\_per\_feature} — $doc_f \in \mathbb{R}^+$: hours spent documenting feature $f$, $0 \leq doc_f \leq 16$
+    \item \textbf{DV10: sprint\_duration\_weeks} — $d_s \in \mathbb{Z}^+$: duration of sprint $s$ in weeks, $2 \leq d_s \leq 4$
+    \item \textbf{DV11: planned\_sprint\_goals} — $g_s \in \mathbb{Z}^+$: number of goals per sprint, $1 \leq g_s \leq 3$
+    \item \textbf{DV12: worker\_role\_assignment} — $r_{w,r} \in \{0,1\}$: 1 if worker $w$ takes role $r$
+    \item \textbf{DV13: feature\_priority\_rank} — $p_f \in \mathbb{Z}^+$: priority rank of feature $f$, $1 \leq p_f \leq 10$
+    \item \textbf{DV14: velocity\_projection} — $v_s \in \mathbb{R}^+$: predicted velocity for sprint $s$, $0 \leq v_s \leq 50$
+
+\end{document}

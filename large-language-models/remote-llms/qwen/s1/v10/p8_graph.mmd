@@ -1,0 +1,430 @@
+graph TD
+    %% =============== COLOR DEFINITIONS ===============
+    classDef entity fill:#1f77b4,stroke:#005580,color:white,font-weight:bold;
+    classDef attribute fill:#ffffff,stroke:#333333,color:#333333;
+    classDef relation fill:#ff8c00,stroke:#cc6600,color:white,font-weight:bold;
+    classDef goal fill:#2ca02c,stroke:#1e7e1e,color:white,font-weight:bold;
+    classDef condition fill:#d62728,stroke:#a01c1c,color:white,font-weight:bold;
+    classDef decisionVar fill:#9467bd,stroke:#6a4a8c,color:white,font-weight:bold;
+
+    %% =============== ENTITIES (Blue) ===============
+    E0[Project]:::entity
+    E1[Team]:::entity
+    E2[Worker]:::entity
+    E3[Feature]:::entity
+    E4[Skill]:::entity
+    E5[Role]:::entity
+    E6[ProductOwner]:::entity
+    E7[ScrumMaster]:::entity
+    E8[ProductBacklog]:::entity
+    E9[Sprint]:::entity
+    E10[SprintPlanning]:::entity
+    E11[DailyScrum]:::entity
+    E12[SprintReview]:::entity
+    E13[SprintRetrospective]:::entity
+    E14[SprintBacklog]:::entity
+    E15[SprintGoal]:::entity
+    E16[Epic]:::entity
+    E17[UserStory]:::entity
+    E18[Task]:::entity
+    E19[DevelopmentSnapshot]:::entity
+    E20[Blocker]:::entity
+    E21[Stakeholder]:::entity
+    E22[Velocity]:::entity
+    E23[ReleasePlan]:::entity
+    E24[Roadmap]:::entity
+    E25[ScrumBoard]:::entity
+    E26[FeatureDocumentation]:::entity
+
+    %% =============== ATTRIBUTES (White) ===============
+    A0a[id]:::attribute
+    A0b[name]:::attribute
+    A0c[project_start]:::attribute
+    A0d[project_end]:::attribute
+    A0e[description]:::attribute
+    A0f[budget]:::attribute
+    A0g[status]:::attribute
+    A0h[target_audience]:::attribute
+    A0i[priority]:::attribute
+
+    A1a[id]:::attribute
+    A1b[name]:::attribute
+    A1c[team_size]:::attribute
+    A1d[team_start]:::attribute
+    A1e[team_status]:::attribute
+    A1f[location]:::attribute
+    A1g[team_type]:::attribute
+
+    A2a[id]:::attribute
+    A2b[name]:::attribute
+    A2c[first_name]:::attribute
+    A2d[email]:::attribute
+    A2e[start_date]:::attribute
+    A2f[status]:::attribute
+    A2g[availability]:::attribute
+
+    A3a[id]:::attribute
+    A3b[title]:::attribute
+    A3c[description]:::attribute
+    A3d[status]:::attribute
+    A3e[priority]:::attribute
+    A3f[estimated_effort]:::attribute
+
+    A4a[id]:::attribute
+    A4b[label]:::attribute
+    A4c[description]:::attribute
+    A4d[level]:::attribute
+    A4e[certified]:::attribute
+    A4f[category]:::attribute
+
+    A5a[id]:::attribute
+    A5b[role_name]:::attribute
+    A5c[description]:::attribute
+    A5d[area_of_responsibility]:::attribute
+
+    A6a[id]:::attribute
+    A6b[name]:::attribute
+    A6c[email]:::attribute
+    A6d[availability]:::attribute
+
+    A7a[id]:::attribute
+    A7b[name]:::attribute
+    A7c[email]:::attribute
+    A7d[experience]:::attribute
+
+    A8a[id]:::attribute
+    A8b[created_on]:::attribute
+    A8c[last_updated]:::attribute
+    A8d[number_of_entries]:::attribute
+    A8e[status]:::attribute
+
+    A9a[id]:::attribute
+    A9b[sprint_number]:::attribute
+    A9c[start_date]:::attribute
+    A9d[end_date]:::attribute
+    A9e[status]:::attribute
+    A9f[achievement_of_goal]:::attribute
+
+    A10a[id]:::attribute
+    A10b[date]:::attribute
+    A10c[duration_(min)]:::attribute
+    A10d[moderation]:::attribute
+    A10e[outcome_documentation]:::attribute
+
+    A11a[id]:::attribute
+    A11b[date]:::attribute
+    A11c[time]:::attribute
+    A11d[duration]:::attribute
+    A11e[moderation]:::attribute
+
+    A12a[id]:::attribute
+    A12b[date]:::attribute
+    A12c[duration]:::attribute
+    A12d[feedback_documentation]:::attribute
+    A12e[attendees_count]:::attribute
+
+    A13a[id]:::attribute
+    A13b[date]:::attribute
+    A13c[duration]:::attribute
+    A13d[improvement_actions]:::attribute
+    A13e[team_satisfaction]:::attribute
+    A13f[moderation]:::attribute
+
+    A14a[id]:::attribute
+    A14b[number_of_tasks]:::attribute
+    A14c[last_updated]:::attribute
+    A14d[status]:::attribute
+    A14e[total_effort]:::attribute
+
+    A15a[id]:::attribute
+    A15b[objective_description]:::attribute
+    A15c[achievement_status]:::attribute
+    A15d[benefit]:::attribute
+
+    A16a[id]:::attribute
+    A16b[title]:::attribute
+    A16c[description]:::attribute
+    A16d[priority]:::attribute
+    A16e[status]:::attribute
+    A16f[estimated_effort]:::attribute
+
+    A17a[id]:::attribute
+    A17b[title]:::attribute
+    A17c[description]:::attribute
+    A17d[acceptance_criteria]:::attribute
+    A17e[priority]:::attribute
+    A17f[story_points]:::attribute
+    A17g[status]:::attribute
+
+    A18a[id]:::attribute
+    A18b[title]:::attribute
+    A18c[description]:::attribute
+    A18d[status]:::attribute
+    A18e[effort]:::attribute
+    A18f[type]:::attribute
+
+    A19a[id]:::attribute
+    A19b[version_number]:::attribute
+    A19c[creation_date]:::attribute
+    A19d[test_status]:::attribute
+    A19e[deployment_target]:::attribute
+    A19f[documentation]:::attribute
+
+    A20a[id]:::attribute
+    A20b[title]:::attribute
+    A20c[description]:::attribute
+    A20d[severity]:::attribute
+    A20e[status]:::attribute
+    A20f[detected_on]:::attribute
+    A20g[resolved_on]:::attribute
+
+    A21a[id]:::attribute
+    A21b[name]:::attribute
+    A21c[organization]:::attribute
+    A21d[role]:::attribute
+    A21e[email]:::attribute
+    A21f[area_of_interest]:::attribute
+    A21g[influence_level]:::attribute
+    A21h[relevance_to_feature]:::attribute
+
+    A22a[id]:::attribute
+    A22b[number_of_sprints_used]:::attribute
+    A22c[avg._story_points]:::attribute
+    A22d[max_velocity]:::attribute
+    A22e[min_velocity]:::attribute
+    A22f[trend]:::attribute
+
+    A23a[id]:::attribute
+    A23b[version]:::attribute
+    A23c[planned_date]:::attribute
+    A23d[included_features]:::attribute
+    A23e[status]:::attribute
+
+    A24a[id]:::attribute
+    A24b[start_date]:::attribute
+    A24c[end_date]:::attribute
+    A24d[milestones]:::attribute
+    A24e[objectives]:::attribute
+    A24f[versions]:::attribute
+
+    A25a[id]:::attribute
+    A25b[board_type]:::attribute
+    A25c[columns_(todo/done...)]:::attribute
+    A25d[number_of_cards]:::attribute
+    A25e[last_updated]:::attribute
+
+    A26a[id]:::attribute
+    A26b[title]:::attribute
+    A26c[description]:::attribute
+    A26d[creation_date]:::attribute
+    A26e[change_log]:::attribute
+    A26f[linked_requirements]:::attribute
+    A26g[author]:::attribute
+
+    %% =============== RELATIONS (Orange) ===============
+    R1[is_assigned_to_project]:::relation
+    R2[belongs_to_team]:::relation
+    R3[has_skill]:::relation
+    R4[takes_on_role]:::relation
+    R5[manages_backlog]:::relation
+    R6[is_supported_by]:::relation
+    R7[contains_feature]:::relation
+    R8[contains_epic]:::relation
+    R9[contains_user_story]:::relation
+    R10[consists_of_tasks]:::relation
+    R11[is_in_sprint_backlog]:::relation
+    R12[belongs_to_sprint]:::relation
+    R13[pursues_goal]:::relation
+    R14[contains_tasks]:::relation
+    R15[documents_feature]:::relation
+    R16[is_blocked_by]:::relation
+    R17[participates_in]:::relation
+    R18[moderates_retrospective]:::relation
+    R19[refers_to_team]:::relation
+    R20[plans_release]:::relation
+    R21[is_part_of_roadmap]:::relation
+    R22[generates_snapshot]:::relation
+
+    %% =============== GOALS (Green) ===============
+    G0[maximize_team_productivity]:::goal
+    G1[minimize_project_duration]:::goal
+    G2[maximize_worker_utilization]:::goal
+    G3[minimize_technical_debt]:::goal
+    G4[maximize_backlog_completion]:::goal
+    G5[minimize_sprint_goal_failures]:::goal
+    G6[maximize_stakeholder_satisfaction]:::goal
+    G7[minimize_requirement_ambiguity]:::goal
+    G8[maximize_documentation_coverage]:::goal
+    G9[minimize_task_context_switching]:::goal
+    G10[maximize_skill_alignment]:::goal
+    G11[minimize_release_delay]:::goal
+    G12[maximize_sprint_stability]:::goal
+    G13[minimize_worker_overload]:::goal
+    G14[maximize_retrospective_followup]:::goal
+
+    %% =============== CONDITIONS (Red) ===============
+    C0[worker_assigned_to_one_team]:::condition
+    C1[sprint_duration_fixed]:::condition
+    C2[task_belongs_to_one_story]:::condition
+    C3[story_in_backlog]:::condition
+    C4[skill_requirement_match]:::condition
+    C5[sprint_goal_defined]:::condition
+    C6[velocity_based_on_completed_stories]:::condition
+    C7[no_duplicate_features]:::condition
+    C8[release_plan_includes_epics]:::condition
+    C9[blocker_must_be_resolved]:::condition
+    C10[daily_scrum_held_daily]:::condition
+    C11[product_owner_assigned]:::condition
+    C12[scrum_master_supports_team]:::condition
+    C13[task_effort_within_capacity]:::condition
+    C14[documentation_linked_to_feature]:::condition
+
+    %% =============== DECISION VARIABLES (Purple) ===============
+    DV0[assign_worker_to_team]:::decisionVar
+    DV1[assign_worker_to_task]:::decisionVar
+    DV2[task_completion]:::decisionVar
+    DV3[story_completion]:::decisionVar
+    DV4[sprint_active]:::decisionVar
+    DV5[release_executed]:::decisionVar
+    DV6[skill_certified]:::decisionVar
+    DV7[goal_achieved]:::decisionVar
+    DV8[blocker_resolved]:::decisionVar
+    DV9[documentation_updated]:::decisionVar
+    DV10[stakeholder_engaged]:::decisionVar
+    DV11[role_assigned]:::decisionVar
+    DV12[epic_split]:::decisionVar
+    DV13[velocity_trend_positive]:::decisionVar
+    DV14[task_reassigned]:::decisionVar
+
+    %% =============== ENTITY <-> ATTRIBUTE CONNECTIONS ===============
+    E0 --> A0a & A0b & A0c & A0d & A0e & A0f & A0g & A0h & A0i
+    E1 --> A1a & A1b & A1c & A1d & A1e & A1f & A1g
+    E2 --> A2a & A2b & A2c & A2d & A2e & A2f & A2g
+    E3 --> A3a & A3b & A3c & A3d & A3e & A3f
+    E4 --> A4a & A4b & A4c & A4d & A4e & A4f
+    E5 --> A5a & A5b & A5c & A5d
+    E6 --> A6a & A6b & A6c & A6d
+    E7 --> A7a & A7b & A7c & A7d
+    E8 --> A8a & A8b & A8c & A8d & A8e
+    E9 --> A9a & A9b & A9c & A9d & A9e & A9f
+    E10 --> A10a & A10b & A10c & A10d & A10e
+    E11 --> A11a & A11b & A11c & A11d & A11e
+    E12 --> A12a & A12b & A12c & A12d & A12e
+    E13 --> A13a & A13b & A13c & A13d & A13e & A13f
+    E14 --> A14a & A14b & A14c & A14d & A14e
+    E15 --> A15a & A15b & A15c & A15d
+    E16 --> A16a & A16b & A16c & A16d & A16e & A16f
+    E17 --> A17a & A17b & A17c & A17d & A17e & A17f & A17g
+    E18 --> A18a & A18b & A18c & A18d & A18e & A18f
+    E19 --> A19a & A19b & A19c & A19d & A19e & A19f
+    E20 --> A20a & A20b & A20c & A20d & A20e & A20f & A20g
+    E21 --> A21a & A21b & A21c & A21d & A21e & A21f & A21g & A21h
+    E22 --> A22a & A22b & A22c & A22d & A22e & A22f
+    E23 --> A23a & A23b & A23c & A23d & A23e
+    E24 --> A24a & A24b & A24c & A24d & A24e & A24f
+    E25 --> A25a & A25b & A25c & A25d & A25e
+    E26 --> A26a & A26b & A26c & A26d & A26e & A26f & A26g
+
+    %% =============== ENTITY <-> RELATION CONNECTIONS ===============
+    E1 --> R1 --> E0
+    E2 --> R2 --> E1
+    E2 --> R3 --> E4
+    E2 --> R4 --> E5
+    E6 --> R5 --> E8
+    E1 --> R6 --> E7
+    E8 --> R7 --> E3
+    E8 --> R8 --> E16
+    E16 --> R9 --> E17
+    E17 --> R10 --> E18
+    E17 --> R11 --> E14
+    E14 --> R12 --> E9
+    E9 --> R13 --> E15
+    E25 --> R14 --> E18
+    E26 --> R15 --> E3
+    E18 --> R16 --> E20
+    E21 --> R17 --> E12
+    E7 --> R18 --> E13
+    E22 --> R19 --> E1
+    E23 --> R20 --> E3
+    E23 --> R21 --> E24
+    E9 --> R22 --> E19
+
+    %% =============== GOAL <-> ENTITY/ATTRIBUTE CONNECTIONS ===============
+    G0 --> E22 --> A22c
+    G1 --> E0 --> A0d
+    G2 --> E2 --> A2g
+    G3 --> E20 --> A20e
+    G4 --> E17 --> A17g
+    G5 --> E15 --> A15c
+    G6 --> E21 --> A21g & A21h
+    G7 --> E17 --> A17d
+    G8 --> E26 --> A26f
+    G9 --> E18 --> A18e
+    G10 --> E4 --> A4d
+    G11 --> E23 --> A23c
+    G12 --> E9
+    G13 --> E2 --> A2g
+    G14 --> E13 --> A13d
+
+    %% =============== CONDITION <-> ENTITY/ATTRIBUTE CONNECTIONS ===============
+    C0 --> E2 & E1
+    C1 --> E9 --> A9c & A9d
+    C2 --> E18 & E17
+    C3 --> E17 & E8 & E14
+    C4 --> E2 & E4 & E18
+    C5 --> E9 & E15
+    C6 --> E22 & E17
+    C7 --> E3 --> A3b
+    C8 --> E23 & E16
+    C9 --> E9 & E20
+    C10 --> E11 & E9
+    C11 --> E0 & E6
+    C12 --> E1 & E7
+    C13 --> E2 & E18
+    C14 --> E26 & E3
+
+    %% =============== DECISION VARIABLE <-> ENTITY CONNECTIONS ===============
+    DV0 --> E2 & E1
+    DV1 --> E2 & E18
+    DV2 --> E18
+    DV3 --> E17 & E9
+    DV4 --> E9
+    DV5 --> E23
+    DV6 --> E2 & E4
+    DV7 --> E15
+    DV8 --> E20
+    DV9 --> E26
+    DV10 --> E21 & E12
+    DV11 --> E2 & E5
+    DV12 --> E16
+    DV13 --> E22
+    DV14 --> E18
+
+    %% Optional: Improve layout by adding invisible edges to space nodes
+    style E0 fill:#1f77b4
+    style E1 fill:#1f77b4
+    style E2 fill:#1f77b4
+    style E3 fill:#1f77b4
+    style E4 fill:#1f77b4
+    style E5 fill:#1f77b4
+    style E6 fill:#1f77b4
+    style E7 fill:#1f77b4
+    style E8 fill:#1f77b4
+    style E9 fill:#1f77b4
+    style E10 fill:#1f77b4
+    style E11 fill:#1f77b4
+    style E12 fill:#1f77b4
+    style E13 fill:#1f77b4
+    style E14 fill:#1f77b4
+    style E15 fill:#1f77b4
+    style E16 fill:#1f77b4
+    style E17 fill:#1f77b4
+    style E18 fill:#1f77b4
+    style E19 fill:#1f77b4
+    style E20 fill:#1f77b4
+    style E21 fill:#1f77b4
+    style E22 fill:#1f77b4
+    style E23 fill:#1f77b4
+    style E24 fill:#1f77b4
+    style E25 fill:#1f77b4
+    style E26 fill:#1f77b4

@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,require_product_owner_availability,The Product Owner must be available during sprint planning,False,min,ProductOwner,availability,2,1.0
+C1,enforce_sprint_duration_consistency,Sprint duration must be fixed (e.g., 2 weeks),False,min,Sprint,end_date,2,1.2
+C2,ensure_role_uniqueness,Each role in the team must be held by at most one worker,False,min,Role,role_name,2,1.5
+C3,limit_concurrent_sprints,A worker cannot be assigned to more than one active sprint,False,max,Sprint,status,2,1.3
+C4,guarantee_task_assignment,Every task must be assigned to at least one worker,False,min,Task,status,2,1.0
+C5,respect_worker_availability,Total assigned effort must not exceed worker availability,True,min,Worker,availability,2,1.7
+C6,maintain_backlog_order,Product Backlog items must be prioritized by priority attribute,False,min,ProductBacklog,status,2,0.9
+C7,ensure_sprint_goal_clarity,Sprint must have a defined and non-empty goal,False,min,SprintGoal,objective_description,2,1.1
+C8,prevent_duplicate_user_stories,No two user stories should have identical titles,False,max,UserStory,title,0,1.0
+C9,require_acceptance_criteria,Every user story must have defined acceptance criteria,False,min,UserStory,acceptance_criteria,2,1.4
+C10,enforce_task_effort_bounds,Task effort must be within valid range (1–8 hours),False,min,Task,effort,2,1.0
+C11,ensure_feature_priority_alignment,Only high-priority features can be included in next release,False,max,Feature,priority,2,1.2
+C12,block_unresolved_critical_blockers,No task can proceed if blocked by a critical unresolved blocker,False,min,Blocker,severity,2,1.6

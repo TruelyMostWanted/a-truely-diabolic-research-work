@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,require_worker_skill_match,Only assign workers who have required skills for the task,False,max,Worker,level,2,1.0
+C1,enforce_sprint_capacity_limit,Ensure total effort in Sprint Backlog does not exceed team capacity,True,min,SprintBacklog,total_effort,2,1.0
+C2,require_product_owner_approval,Only Product Backlog items approved by Product Owner can be scheduled,False,max,ProductBacklog,status,2,1.0
+C3,enforce_sprint_duration,Sprint must last exactly 2 weeks (14 days),False,max,Sprint,end_date,2,1.0
+C4,require_unique_sprint_goals,Each sprint must have a clearly defined and unique goal,False,max,SprintGoal,objective_description,2,0.9
+C5,limit_worker_assignments,No worker should be assigned to more than 3 tasks per sprint,True,max,Task,status,2,0.8
+C6,require_blocker_resolution,All high-severity blockers must be resolved within 48 hours,False,min,Blocker,resolved_on,2,1.0
+C7,enforce_backlog_order,Higher priority items must be selected before lower ones in sprint planning,True,max,UserStory,priority,2,0.9
+C8,require_daily_scrum_attendance,All team members must attend at least 90% of Daily Scrums,False,max,DailyScrum,moderation,2,0.7
+C9,require_retrospective_action_closure,At least 70% of improvement actions must be completed before next sprint,False,max,SprintRetrospective,improvement_actions,2,0.8
+C10,limit_feature_overlap,No feature should be included in more than one release,False,max,ReleasePlan,included_features,0,0.7
+C11,require_epic_decomposition,All epics must be broken into at least one user story before sprint inclusion,False,max,Epic,id,2,0.8

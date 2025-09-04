@@ -1,0 +1,209 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tocloft}
+\usepackage{enumitem}
+
+\geometry{a4paper, margin=1in}
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\vspace{0.5em}\hrule}]
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+[leftmargin=*]
+    \item $ \mathcal{P} $: Set of Projects $ \{ p \in P \mid \text{Project} \} $
+    \item $ \mathcal{T} $: Set of Teams $ \{ t \in T \mid \text{Team} \} $
+    \item $ \mathcal{W} $: Set of Workers $ \{ w \in W \mid \text{Worker} \} $
+    \item $ \mathcal{F} $: Set of Features $ \{ f \in F \mid \text{Feature} \} $
+    \item $ \mathcal{S} $: Set of Skills $ \{ s \in S \mid \text{Skill} \} $
+    \item $ \mathcal{R} $: Set of Roles $ \{ r \in R \mid \text{Role} \} $
+    \item $ \mathcal{PO} $: Set of Product Owners $ \{ po \in PO \mid \text{ProductOwner} \} $
+    \item $ \mathcal{SM} $: Set of Scrum Masters $ \{ sm \in SM \mid \text{ScrumMaster} \} $
+    \item $ \mathcal{PB} $: Set of Product Backlogs $ \{ pb \in PB \mid \text{ProductBacklog} \} $
+    \item $ \mathcal{SP} $: Set of Sprints $ \{ sp \in SP \mid \text{Sprint} \} $
+    \item $ \mathcal{US} $: Set of User Stories $ \{ us \in US \mid \text{UserStory} \} $
+    \item $ \mathcal{TSK} $: Set of Tasks $ \{ tsk \in TSK \mid \text{Task} \} $
+    \item $ \mathcal{DEV} $: Set of Development Snapshots $ \{ dev \in DEV \mid \text{DevelopmentSnapshot} \} $
+    \item $ \mathcal{BL} $: Set of Blockers $ \{ bl \in BL \mid \text{Blocker} \} $
+    \item $ \mathcal{SH} $: Set of Stakeholders $ \{ sh \in SH \mid \text{Stakeholder} \} $
+    \item $ \mathcal{VEL} $: Set of Velocity Records $ \{ vel \in VEL \mid \text{Velocity} \} $
+    \item $ \mathcal{REP} $: Set of Release Plans $ \{ rep \in REP \mid \text{ReleasePlan} \} $
+    \item $ \mathcal{RM} $: Set of Roadmaps $ \{ rm \in RM \mid \text{Roadmap} \} $
+    \item $ \mathcal{SCB} $: Set of Scrum Boards $ \{ scb \in SCB \mid \text{ScrumBoard} \} $
+    \item $ \mathcal{FED} $: Set of Feature Documentations $ \{ fed \in FED \mid \text{FeatureDocumentation} \} $
+
+\section{2. Indices}
+[leftmargin=*]
+    \item $ p \in \mathcal{P} $: Index for Projects
+    \item $ t \in \mathcal{T} $: Index for Teams
+    \item $ w \in \mathcal{W} $: Index for Workers
+    \item $ f \in \mathcal{F} $: Index for Features
+    \item $ s \in \mathcal{S} $: Index for Skills
+    \item $ r \in \mathcal{R} $: Index for Roles
+    \item $ po \in \mathcal{PO} $: Index for Product Owners
+    \item $ sm \in \mathcal{SM} $: Index for Scrum Masters
+    \item $ pb \in \mathcal{PB} $: Index for Product Backlogs
+    \item $ sp \in \mathcal{SP} $: Index for Sprints
+    \item $ us \in \mathcal{US} $: Index for User Stories
+    \item $ tsk \in \mathcal{TSK} $: Index for Tasks
+    \item $ dev \in \mathcal{DEV} $: Index for Development Snapshots
+    \item $ bl \in \mathcal{BL} $: Index for Blockers
+    \item $ sh \in \mathcal{SH} $: Index for Stakeholders
+    \item $ vel \in \mathcal{VEL} $: Index for Velocity Records
+    \item $ rep \in \mathcal{REP} $: Index for Release Plans
+    \item $ rm \in \mathcal{RM} $: Index for Roadmaps
+    \item $ scb \in \mathcal{SCB} $: Index for Scrum Boards
+    \item $ fed \in \mathcal{FED} $: Index for Feature Documentations
+
+\section{3. Goals}
+[leftmargin=*]
+    \item[G0] \texttt{maximize\_velocity}: Maximize average sprint velocity
+    \[
+    \max \sum_{vel \in \mathcal{VEL}} \text{avg\_story\_points}_{vel} \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[G1] \texttt{maximize\_team\_utilization}: Maximize worker availability utilization
+    \[
+    \max \sum_{w \in \mathcal{W}} \text{availability}_w \quad \text{(Weight: 0.8)}
+    \]
+
+    \item[G2] \texttt{minimize\_burnout\_risk}: Minimize risk of burnout via status monitoring
+    \[
+    \min \sum_{w \in \mathcal{W}} \mathbb{I}(\text{status}_w = \text{``overloaded''}) \quad \text{(Weight: 0.9)}
+    \]
+
+    \item[G3] \texttt{maximize\_requirement\_clarity}: Maximize presence of acceptance criteria
+    \[
+    \max \sum_{us \in \mathcal{US}} \mathbb{I}(\text{acceptance\_criteria}_{us} \neq \emptyset) \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[G4] \texttt{maximize\_sprint\_goal\_achievement}: Maximize achieved sprint goals
+    \[
+    \max \sum_{sp \in \mathcal{SP}} \text{achievement\_of\_goal}_{sp} \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[G5] \texttt{minimize\_technical\_debt}: Minimize poor test status in snapshots
+    \[
+    \min \sum_{dev \in \mathcal{DEV}} \mathbb{I}(\text{test\_status}_{dev} = \text{``failed''}) \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[G6] \texttt{maximize\_stakeholder\_satisfaction}: Maximize high-influence stakeholder inclusion
+    \[
+    \max \sum_{sh \in \mathcal{SH}} \text{influence\_level}_{sh} \cdot \mathbb{I}(sh \text{ participated}) \quad \text{(Weight: 0.9)}
+    \]
+
+    \item[G7] \texttt{maximize\_backlog\_grooming\_rate}: Maximize backlog entry updates
+    \[
+    \max \sum_{pb \in \mathcal{PB}} \text{number\_of\_entries}_{pb} \quad \text{(Weight: 0.7)}
+    \]
+
+    \item[G8] \texttt{minimize\_blocker\_duration}: Minimize time to resolve blockers
+    \[
+    \min \sum_{bl \in \mathcal{BL}} (\text{resolved\_on}_{bl} - \text{detected\_on}_{bl}) \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[G9] \texttt{maximize\_documentation\_coverage}: Maximize linked documentation
+    \[
+    \max \sum_{fed \in \mathcal{FED}} \text{linked\_requirements}_{fed} \quad \text{(Weight: 0.8)}
+    \]
+
+    \item[G10] \texttt{maximize\_cross\_functionality}: Maximize skill diversity
+    \[
+    \max \sum_{w \in \mathcal{W}} \sum_{s \in \mathcal{S}} \text{level}_{w,s} \quad \text{(Weight: 0.7)}
+    \]
+
+    \item[G11] \texttt{minimize\_release\_delay}: Minimize deviation from planned release dates
+    \[
+    \min \sum_{rep \in \mathcal{REP}} \max(0, \text{actual\_date} - \text{planned\_date}_{rep}) \quad \text{(Weight: 1.0)}
+    \]
+
+\section{4. Conditions}
+[leftmargin=*]
+    \item[C0] \texttt{required\_role\_coverage}: Each team must have a Scrum Master
+    \[
+    \forall t \in \mathcal{T},\ \exists sm \in \mathcal{SM}: (t, sm) \in \text{is\_supported\_by} \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[C1] \texttt{required\_product\_owner}: Each project has one Product Owner
+    \[
+    \forall p \in \mathcal{P},\ \exists! po \in \mathcal{PO}: (po, p) \in \text{manages\_backlog} \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[C2] \texttt{worker\_capacity\_limit}: No worker exceeds 100\% availability
+    \[
+    \sum_{tsk \in \mathcal{TSK}} x_{w,tsk} \cdot \text{effort}_{tsk} \leq \text{availability}_w,\ \forall w \in \mathcal{W} \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[C3] \texttt{sprint\_duration\_fixed}: Sprint duration between 1 and 4 weeks
+    \[
+    7 \leq (\text{end\_date}_{sp} - \text{start\_date}_{sp}) \leq 28\ \text{days},\ \forall sp \in \mathcal{SP} \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[C4] \texttt{definition\_of\_done\_met}: All tasks must be "Done" before sprint ends
+    \[
+    \text{status}_{tsk} = \text{``Done''},\ \forall tsk \in \mathcal{TSK} \text{ in } \mathcal{SBL} \text{ of } sp \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[C5] \texttt{story\_points\_estimated}: All user stories have story points
+    \[
+    \text{story\_points}_{us} > 0,\ \forall us \in \mathcal{US} \cap \mathcal{SBL} \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[C6] \texttt{minimum\_team\_size}: Minimum 3 members per team
+    \[
+    \text{team\_size}_t \geq 3,\ \forall t \in \mathcal{T} \quad \text{(Weight: 0.9)}
+    \]
+
+    \item[C7] \texttt{feature\_priority\_included}: High-priority features scheduled first
+    \[
+    \text{priority}_f = 1 \implies f \in \text{SprintBacklog earlier than } f' \text{ with } \text{priority}_{f'} = 3 \quad \text{(Weight: 0.9)}
+    \]
+
+    \item[C8] \texttt{velocity\_stability}: Sprint effort ≤ 1.2 × average velocity
+    \[
+    \sum_{us \in \mathcal{US} \cap \mathcal{SBL}_{sp}} \text{story\_points}_{us} \leq 1.2 \cdot \text{avg\_story\_points}_{vel},\ \forall sp \in \mathcal{SP} \quad \text{(Weight: 0.8)}
+    \]
+
+    \item[C9] \texttt{blockers\_resolved\_daily}: Critical blockers resolved within 24 hours
+    \[
+    \text{severity}_{bl} = \text{``critical''} \implies (\text{resolved\_on}_{bl} - \text{detected\_on}_{bl}) \leq 1\ \text{day} \quad \text{(Weight: 1.0)}
+    \]
+
+    \item[C10] \texttt{documentation\_mandatory}: Every feature has documentation
+    \[
+    \forall f \in \mathcal{F},\ \exists fed \in \mathcal{FED}: (fed, f) \in \text{documents\_feature} \quad \text{(Weight: 0.9)}
+    \]
+
+    \item[C11] \texttt{ceremony\_completion}: All four SCRUM ceremonies held per sprint
+    \[
+    \exists spp, ds, sr, sre \in \text{Ceremonies}: \text{all documented for } sp \in \mathcal{SP} \quad \text{(Weight: 1.0)}
+    \]
+
+\section{5. DecisionVariables}
+[leftmargin=*]
+    \item[DV0] $ x_{w,tsk} \in \{0,1\} $: Assignment of worker $ w $ to task $ tsk $
+    \item[DV1] $ e_{tsk} \in [1, 40] $: Effort (hours) planned for task $ tsk $
+    \item[DV2] $ sp_{us} \in [1, 13] $: Story points assigned to user story $ us $
+    \item[DV3] $ d_{sp} \in [1, 4] $: Duration of sprint $ sp $ in weeks
+    \item[DV4] $ n_t \in [3, 9] $: Actual team size for team $ t $
+    \item[DV5] $ a_w \in [0, 100] $: Availability percentage of worker $ w $
+    \item[DV6] $ pr_f \in \{1,2,3\} $: Priority level of feature $ f $
+    \item[DV7] $ v_{rep} \in [1.0, 10.0] $: Version number of release plan $ rep $
+    \item[DV8] $ h_{ref} \in [0, 8] $: Weekly hours for backlog refinement
+    \item[DV9] $ c_{scb} \in [3, 7] $: Number of columns on Scrum board $ scb $
+    \item[DV10] $ d_{fed} \in \{0,1\} $: Documentation status flag for feature $ f $
+    \item[DV11] $ w_{sh} \in [0.0, 1.0] $: Weight of stakeholder $ sh $'s feedback in backlog ranking
+
+\end{document}

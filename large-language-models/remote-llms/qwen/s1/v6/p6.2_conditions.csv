@@ -1,0 +1,12 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,worker_availability_constraint,Only assign tasks to available workers,True,min,Worker,availability,2,2.0
+C1,role_competence_requirement,Task must match required role competence,False,min,Role,area_of_responsibility,2,1.8
+C2,skill_match_requirement,Worker must have required skill level for task,True,min,Skill,level,2,1.7
+C3,sprint_capacity_limit,Total effort in sprint must not exceed team capacity,False,min,SprintBacklog,total_effort,2,2.0
+C4,product_owner_workload,One Product Owner manages only one project,False,min,ProductOwner,availability,2,1.5
+C5,scrum_master_support_limit,One Scrum Master supports at most two teams,False,min,ScrumMaster,experience,2,1.4
+C6,feature_priority_requirement,Only high-priority features included in next sprint,False,min,Feature,priority,2,1.6
+C7,user_story_estimation_required,All user stories must have story points assigned,False,min,UserStory,story_points,2,1.3
+C8,task_deadline_compliance,Task end date must be before sprint end,False,min,Task,status,2,1.5
+C9,team_size_requirement,Team must have at least 5 members for full functionality,False,min,Team,team_size,2,1.2
+C10,documentation_must_exist,Each feature must have associated documentation,False,min,FeatureDocumentation,creation_date,2,1.0

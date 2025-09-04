@@ -1,0 +1,330 @@
+graph TD
+    %% ============ Class Definitions ============
+    classDef entity fill:#1f77b4,stroke:#000,color:white,font-weight:bold
+    classDef attribute fill:#fff,stroke:#333,stroke-width:1px,color:#000
+    classDef relation fill:#ff8c00,stroke:#000,color:white,font-weight:bold
+    classDef goal fill:#2ca02c,stroke:#000,color:white,font-weight:bold
+    classDef condition fill:#d62728,stroke:#000,color:white,font-weight:bold
+    classDef decisionVar fill:#9467bd,stroke:#000,color:white,font-weight:bold
+
+    %% ============ Entities (E0–E26) ============
+    E0[Project]:::entity
+    E1[Team]:::entity
+    E2[Worker]:::entity
+    E3[Feature]:::entity
+    E4[Skill]:::entity
+    E5[Role]:::entity
+    E6[ProductOwner]:::entity
+    E7[ScrumMaster]:::entity
+    E8[ProductBacklog]:::entity
+    E9[Sprint]:::entity
+    E10[SprintPlanning]:::entity
+    E11[DailyScrum]:::entity
+    E12[SprintReview]:::entity
+    E13[SprintRetrospective]:::entity
+    E14[SprintBacklog]:::entity
+    E15[SprintGoal]:::entity
+    E16[Epic]:::entity
+    E17[UserStory]:::entity
+    E18[Task]:::entity
+    E19[DevelopmentSnapshot]:::entity
+    E20[Blocker]:::entity
+    E21[Stakeholder]:::entity
+    E22[Velocity]:::entity
+    E23[ReleasePlan]:::entity
+    E24[Roadmap]:::entity
+    E25[ScrumBoard]:::entity
+    E26[FeatureDocumentation]:::entity
+
+    %% ============ Attributes (grouped per entity) ============
+    %% Project
+    P_id[id]:::attribute
+    P_name[name]:::attribute
+    P_project_start[project_start]:::attribute
+    P_project_end[project_end]:::attribute
+    P_description[description]:::attribute
+    P_budget[budget]:::attribute
+    P_status[status]:::attribute
+    P_target_audience[target_audience]:::attribute
+    P_priority[priority]:::attribute
+
+    %% Team
+    T_id[id]:::attribute
+    T_name[name]:::attribute
+    T_team_size[team_size]:::attribute
+    T_team_start[team_start]:::attribute
+    T_team_status[team_status]:::attribute
+    T_location[location]:::attribute
+    T_team_type[team_type]:::attribute
+
+    %% Worker
+    W_id[id]:::attribute
+    W_name[name]:::attribute
+    W_first_name[first_name]:::attribute
+    W_email[email]:::attribute
+    W_start_date[start_date]:::attribute
+    W_status[status]:::attribute
+    W_availability[availability]:::attribute
+
+    %% Feature
+    F_id[id]:::attribute
+    F_title[title]:::attribute
+    F_description[description]:::attribute
+    F_status[status]:::attribute
+    F_priority[priority]:::attribute
+    F_estimated_effort[estimated_effort]:::attribute
+
+    %% Skill
+    S_id[id]:::attribute
+    S_label[label]:::attribute
+    S_description[description]:::attribute
+    S_level[level]:::attribute
+    S_certified[certified]:::attribute
+    S_category[category]:::attribute
+
+    %% Role
+    R_id[id]:::attribute
+    R_role_name[role_name]:::attribute
+    R_description[description]:::attribute
+    R_area_of_responsibility[area_of_responsibility]:::attribute
+
+    %% ProductOwner
+    PO_id[id]:::attribute
+    PO_name[name]:::attribute
+    PO_email[email]:::attribute
+    PO_availability[availability]:::attribute
+
+    %% ScrumMaster
+    SM_id[id]:::attribute
+    SM_name[name]:::attribute
+    SM_email[email]:::attribute
+    SM_experience[experience]:::attribute
+
+    %% ProductBacklog
+    PB_id[id]:::attribute
+    PB_created_on[created_on]:::attribute
+    PB_last_updated[last_updated]:::attribute
+    PB_number_of_entries[number_of_entries]:::attribute
+    PB_status[status]:::attribute
+
+    %% Sprint
+    SP_id[id]:::attribute
+    SP_sprint_number[sprint_number]:::attribute
+    SP_start_date[start_date]:::attribute
+    SP_end_date[end_date]:::attribute
+    SP_status[status]:::attribute
+    SP_achievement_of_goal[achievement_of_goal]:::attribute
+
+    %% SprintGoal
+    SG_id[id]:::attribute
+    SG_objective_description[objective_description]:::attribute
+    SG_achievement_status[achievement_status]:::attribute
+    SG_benefit[benefit]:::attribute
+
+    %% UserStory
+    US_id[id]:::attribute
+    US_title[title]:::attribute
+    US_description[description]:::attribute
+    US_acceptance_criteria[acceptance_criteria]:::attribute
+    US_priority[priority]:::attribute
+    US_story_points[story_points]:::attribute
+    US_status[status]:::attribute
+
+    %% Task
+    TSK_id[id]:::attribute
+    TSK_title[title]:::attribute
+    TSK_description[description]:::attribute
+    TSK_status[status]:::attribute
+    TSK_effort[effort]:::attribute
+    TSK_type[type]:::attribute
+
+    %% Blocker
+    BL_id[id]:::attribute
+    BL_title[title]:::attribute
+    BL_description[description]:::attribute
+    BL_severity[severity]:::attribute
+    BL_status[status]:::attribute
+    BL_detected_on[detected_on]:::attribute
+    BL_resolved_on[resolved_on]:::attribute
+
+    %% Velocity
+    VEL_id[id]:::attribute
+    VEL_number_of_sprints_used[number_of_sprints_used]:::attribute
+    VEL_avg_story_points[avg._story_points]:::attribute
+    VEL_max_velocity[max_velocity]:::attribute
+    VEL_min_velocity[min_velocity]:::attribute
+    VEL_trend[trend]:::attribute
+
+    %% ReleasePlan
+    REP_id[id]:::attribute
+    REP_version[version]:::attribute
+    REP_planned_date[planned_date]:::attribute
+    REP_included_features[included_features]:::attribute
+    REP_status[status]:::attribute
+
+    %% FeatureDocumentation
+    FED_id[id]:::attribute
+    FED_title[title]:::attribute
+    FED_description[description]:::attribute
+    FED_creation_date[creation_date]:::attribute
+    FED_change_log[change_log]:::attribute
+    FED_linked_requirements[linked_requirements]:::attribute
+    FED_author[author]:::attribute
+
+    %% ============ Attributes linked to Entities ============
+    E0 --- P_id & P_name & P_project_start & P_project_end & P_description & P_budget & P_status & P_target_audience & P_priority
+    E1 --- T_id & T_name & T_team_size & T_team_start & T_team_status & T_location & T_team_type
+    E2 --- W_id & W_name & W_first_name & W_email & W_start_date & W_status & W_availability
+    E3 --- F_id & F_title & F_description & F_status & F_priority & F_estimated_effort
+    E4 --- S_id & S_label & S_description & S_level & S_certified & S_category
+    E5 --- R_id & R_role_name & R_description & R_area_of_responsibility
+    E6 --- PO_id & PO_name & PO_email & PO_availability
+    E7 --- SM_id & SM_name & SM_email & SM_experience
+    E8 --- PB_id & PB_created_on & PB_last_updated & PB_number_of_entries & PB_status
+    E9 --- SP_id & SP_sprint_number & SP_start_date & SP_end_date & SP_status & SP_achievement_of_goal
+    E15 --- SG_id & SG_objective_description & SG_achievement_status & SG_benefit
+    E17 --- US_id & US_title & US_description & US_acceptance_criteria & US_priority & US_story_points & US_status
+    E18 --- TSK_id & TSK_title & TSK_description & TSK_status & TSK_effort & TSK_type
+    E20 --- BL_id & BL_title & BL_description & BL_severity & BL_status & BL_detected_on & BL_resolved_on
+    E22 --- VEL_id & VEL_number_of_sprints_used & VEL_avg_story_points & VEL_max_velocity & VEL_min_velocity & VEL_trend
+    E23 --- REP_id & REP_version & REP_planned_date & REP_included_features & REP_status
+    E26 --- FED_id & FED_title & FED_description & FED_creation_date & FED_change_log & FED_linked_requirements & FED_author
+
+    %% ============ Relationships (R1–R22) ============
+    R1[is_assigned_to_project]:::relation
+    R2[belongs_to_team]:::relation
+    R3[has_skill]:::relation
+    R4[takes_on_role]:::relation
+    R5[manages_backlog]:::relation
+    R6[is_supported_by]:::relation
+    R7[contains_feature]:::relation
+    R8[contains_epic]:::relation
+    R9[contains_user_story]:::relation
+    R10[consists_of_tasks]:::relation
+    R11[is_in_sprint_backlog]:::relation
+    R12[belongs_to_sprint]:::relation
+    R13[pursues_goal]:::relation
+    R14[contains_tasks]:::relation
+    R15[documents_feature]:::relation
+    R16[is_blocked_by]:::relation
+    R17[participates_in]:::relation
+    R18[moderates_retrospective]:::relation
+    R19[refers_to_team]:::relation
+    R20[plans_release]:::relation
+    R21[is_part_of_roadmap]:::relation
+    R22[generates_snapshot]:::relation
+
+    %% Relationship connections
+    E1 -- R1 --> E0
+    E2 -- R2 --> E1
+    E2 -- R3 --> E4
+    E2 -- R4 --> E5
+    E6 -- R5 --> E8
+    E1 -- R6 --> E7
+    E8 -- R7 --> E3
+    E8 -- R8 --> E16
+    E16 -- R9 --> E17
+    E17 -- R10 --> E18
+    E17 -- R11 --> E14
+    E14 -- R12 --> E9
+    E9 -- R13 --> E15
+    E25 -- R14 --> E18
+    E26 -- R15 --> E3
+    E18 -- R16 --> E20
+    E21 -- R17 --> E12
+    E7 -- R18 --> E13
+    E22 -- R19 --> E1
+    E23 -- R20 --> E3
+    E23 -- R21 --> E24
+    E9 -- R22 --> E19
+
+    %% ============ Goals (G0–G10) ============
+    G0[maximize_velocity]:::goal
+    G1[minimize_blocker_count]:::goal
+    G2[maximize_feature_completion]:::goal
+    G3[minimize_sprint_overrun]:::goal
+    G4[maximize_worker_utilization]:::goal
+    G5[minimize_backlog_churn]:::goal
+    G6[maximize_test_coverage]:::goal
+    G7[minimize_sprint_goal_failure]:::goal
+    G8[maximize_stakeholder_satisfaction]:::goal
+    G9[minimize_technical_debt]:::goal
+    G10[maximize_documentation_completeness]:::goal
+
+    %% Goal connections
+    G0 --> VEL_avg_story_points
+    G1 --> BL_status
+    G2 --> F_status
+    G3 --> TSK_effort
+    G4 --> W_availability
+    G5 --> PB_number_of_entries
+    G6 --> DEV_test_status
+    G7 --> SG_achievement_status
+    G8 --> SR_feedback_documentation
+    G9 --> TSK_status
+    G10 --> FED_linked_requirements
+
+    %% ============ Conditions (C0–C10) ============
+    C0[require_product_owner_presence]:::condition
+    C1[limit_team_size]:::condition
+    C2[enforce_skill_match]:::condition
+    C3[ensure_sprint_duration]:::condition
+    C4[respect_worker_availability]:::condition
+    C5[complete_acceptance_criteria]:::condition
+    C6[mandatory_daily_scrum]:::condition
+    C7[retrospective_must_occur]:::condition
+    C8[velocity_based_commitment]:::condition
+    C9[blockers_must_be_resolved]:::condition
+    C10[documentation_per_feature]:::condition
+
+    %% Condition connections
+    C0 --> PO_availability
+    C1 --> T_team_size
+    C2 --> S_level
+    C3 --> SP_end_date & SP_start_date
+    C4 --> W_availability
+    C5 --> US_acceptance_criteria
+    C6 --> DS
+    C7 --> SRE_improvement_actions
+    C8 --> VEL_avg_story_points
+    C9 --> BL_severity & BL_status
+    C10 --> FED_creation_date
+
+    %% ============ Decision Variables (DV0–DV12) ============
+    DV0[assign_worker_to_task]:::decisionVar
+    DV1[task_effort_estimate]:::decisionVar
+    DV2[sprint_duration_days]:::decisionVar
+    DV3[story_points_estimate]:::decisionVar
+    DV4[worker_availability_fraction]:::decisionVar
+    DV5[number_of_sprints_in_release]:::decisionVar
+    DV6[feature_priority_rank]:::decisionVar
+    DV7[planned_release_date]:::decisionVar
+    DV8[team_size_count]:::decisionVar
+    DV9[documentation_status_flag]:::decisionVar
+    DV10[moderation_assignment]:::decisionVar
+    DV11[goal_achievement_score]:::decisionVar
+    DV12[feedback_rating]:::decisionVar
+
+    %% Decision Variable connections
+    DV0 --> E2 & E18
+    DV1 --> E18
+    DV2 --> E9
+    DV3 --> E17
+    DV4 --> E2
+    DV5 --> E23
+    DV6 --> E3
+    DV7 --> E23
+    DV8 --> E1
+    DV9 --> E26
+    DV10 --> E7 & E13
+    DV11 --> E15
+    DV12 --> E12
+
+    %% ============ Additional attribute placements for clarity ============
+    DEV_test_status[test_status]:::attribute
+    SR_feedback_documentation[feedback_documentation]:::attribute
+    SRE_improvement_actions[improvement_actions]:::attribute
+
+    E19 --- DEV_test_status
+    E12 --- SR_feedback_documentation
+    E13 --- SRE_improvement_actions

@@ -1,0 +1,241 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, graphicx, hyperref, enumitem}
+\usepackage[margin=1in]{geometry}
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Modeling Assistant}
+\date{\today}
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\item $ \mathcal{P} $: Set of Projects (Entity: Project)
+    \item $ \mathcal{T} $: Set of Teams (Entity: Team)
+    \item $ \mathcal{W} $: Set of Workers (Entity: Worker)
+    \item $ \mathcal{F} $: Set of Features (Entity: Feature)
+    \item $ \mathcal{S} $: Set of Skills (Entity: Skill)
+    \item $ \mathcal{R} $: Set of Roles (Entity: Role)
+    \item $ \mathcal{PO} $: Set of Product Owners (Entity: ProductOwner)
+    \item $ \mathcal{SM} $: Set of Scrum Masters (Entity: ScrumMaster)
+    \item $ \mathcal{PB} $: Set of Product Backlogs (Entity: ProductBacklog)
+    \item $ \mathcal{SP} $: Set of Sprints (Entity: Sprint)
+    \item $ \mathcal{SPP} $: Set of Sprint Plannings (Entity: SprintPlanning)
+    \item $ \mathcal{DS} $: Set of Daily Scrums (Entity: DailyScrum)
+    \item $ \mathcal{SR} $: Set of Sprint Reviews (Entity: SprintReview)
+    \item $ \mathcal{SRE} $: Set of Sprint Retrospectives (Entity: SprintRetrospective)
+    \item $ \mathcal{SBL} $: Set of Sprint Backlogs (Entity: SprintBacklog)
+    \item $ \mathcal{SG} $: Set of Sprint Goals (Entity: SprintGoal)
+    \item $ \mathcal{E} $: Set of Epics (Entity: Epic)
+    \item $ \mathcal{US} $: Set of User Stories (Entity: UserStory)
+    \item $ \mathcal{TSK} $: Set of Tasks (Entity: Task)
+    \item $ \mathcal{DEV} $: Set of Development Snapshots (Entity: DevelopmentSnapshot)
+    \item $ \mathcal{BL} $: Set of Blockers (Entity: Blocker)
+    \item $ \mathcal{SH} $: Set of Stakeholders (Entity: Stakeholder)
+    \item $ \mathcal{VEL} $: Set of Velocity Records (Entity: Velocity)
+    \item $ \mathcal{REP} $: Set of Release Plans (Entity: ReleasePlan)
+    \item $ \mathcal{RM} $: Set of Roadmaps (Entity: Roadmap)
+    \item $ \mathcal{SCB} $: Set of Scrum Boards (Entity: ScrumBoard)
+    \item $ \mathcal{FED} $: Set of Feature Documentations (Entity: FeatureDocumentation)
+
+\section{2. Indices}
+\item $ p \in \mathcal{P} $: Index for projects
+    \item $ t \in \mathcal{T} $: Index for teams
+    \item $ w \in \mathcal{W} $: Index for workers
+    \item $ f \in \mathcal{F} $: Index for features
+    \item $ s \in \mathcal{S} $: Index for skills
+    \item $ r \in \mathcal{R} $: Index for roles
+    \item $ po \in \mathcal{PO} $: Index for product owners
+    \item $ sm \in \mathcal{SM} $: Index for scrum masters
+    \item $ pb \in \mathcal{PB} $: Index for product backlogs
+    \item $ sp \in \mathcal{SP} $: Index for sprints
+    \item $ sbl \in \mathcal{SBL} $: Index for sprint backlogs
+    \item $ us \in \mathcal{US} $: Index for user stories
+    \item $ tsk \in \mathcal{TSK} $: Index for tasks
+    \item $ bl \in \mathcal{BL} $: Index for blockers
+    \item $ sh \in \mathcal{SH} $: Index for stakeholders
+    \item $ rep \in \mathcal{REP} $: Index for release plans
+    \item $ rm \in \mathcal{RM} $: Index for roadmaps
+    \item $ vel \in \mathcal{VEL} $: Index for velocity records
+    \item $ fed \in \mathcal{FED} $: Index for feature documentations
+
+\section{3. Goals}
+\item \textbf{G0: maximize\_completed\_story\_points} \\
+    Maximize total story points completed in selected sprints:
+    \[
+    \max \sum_{us \in \mathcal{US}} \text{story\_points}(us) \cdot x_{us}
+    \]
+    where $ x_{us} = 1 $ if user story $ us $ is completed.
+
+    \item \textbf{G1: minimize\_open\_blockers} \\
+    Minimize unresolved blockers:
+    \[
+    \min \sum_{bl \in \mathcal{BL}} \left[ \text{status}(bl) \neq \text{``resolved''} \right]
+    \]
+
+    \item \textbf{G2: maximize\_team\_velocity} \\
+    Maximize average velocity:
+    \[
+    \max \text{avg\_story\_points}(vel), \quad vel \in \mathcal{VEL}
+    \]
+
+    \item \textbf{G3: minimize\_task\_effort\_deviation} \\
+    Minimize difference between estimated and actual effort:
+    \[
+    \min \sum_{tsk \in \mathcal{TSK}} | \text{effort}_{\text{actual}}(tsk) - \text{effort}_{\text{est}}(tsk) |
+    \]
+
+    \item \textbf{G4: maximize\_requirement\_traceability} \\
+    Maximize linked tasks to sprint backlog:
+    \[
+    \max \frac{ \sum_{tsk \in \mathcal{TSK}} \mathbb{I}[\exists sbl : (tsk \in sbl)] }{ |\mathcal{TSK}| }
+    \]
+
+    \item \textbf{G5: minimize\_sprint\_goal\_failures} \\
+    Minimize failed sprint goals:
+    \[
+    \min \sum_{sp \in \mathcal{SP}} \left[ \text{achievement\_status}(\text{SG}(sp)) = \text{``failed''} \right]
+    \]
+
+    \item \textbf{G6: maximize\_stakeholder\_participation} \\
+    Maximize stakeholder attendance weighted by influence:
+    \[
+    \max \sum_{sh \in \mathcal{SH}} \text{influence\_level}(sh) \cdot y_{sh,sp}
+    \]
+    where $ y_{sh,sp} = 1 $ if stakeholder $ sh $ attended sprint review of $ sp $.
+
+    \item \textbf{G7: minimize\_technical\_debt\_accumulation} \\
+    Minimize overdue or low-quality tasks:
+    \[
+    \min \sum_{tsk \in \mathcal{TSK}} \mathbb{I}[\text{status}(tsk) \in \{\text{``overdue''}, \text{``rework''}\}]
+    \]
+
+    \item \textbf{G8: maximize\_skill\_coverage} \\
+    Maximize alignment between required and available skills:
+    \[
+    \max \sum_{w \in \mathcal{W}} \sum_{s \in \mathcal{S}} \text{level}(w,s) \cdot z_{w,s,f}
+    \]
+    where $ z_{w,s,f} = 1 $ if worker $ w $ with skill $ s $ is assigned to feature $ f $.
+
+    \item \textbf{G9: minimize\_schedule\_slippage} \\
+    Minimize delay beyond planned sprint end:
+    \[
+    \min \sum_{sp \in \mathcal{SP}} \max(0, \text{actual\_end}(sp) - \text{planned\_end}(sp))
+    \]
+
+    \item \textbf{G10: maximize\_documentation\_completeness} \\
+    Maximize documented features:
+    \[
+    \max \sum_{fed \in \mathcal{FED}} \mathbb{I}[\text{creation\_date}(fed) \geq \text{last\_update}(f)]
+    \]
+
+    \item \textbf{G11: minimize\_worker\_overload} \\
+    Minimize workers exceeding availability:
+    \[
+    \min \sum_{w \in \mathcal{W}} \mathbb{I}\left[ \sum_{tsk} \text{effort}(tsk,w) > \text{availability}(w) \right]
+    \]
+
+    \item \textbf{G12: maximize\_backlog\_refinement\_rate} \\
+    Maximize percentage of refined backlog items:
+    \[
+    \max \frac{ |\{ us \in \mathcal{US} \mid \text{refined}(us) \}| }{ |\mathcal{US} \cap \mathcal{PB}| }
+    \]
+
+\section{4. Conditions}
+\item \textbf{C0: require\_product\_owner\_availability} \\
+    Product Owner must be available during sprint:
+    \[
+    \text{availability}(po) \geq 0.8 \quad \forall po \in \mathcal{PO}
+    \]
+
+    \item \textbf{C1: enforce\_sprint\_duration\_consistency} \\
+    All sprints must last 1 or 2 weeks:
+    \[
+    \text{end\_date}(sp) - \text{start\_date}(sp) \in \{7, 14\} \quad \forall sp \in \mathcal{SP}
+    \]
+
+    \item \textbf{C2: ensure\_role\_uniqueness} \\
+    Each role is held by at most one worker:
+    \[
+    \sum_{w \in \mathcal{W}} r_w^r \leq 1 \quad \forall r \in \mathcal{R}
+    \]
+    where $ r_w^r = 1 $ if worker $ w $ holds role $ r $.
+
+    \item \textbf{C3: limit\_concurrent\_sprints} \\
+    A worker cannot be in multiple active sprints:
+    \[
+    \sum_{sp: \text{active}(sp)} \mathbb{I}[w \in \text{team}(sp)] \leq 1 \quad \forall w \in \mathcal{W}
+    \]
+
+    \item \textbf{C4: guarantee\_task\_assignment} \\
+    Every task must have at least one assignee:
+    \[
+    \sum_{w \in \mathcal{W}} x_{w,tsk} \geq 1 \quad \forall tsk \in \mathcal{TSK}
+    \]
+
+    \item \textbf{C5: respect\_worker\_availability} \\
+    Total assigned effort ≤ worker availability:
+    \[
+    \sum_{tsk \in \mathcal{TSK}} \text{effort}(tsk) \cdot x_{w,tsk} \leq \text{availability}(w) \quad \forall w \in \mathcal{W}
+    \]
+
+    \item \textbf{C6: maintain\_backlog\_order} \\
+    Backlog items ordered by priority:
+    \[
+    \text{priority}(us_i) \geq \text{priority}(us_j) \quad \text{if } i < j \text{ in } \mathcal{PB}
+    \]
+
+    \item \textbf{C7: ensure\_sprint\_goal\_clarity} \\
+    Sprint must have a defined goal:
+    \[
+    \text{objective\_description}(sg) \neq \emptyset \quad \forall sg \in \mathcal{SG},\ sg = \text{SG}(sp)
+    \]
+
+    \item \textbf{C8: prevent\_duplicate\_user\_stories} \\
+    No two user stories have same title:
+    \[
+    \text{title}(us_i) \neq \text{title}(us_j) \quad \forall i \neq j \in \mathcal{US}
+    \]
+
+    \item \textbf{C9: require\_acceptance\_criteria} \\
+    All user stories must have acceptance criteria:
+    \[
+    \text{acceptance\_criteria}(us) \neq \emptyset \quad \forall us \in \mathcal{US}
+    \]
+
+    \item \textbf{C10: enforce\_task\_effort\_bounds} \\
+    Task effort bounded between 1 and 8 hours:
+    \[
+    1 \leq \text{effort}(tsk) \leq 8 \quad \forall tsk \in \mathcal{TSK}
+    \]
+
+    \item \textbf{C11: ensure\_feature\_priority\_alignment} \\
+    Only high-priority features in next release:
+    \[
+    \text{priority}(f) = \text{``high''} \quad \forall f \in \text{included\_features}(rep), rep = \text{next\_release}
+    \]
+
+    \item \textbf{C12: block\_unresolved\_critical\_blockers} \\
+    Tasks blocked by critical blockers cannot proceed:
+    \[
+    x_{tsk} = 0 \quad \text{if } \exists bl \in \mathcal{BL} : \text{severity}(bl) = \text{``critical''} \land \text{status}(bl) \neq \text{``resolved''} \land \text{blocked}(tsk, bl)
+    \]
+
+\section{5. DecisionVariables}
+\item $ x_{w,tsk} \in \{0,1\} $: \texttt{assign\_worker\_to\_task} — 1 if worker $ w $ is assigned to task $ tsk $
+    \item $ y_{us} \in \{0,1\} $: \texttt{select\_user\_story\_for\_sprint} — 1 if user story $ us $ is selected for sprint
+    \item $ e_{tsk} \in \mathbb{R}^+ $: \texttt{task\_effort\_hours} — actual effort (hours) spent on task $ tsk $, $ 1 \leq e_{tsk} \leq 8 $
+    \item $ d_{sp} \in \mathbb{Z}^+ $: \texttt{sprint\_duration\_days} — duration of sprint $ sp $, $ 7 \leq d_{sp} \leq 14 $
+    \item $ a_w \in [0,100] $: \texttt{worker\_availability\_percentage} — weekly availability of worker $ w $ (in \%)
+    \item $ sp_{us} \in \{1,2,3,5,8,13\} $: \texttt{story\_point\_estimate} — estimated story points for user story $ us $
+    \item $ rt_{bl} \in \mathbb{Z}^+ $: \texttt{blocker\_resolution\_time\_days} — time to resolve blocker $ bl $, $ 0 \leq rt_{bl} \leq 30 $
+    \item $ doc_f \in \{0,1\} $: \texttt{documentation\_status\_flag} — 1 if documentation for feature $ f $ is complete
+    \item $ v_{t} \in \mathbb{R}^+ $: \texttt{velocity\_forecast} — forecasted velocity for next sprint, $ 0 \leq v_t \leq 50 $
+    \item $ r_{f} \in \{0,1\} $: \texttt{release\_inclusion\_flag} — 1 if feature $ f $ is included in next release
+    \item $ ref_{us} \in [10,60] $: \texttt{refinement\_effort\_per\_story} — minutes spent refining user story $ us $
+    \item $ act_{sre} \in \{0,1,\dots,10\} $: \texttt{retrospective\_action\_count} — number of actions taken from retrospective $ sre $
+    \item $ fb_{sh,sp} \in \{1,2,3,4,5\} $: \texttt{stakeholder\_feedback\_score} — feedback score from stakeholder $ sh $ after sprint $ sp $
+    \item $ prog_{tsk} \in \{0,1,2\} $: \texttt{task\_completion\_status} — 0=todo, 1=doing, 2=done
+
+\end{document}
