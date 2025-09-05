@@ -1,0 +1,119 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#7A288A,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    P[Project]:::entity
+    T[Team]:::entity
+    W[Worker]:::entity
+    F[Feature]:::entity
+    S[Skill]:::entity
+    R[Role]:::entity
+    PO[Product Owner]:::entity
+    SM[Scrum Master]:::entity
+    PB[Product Backlog]:::entity
+    SP[Sprint]:::entity
+    SPP[Sprint Planning]:::entity
+    DS[Daily Scrum]:::entity
+    SR[Sprint Review]:::entity
+    SRE[Sprint Retrospective]:::entity
+    SBL[Sprint Backlog]:::entity
+    SG[Sprint Goal]:::entity
+    E[Epic]:::entity
+    US[User Story]:::entity
+    TSK[Task]:::entity
+    DEV[Development Snapshot]:::entity
+    BL[Blocker]:::entity
+    SH[Stakeholder]:::entity
+    VEL[Velocity]:::entity
+    REP[Release Plan]:::entity
+    RM[Roadmap]:::entity
+    SCB[Scrum Board]:::entity
+    FED[Feature Documentation]:::entity
+
+    %% Attributes
+    id_P[id]:::attribute --> P
+    name_P[name]:::attribute --> P
+    project_start_P[project_start]:::attribute --> P
+    project_end_P[project_end]:::attribute --> P
+    description_P[description]:::attribute --> P
+    budget_P[budget]:::attribute --> P
+    status_P[status]:::attribute --> P
+    target_audience_P[target_audience]:::attribute --> P
+    priority_P[priority]:::attribute --> P
+
+    id_T[id]:::attribute --> T
+    name_T[name]:::attribute --> T
+    team_size_T[team_size]:::attribute --> T
+    team_start_T[team_start]:::attribute --> T
+    team_status_T[team_status]:::attribute --> T
+
+    %% Relations
+    R1[is_assigned_to_project]:::relation --> P
+    R1 --> T
+    R2[belongs_to_team]:::relation --> T
+    R2 --> W
+    R3[has_skill]:::relation --> W
+    R3 --> S
+    R4[takes_on_role]:::relation --> W
+    R4 --> R
+    R5[manages_backlog]:::relation --> PO
+    R5 --> PB
+    R6[supports_team]:::relation --> SM
+    R6 --> T
+
+    %% Goals
+    G0[maximize_project_budget]:::goal --> budget_P
+    G1[minimize_project_duration]:::goal --> project_end_P
+    G2[maximize_team_size]:::goal --> team_size_T
+    G3[maximize_feature_priority]:::goal --> priority_P
+    G4[minimize_task_effort]:::goal --> TSK
+    G5[maximize_sprint_velocity]:::goal --> VEL
+    G6[minimize_blocker_severity]:::goal --> BL
+    G7[maximize_stakeholder_influence]:::goal --> SH
+    G8[minimize_sprint_planning_duration]:::goal --> SPP
+    G9[maximize_sprint_goal_achievement]:::goal --> SG
+    G10[minimize_development_snapshot_bugs]:::goal --> DEV
+    G11[maximize_feature_documentation_quality]:::goal --> FED
+    G12[minimize_sprint_retrospective_duration]:::goal --> SRE
+    G13[maximize_team_satisfaction]:::goal --> SRE
+    G14[minimize_release_plan_delay]:::goal --> REP
+
+    %% Conditions
+    C0[project_status_condition]:::condition --> status_P
+    C1[team_size_condition]:::condition --> team_size_T
+    C2[feature_priority_condition]:::condition --> priority_P
+    C3[task_status_condition]:::condition --> TSK
+    C4[sprint_velocity_condition]:::condition --> VEL
+    C5[blocker_status_condition]:::condition --> BL
+    C6[stakeholder_influence_condition]:::condition --> SH
+    C7[sprint_planning_duration_condition]:::condition --> SPP
+    C8[sprint_goal_achievement_condition]:::condition --> SG
+    C9[development_snapshot_quality_condition]:::condition --> DEV
+    C10[feature_documentation_quality_condition]:::condition --> FED
+    C11[sprint_retrospective_duration_condition]:::condition --> SRE
+    C12[team_satisfaction_condition]:::condition --> SRE
+    C13[release_plan_status_condition]:::condition --> REP
+    C14[roadmap_status_condition]:::condition --> RM
+
+    %% Decision Variables
+    D0[project_budget_allocation]:::decisionVariable --> budget_P
+    D1[team_size_allocation]:::decisionVariable --> team_size_T
+    D2[feature_priority_level]:::decisionVariable --> priority_P
+    D3[task_effort_allocation]:::decisionVariable --> TSK
+    D4[sprint_velocity_target]:::decisionVariable --> VEL
+    D5[blocker_resolution_priority]:::decisionVariable --> BL
+    D6[stakeholder_influence_level]:::decisionVariable --> SH
+    D7[sprint_planning_duration_target]:::decisionVariable --> SPP
+    D8[sprint_goal_achievement_target]:::decisionVariable --> SG
+    D9[development_snapshot_quality_target]:::decisionVariable --> DEV
+    D10[feature_documentation_quality_target]:::decisionVariable --> FED
+    D11[sprint_retrospective_duration_target]:::decisionVariable --> SRE
+    D12[team_satisfaction_target]:::decisionVariable --> SRE
+    D13[release_plan_delay_tolerance]:::decisionVariable --> REP
+    D14[roadmap_milestone_achievement_target]:::decisionVariable --> RM

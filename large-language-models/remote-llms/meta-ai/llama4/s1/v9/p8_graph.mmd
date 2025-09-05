@@ -1,0 +1,85 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    P[Project]:::entity
+    T[Team]:::entity
+    W[Worker]:::entity
+    F[Feature]:::entity
+    S[Skill]:::entity
+    R[Role]:::entity
+    PO[ProductOwner]:::entity
+    SM[ScrumMaster]:::entity
+    PB[ProductBacklog]:::entity
+    SP[Sprint]:::entity
+    SPP[SprintPlanning]:::entity
+    DS[DailyScrum]:::entity
+    SR[SprintReview]:::entity
+    SRE[SprintRetrospective]:::entity
+    SBL[SprintBacklog]:::entity
+    SG[SprintGoal]:::entity
+    E[Epic]:::entity
+    US[UserStory]:::entity
+    TSK[Task]:::entity
+    DEV[DevelopmentSnapshot]:::entity
+    BL[Blocker]:::entity
+    SH[Stakeholder]:::entity
+    VEL[Velocity]:::entity
+    REP[ReleasePlan]:::entity
+    RM[Roadmap]:::entity
+    SCB[ScrumBoard]:::entity
+    FED[FeatureDocumentation]:::entity
+
+    %% Attributes
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:1px;
+    P_id[project_id]:::attribute
+    P_name[project_name]:::attribute
+    P_start[project_start]:::attribute
+    P_end[project_end]:::attribute
+    T_id[team_id]:::attribute
+    T_name[team_name]:::attribute
+    W_id[worker_id]:::attribute
+    W_name[worker_name]:::attribute
+    F_id[feature_id]:::attribute
+    F_title[feature_title]:::attribute
+
+    %% Entity-Attribute connections
+    P --> P_id
+    P --> P_name
+    P --> P_start
+    P --> P_end
+    T --> T_id
+    T --> T_name
+    W --> W_id
+    W --> W_name
+    F --> F_id
+    F --> F_title
+
+    %% Relations
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    R1[is_assigned_to_project]:::relation
+    R2[belongs_to_team]:::relation
+    R3[has_skill]:::relation
+    T -->|R1| P
+    W -->|R2| T
+    W -->|R3| S
+
+    %% Goals
+    classDef goal fill:#C6F4D6,stroke:#333,stroke-width:2px;
+    G0[maximize_project_budget]:::goal
+    G1[minimize_project_duration]:::goal
+    G0 --> P_budget[budget]
+    G1 --> P_end
+
+    %% Conditions
+    classDef condition fill:#FFC0CB,stroke:#333,stroke-width:2px;
+    C0[project_status_condition]:::condition
+    C1[team_size_condition]:::condition
+    C0 --> P_status[status]
+    C1 --> T_size[team_size]
+
+    %% Decision Variables
+    classDef decisionVariable fill:#C5C3C8,stroke:#333,stroke-width:2px;
+    D0[project_budget_allocation]:::decisionVariable
+    D1[team_size_adjustment]:::decisionVariable
+    D0 --> P_budget
+    D1 --> T_size

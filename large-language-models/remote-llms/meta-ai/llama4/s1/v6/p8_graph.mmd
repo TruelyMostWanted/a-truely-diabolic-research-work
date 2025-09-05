@@ -1,0 +1,135 @@
+graph TD
+    %% Entities
+    subgraph Entities
+        P[Project]:::blue
+        T[Team]:::blue
+        W[Worker]:::blue
+        F[Feature]:::blue
+        S[Skill]:::blue
+        R[Role]:::blue
+        PO[ProductOwner]:::blue
+        SM[ScrumMaster]:::blue
+        PB[ProductBacklog]:::blue
+        SP[Sprint]:::blue
+        SG[SprintGoal]:::blue
+        US[UserStory]:::blue
+        TSK[Task]:::blue
+        DEV[DevelopmentSnapshot]:::blue
+        BL[Blocker]:::blue
+        SH[Stakeholder]:::blue
+        VEL[Velocity]:::blue
+        REP[ReleasePlan]:::blue
+        RM[Roadmap]:::blue
+        SCB[ScrumBoard]:::blue
+        FED[FeatureDocumentation]:::blue
+    end
+
+    %% Attributes
+    subgraph Attributes
+        id_P[id]:::white
+        name_P[name]:::white
+        project_start_P[project_start]:::white
+        project_end_P[project_end]:::white
+        description_P[description]:::white
+        budget_P[budget]:::white
+        status_P[status]:::white
+        target_audience_P[target_audience]:::white
+        priority_P[priority]:::white
+
+        id_T[id]:::white
+        name_T[name]:::white
+        team_size_T[team_size]:::white
+        team_start_T[team_start]:::white
+        team_status_T[team_status]:::white
+        location_T[location]:::white
+        team_type_T[team_type]:::white
+
+        id_W[id]:::white
+        name_W[name]:::white
+        first_name_W[first_name]:::white
+        email_W[email]:::white
+        start_date_W[start_date]:::white
+        status_W[status]:::white
+        availability_W[availability]:::white
+
+        id_F[id]:::white
+        title_F[title]:::white
+        description_F[description]:::white
+        status_F[status]:::white
+        priority_F[priority]:::white
+        estimated_effort_F[estimated_effort]:::white
+
+        %% ... other attributes ...
+
+    end
+
+    %% Relations
+    subgraph Relations
+        R1[is_assigned_to_project]:::orange --> P
+        R1 --> T
+        R2[belongs_to_team]:::orange --> T
+        R2 --> W
+        R3[has_skill]:::orange --> W
+        R3 --> S
+        R4[takes_on_role]:::orange --> W
+        R4 --> R
+        R5[manages_backlog]:::orange --> PO
+        R5 --> PB
+        %% ... other relations ...
+    end
+
+    %% Goals
+    subgraph Goals
+        G0[maximize_project_budget]:::green --> P
+        G0 --> budget_P
+        G1[minimize_project_duration]:::green --> P
+        G1 --> project_start_P
+        G1 --> project_end_P
+        %% ... other goals ...
+    end
+
+    %% Conditions
+    subgraph Conditions
+        C0[project_status_is_active]:::red --> P
+        C0 --> status_P
+        C1[team_size_is_sufficient]:::red --> T
+        C1 --> team_size_T
+        %% ... other conditions ...
+    end
+
+    %% Decision Variables
+    subgraph Decision Variables
+        D0[project_budget_allocation]:::purple --> P
+        D0 --> budget_P
+        D1[team_size_allocation]:::purple --> T
+        D1 --> team_size_T
+        %% ... other decision variables ...
+    end
+
+    %% Connections
+    P --> id_P
+    P --> name_P
+    P --> project_start_P
+    P --> project_end_P
+    P --> description_P
+    P --> budget_P
+    P --> status_P
+    P --> target_audience_P
+    P --> priority_P
+
+    T --> id_T
+    T --> name_T
+    T --> team_size_T
+    T --> team_start_T
+    T --> team_status_T
+    T --> location_T
+    T --> team_type_T
+
+    %% ... other connections ...
+
+    classDef blue fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef white fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef orange fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef green fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef red fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef purple fill:#7A288A,stroke:#333,stroke-width:2px;

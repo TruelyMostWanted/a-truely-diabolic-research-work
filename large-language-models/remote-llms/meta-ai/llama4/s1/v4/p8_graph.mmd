@@ -1,0 +1,73 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    P(Project):::entity
+    T(Team):::entity
+    W(Worker):::entity
+    F(Feature):::entity
+    S(Skill):::entity
+    R(Role):::entity
+    PO(Product Owner):::entity
+    SM(Scrum Master):::entity
+    PB(Product Backlog):::entity
+    SP(Sprint):::entity
+    SG(Sprint Goal):::entity
+    US(User Story):::entity
+    TSK(Task):::entity
+    DEV(Development Snapshot):::entity
+    BL(Blocker):::entity
+    SH(Stakeholder):::entity
+    VEL(Velocity):::entity
+    REP(Release Plan):::entity
+    RM(Roadmap):::entity
+    SCB(Scrum Board):::entity
+    FED(Feature Documentation):::entity
+
+    %% Attributes
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:1px;
+    P_id(Project ID):::attribute
+    P_name(Project Name):::attribute
+    T_id(Team ID):::attribute
+    T_name(Team Name):::attribute
+    W_id(Worker ID):::attribute
+    W_name(Worker Name):::attribute
+    F_id(Feature ID):::attribute
+    F_title(Feature Title):::attribute
+
+    %% Entity-Attribute Connections
+    P --> P_id
+    P --> P_name
+    T --> T_id
+    T --> T_name
+    W --> W_id
+    W --> W_name
+    F --> F_id
+    F --> F_title
+
+    %% Relations
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    R1(is_assigned_to_project):::relation
+    R2(belongs_to_team):::relation
+    T -->|R1| P
+    W -->|R2| T
+
+    %% Goals
+    classDef goal fill:#C6F4D6,stroke:#333,stroke-width:2px;
+    G0(maximize_team_velocity):::goal
+    G1(minimize_blocker_severity):::goal
+    VEL -->|avg_story_points| G0
+    BL -->|severity| G1
+
+    %% Conditions
+    classDef condition fill:#FFC0CB,stroke:#333,stroke-width:2px;
+    C0(team_size_condition):::condition
+    C1(sprint_goal_achievement_condition):::condition
+    T -->|team_size| C0
+    SG -->|achievement_status| C1
+
+    %% Decision Variables
+    classDef decisionVariable fill:#C7B8EA,stroke:#333,stroke-width:2px;
+    D0(team_size):::decisionVariable
+    D1(sprint_goal_achievement_rate):::decisionVariable
+    T -->|team_size| D0
+    SG -->|achievement_status| D1

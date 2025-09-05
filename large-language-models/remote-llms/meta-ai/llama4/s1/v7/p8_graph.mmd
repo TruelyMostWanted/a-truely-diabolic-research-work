@@ -1,0 +1,93 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#7A288A,stroke:#333,stroke-width:2px;
+
+    %% Entities and Attributes
+    P[Project]:::entity --> id_Project["id"]:::attribute
+    P --> name_Project["name"]:::attribute
+    P --> project_start_Project["project_start"]:::attribute
+    P --> project_end_Project["project_end"]:::attribute
+    T[Team]:::entity --> id_Team["id"]:::attribute
+    T --> name_Team["name"]:::attribute
+    W[Worker]:::entity --> id_Worker["id"]:::attribute
+    W --> name_Worker["name"]:::attribute
+    F[Feature]:::entity --> id_Feature["id"]:::attribute
+    F --> title_Feature["title"]:::attribute
+    US[UserStory]:::entity --> id_UserStory["id"]:::attribute
+    US --> title_UserStory["title"]:::attribute
+    TSK[Task]:::entity --> id_Task["id"]:::attribute
+    TSK --> title_Task["title"]:::attribute
+
+    %% Relations
+    P -->|contains|> F:::entity
+    T -->|assigned to|> P:::entity
+    W -->|belongs to|> T:::entity
+    F -->|contains|> US:::entity
+    US -->|consists of|> TSK:::entity
+
+    %% Goals
+    G0[maximize_team_velocity]:::goal --> VEL[Velocity]:::entity
+    G0 --> avg_story_points_Velocity["avg_story_points"]:::attribute
+    G1[minimize_blocker_severity]:::goal --> BL[Blocker]:::entity
+    G1 --> severity_Blocker["severity"]:::attribute
+
+    %% Conditions
+    C0[team_size_condition]:::condition --> T:::entity
+    C0 --> team_size_Team["team_size"]:::attribute
+    C1[project_status_condition]:::condition --> P:::entity
+    C1 --> status_Project["status"]:::attribute
+
+    %% Decision Variables
+    D0[team_size]:::decisionVariable --> T:::entity
+    D0 --> team_size_Team["team_size"]:::attribute
+    D1[project_duration]:::decisionVariable --> P:::entity
+    D1 --> project_end_Project["project_end"]:::attribute
+
+    %% More Entities and Attributes
+    SP[Sprint]:::entity --> id_Sprint["id"]:::attribute
+    SP --> sprint_number_Sprint["sprint_number"]:::attribute
+    SG[SprintGoal]:::entity --> id_SprintGoal["id"]:::attribute
+    SG --> objective_description_SprintGoal["objective_description"]:::attribute
+
+    %% More Relations
+    SP -->|pursues|> SG:::entity
+    T -->|supports|> SM[ScrumMaster]:::entity
+
+    %% More Goals
+    G2[maximize_sprint_goal_achievement]:::goal --> SG:::entity
+    G2 --> achievement_status_SprintGoal["achievement_status"]:::attribute
+
+    %% More Conditions
+    C2[feature_priority_condition]:::condition --> F:::entity
+    C2 --> priority_Feature["priority"]:::attribute
+
+    %% More Decision Variables
+    D2[feature_priority]:::decisionVariable --> F:::entity
+    D2 --> priority_Feature["priority"]:::attribute
+
+    %% Entities and Attributes (continued)
+    SH[Stakeholder]:::entity --> id_Stakeholder["id"]:::attribute
+    SH --> name_Stakeholder["name"]:::attribute
+    DEV[DevelopmentSnapshot]:::entity --> id_DevelopmentSnapshot["id"]:::attribute
+    DEV --> version_number_DevelopmentSnapshot["version_number"]:::attribute
+
+    %% Relations (continued)
+    SP -->|generates|> DEV:::entity
+    SH -->|participates in|> SR[SprintReview]:::entity
+
+    %% Goals (continued)
+    G6[maximize_stakeholder_satisfaction]:::goal --> SH:::entity
+    G6 --> influence_level_Stakeholder["influence_level"]:::attribute
+
+    %% Conditions (continued)
+    C6[stakeholder_influence_condition]:::condition --> SH:::entity
+    C6 --> influence_level_Stakeholder["influence_level"]:::attribute
+
+    %% Decision Variables (continued)
+    D6[stakeholder_influence]:::decisionVariable --> SH:::entity
+    D6 --> influence_level_Stakeholder["influence_level"]:::attribute

@@ -1,0 +1,110 @@
+\documentclass{article}
+\title{Optimization Model for Software Development using Scrum}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Project ($P$)
+    \item Team ($T$)
+    \item Worker ($W$)
+    \item Feature ($F$)
+    \item Skill ($S$)
+    \item Role ($R$)
+    \item ProductOwner ($PO$)
+    \item ScrumMaster ($SM$)
+    \item ProductBacklog ($PB$)
+    \item Sprint ($SP$)
+    \item SprintPlanning ($SPP$)
+    \item DailyScrum ($DS$)
+    \item SprintReview ($SR$)
+    \item SprintRetrospective ($SRE$)
+    \item SprintBacklog ($SBL$)
+    \item SprintGoal ($SG$)
+    \item Epic ($E$)
+    \item UserStory ($US$)
+    \item Task ($TSK$)
+    \item DevelopmentSnapshot ($DEV$)
+    \item Blocker ($BL$)
+    \item Stakeholder ($SH$)
+    \item Velocity ($VEL$)
+    \item ReleasePlan ($REP$)
+    \item Roadmap ($RM$)
+    \item ScrumBoard ($SCB$)
+    \item FeatureDocumentation ($FED$)
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$ (Project)
+    \item $t \in T$ (Team)
+    \item $w \in W$ (Worker)
+    \item $f \in F$ (Feature)
+    \item $s \in S$ (Skill)
+    \item $r \in R$ (Role)
+    \item $po \in PO$ (ProductOwner)
+    \item $sm \in SM$ (ScrumMaster)
+    \item $sp \in SP$ (Sprint)
+    \item $sg \in SG$ (SprintGoal)
+    \item $us \in US$ (UserStory)
+    \item $tsk \in TSK$ (Task)
+    \item $dev \in DEV$ (DevelopmentSnapshot)
+    \item $bl \in BL$ (Blocker)
+    \item $sh \in SH$ (Stakeholder)
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: maximize\_project\_budget: $\max \sum_{p \in P} budget_p$
+    \item G1: minimize\_project\_duration: $\min \sum_{p \in P} (project\_end_p - project\_start_p)$
+    \item G2: maximize\_team\_velocity: $\max \sum_{t \in T} avg\_story\_points_t$
+    \item G3: minimize\_blocker\_severity: $\min \sum_{bl \in BL} severity_bl$
+    \item G4: maximize\_sprint\_goal\_achievement: $\max \sum_{sp \in SP} achievement\_of\_goal_sp$
+    \item G5: minimize\_task\_effort: $\min \sum_{tsk \in TSK} effort_tsk$
+    \item G6: maximize\_feature\_priority: $\max \sum_{f \in F} priority_f$
+    \item G7: minimize\_sprint\_retrospective\_improvement\_actions: $\min \sum_{sre \in SRE} improvement\_actions_sre$
+    \item G8: maximize\_stakeholder\_satisfaction: $\max \sum_{sh \in SH} influence\_level_sh$
+    \item G9: minimize\_development\_snapshot\_bugs: $\min \sum_{dev \in DEV} test\_status_dev$
+    \item G10: maximize\_product\_owner\_availability: $\max \sum_{po \in PO} availability_po$
+    \item G11: minimize\_scrum\_master\_experience: $\min \sum_{sm \in SM} experience_sm$
+    \item G12: maximize\_team\_size: $\max \sum_{t \in T} team\_size_t$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: project\_status\_condition: $\forall p \in P, status_p = active$
+    \item C1: team\_velocity\_condition: $\forall t \in T, avg\_story\_points_t \geq threshold$
+    \item C2: blocker\_status\_condition: $\forall bl \in BL, status_bl = resolved$
+    \item C3: sprint\_goal\_condition: $\forall sp \in SP, achievement\_of\_goal_sp \geq threshold$
+    \item C4: task\_status\_condition: $\forall tsk \in TSK, status_tsk = done$
+    \item C5: feature\_priority\_condition: $\forall f \in F, priority_f = high$
+    \item C6: stakeholder\_influence\_condition: $\forall sh \in SH, influence\_level_sh = high$
+    \item C7: development\_snapshot\_test\_status\_condition: $\forall dev \in DEV, test\_status_dev = passed$
+    \item C8: product\_owner\_availability\_condition: $\forall po \in PO, availability_po \geq threshold$
+    \item C9: scrum\_master\_experience\_condition: $\forall sm \in SM, experience_sm \geq threshold$
+    \item C10: team\_size\_condition: $\forall t \in T, team\_size_t \geq threshold$
+    \item C11: sprint\_retrospective\_improvement\_actions\_condition: $\forall sre \in SRE, improvement\_actions_sre \leq threshold$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item D0: project\_start\_date: $date \in \{2023-01-01, 2023-01-31\}$
+    \item D1: team\_size: $team\_size \in \{1, 10\}$
+    \item D2: sprint\_duration: $sprint\_duration \in \{1, 4\}$
+    \item D3: task\_effort: $effort \in \{1, 100\}$
+    \item D4: feature\_priority: $priority \in \{1, 5\}$
+    \item D5: blocker\_severity: $severity \in \{1, 5\}$
+    \item D6: stakeholder\_influence\_level: $influence\_level \in \{1, 5\}$
+    \item D7: product\_owner\_availability: $availability \in [0, 1]$
+    \item D8: scrum\_master\_experience: $experience \in \{1, 10\}$
+    \item D9: development\_snapshot\_test\_status: $test\_status \in \{0, 1\}$
+    \item D10: sprint\_goal\_achievement: $achievement \in [0, 1]$
+    \item D11: team\_velocity: $team\_velocity \in \{1, 100\}$
+    \item D12: sprint\_retrospective\_improvement\_actions: $improvement\_actions \in \{0, 10\}$
+\end{itemize}
+
+\end{document}

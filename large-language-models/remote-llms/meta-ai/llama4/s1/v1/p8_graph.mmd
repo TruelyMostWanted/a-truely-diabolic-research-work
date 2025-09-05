@@ -1,0 +1,102 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#800080,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    P[Project]:::entity
+    T[Team]:::entity
+    W[Worker]:::entity
+    F[Feature]:::entity
+    S[Skill]:::entity
+    R[Role]:::entity
+    PO[ProductOwner]:::entity
+    SM[ScrumMaster]:::entity
+    PB[ProductBacklog]:::entity
+    SP[Sprint]:::entity
+    SPP[SprintPlanning]:::entity
+    DS[DailyScrum]:::entity
+    SR[SprintReview]:::entity
+    SRE[SprintRetrospective]:::entity
+    SBL[SprintBacklog]:::entity
+    SG[SprintGoal]:::entity
+    E[Epic]:::entity
+    US[UserStory]:::entity
+    TSK[Task]:::entity
+    DEV[DevelopmentSnapshot]:::entity
+    BL[Blocker]:::entity
+    SH[Stakeholder]:::entity
+    VEL[Velocity]:::entity
+    REP[ReleasePlan]:::entity
+    RM[Roadmap]:::entity
+    SCB[ScrumBoard]:::entity
+    FED[FeatureDocumentation]:::entity
+
+    %% Attributes
+    id_P[id]:::attribute
+    name_P[name]:::attribute
+    project_start_P[project_start]:::attribute
+    project_end_P[project_end]:::attribute
+    description_P[description]:::attribute
+    budget_P[budget]:::attribute
+    status_P[status]:::attribute
+    target_audience_P[target_audience]:::attribute
+    priority_P[priority]:::attribute
+
+    P --> id_P
+    P --> name_P
+    P --> project_start_P
+    P --> project_end_P
+    P --> description_P
+    P --> budget_P
+    P --> status_P
+    P --> target_audience_P
+    P --> priority_P
+
+    %% Relations
+    R1[is_assigned_to_project]:::relation
+    T --> R1
+    R1 --> P
+
+    R2[belongs_to_team]:::relation
+    W --> R2
+    R2 --> T
+
+    %% Goals
+    G0[maximize_project_budget]:::goal
+    G0 --> budget_P
+
+    G1[minimize_sprint_duration]:::goal
+    SP --> G1
+    G1 --> end_date_SP[end_date]:::attribute
+
+    %% Conditions
+    C0[project_status_condition]:::condition
+    C0 --> status_P
+
+    C1[sprint_goal_condition]:::condition
+    SG --> C1
+    C1 --> achievement_status_SG[achievement_status]:::attribute
+
+    %% Decision Variables
+    D0[project_allocation]:::decisionVariable
+    D0 --> P
+
+    D1[sprint_duration]:::decisionVariable
+    D1 --> SP
+
+    %% More entities, attributes, relations, goals, conditions, and decision variables...
+    %% ... (similar to above)
+
+    %% All other entities, attributes, relations, goals, conditions, and decision variables...
+
+    class P,T,W,F,S,R,PO,SM,PB,SP,SPP,DS,SR,SRE,SBL,SG,E,US,TSK,DEV,BL,SH,VEL,REP,RM,SCB,FED entity;
+    class id_P,name_P,project_start_P,project_end_P,description_P,budget_P,status_P,target_audience_P,priority_P attribute;
+    class R1,R2 relation;
+    class G0,G1 goal;
+    class C0,C1 condition;
+    class D0,D1 decisionVariable;

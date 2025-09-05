@@ -1,0 +1,191 @@
+graph TD
+    subgraph Entities
+        Project["Project (P)"]:::blue
+        Team["Team (T)"]:::blue
+        Worker["Worker (W)"]:::blue
+        Feature["Feature (F)"]:::blue
+        Skill["Skill (S)"]:::blue
+        Role["Role (R)"]:::blue
+        ProductOwner["ProductOwner (PO)"]:::blue
+        ScrumMaster["ScrumMaster (SM)"]:::blue
+        ProductBacklog["ProductBacklog (PB)"]:::blue
+        Sprint["Sprint (SP)"]:::blue
+        SprintGoal["SprintGoal (SG)"]:::blue
+        Epic["Epic (E)"]:::blue
+        UserStory["UserStory (US)"]:::blue
+        Task["Task (TSK)"]:::blue
+        DevelopmentSnapshot["DevelopmentSnapshot (DEV)"]:::blue
+        Blocker["Blocker (BL)"]:::blue
+        Stakeholder["Stakeholder (SH)"]:::blue
+        Velocity["Velocity (VEL)"]:::blue
+        ReleasePlan["ReleasePlan (REP)"]:::blue
+        Roadmap["Roadmap (RM)"]:::blue
+        ScrumBoard["ScrumBoard (SCB)"]:::blue
+        FeatureDocumentation["FeatureDocumentation (FED)"]:::blue
+    end
+
+    subgraph Attributes
+        id["id"]:::white
+        name["name"]:::white
+        team_size["team_size"]:::white
+        priority["priority"]:::white
+        effort["effort"]:::white
+        achievement_status["achievement_status"]:::white
+        test_status["test_status"]:::white
+        feedback_documentation["feedback_documentation"]:::white
+        influence_level["influence_level"]:::white
+        planned_date["planned_date"]:::white
+        actual_date["actual_date"]:::white
+        number_of_cards["number_of_cards"]:::white
+        title["title"]:::white
+    end
+
+    subgraph Relations
+        is_assigned_to_project["is_assigned_to_project"]:::orange
+        belongs_to_team["belongs_to_team"]:::orange
+        has_skill["has_skill"]:::orange
+        takes_on_role["takes_on_role"]:::orange
+        manages_backlog["manages_backlog"]:::orange
+        is_supported_by["is_supported_by"]:::orange
+        contains_feature["contains_feature"]:::orange
+        contains_epic["contains_epic"]:::orange
+        contains_user_story["contains_user_story"]:::orange
+        consists_of_tasks["consists_of_tasks"]:::orange
+    end
+
+    subgraph Goals
+        G0["G0: Maximize team velocity"]:::green
+        G1["G1: Minimize blocker severity"]:::green
+        G2["G2: Maximize sprint goal achievement"]:::green
+        G3["G3: Minimize task effort"]:::green
+        G4["G4: Maximize feature priority"]:::green
+        G5["G5: Minimize sprint duration"]:::green
+        G6["G6: Maximize stakeholder satisfaction"]:::green
+        G7["G7: Minimize task dependencies"]:::green
+        G8["G8: Maximize product backlog quality"]:::green
+        G9["G9: Minimize release plan deviation"]:::green
+        G10["G10: Maximize team collaboration"]:::green
+        G11["G11: Minimize development snapshot bugs"]:::green
+        G12["G12: Maximize feature documentation quality"]:::green
+        G13["G13: Minimize scrum board complexity"]:::green
+        G14["G14: Maximize sprint review feedback"]:::green
+    end
+
+    subgraph Conditions
+        C0["C0: Team size must be greater than 5"]:::red
+        C1["C1: Sprint duration must be less than 30 days"]:::red
+        C2["C2: Feature priority must be high"]:::red
+        C3["C3: Task effort must be less than 10 hours"]:::red
+        C4["C4: Stakeholder influence must be high"]:::red
+        C5["C5: Product backlog status must be up-to-date"]:::red
+        C6["C6: Release plan deviation must be less than 10%"]:::red
+        C7["C7: Team collaboration must be high"]:::red
+        C8["C8: Development snapshot quality must be high"]:::red
+        C9["C9: Feature documentation quality must be high"]:::red
+        C10["C10: Scrum board complexity must be low"]:::red
+        C11["C11: Sprint review feedback must be positive"]:::red
+        C12["C12: Blocker severity must be low"]:::red
+        C13["C13: Sprint goal achievement must be high"]:::red
+        C14["C14: Task dependencies must be low"]:::red
+    end
+
+    subgraph Decision Variables
+        D0["D0: Team size"]:::purple
+        D1["D1: Sprint duration"]:::purple
+        D2["D2: Feature priority"]:::purple
+        D3["D3: Task effort"]:::purple
+        D4["D4: Stakeholder influence"]:::purple
+        D5["D5: Product backlog status"]:::purple
+        D6["D6: Release plan deviation"]:::purple
+        D7["D7: Team collaboration"]:::purple
+        D8["D8: Development snapshot quality"]:::purple
+        D9["D9: Feature documentation quality"]:::purple
+        D10["D10: Scrum board complexity"]:::purple
+        D11["D11: Sprint review feedback"]:::purple
+        D12["D12: Blocker severity"]:::purple
+        D13["D13: Sprint goal achievement"]:::purple
+        D14["D14: Task dependencies"]:::purple
+    end
+
+    %% Entity-Attribute connections
+    Team --> team_size
+    Feature --> priority
+    Task --> effort
+    SprintGoal --> achievement_status
+    DevelopmentSnapshot --> test_status
+    SprintReview --> feedback_documentation
+    Stakeholder --> influence_level
+    ReleasePlan --> planned_date
+    ReleasePlan --> actual_date
+    ScrumBoard --> number_of_cards
+    FeatureDocumentation --> title
+
+    %% Entity-Relation connections
+    Team -->|is_assigned_to_project| Project
+    Worker -->|belongs_to_team| Team
+    Worker -->|has_skill| Skill
+    Worker -->|takes_on_role| Role
+    ProductOwner -->|manages_backlog| ProductBacklog
+    Team -->|is_supported_by| ScrumMaster
+    ProductBacklog -->|contains_feature| Feature
+    ProductBacklog -->|contains_epic| Epic
+    Epic -->|contains_user_story| UserStory
+    UserStory -->|consists_of_tasks| Task
+
+    %% Goal-Entity connections
+    G0 --> Velocity
+    G1 --> Blocker
+    G2 --> SprintGoal
+    G3 --> Task
+    G4 --> Feature
+    G5 --> Sprint
+    G6 --> Stakeholder
+    G7 --> Task
+    G8 --> ProductBacklog
+    G9 --> ReleasePlan
+    G10 --> Team
+    G11 --> DevelopmentSnapshot
+    G12 --> FeatureDocumentation
+    G13 --> ScrumBoard
+    G14 --> SprintReview
+
+    %% Condition-Entity connections
+    C0 --> Team
+    C1 --> Sprint
+    C2 --> Feature
+    C3 --> Task
+    C4 --> Stakeholder
+    C5 --> ProductBacklog
+    C6 --> ReleasePlan
+    C7 --> Team
+    C8 --> DevelopmentSnapshot
+    C9 --> FeatureDocumentation
+    C10 --> ScrumBoard
+    C11 --> SprintReview
+    C12 --> Blocker
+    C13 --> SprintGoal
+    C14 --> Task
+
+    %% Decision Variable-Entity connections
+    D0 --> Team
+    D1 --> Sprint
+    D2 --> Feature
+    D3 --> Task
+    D4 --> Stakeholder
+    D5 --> ProductBacklog
+    D6 --> ReleasePlan
+    D7 --> Team
+    D8 --> DevelopmentSnapshot
+    D9 --> FeatureDocumentation
+    D10 --> ScrumBoard
+    D11 --> SprintReview
+    D12 --> Blocker
+    D13 --> SprintGoal
+    D14 --> Task
+
+    classDef blue fill:#87CEEB;
+    classDef white fill:#FFFFFF;
+    classDef orange fill:#FFA07A;
+    classDef green fill:#98FB98;
+    classDef red fill:#FFC0CB;
+    classDef purple fill:#C7B8EA;

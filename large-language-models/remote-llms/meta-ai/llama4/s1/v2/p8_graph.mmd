@@ -1,0 +1,53 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#7A288A,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    Project:::entity --> id_Project["id"]:::attribute
+    Project --> name_Project["name"]:::attribute
+    Project --> project_start_Project["project_start"]:::attribute
+    Project --> project_end_Project["project_end"]:::attribute
+    Project --> budget_Project["budget"]:::attribute
+
+    Team:::entity --> id_Team["id"]:::attribute
+    Team --> name_Team["name"]:::attribute
+    Team --> team_size_Team["team_size"]:::attribute
+
+    %% Relations
+    Project -->|is_assigned_to_project|> Team:::entity
+    class Project-Team relation;
+
+    %% Goals
+    maximize_project_budget:::goal --> Project:::entity
+    maximize_project_budget --> budget_Project
+    minimize_project_duration:::goal --> Project:::entity
+    minimize_project_duration --> project_end_Project
+
+    %% Conditions
+    project_status_condition:::condition --> Project:::entity
+    project_status_condition --> status_Project["status"]:::attribute
+
+    %% Decision Variables
+    project_start_date:::decisionVariable --> Project:::entity
+    team_size:::decisionVariable --> Team:::entity
+
+    %% More Entities, Relations, Goals, Conditions, Decision Variables...
+    %% ... (all entities, relations, goals, conditions, and decision variables)
+
+    %%%:entity
+    Task:::entity --> id_Task["id"]:::attribute
+    Task --> effort_Task["effort"]:::attribute
+    Task --> status_Task["status"]:::attribute
+    minimize_task_effort:::goal --> Task:::entity
+    minimize_task_effort --> effort_Task
+    task_status_condition:::condition --> Task:::entity
+    task_status_condition --> status_Task
+    task_effort:::decisionVariable --> Task:::entity
+
+    %% More...
+    %% Add all other entities, attributes, relations, goals, conditions, and decision variables...

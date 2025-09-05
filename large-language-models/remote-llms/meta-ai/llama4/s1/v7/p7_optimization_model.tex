@@ -1,0 +1,246 @@
+\documentclass{article}
+\title{Optimization Model for Software Development using Scrum}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Project ($P$)
+    \item Team ($T$)
+    \item Worker ($W$)
+    \item Feature ($F$)
+    \item Skill ($S$)
+    \item Role ($R$)
+    \item ProductOwner ($PO$)
+    \item ScrumMaster ($SM$)
+    \item ProductBacklog ($PB$)
+    \item Sprint ($SP$)
+    \item SprintPlanning ($SPP$)
+    \item DailyScrum ($DS$)
+    \item SprintReview ($SR$)
+    \item SprintRetrospective ($SRE$)
+    \item SprintBacklog ($SBL$)
+    \item SprintGoal ($SG$)
+    \item Epic ($E$)
+    \item UserStory ($US$)
+    \item Task ($TSK$)
+    \item DevelopmentSnapshot ($DEV$)
+    \item Blocker ($BL$)
+    \item Stakeholder ($SH$)
+    \item Velocity ($VEL$)
+    \item ReleasePlan ($REP$)
+    \item Roadmap ($RM$)
+    \item ScrumBoard ($SCB$)
+    \item FeatureDocumentation ($FED$)
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$ (Project index)
+    \item $t \in T$ (Team index)
+    \item $w \in W$ (Worker index)
+    \item $f \in F$ (Feature index)
+    \item $s \in S$ (Skill index)
+    \item $r \in R$ (Role index)
+    \item $sp \in SP$ (Sprint index)
+    \item $us \in US$ (User Story index)
+    \item $tsk \in TSK$ (Task index)
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: maximize\_team\_velocity
+        \begin{equation*}
+            \max \sum_{t \in T} VEL_{t}.avg\_story\_points
+        \end{equation*}
+    \item G1: minimize\_blocker\_severity
+        \begin{equation*}
+            \min \sum_{bl \in BL} BL_{bl}.severity
+        \end{equation*}
+    \item G2: maximize\_sprint\_goal\_achievement
+        \begin{equation*}
+            \max \sum_{sp \in SP} SG_{sp}.achievement\_status
+        \end{equation*}
+    \item G3: minimize\_task\_effort
+        \begin{equation*}
+            \min \sum_{tsk \in TSK} TSK_{tsk}.effort
+        \end{equation*}
+    \item G4: maximize\_feature\_priority
+        \begin{equation*}
+            \max \sum_{f \in F} F_{f}.priority
+        \end{equation*}
+    \item G5: minimize\_project\_duration
+        \begin{equation*}
+            \min P_{p}.project\_end - P_{p}.project\_start
+        \end{equation*}
+    \item G6: maximize\_stakeholder\_satisfaction
+        \begin{equation*}
+            \max \sum_{sh \in SH} SH_{sh}.influence\_level
+        \end{equation*}
+    \item G7: minimize\_development\_snapshot\_bugs
+        \begin{equation*}
+            \min \sum_{dev \in DEV} DEV_{dev}.test\_status
+        \end{equation*}
+    \item G8: maximize\_scrum\_board\_productivity
+        \begin{equation*}
+            \max \sum_{scb \in SCB} SCB_{scb}.number\_of\_cards
+        \end{equation*}
+    \item G9: minimize\_sprint\_retrospective\_improvement\_actions
+        \begin{equation*}
+            \min \sum_{sre \in SRE} SRE_{sre}.improvement\_actions
+        \end{equation*}
+    \item G10: maximize\_product\_backlog\_quality
+        \begin{equation*}
+            \max PB_{pb}.status
+        \end{equation*}
+    \item G11: minimize\_task\_blockers
+        \begin{equation*}
+            \min \sum_{tsk \in TSK} TSK_{tsk}.blockers
+        \end{equation*}
+    \item G12: maximize\_team\_collaboration
+        \begin{equation*}
+            \max \sum_{t \in T} T_{t}.team\_size
+        \end{equation*}
+    \item G13: minimize\_project\_cost
+        \begin{equation*}
+            \min P_{p}.budget
+        \end{equation*}
+    \item G14: maximize\_feature\_documentation\_quality
+        \begin{equation*}
+            \max \sum_{fed \in FED} FED_{fed}.title
+        \end{equation*}
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: team\_size\_condition
+        \begin{equation*}
+            T_{t}.team\_size \geq 1, \forall t \in T
+        \end{equation*}
+    \item C1: project\_status\_condition
+        \begin{equation*}
+            P_{p}.status = "active", \forall p \in P
+        \end{equation*}
+    \item C2: feature\_priority\_condition
+        \begin{equation*}
+            F_{f}.priority \geq 1, \forall f \in F
+        \end{equation*}
+    \item C3: task\_status\_condition
+        \begin{equation*}
+            TSK_{tsk}.status \in \{"in\_progress", "done"\}, \forall tsk \in TSK
+        \end{equation*}
+    \item C4: sprint\_goal\_condition
+        \begin{equation*}
+            SG_{sp}.achievement\_status = "achieved", \forall sp \in SP
+        \end{equation*}
+    \item C5: blocker\_severity\_condition
+        \begin{equation*}
+            BL_{bl}.severity \leq 2, \forall bl \in BL
+        \end{equation*}
+    \item C6: stakeholder\_influence\_condition
+        \begin{equation*}
+            SH_{sh}.influence\_level \geq 1, \forall sh \in SH
+        \end{equation*}
+    \item C7: development\_snapshot\_condition
+        \begin{equation*}
+            DEV_{dev}.test\_status = "passed", \forall dev \in DEV
+        \end{equation*}
+    \item C8: scrum\_board\_productivity\_condition
+        \begin{equation*}
+            SCB_{scb}.number\_of\_cards \geq 1, \forall scb \in SCB
+        \end{equation*}
+    \item C9: sprint\_retrospective\_condition
+        \begin{equation*}
+            SRE_{sre}.improvement\_actions \leq 2, \forall sre \in SRE
+        \end{equation*}
+    \item C10: product\_backlog\_condition
+        \begin{equation*}
+            PB_{pb}.status = "up-to-date", \forall pb \in PB
+        \end{equation*}
+    \item C11: task\_blocker\_condition
+        \begin{equation*}
+            TSK_{tsk}.blockers = 0, \forall tsk \in TSK
+        \end{equation*}
+    \item C12: team\_collaboration\_condition
+        \begin{equation*}
+            T_{t}.team\_size \geq 2, \forall t \in T
+        \end{equation*}
+    \item C13: project\_cost\_condition
+        \begin{equation*}
+            P_{p}.budget \geq 1000, \forall p \in P
+        \end{equation*}
+    \item C14: feature\_documentation\_condition
+        \begin{equation*}
+            FED_{fed}.title \neq "", \forall fed \in FED
+        \end{equation*}
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item D0: team\_size ($x_{t}$)
+        \begin{equation*}
+            x_{t} \in \mathbb{Z}^{+}, \forall t \in T
+        \end{equation*}
+    \item D1: project\_duration ($d \in D$)
+        \begin{equation*}
+            d \in \mathbb{Z}^{+}, \forall p \in P
+        \end{equation*}
+    \item D2: feature\_priority ($x_{f}$)
+        \begin{equation*}
+            x_{f} \in \{1, 2, 3\}, \forall f \in F
+        \end{equation*}
+    \item D3: task\_effort ($x_{tsk}$)
+        \begin{equation*}
+            x_{tsk} \in \mathbb{Z}^{+}, \forall tsk \in TSK
+        \end{equation*}
+    \item D4: sprint\_goal\_achievement ($x_{sp}$)
+        \begin{equation*}
+            x_{sp} \in \{0, 1\}, \forall sp \in SP
+        \end{equation*}
+    \item D5: blocker\_severity ($x_{bl}$)
+        \begin{equation*}
+            x_{bl} \in \{1, 2, 3\}, \forall bl \in BL
+        \end{equation*}
+    \item D6: stakeholder\_influence ($x_{sh}$)
+        \begin{equation*}
+            x_{sh} \in \{1, 2, 3\}, \forall sh \in SH
+        \end{equation*}
+    \item D7: development\_snapshot\_quality ($x_{dev}$)
+        \begin{equation*}
+            x_{dev} \in \{1, 2, 3\}, \forall dev \in DEV
+        \end{equation*}
+    \item D8: scrum\_board\_productivity ($x_{scb}$)
+        \begin{equation*}
+            x_{scb} \in \mathbb{Z}^{+}, \forall scb \in SCB
+        \end{equation*}
+    \item D9: sprint\_retrospective\_improvement\_actions ($x_{sre}$)
+        \begin{equation*}
+            x_{sre} \in \mathbb{Z}^{+}, \forall sre \in SRE
+        \end{equation*}
+    \item D10: product\_backlog\_quality ($x_{pb}$)
+        \begin{equation*}
+            x_{pb} \in \{1, 2, 3\}, \forall pb \in PB
+        \end{equation*}
+    \item D11: task\_blockers ($x_{tsk}$)
+        \begin{equation*}
+            x_{tsk} \in \mathbb{Z}^{+}, \forall tsk \in TSK
+        \end{equation*}
+    \item D12: team\_collaboration ($x_{t}$)
+        \begin{equation*}
+            x_{t} \in \{1, 2, 3\}, \forall t \in T
+        \end{equation*}
+    \item D13: project\_cost ($x_{p}$)
+        \begin{equation*}
+            x_{p} \in \mathbb{Z}^{+}, \forall p \in P
+        \end{equation*}
+    \item D14: feature\_documentation\_quality ($x_{fed}$)
+        \begin{equation*}
+            x_{fed} \in \{1, 2, 3\}, \forall fed \in FED
+        \end{equation*}
+\end{itemize}
+
+\end{document}
