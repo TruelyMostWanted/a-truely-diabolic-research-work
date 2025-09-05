@@ -1,0 +1,135 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Optimization Model},
+}
+
+\title{Mathematical Optimization Model for a SCRUM-Based Software Development Company}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+This document presents a formal mathematical optimization model for resource allocation, scheduling, and process management in a software development company utilizing the SCRUM framework. The model is derived from a defined domain structure of entities, their relationships, and a set of business goals and constraints.
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p | p \text{ is a project}\}$, with attributes $\text{id}, \text{name}, \text{project\_start}, \text{project\_end}, \text{description}, \text{budget}, \text{status}, \text{target\_audience}, \text{priority}$
+    \item $\text{Team} = \{t | t \text{ is a team}\}$, with attributes $\text{id}, \text{name}, \text{team\_size}, \text{team\_start}, \text{team\_status}, \text{location}, \text{team\_type}$
+    \item $\text{Worker} = \{w | w \text{ is a worker}\}$, with attributes $\text{id}, \text{name}, \text{first\_name}, \text{email}, \text{start\_date}, \text{status}, \text{availability}$
+    \item $\text{Feature} = \{f | f \text{ is a feature}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{status}, \text{priority}, \text{estimated\_effort}$
+    \item $\text{Skill} = \{s | s \text{ is a skill}\}$, with attributes $\text{id}, \text{label}, \text{description}, \text{level}, \text{certified}, \text{category}$
+    \item $\text{Role} = \{r | r \text{ is a role}\}$, with attributes $\text{id}, \text{role\_name}, \text{description}, \text{area\_of\_responsibility}$
+    \item $\text{ProductOwner} = \{po | po \text{ is a product owner}\}$, with attributes $\text{id}, \text{name}, \text{email}, \text{availability}$
+    \item $\text{ScrumMaster} = \{sm | sm \text{ is a scrum master}\}$, with attributes $\text{id}, \text{name}, \text{email}, \text{experience}$
+    \item $\text{ProductBacklog} = \{pb | pb \text{ is a product backlog}\}$, with attributes $\text{id}, \text{created\_on}, \text{last\_updated}, \text{number\_of\_entries}, \text{status}$
+    \item $\text{Sprint} = \{sp | sp \text{ is a sprint}\}$, with attributes $\text{id}, \text{sprint\_number}, \text{start\_date}, \text{end\_date}, \text{status}, \text{achievement\_of\_goal}$
+    \item $\text{SprintBacklog} = \{sbl | sbl \text{ is a sprint backlog}\}$, with attributes $\text{id}, \text{number\_of\_tasks}, \text{last\_updated}, \text{status}, \text{total\_effort}$
+    \item $\text{SprintGoal} = \{sg | sg \text{ is a sprint goal}\}$, with attributes $\text{id}, \text{objective\_description}, \text{achievement\_status}, \text{benefit}$
+    \item $\text{Epic} = \{e | e \text{ is an epic}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{priority}, \text{status}, \text{estimated\_effort}$
+    \item $\text{UserStory} = \{us | us \text{ is a user story}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{acceptance\_criteria}, \text{priority}, \text{story\_points}, \text{status}$
+    \item $\text{Task} = \{tsk | tsk \text{ is a task}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{status}, \text{effort}, \text{type}$
+    \item $\text{Blocker} = \{bl | bl \text{ is a blocker}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{severity}, \text{status}, \text{detected\_on}, \text{resolved\_on}$
+    \item $\text{Velocity} = \{vel | vel \text{ is a velocity record}\}$, with attributes $\text{id}, \text{number\_of\_sprints\_used}, \text{avg. story\_points}, \text{max\_velocity}, \text{min\_velocity}, \text{trend}$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, p' \in \text{Project}$
+    \item $t, t' \in \text{Team}$
+    \item $w, w' \in \text{Worker}$
+    \item $f, f' \in \text{Feature}$
+    \item $sp, sp' \in \text{Sprint}$
+    \item $sbl, sbl' \in \text{SprintBacklog}$
+    \item $us, us' \in \text{UserStory}$
+    \item $tsk, tsk' \in \text{Task}$
+    \item $bl, bl' \in \text{Blocker}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_utilization} - Maximize the overall availability of the team members.
+    \\Mathematical Form: $\text{Maximize } Z_0 = \sum_{w \in \text{Worker}} \text{availability}(w)$
+    
+    \item \textbf{G1: minimize\_project\_duration} - Minimize the total duration of the project.
+    \\Mathematical Form: $\text{Minimize } Z_1 = \text{project\_end}(p) - \text{project\_start}(p)$
+    
+    \item \textbf{G2: maximize\_feature\_delivery} - Maximize the number of high-priority features delivered.
+    \\Mathematical Form: $\text{Maximize } Z_2 = \sum_{f \in \text{Feature}} \text{priority}(f) \cdot x_f$ where $x_f = 1$ if feature $f$ is delivered, $0$ otherwise.
+    
+    \item \textbf{G3: minimize\_blocker\_impact} - Minimize the severity and duration of blockers.
+    \\Mathematical Form: $\text{Minimize } Z_3 = \sum_{bl \in \text{Blocker}} \text{severity}(bl) \cdot (\text{resolved\_on}(bl) - \text{detected\_on}(bl))$
+    
+    \item \textbf{G4: maximize\_sprint\_goal\_achievement} - Maximize the rate of successfully achieved sprint goals.
+    \\Mathematical Form: $\text{Maximize } Z_4 = \sum_{sg \in \text{SprintGoal}} \mathbb{I}(\text{achievement\_status}(sg) = \text{Done})$
+    
+    \item \textbf{G5: minimize\_task\_effort} - Minimize the total effort spent on tasks in a sprint.
+    \\Mathematical Form: $\text{Minimize } Z_5 = \sum_{tsk \in \text{Task}} \text{effort}(tsk)$
+    
+    \item \textbf{G6: maximize\_team\_velocity} - Maximize the average velocity of a team.
+    \\Mathematical Form: $\text{Maximize } Z_6 = \text{avg. story\_points}(vel_t)$ for a given team $t$.
+    
+    \item \textbf{G7: minimize\_budget\_variance} - Minimize the difference between planned and actual budget.
+    \\Mathematical Form: $\text{Minimize } Z_7 = | \text{planned\_budget}(p) - \text{actual\_budget}(p) |$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: team\_must\_be\_assigned} - Ensure every team is assigned to exactly one project.
+    \\Logical Form: $\forall t \in \text{Team}, \exists! p \in \text{Project} \text{ such that } \text{is\_assigned\_to\_project}(t, p)$
+    
+    \item \textbf{C1: worker\_belongs\_to\_team} - Ensure every worker is assigned to a team.
+    \\Logical Form: $\forall w \in \text{Worker}, \exists t \in \text{Team} \text{ such that } \text{belongs\_to\_team}(w, t)$
+    
+    \item \textbf{C2: sprint\_backlog\_must\_have\_sprint} - Every Sprint Backlog must be linked to one Sprint.
+    \\Logical Form: $\forall sbl \in \text{SprintBacklog}, \exists! sp \in \text{Sprint} \text{ such that } \text{belongs\_to\_sprint}(sbl, sp)$
+    
+    \item \textbf{C3: feature\_must\_have\_backlog} - Every Feature must be part of the Product Backlog.
+    \\Logical Form: $\forall f \in \text{Feature}, \exists pb \in \text{ProductBacklog} \text{ such that } \text{contains\_feature}(pb, f)$
+    
+    \item \textbf{C4: user\_story\_must\_have\_epic} - Every User Story must be part of an Epic.
+    \\Logical Form: $\forall us \in \text{UserStory}, \exists e \in \text{Epic} \text{ such that } \text{contains\_user\_story}(e, us)$
+    
+    \item \textbf{C5: task\_must\_have\_story} - Every Task must be part of a User Story.
+    \\Logical Form: $\forall tsk \in \text{Task}, \exists us \in \text{UserStory} \text{ such that } \text{consists\_of\_tasks}(us, tsk)$
+    
+    \item \textbf{C6: scrum\_master\_supports\_team} - Ensure every team has a Scrum Master.
+    \\Logical Form: $\forall t \in \text{Team}, \exists sm \in \text{ScrumMaster} \text{ such that } \text{is\_supported\_by}(t, sm)$
+    
+    \item \textbf{C7: po\_manages\_backlog} - Ensure the Product Backlog is managed by a Product Owner.
+    \\Logical Form: $\forall pb \in \text{ProductBacklog}, \exists po \in \text{ProductOwner} \text{ such that } \text{manages\_backlog}(po, pb)$
+    
+    \item \textbf{C8: sprint\_has\_one\_goal} - Each Sprint must have one defined goal.
+    \\Logical Form: $\forall sp \in \text{Sprint}, \exists! sg \in \text{SprintGoal} \text{ such that } \text{pursues\_goal}(sp, sg)$
+    
+    \item \textbf{C9: feature\_doc\_exists} - Critical features must have documentation.
+    \\Logical Form: $\forall f \in \text{Feature} \text{ where } \text{priority}(f) \geq \text{High}, \exists fed \in \text{FeatureDocumentation} \text{ such that } \text{documents\_feature}(fed, f)$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $\mathbf{DV0}$: $x_{w,t} \in \{0, 1\}$ - Binary variable indicating if worker $w$ is assigned to team $t$.
+    \item $\mathbf{DV1}$: $y_{f,sp} \in \{0, 1\}$ - Binary variable indicating if feature $f$ is selected for sprint $sp$.
+    \item $\mathbf{DV2}$: $pts_{us} \in \mathbb{Z}^+$ - Integer variable for the story points of user story $us$, with $1 \leq pts_{us} \leq 20$.
+    \item $\mathbf{DV3}$: $size_t \in \mathbb{Z}^+$ - Integer variable for the size of team $t$, with $3 \leq size_t \leq 9$.
+    \item $\mathbf{DV4}$: $dur_{sp} \in \mathbb{Z}^+$ - Integer variable for the duration of sprint $sp$ in days, with $7 \leq dur_{sp} \leq 30$.
+    \item $\mathbf{DV5}$: $avail_w \in \mathbb{R}$ - Continuous variable for the availability percentage of worker $w$, with $0.0 \leq avail_w \leq 1.0$.
+    \item $\mathbf{DV6}$: $seq_{tsk} \in \mathbb{Z}^+$ - Integer variable representing the sequence/order of task $tsk$.
+    \item $\mathbf{DV7}$: $cost_f \in \mathbb{R}^+$ - Continuous variable for the budget allocated to feature $f$, with $0 \leq cost_f$.
+    \item $\mathbf{DV8}$: $prio_f \in \mathbb{Z}^+$ - Integer variable for the priority level of feature $f$, with $1 \leq prio_f \leq 5$.
+    \item $\mathbf{DV9}$: $lvl_{tsk, s} \in \mathbb{Z}^+$ - Integer variable for the required skill level $s$ for task $tsk$.
+\end{itemize}
+
+\end{document}

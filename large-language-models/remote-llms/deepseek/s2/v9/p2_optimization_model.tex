@@ -1,0 +1,123 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Optimization Model},
+}
+\usepackage{datetime}
+
+\title{Mathematical Optimization Model for SCRUM Project Management}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+This document formally defines a multi-objective optimization model for resource allocation, scheduling, and prioritization within a software development company using the SCRUM framework. The model is derived from a defined domain structure (Entities and Relationships) and a set of Goals, Conditions, and Decision Variables.
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p | p \text{ is a Project}\}$
+    \item $\text{Team} = \{t | t \text{ is a Team}\}$
+    \item $\text{Worker} = \{w | w \text{ is a Worker}\}$
+    \item $\text{Feature} = \{f | f \text{ is a Feature}\}$
+    \item $\text{Skill} = \{s | s \text{ is a Skill}\}$
+    \item $\text{Role} = \{r | r \text{ is a Role}\}$
+    \item $\text{ProductOwner} = \{po | po \text{ is a ProductOwner}\}$
+    \item $\text{ScrumMaster} = \{sm | sm \text{ is a ScrumMaster}\}$
+    \item $\text{ProductBacklog} = \{pb | pb \text{ is a ProductBacklog}\}$
+    \item $\text{Sprint} = \{sp | sp \text{ is a Sprint}\}$
+    \item $\text{SprintGoal} = \{sg | sg \text{ is a SprintGoal}\}$
+    \item $\text{Blocker} = \{bl | bl \text{ is a Blocker}\}$
+    \item $\text{Stakeholder} = \{sh | sh \text{ is a Stakeholder}\}$
+    \item $\text{Velocity} = \{vel | vel \text{ is a Velocity}\}$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in \text{Project}$
+    \item $t \in \text{Team}$
+    \item $w \in \text{Worker}$
+    \item $f \in \text{Feature}$
+    \item $s \in \text{Skill}$
+    \item $sp \in \text{Sprint}$
+    \item $bl \in \text{Blocker}$
+    \item $sh \in \text{Stakeholder}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_utilization} - Maximize the average availability of all team members.
+        \[ \text{Maximize } Z_0 = \sum_{w \in \text{Worker}} \text{availability}(w) \]
+    \item \textbf{G1: minimize\_project\_duration} - Minimize the total duration of the project.
+        \[ \text{Minimize } Z_1 = \text{project\_end}(p_0) - \text{project\_start}(p_0) \]
+    \item \textbf{G2: maximize\_feature\_delivery} - Maximize the number of high-priority features delivered.
+        \[ \text{Maximize } Z_2 = \sum_{f \in \text{Feature}} \text{priority}(f) \cdot x^{delivered}_f \quad \text{where } x^{delivered}_f \in \{0,1\} \]
+    \item \textbf{G3: minimize\_blocker\_impact} - Minimize the severity and duration of blockers.
+        \[ \text{Minimize } Z_3 = \sum_{bl \in \text{Blocker}} \text{severity}(bl) \cdot (\text{resolved\_on}(bl) - \text{detected\_on}(bl)) \]
+    \item \textbf{G4: maximize\_sprint\_goal\_achievement} - Maximize the rate of successfully achieved sprint goals.
+        \[ \text{Maximize } Z_4 = \sum_{sg \in \text{SprintGoal}} \text{achievement\_status}(sg) \]
+    \item \textbf{G5: minimize\_task\_effort\_variance} - Minimize the variance between estimated and actual task effort.
+        \[ \text{Minimize } Z_5 = \sum_{\text{tasks}} (\text{actual\_effort} - \text{estimated\_effort})^2 \]
+    \item \textbf{G6: maximize\_stakeholder\_satisfaction} - Maximize the average influence level of satisfied stakeholders.
+        \[ \text{Maximize } Z_6 = \sum_{sh \in \text{Stakeholder}} \text{influence\_level}(sh) \cdot s(sh) \quad \text{where } s(sh) \text{ is a satisfaction measure} \]
+    \item \textbf{G7: minimize\_budget\_overrun} - Minimize the project cost against its allocated budget.
+        \[ \text{Minimize } Z_7 = \max(0, \text{total\_cost} - \text{budget}(p_0)) \]
+    \item \textbf{G8: maximize\_team\_velocity} - Maximize the average velocity of the team.
+        \[ \text{Maximize } Z_8 = \text{avg\_story\_points}(vel_t) \]
+    \item \textbf{G9: minimize\_low\_skill\_gaps} - Minimize the number of workers with low skill levels.
+        \[ \text{Minimize } Z_9 = \sum_{w \in \text{Worker}} \sum_{s \in \text{Skill}} \mathbb{I}[\text{level}(s, w) < \text{threshold}] \]
+    \item \textbf{G10: maximize\_cross\_functionality} - Maximize the number of certified skills within the team.
+        \[ \text{Maximize } Z_{10} = \sum_{w \in \text{Worker}} \sum_{s \in \text{Skill}} \text{certified}(s, w) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: condition\_team\_member\_availability} - Ensure no team member is below a critical availability threshold.
+        \[ \text{availability}(w) \geq \alpha_{\text{crit}} \quad \forall w \in \text{Worker} \]
+    \item \textbf{C1: condition\_project\_not\_delayed} - Ensure the project end date does not exceed its planned deadline.
+        \[ \text{project\_end}(p) \leq \text{project\_deadline}(p) \]
+    \item \textbf{C2: condition\_high\_severity\_blockers\_resolved} - Ensure no high-severity blockers remain unresolved.
+        \[ \text{status}(bl) = \text{'resolved'} \quad \forall bl \in \text{Blocker} \text{ where } \text{severity}(bl) \geq \text{'high'} \]
+    \item \textbf{C3: condition\_sprint\_goal\_met} - Ensure the primary sprint goal is at least partially achieved.
+        \[ \text{achievement\_status}(sg_{sp}) \geq \text{'partial'} \quad \forall sp \in \text{Sprint} \]
+    \item \textbf{C4: condition\_budget\_not\_exceeded} - Ensure the project does not exceed its total budget.
+        \[ \text{total\_cost} \leq \text{budget}(p_0) \]
+    \item \textbf{C5: condition\_critical\_skills\_covered} - Ensure all skills marked as critical for the project are present.
+        \[ \sum_{w \in \text{Worker}} \mathbb{I}[\text{has\_skill}(w, s) \wedge \text{level}(w, s) \geq l_{\text{req}}] \geq 1 \quad \forall s \in S_{\text{critical}} \]
+    \item \textbf{C6: condition\_product\_owner\_available} - Ensure the Product Owner has sufficient availability.
+        \[ \text{availability}(po) \geq \beta_{\text{min}} \]
+    \item \textbf{C7: condition\_minimum\_team\_size} - Ensure the team has the minimum required number of members.
+        \[ \text{team\_size}(t) \geq n_{\text{min}} \quad \forall t \in \text{Team} \]
+    \item \textbf{C8: condition\_feature\_documented} - Ensure all high-priority features have documentation.
+        \[ \text{has\_documentation}(f) = \text{True} \quad \forall f \in \text{Feature} \text{ where } \text{priority}(f) \geq \text{'high'} \]
+    \item \textbf{C9: condition\_stakeholder\_representation} - Ensure key high-influence stakeholders participate in reviews.
+        \[ \text{participates}(sh, \text{SprintReview}) = \text{True} \quad \forall sh \in \text{Stakeholder} \text{ where } \text{influence\_level}(sh) \geq \gamma_{\text{key}} \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{DV0:} $x^{assign}_{w,t} \in \{0,1\}$ - Binary decision to assign worker $w$ to team $t$.
+    \item \textbf{DV1:} $x^{sprint}_{f,sp} \in \{0,1\}$ - Binary decision to include feature $f$ in sprint $sp$.
+    \item \textbf{DV2:} $b^{alloc}_f \in \mathbb{R}, [0, 1000000]$ - Budget allocated to feature $f$.
+    \item \textbf{DV3:} $d^{sprint}_{sp} \in \mathbb{Z}, [7, 30]$ - Duration of sprint $sp$ in days.
+    \item \textbf{DV4:} $x^{task}_{tsk,w} \in \{0,1\}$ - Binary decision to assign task $tsk$ to worker $w$.
+    \item \textbf{DV5:} $pr^{backlog}_f \in \mathbb{Z}, [1, 100]$ - Priority rank of feature $f$ in the backlog.
+    \item \textbf{DV6:} $a^{avail}_w \in \mathbb{R}, [0.0, 1.0]$ - Percentage of time worker $w$ is allocated.
+    \item \textbf{DV7:} $date^{release}_{rp} \in \text{Date}, [2023-01-01, 2025-12-31]$ - Planned release date for release plan $rp$.
+    \item \textbf{DV8:} $n^{size}_t \in \mathbb{Z}, [3, 12]$ - Number of workers in team $t$.
+    \item \textbf{DV9:} $e^{est}_{tsk} \in \mathbb{R}, [0.5, 40]$ - Estimated effort for task $tsk$ in person-hours.
+    \item \textbf{DV10:} $pts^{story}_{us} \in \mathbb{Z}, [1, 20]$ - Story points assigned to user story $us$.
+\end{itemize}
+
+\end{document}

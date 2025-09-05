@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Optimization Model},
+    bookmarks=true,
+}
+
+\title{Optimization Model for a SCRUM-Based Software Development Company}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p | p \text{ is a project}\}$, with attributes $id, name, project\_start, project\_end, description, budget, status, target\_audience, priority$
+    \item $\text{Team} = \{t | t \text{ is a team}\}$, with attributes $id, name, team\_size, team\_start, team\_status, location, team\_type$
+    \item $\text{Worker} = \{w | w \text{ is a worker}\}$, with attributes $id, name, first\_name, email, start\_date, status, availability$
+    \item $\text{Feature} = \{f | f \text{ is a feature}\}$, with attributes $id, title, description, status, priority, estimated\_effort$
+    \item $\text{Skill} = \{s | s \text{ is a skill}\}$, with attributes $id, label, description, level, certified, category$
+    \item $\text{Role} = \{r | r \text{ is a role}\}$, with attributes $id, role\_name, description, area\_of\_responsibility$
+    \item $\text{ProductOwner} = \{po | po \text{ is a product owner}\}$, with attributes $id, name, email, availability$
+    \item $\text{ScrumMaster} = \{sm | sm \text{ is a scrum master}\}$, with attributes $id, name, email, experience$
+    \item $\text{ProductBacklog} = \{pb | pb \text{ is a product backlog}\}$, with attributes $id, created\_on, last\_updated, number\_of\_entries, status$
+    \item $\text{Sprint} = \{sp | sp \text{ is a sprint}\}$, with attributes $id, sprint\_number, start\_date, end\_date, status, achievement\_of\_goal$
+    \item $\text{SprintGoal} = \{sg | sg \text{ is a sprint goal}\}$, with attributes $id, objective\_description, achievement\_status, benefit$
+    \item $\text{UserStory} = \{us | us \text{ is a user story}\}$, with attributes $id, title, description, acceptance\_criteria, priority, story\_points, status$
+    \item $\text{Task} = \{tsk | tsk \text{ is a task}\}$, with attributes $id, title, description, status, effort, type$
+    \item $\text{Blocker} = \{bl | bl \text{ is a blocker}\}$, with attributes $id, title, description, severity, status, detected\_on, resolved\_on$
+    \item $\text{Stakeholder} = \{sh | sh \text{ is a stakeholder}\}$, with attributes $id, name, organization, role, email, area\_of\_interest, influence\_level, relevance\_to\_feature$
+    \item $\text{Velocity} = \{vel | vel \text{ is a velocity record}\}$, with attributes $id, number\_of\_sprints\_used, avg.\_story\_points, max\_velocity, min\_velocity, trend$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $w \in \text{Worker}$
+    \item $t \in \text{Team}$
+    \item $f \in \text{Feature}$
+    \item $sp \in \text{Sprint}$
+    \item $sg \in \text{SprintGoal}$
+    \item $us \in \text{UserStory}$
+    \item $tsk \in \text{Task}$
+    \item $bl \in \text{Blocker}$
+    \item $sh \in \text{Stakeholder}$
+    \item $vel \in \text{Velocity}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0, maximize\_team\_availability}: Maximize the overall availability of team members.
+        \[ \text{Maximize } \sum_{w \in \text{Worker}} \text{availability}(w) \]
+    \item \textbf{G1, minimize\_feature\_effort}: Minimize the total estimated effort for features in the backlog.
+        \[ \text{Minimize } \sum_{f \in \text{Feature}} \text{estimated\_effort}(f) \]
+    \item \textbf{G2, maximize\_sprint\_goal\_achievement}: Maximize the number of sprints where the goal was fully achieved.
+        \[ \text{Maximize } \sum_{sg \in \text{SprintGoal}} \mathbb{I}[\text{achievement\_status}(sg) = \text{'Achieved'}] \]
+    \item \textbf{G3, minimize\_blocker\_severity}: Minimize the severity of active blockers.
+        \[ \text{Minimize } \sum_{\substack{bl \in \text{Blocker} \\ \text{status}(bl) = \text{'Active'}}} \text{severity}(bl) \]
+    \item \textbf{G4, maximize\_velocity}: Maximize the team's average velocity.
+        \[ \text{Maximize } \text{avg.\_story\_points}(vel) \quad \text{for the target team's velocity } vel \]
+    \item \textbf{G5, minimize\_sprint\_overdue}: Minimize the number of tasks not done by the sprint end date.
+        \[ \text{Minimize } \sum_{\substack{tsk \in \text{Task} \\ \text{status}(tsk) \neq \text{'Done'}}} 1 \]
+    \item \textbf{G6, maximize\_stakeholder\_influence}: Maximize engagement from high-influence stakeholders.
+        \[ \text{Maximize } \sum_{sh \in \text{Stakeholder}} \text{influence\_level}(sh) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0, team\_has\_scrum\_master}: A team must be supported by a ScrumMaster.
+        \[ \forall t \in \text{Team}, \exists sm \in \text{ScrumMaster} \text{ such that } \text{is\_supported\_by}(t, sm) \]
+    \item \textbf{C1, product\_backlog\_has\_owner}: The Product Backlog must be managed by a Product Owner.
+        \[ \forall pb \in \text{ProductBacklog}, \exists po \in \text{ProductOwner} \text{ such that } \text{manages\_backlog}(po, pb) \]
+    \item \textbf{C2, user\_story\_has\_acceptance\_criteria}: A User Story must have defined acceptance criteria.
+        \[ \forall us \in \text{UserStory}, \text{acceptance\_criteria}(us) \neq \emptyset \]
+    \item \textbf{C3, task\_not\_blocked}: A task in progress should not be blocked.
+        \[ \forall tsk \in \text{Task} \text{ where } \text{status}(tsk) = \text{'In Progress'}, \nexists bl \in \text{Blocker} \text{ such that } \text{is\_blocked\_by}(tsk, bl) \]
+    \item \textbf{C4, sprint\_has\_goal}: Every sprint must have a defined goal.
+        \[ \forall sp \in \text{Sprint}, \exists sg \in \text{SprintGoal} \text{ such that } \text{pursues\_goal}(sp, sg) \]
+    \item \textbf{C5, worker\_has\_required\_skill}: A worker assigned to a task must have the required skill.
+        \[ \forall \text{ assignment of worker } w \text{ to task } tsk, \text{ the skill requirements of } tsk \subseteq \text{skills}(w) \]
+    \item \textbf{C6, feature\_included\_in\_release}: A feature planned for a release must be marked as done.
+        \[ \forall f \in \text{Feature} \text{ in a release plan}, \text{status}(f) = \text{'Done'} \]
+    \item \textbf{C7, budget\_not\_exceeded}: The total project cost must not exceed the allocated budget.
+        \[ \sum \text{cost}(\text{features, tasks, workers}) \leq \text{budget}(p) \quad \forall p \in \text{Project} \]
+\end{itemize}
+
+\section{DecisionVariables}
+\begin{itemize}
+    \item \textbf{DV0, assign\_worker\_to\_task}: Binary decision to assign a specific worker to a task.
+        \[ x_{w, tsk} \in \{0, 1\} \quad \forall w \in \text{Worker}, \forall tsk \in \text{Task} \]
+    \item \textbf{DV1, select\_feature\_for\_sprint}: Binary decision to include a feature in a sprint.
+        \[ y_{f, sp} \in \{0, 1\} \quad \forall f \in \text{Feature}, \forall sp \in \text{Sprint} \]
+    \item \textbf{DV2, set\_sprint\_duration}: The length of a sprint in days.
+        \[ d_{sp} \in \mathbb{Z}^+ \quad \forall sp \in \text{Sprint}, \quad 7 \leq d_{sp} \leq 30 \]
+    \item \textbf{DV3, set\_team\_size}: The number of workers assigned to a team.
+        \[ n_t \in \mathbb{Z}^+ \quad \forall t \in \text{Team}, \quad 3 \leq n_t \leq 9 \]
+    \item \textbf{DV4, set\_story\_points}: The estimated story points for a user story.
+        \[ p_{us} \in \mathbb{Z}^+ \quad \forall us \in \text{UserStory}, \quad 1 \leq p_{us} \leq 20 \]
+    \item \textbf{DV5, assign\_priority\_to\_feature}: The priority level of a feature.
+        \[ q_f \in \mathbb{Z}^+ \quad \forall f \in \text{Feature}, \quad 1 \leq q_f \leq 5 \]
+    \item \textbf{DV6, allocate\_budget\_to\_feature}: The amount of budget allocated to a feature's development.
+        \[ b_f \in \mathbb{R}^+ \quad \forall f \in \text{Feature}, \quad 0.0 \leq b_f \leq 100000.0 \]
+\end{itemize}
+
+\end{document}

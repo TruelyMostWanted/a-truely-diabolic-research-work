@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Optimization Model},
+    bookmarks=true
+}
+
+\title{Optimization Model for a SCRUM-Based Software Development Company}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+This document presents a formal mathematical optimization model for resource allocation, scheduling, and priority management in a software development company using the SCRUM framework. The model is derived from a defined domain model consisting of Entities, Relationships, Goals, and Constraints.
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p | p \text{ is a Project}\}$, with attributes $\text{id}, \text{name}, \text{project\_start}, \text{project\_end}, \text{description}, \text{budget}, \text{status}, \text{target\_audience}, \text{priority}$
+    \item $\text{Team} = \{t | t \text{ is a Team}\}$, with attributes $\text{id}, \text{name}, \text{team\_size}, \text{team\_start}, \text{team\_status}, \text{location}, \text{team\_type}$
+    \item $\text{Worker} = \{w | w \text{ is a Worker}\}$, with attributes $\text{id}, \text{name}, \text{first\_name}, \text{email}, \text{start\_date}, \text{status}, \text{availability}$
+    \item $\text{Feature} = \{f | f \text{ is a Feature}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{status}, \text{priority}, \text{estimated\_effort}$
+    \item $\text{Blocker} = \{b | b \text{ is a Blocker}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{severity}, \text{status}, \text{detected\_on}, \text{resolved\_on}$
+    \item $\text{SprintGoal} = \{g | g \text{ is a SprintGoal}\}$, with attributes $\text{id}, \text{objective\_description}, \text{achievement\_status}, \text{benefit}$
+    \item $\text{Task} = \{k | k \text{ is a Task}\}$, with attributes $\text{id}, \text{title}, \text{description}, \text{status}, \text{effort}, \text{type}$
+    \item $\text{Stakeholder} = \{s | s \text{ is a Stakeholder}\}$, with attributes $\text{id}, \text{name}, \text{organization}, \text{role}, \text{email}, \text{area\_of\_interest}, \text{influence\_level}, \text{relevance\_to\_feature}$
+    \item $\text{Velocity} = \{v | v \text{ is a Velocity}\}$, with attributes $\text{id}, \text{number\_of\_sprints\_used}, \text{avg\_story\_points}, \text{max\_velocity}, \text{min\_velocity}, \text{trend}$
+    \item $\text{SprintRetrospective} = \{r | r \text{ is a SprintRetrospective}\}$, with attributes $\text{id}, \text{date}, \text{duration}, \text{improvement\_actions}, \text{team\_satisfaction}, \text{moderation}$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, p' \in \text{Project}$
+    \item $t, t' \in \text{Team}$
+    \item $w, w' \in \text{Worker}$
+    \item $f, f' \in \text{Feature}$
+    \item $b, b' \in \text{Blocker}$
+    \item $g, g' \in \text{SprintGoal}$
+    \item $k, k' \in \text{Task}$
+    \item $s, s' \in \text{Stakeholder}$
+    \item $v, v' \in \text{Velocity}$
+    \item $r, r' \in \text{SprintRetrospective}$
+    \item $i, i' \in \text{Sprint}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_utilization} - Maximize the average availability of all team workers.
+        \[ \text{Maximize } Z_0 = \sum_{w \in \text{Worker}} \text{availability}(w) \]
+    \item \textbf{G1: minimize\_project\_duration} - Minimize the total duration of the project in days.
+        \[ \text{Minimize } Z_1 = \text{project\_end}(p_0) - \text{project\_start}(p_0) \quad \text{for main project } p_0 \]
+    \item \textbf{G2: maximize\_feature\_delivery} - Maximize the number of high-priority features delivered.
+        \[ \text{Maximize } Z_2 = \sum_{f \in \text{Feature}} \mathbb{I}(\text{priority}(f) \geq \text{P}_{\text{high}}) \cdot \text{priority}(f) \]
+    \item \textbf{G3: minimize\_blocker\_impact} - Minimize the number of high-severity blockers.
+        \[ \text{Minimize } Z_3 = \sum_{b \in \text{Blocker}} \mathbb{I}(\text{severity}(b) \geq \text{S}_{\text{critical}})\cdot \text{severity}(b) \]
+    \item \textbf{G4: maximize\_sprint\_goal\_achievement} - Maximize the rate of successfully achieved sprint goals.
+        \[ \text{Maximize } Z_4 = \sum_{g \in \text{SprintGoal}} \mathbb{I}(\text{achievement\_status}(g) = \text{Done}) \]
+    \item \textbf{G5: minimize\_task\_effort\_variance} - Minimize the variance between estimated and actual task effort.
+        \[ \text{Minimize } Z_5 = \sum_{k \in \text{Task}} (\text{effort}_{\text{actual}}(k) - \text{effort}_{\text{estimated}}(k))^2 \]
+    \item \textbf{G6: maximize\_stakeholder\_satisfaction} - Maximize the average satisfaction level of stakeholders.
+        \[ \text{Maximize } Z_6 = \sum_{s \in \text{Stakeholder}} \text{influence\_level}(s) \]
+    \item \textbf{G7: minimize\_budget\_overrun} - Minimize the total project budget overrun.
+        \[ \text{Minimize } Z_7 = \max(0, \text{actual\_cost}(p_0) - \text{budget}(p_0)) \]
+    \item \textbf{G8: maximize\_team\_velocity} - Maximize the average velocity of the team.
+        \[ \text{Maximize } Z_8 = \text{avg\_story\_points}(v_t) \quad \text{for team } t\text{'s velocity } v_t \]
+    \item \textbf{G9: minimize\_retrospective\_actions} - Minimize the number of improvement actions needed.
+        \[ \text{Minimize } Z_9 = \sum_{r \in \text{SprintRetrospective}} \text{improvement\_actions}(r) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: team\_must\_be\_cross\_functional} - The team must have a minimum number of distinct skills.
+        \[ \text{count}_{\text{distinct}}(\text{skill}(w) \forall w \in t) \geq \theta_{\text{skills}} \quad \forall t \in \text{Team} \]
+    \item \textbf{C1: worker\_availability\_threshold} - An individual worker's availability must be above a minimum threshold.
+        \[ \text{availability}(w) \geq A_{\text{min}} \quad \forall w \in \text{Worker} \]
+    \item \textbf{C2: feature\_priority\_must\_match} - Features with 'Critical' priority must be developed first.
+        \[ \text{start\_date}(f) < \text{start\_date}(f') \quad \forall f, f' | \text{priority}(f) > \text{priority}(f') \]
+    \item \textbf{C3: blocker\_severity\_tolerance} - No blocker with 'Critical' severity is allowed to remain unresolved for more than X days.
+        \[ (\text{resolved\_on}(b) - \text{detected\_on}(b)) \leq T_{\text{max}} \quad \forall b \in \text{Blocker} | \text{severity}(b) = \text{Critical} \]
+    \item \textbf{C4: sprint\_goal\_must\_be\_defined} - Every sprint must have a defined goal.
+        \[ \text{objective\_description}(g_i) \neq \emptyset \quad \forall \text{sprint } i \]
+    \item \textbf{C5: task\_effort\_estimation\_required} - Every task must have an effort estimation greater than zero.
+        \[ \text{effort}_{\text{estimated}}(k) > 0 \quad \forall k \in \text{Task} \]
+    \item \textbf{C6: stakeholder\_influence\_recognition} - Key stakeholders (high influence) must be identified and managed.
+        \[ \text{influence\_level}(s) \geq I_{\text{key}} \implies \text{status}(s) = \text{Managed} \quad \forall s \in \text{Stakeholder} \]
+    \item \textbf{C7: project\_budget\_hard\_limit} - The total project cost must not exceed the allocated budget.
+        \[ \sum \text{cost}(\text{resources}) \leq \text{budget}(p) \quad \forall p \in \text{Project} \]
+    \item \textbf{C8: velocity\_consistency} - Team velocity should not drop below a certain stability threshold.
+        \[ \text{min\_velocity}(v_t) \geq V_{\text{stable}} \quad \forall t \in \text{Team} \]
+    \item \textbf{C9: sprint\_duration\_fixed} - Sprint duration must be fixed and cannot be changed.
+        \[ (\text{end\_date}(i) - \text{start\_date}(i)) = L_{\text{sprint}} \quad \forall i \in \text{Sprint} \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $x_{\text{team\_size}}(t) \in \{5, 6, \dots, 10\}$: Number of workers assigned to team $t$.
+    \item $x_{\text{sprint\_length}}(i) \in \{10, 12, 14\}$: The duration of sprint $i$ in days.
+    \item $x_{\text{worker\_assign}}(w, i) \in \{0, 1\}$: 1 if worker $w$ is assigned to sprint $i$, 0 otherwise.
+    \item $x_{\text{feature\_priority}}(f) \in \{1, 2, 3, 4, 5\}$: Priority level assigned to feature $f$.
+    \item $x_{\text{story\_points}}(us) \in \{1, 2, 3, 5, 8, 13\}$: Number of story points assigned to user story $us$.
+    \item $x_{\text{task\_sequence}}(k) \in \mathbb{Z}^+$: The processing order of task $k$.
+    \item $x_{\text{resource\_budget}}(f) \in \mathbb{R}^+$: Budget allocated to feature $f$.
+    \item $x_{\text{skill\_req}}(k) \in \{1, 2, 3, 4, 5\}$: Minimum skill level required for task $k$.
+    \item $x_{\text{contingency}}(k) \in \{0, 1, 2, 3, 4, 5\}$: Buffer days added to task $k$.
+    \item $x_{\text{concurrent\_tasks}}(w) \in \{1, 2, 3\}$: Max number of tasks worker $w$ can handle.
+\end{itemize}
+
+\end{document}

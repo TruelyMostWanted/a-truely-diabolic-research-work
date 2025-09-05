@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{tocloft}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{SCRUM Project Optimization Model}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+This document formally defines a multi-objective optimization model for resource allocation and planning in a software development company utilizing the SCRUM framework. The model is derived from a defined domain structure (Entities and Relationships) and is governed by a set of Goals, Conditions, and Decision Variables.
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p_1, p_2, ..., p_n\}$
+    \item $\text{Team} = \{t_1, t_2, ..., t_n\}$
+    \item $\text{Worker} = \{w_1, w_2, ..., w_n\}$
+    \item $\text{Feature} = \{f_1, f_2, ..., f_n\}$
+    \item $\text{Skill} = \{s_1, s_2, ..., s_n\}$
+    \item $\text{Role} = \{r_1, r_2, ..., r_n\}$
+    \item $\text{ProductOwner} = \{po_1, po_2, ..., po_n\}$
+    \item $\text{ScrumMaster} = \{sm_1, sm_2, ..., sm_n\}$
+    \item $\text{ProductBacklog} = \{pb_1, pb_2, ..., pb_n\}$
+    \item $\text{Sprint} = \{sp_1, sp_2, ..., sp_n\}$
+    \item $\text{SprintPlanning} = \{spp_1, spp_2, ..., spp_n\}$
+    \item $\text{DailyScrum} = \{ds_1, ds_2, ..., ds_n\}$
+    \item $\text{SprintReview} = \{sr_1, sr_2, ..., sr_n\}$
+    \item $\text{SprintRetrospective} = \{sre_1, sre_2, ..., sre_n\}$
+    \item $\text{SprintBacklog} = \{sbl_1, sbl_2, ..., sbl_n\}$
+    \item $\text{SprintGoal} = \{sg_1, sg_2, ..., sg_n\}$
+    \item $\text{Epic} = \{e_1, e_2, ..., e_n\}$
+    \item $\text{UserStory} = \{us_1, us_2, ..., us_n\}$
+    \item $\text{Task} = \{tsk_1, tsk_2, ..., tsk_n\}$
+    \item $\text{DevelopmentSnapshot} = \{dev_1, dev_2, ..., dev_n\}$
+    \item $\text{Blocker} = \{bl_1, bl_2, ..., bl_n\}$
+    \item $\text{Stakeholder} = \{sh_1, sh_2, ..., sh_n\}$
+    \item $\text{Velocity} = \{vel_1, vel_2, ..., vel_n\}$
+    \item $\text{ReleasePlan} = \{rep_1, rep_2, ..., rep_n\}$
+    \item $\text{Roadmap} = \{rm_1, rm_2, ..., rm_n\}$
+    \item $\text{ScrumBoard} = \{scb_1, scb_2, ..., scb_n\}$
+    \item $\text{FeatureDocumentation} = \{fed_1, fed_2, ..., fed_n\}$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, p' \in \text{Project}$
+    \item $t, t' \in \text{Team}$
+    \item $w, w' \in \text{Worker}$
+    \item $f, f' \in \text{Feature}$
+    \item $s, s' \in \text{Skill}$
+    \item $r, r' \in \text{Role}$
+    \item $po, po' \in \text{ProductOwner}$
+    \item $sm, sm' \in \text{ScrumMaster}$
+    \item $pb, pb' \in \text{ProductBacklog}$
+    \item $sp, sp' \in \text{Sprint}$
+    \item $sbl, sbl' \in \text{SprintBacklog}$
+    \item $us, us' \in \text{UserStory}$
+    \item $tsk, tsk' \in \text{Task}$
+    \item $bl, bl' \in \text{Blocker}$
+    \item $vel, vel' \in \text{Velocity}$
+    \item $rep, rep' \in \text{ReleasePlan}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_availability} - Maximize the overall availability of team members.
+        \[ \text{Maximize } \sum_{w \in W} \text{availability}(w) \]
+    \item \textbf{G1: minimize\_blocker\_severity} - Minimize the severity of active blockers.
+        \[ \text{Minimize } \sum_{\substack{bl \in BL \\ \text{status}(bl) = \text{active}}} \text{severity}(bl) \]
+    \item \textbf{G2: maximize\_feature\_priority} - Maximize the total priority of selected features.
+        \[ \text{Maximize } \sum_{f \in F} \text{priority}(f) \cdot x_f \quad \text{where } x_f = 1 \text{ if feature } f \text{ is selected} \]
+    \item \textbf{G3: minimize\_sprint\_effort\_variance} - Minimize effort variance in the sprint backlog.
+        \[ \text{Minimize } \left| \text{estimated\_effort}(sbl) - \text{total\_effort}(sbl) \right| \quad \forall sbl \in SBL \]
+    \item \textbf{G4: maximize\_velocity} - Maximize the team's average velocity.
+        \[ \text{Maximize } \text{avg\_story\_points}(vel) \]
+    \item \textbf{G5: maximize\_stakeholder\_satisfaction} - Maximize stakeholder satisfaction.
+        \[ \text{Maximize } \text{satisfaction\_score}(sr) \quad \forall sr \in SR \]
+    \item \textbf{G6: minimize\_project\_budget} - Minimize the total project budget spent.
+        \[ \text{Minimize } \text{budget}(p) \]
+    \item \textbf{G7: maximize\_skill\_coverage} - Maximize the coverage of required skills.
+        \[ \text{Maximize } \sum_{s \in S} \text{level}(s) \cdot y_{w,s} \quad \text{where } y_{w,s} = 1 \text{ if worker } w \text{ has skill } s \]
+    \item \textbf{G8: minimize\_task\_duration} - Minimize the time taken to complete tasks.
+        \[ \text{Minimize } \sum_{tsk \in TSK} \text{effort}(tsk) \]
+    \item \textbf{G9: maximize\_sprint\_goal\_achievement} - Maximize the rate of achieved sprint goals.
+        \[ \text{Maximize } \frac{ |\{ sg \in SG \, | \, \text{achievement\_status}(sg) = \text{Done} \} | }{ |SG| } \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: condition\_project\_active} - Only consider active projects.
+        \[ \text{status}(p) = \text{'active'} \quad \forall p \in P \text{ considered} \]
+    \item \textbf{C1: condition\_worker\_available} - Only include available workers.
+        \[ \text{status}(w) = \text{'available'} \quad \forall w \in W \text{ assigned} \]
+    \item \textbf{C2: condition\_sprint\_current} - Apply to the most recent sprint.
+        \[ sp = \arg\max_{\text{sp}' \in SP} \text{start\_date}(sp') \]
+    \item \textbf{C3: condition\_blocker\_unresolved} - Consider only unresolved blockers.
+        \[ \text{status}(bl) \neq \text{'resolved'} \quad \forall bl \in BL \text{ considered} \]
+    \item \textbf{C4: condition\_high\_priority\_feature} - Focus on high-priority features.
+        \[ \text{priority}(f) \in \{\text{'High'}, \text{'Critical'}\} \quad \forall f \in F \text{ prioritized} \]
+    \item \textbf{C5: condition\_team\_has\_scrum\_master} - Ensure team has a Scrum Master.
+        \[ \exists \, sm \in SM \, \text{such that } \text{is\_supported\_by}(t, sm) = \text{True} \quad \forall t \in T \]
+    \item \textbf{C6: condition\_story\_estimated} - Only include estimated user stories.
+        \[ \text{story\_points}(us) > 0 \quad \forall us \in US \text{ planned} \]
+    \item \textbf{C7: condition\_sprint\_has\_goal} - Only evaluate sprints with a goal.
+        \[ \text{objective\_description}(sg) \neq \emptyset \quad \forall sg \in SG \text{ associated with } sp \]
+    \item \textbf{C8: condition\_certified\_skills} - Prefer certified skills.
+        \[ \text{certified}(s) = \text{True} \quad \forall s \in S \text{ preferred} \]
+    \item \textbf{C9: condition\_release\_planned} - Only include features in a planned release.
+        \[ \exists \, rep \in REP \, \text{such that } f \in \text{included\_features}(rep) \quad \forall f \in F \text{ considered} \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{DV0:} $x_{w,t} \in \{0, 1\}$ - Binary variable for assigning worker $w$ to team $t$.
+    \item \textbf{DV1:} $y_f \in \{0, 1\}$ - Binary variable for selecting feature $f$ for a release.
+    \item \textbf{DV2:} $z_{us} \in \mathbb{Z}^+$, $1 \leq z_{us} \leq 20$ - Integer variable for story points of user story $us$.
+    \item \textbf{DV3:} $d_{sp} \in \mathbb{Z}^+$, $7 \leq d_{sp} \leq 28$ - Integer variable for the duration of sprint $sp$ in days.
+    \item \textbf{DV4:} $a_{tsk, w} \in \{0, 1\}$ - Binary variable for assigning task $tsk$ to worker $w$.
+    \item \textbf{DV5:} $size_t \in \mathbb{Z}^+$, $3 \leq size_t \leq 9$ - Integer variable for the target size of team $t$.
+    \item \textbf{DV6:} $prio_e \in \{1, 2, 3, 4\}$ - Integer variable for the priority level of epic $e$.
+    \item \textbf{DV7:} $budget_f \in \mathbb{R}^+$, $0.0 \leq budget_f \leq 1,\!000,\!000.0$ - Continuous variable for budget allocated to feature $f$.
+    \item \textbf{DV8:} $i_{sre} \in \{0, 1\}$ - Binary variable for implementing an action from retrospective $sre$.
+    \item \textbf{DV9:} $n_{p} \in \mathbb{Z}^+$, $1 \leq n_{p} \leq 50$ - Integer variable for the total number of sprints in project $p$.
+\end{itemize}
+
+\end{document}

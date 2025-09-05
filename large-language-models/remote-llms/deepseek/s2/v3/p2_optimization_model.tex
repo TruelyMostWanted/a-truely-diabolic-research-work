@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage[english]{babel}
+\usepackage{tocloft}
+\usepackage{enumitem}
+
+\geometry{a4paper, margin=1in}
+
+\title{SCRUM Project Optimization Model}
+\author{AI Operations Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}[label=--]
+    \item $P$: Set of all Projects
+    \item $T$: Set of all Teams
+    \item $W$: Set of all Workers
+    \item $F$: Set of all Features
+    \item $S$: Set of all Skills
+    \item $R$: Set of all Roles
+    \item $PO$: Set of all Product Owners
+    \item $SM$: Set of all Scrum Masters
+    \item $PB$: Set of all Product Backlogs
+    \item $SP$: Set of all Sprints
+    \item $SPP$: Set of all Sprint Plannings
+    \item $DS$: Set of all Daily Scrums
+    \item $SR$: Set of all Sprint Reviews
+    \item $SRE$: Set of all Sprint Retrospectives
+    \item $SBL$: Set of all Sprint Backlogs
+    \item $SG$: Set of all Sprint Goals
+    \item $E$: Set of all Epics
+    \item $US$: Set of all User Stories
+    \item $TSK$: Set of all Tasks
+    \item $DEV$: Set of all Development Snapshots
+    \item $BL$: Set of all Blockers
+    \item $SH$: Set of all Stakeholders
+    \item $VEL$: Set of all Velocities
+    \item $REP$: Set of all Release Plans
+    \item $RM$: Set of all Roadmaps
+    \item $SCB$: Set of all Scrum Boards
+    \item $FED$: Set of all Feature Documentations
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}[label=--]
+    \item $p \in P$
+    \item $t \in T$
+    \item $w \in W$
+    \item $f \in F$
+    \item $s \in S$
+    \item $r \in R$
+    \item $po \in PO$
+    \item $sm \in SM$
+    \item $pb \in PB$
+    \item $sp \in SP$
+    \item $spp \in SPP$
+    \item $ds \in DS$
+    \item $sr \in SR$
+    \item $sre \in SRE$
+    \item $sbl \in SBL$
+    \item $sg \in SG$
+    \item $e \in E$
+    \item $us \in US$
+    \item $tsk \in TSK$
+    \item $dev \in DEV$
+    \item $bl \in BL$
+    \item $sh \in SH$
+    \item $vel \in VEL$
+    \item $rep \in REP$
+    \item $rm \in RM$
+    \item $scb \in SCB$
+    \item $fed \in FED$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item[\textbf{G0}] \textbf{maximize\_team\_utilization}: Maximize the overall utilization of team members.
+    \[ \text{Maximize } \sum_{w \in W} \text{availability}(w) \]
+
+    \item[\textbf{G1}] \textbf{minimize\_project\_duration}: Minimize the total duration of the project.
+    \[ \text{Minimize } \text{project\_end}(p^*) \quad \text{for the main project } p^* \]
+
+    \item[\textbf{G2}] \textbf{maximize\_story\_points\_completed}: Maximize the total story points delivered per sprint.
+    \[ \text{Maximize } \sum_{us \in US_{sp}} \text{story\_points}(us) \quad \forall sp \in SP \]
+
+    \item[\textbf{G3}] \textbf{minimize\_blocker\_severity}: Minimize the severity of active blockers.
+    \[ \text{Minimize } \max_{bl \in BL_{\text{active}}} \text{severity}(bl) \]
+
+    \item[\textbf{G4}] \textbf{maximize\_team\_velocity}: Maximize the average velocity of the team.
+    \[ \text{Maximize } \text{avg\_story\_points}(vel_t) \quad \text{for team } t \]
+
+    \item[\textbf{G5}] \textbf{maximize\_feature\_priority}: Maximize the average priority of features in the release.
+    \[ \text{Maximize } \frac{1}{|F_{rep}|} \sum_{f \in F_{rep}} \text{priority}(f) \quad \forall rep \in REP \]
+
+    \item[\textbf{G6}] \textbf{minimize\_sprint\_goal\_failure}: Minimize the number of sprints where the goal was not achieved.
+    \[ \text{Minimize } \sum_{sg \in SG} \mathbb{I}[\text{achievement\_status}(sg) = \text{'Not Achieved'}] \]
+
+    \item[\textbf{G7}] \textbf{maximize\_stakeholder\_satisfaction}: Maximize the average satisfaction level of stakeholders.
+    \[ \text{Maximize } \frac{1}{|SH|} \sum_{sh \in SH} \text{influence\_level}(sh) \]
+
+    \item[\textbf{G8}] \textbf{minimize\_task\_effort}: Minimize the total estimated effort for all tasks.
+    \[ \text{Minimize } \sum_{tsk \in TSK} \text{effort}(tsk) \]
+
+    \item[\textbf{G9}] \textbf{maximize\_budget\_adherence}: Maximize adherence to the project budget (minimize overage).
+    \[ \text{Maximize } \left( \text{budget}(p) - \text{cost}(p) \right) \quad \forall p \in P \]
+
+    \item[\textbf{G10}] \textbf{minimize\_retrospective\_actions}: Minimize the number of improvement actions needed (indicates fewer problems).
+    \[ \text{Minimize } \sum_{sre \in SRE} \text{improvement\_actions}(sre) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item[\textbf{C0}] \textbf{team\_must\_be\_cross\_functional}: The team must be of type 'cross-functional'.
+    \[ \text{team\_type}(t) = \text{'cross-functional'} \quad \forall t \in T \]
+
+    \item[\textbf{C1}] \textbf{worker\_must\_be\_available}: Only workers with status 'available' can be assigned.
+    \[ \text{status}(w) = \text{'available'} \quad \forall w \in W_{\text{assigned}} \]
+
+    \item[\textbf{C2}] \textbf{feature\_must\_be\_high\_priority}: Only features with priority 'High' or 'Critical' can be in the first release.
+    \[ \text{priority}(f) \in \{\text{'High'}, \text{'Critical'}\} \quad \forall f \in F_{rep_1} \]
+
+    \item[\textbf{C3}] \textbf{sprint\_must\_be\_active}: Can only assign tasks to a sprint with status 'planned' or 'active'.
+    \[ \text{status}(sp) \in \{\text{'planned'}, \text{'active'}\} \quad \forall sp \in SP_{\text{used}} \]
+
+    \item[\textbf{C4}] \textbf{user\_story\_must\_have\_acceptance\_criteria}: A User Story must have defined acceptance criteria before being added to a sprint.
+    \[ \text{acceptance\_criteria}(us) \neq \emptyset \quad \forall us \in US_{sbl} \]
+
+    \item[\textbf{C5}] \textbf{task\_cannot\_be\_blocked}: Do not assign tasks that are currently blocked.
+    \[ \text{status}(tsk) \neq \text{'blocked'} \quad \forall tsk \in TSK_{\text{assigned}} \]
+
+    \item[\textbf{C6}] \textbf{scrum\_master\_must\_be\_experienced}: The Scrum Master should have an experience level above 'Beginner'.
+    \[ \text{experience}(sm) > \text{'Beginner'} \quad \forall sm \in SM \]
+
+    \item[\textbf{C7}] \textbf{sprint\_goal\_must\_be\_defined}: Every sprint must have a defined goal.
+    \[ \text{objective\_description}(sg) \neq \emptyset \quad \forall sg \in SG \]
+
+    \item[\textbf{C8}] \textbf{budget\_must\_not\_be\_exceeded}: The total project cost must not exceed the allocated budget.
+    \[ \text{cost}(p) \leq \text{budget}(p) \quad \forall p \in P \]
+
+    \item[\textbf{C9}] \textbf{skill\_must\_match\_role}: Workers must have skills that match their assigned role's area of responsibility.
+    \[ \exists s \in S_w : \text{category}(s) \equiv \text{area\_of\_responsibility}(r) \quad \forall w \in W, \forall r \in R_w \]
+
+    \item[\textbf{C10}] \textbf{release\_must\_include\_core\_features}: The first release must include all features marked as 'Core'.
+    \[ \{ f \in F \mid \text{priority}(f) = \text{'Core'} \} \subseteq F_{rep_1} \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item[\textbf{DV0}] \textbf{assign\_worker\_to\_task}: Binary decision to assign a specific worker to a specific task.
+    \[ x_{w, tsk} \in \{0, 1\} \quad \forall w \in W, \forall tsk \in TSK \]
+
+    \item[\textbf{DV1}] \textbf{select\_feature\_for\_release}: Binary decision to include a specific feature in a specific release plan.
+    \[ y_{f, rep} \in \{0, 1\} \quad \forall f \in F, \forall rep \in REP \]
+
+    \item[\textbf{DV2}] \textbf{allocate\_story\_points}: The number of story points to commit to for the next sprint.
+    \[ z_{sp} \in \mathbb{Z}^+ \quad \text{with } 5 \leq z_{sp} \leq 40 \quad \forall sp \in SP_{\text{next}}} \]
+
+    \item[\textbf{DV3}] \textbf{set\_sprint\_duration}: The duration (in days) of a sprint.
+    \[ d_{sp} \in \mathbb{Z}^+ \quad \text{with } 7 \leq d_{sp} \leq 21 \quad \forall sp \in SP \]
+
+    \item[\textbf{DV4}] \textbf{assign\_team\_to\_project}: Binary decision to assign a specific team to a specific project.
+    \[ a_{t, p} \in \{0, 1\} \quad \forall t \in T, \forall p \in P \]
+
+    \item[\textbf{DV5}] \textbf{prioritize\_feature\_backlog}: The priority ranking (e.g., 1-100) of a feature in the backlog.
+    \[ pr_f \in \mathbb{Z}^+ \quad \text{with } 1 \leq pr_f \leq 100 \quad \forall f \in F \]
+
+    \item[\textbf{DV6}] \textbf{schedule\_sprint\_start}: The start date for a sprint (encoded as Julian day).
+    \[ j_{sp} \in \mathbb{Z}^+ \quad \text{with } 19600 \leq j_{sp} \leq 20000 \quad \forall sp \in SP \]
+
+    \item[\textbf{DV7}] \textbf{determine\_team\_size}: The number of workers to assign to a team.
+    \[ n_t \in \mathbb{Z}^+ \quad \text{with } 3 \leq n_t \leq 9 \quad \forall t \in T \]
+
+    \item[\textbf{DV8}] \textbf{select\_retrospective\_action}: Binary decision to implement a specific improvement action from a retrospective.
+    \[ i_{action, sre} \in \{0, 1\} \quad \forall action \in \text{Actions}, \forall sre \in SRE \]
+
+    \item[\textbf{DV9}] \textbf{plan\_release\_date}: The planned date for a release (encoded as Julian day).
+    \[ j_{rep} \in \mathbb{Z}^+ \quad \text{with } 19600 \leq j_{rep} \leq 20000 \quad \forall rep \in REP \]
+\end{itemize}
+
+\end{document}

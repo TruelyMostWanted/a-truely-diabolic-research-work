@@ -1,0 +1,284 @@
+graph TD
+    %% Style Definitions
+    classDef entityStyle fill:#007bff,color:white,stroke:#333,stroke-width:2px
+    classDef attrStyle fill:#ffffff,color:black,stroke:#333,stroke-width:1px
+    classDef relStyle fill:#ff9900,color:black,stroke:#333,stroke-width:2px
+    classDef goalStyle fill:#28a745,color:white,stroke:#333,stroke-width:2px
+    classDef condStyle fill:#dc3545,color:white,stroke:#333,stroke-width:2px
+    classDef varStyle fill:#6f42c1,color:white,stroke:#333,stroke-width:2px
+
+    %% Entities (Blue)
+    E0[Project]:::entityStyle
+    E1[Team]:::entityStyle
+    E2[Worker]:::entityStyle
+    E3[Feature]:::entityStyle
+    E4[Skill]:::entityStyle
+    E5[Role]:::entityStyle
+    E6[ProductOwner]:::entityStyle
+    E7[ScrumMaster]:::entityStyle
+    E8[ProductBacklog]:::entityStyle
+    E9[Sprint]:::entityStyle
+    E10[SprintPlanning]:::entityStyle
+    E11[DailyScrum]:::entityStyle
+    E12[SprintReview]:::entityStyle
+    E13[SprintRetrospective]:::entityStyle
+    E14[SprintBacklog]:::entityStyle
+    E15[SprintGoal]:::entityStyle
+    E16[Epic]:::entityStyle
+    E17[UserStory]:::entityStyle
+    E18[Task]:::entityStyle
+    E19[DevelopmentSnapshot]:::entityStyle
+    E20[Blocker]:::entityStyle
+    E21[Stakeholder]:::entityStyle
+    E22[Velocity]:::entityStyle
+    E23[ReleasePlan]:::entityStyle
+    E24[Roadmap]:::entityStyle
+    E25[ScrumBoard]:::entityStyle
+    E26[FeatureDocumentation]:::entityStyle
+
+    %% Attributes (White)
+    A0_id[id]:::attrStyle
+    A0_name[name]:::attrStyle
+    A0_project_start[project_start]:::attrStyle
+    A0_project_end[project_end]:::attrStyle
+    A0_budget[budget]:::attrStyle
+    A0_status[status]:::attrStyle
+    A0_priority[priority]:::attrStyle
+
+    A1_id[id]:::attrStyle
+    A1_name[name]:::attrStyle
+    A1_team_size[team_size]:::attrStyle
+
+    A2_id[id]:::attrStyle
+    A2_name[name]:::attrStyle
+    A2_availability[availability]:::attrStyle
+
+    A3_id[id]:::attrStyle
+    A3_title[title]:::attrStyle
+    A3_priority[priority]:::attrStyle
+    A3_estimated_effort[estimated_effort]:::attrStyle
+
+    A9_id[id]:::attrStyle
+    A9_start_date[start_date]:::attrStyle
+    A9_end_date[end_date]:::attrStyle
+
+    A14_id[id]:::attrStyle
+    A14_status[status]:::attrStyle
+    A14_total_effort[total_effort]:::attrStyle
+
+    A15_id[id]:::attrStyle
+    A15_achievement_status[achievement_status]:::attrStyle
+
+    A17_id[id]:::attrStyle
+    A17_title[title]:::attrStyle
+    A17_priority[priority]:::attrStyle
+    A17_story_points[story_points]:::attrStyle
+    A17_status[status]:::attrStyle
+
+    A18_id[id]:::attrStyle
+    A18_title[title]:::attrStyle
+    A18_status[status]:::attrStyle
+    A18_effort[effort]:::attrStyle
+
+    A20_id[id]:::attrStyle
+    A20_title[title]:::attrStyle
+    A20_severity[severity]:::attrStyle
+    A20_status[status]:::attrStyle
+    A20_detected_on[detected_on]:::attrStyle
+    A20_resolved_on[resolved_on]:::attrStyle
+
+    A22_id[id]:::attrStyle
+    A22_avg_story_points[avg. story_points]:::attrStyle
+
+    %% Relations (Orange)
+    R1[is_assigned_to_project]:::relStyle
+    R2[belongs_to_team]:::relStyle
+    R3[has_skill]:::relStyle
+    R4[takes_on_role]:::relStyle
+    R5[manages_backlog]:::relStyle
+    R6[is_supported_by]:::relStyle
+    R7[contains_feature]:::relStyle
+    R8[contains_epic]:::relStyle
+    R9[contains_user_story]:::relStyle
+    R10[consists_of_tasks]:::relStyle
+    R11[is_in_sprint_backlog]:::relStyle
+    R12[belongs_to_sprint]:::relStyle
+    R13[pursues_goal]:::relStyle
+    R14[contains_tasks]:::relStyle
+    R15[documents_feature]:::relStyle
+    R16[is_blocked_by]:::relStyle
+    R17[participates_in]:::relStyle
+    R18[moderates_retrospective]:::relStyle
+    R19[refers_to_team]:::relStyle
+    R20[plans_release]:::relStyle
+    R21[is_part_of_roadmap]:::relStyle
+    R22[generates_snapshot]:::relStyle
+
+    %% Goals (Green)
+    G0[maximize_team_utilization]:::goalStyle
+    G1[minimize_project_duration]:::goalStyle
+    G2[maximize_feature_delivery]:::goalStyle
+    G3[minimize_blocker_impact]:::goalStyle
+    G4[maximize_sprint_goal_achievement]:::goalStyle
+    G5[minimize_task_effort]:::goalStyle
+    G6[maximize_team_velocity]:::goalStyle
+    G7[minimize_budget_variance]:::goalStyle
+
+    %% Conditions (Red)
+    C0[team_must_be_assigned]:::condStyle
+    C1[worker_belongs_to_team]:::condStyle
+    C2[sprint_backlog_must_have_sprint]:::condStyle
+    C3[feature_must_have_backlog]:::condStyle
+    C4[user_story_must_have_epic]:::condStyle
+    C5[task_must_have_story]:::condStyle
+    C6[scrum_master_supports_team]:::condStyle
+    C7[po_manages_backlog]:::condStyle
+    C8[sprint_has_one_goal]:::condStyle
+    C9[feature_doc_exists]:::condStyle
+
+    %% Decision Variables (Purple)
+    DV0[assign_worker_to_team]:::varStyle
+    DV1[select_feature_for_sprint]:::varStyle
+    DV2[assign_story_points]:::varStyle
+    DV3[team_size]:::varStyle
+    DV4[sprint_duration]:::varStyle
+    DV5[worker_availability]:::varStyle
+    DV6[task_sequence]:::varStyle
+    DV7[budget_allocation]:::varStyle
+    DV8[priority_level]:::varStyle
+    DV9[skill_requirement]:::varStyle
+
+    %% Entity-Attribute Connections
+    E0 --> A0_id
+    E0 --> A0_name
+    E0 --> A0_project_start
+    E0 --> A0_project_end
+    E0 --> A0_budget
+    E0 --> A0_status
+    E0 --> A0_priority
+
+    E1 --> A1_id
+    E1 --> A1_name
+    E1 --> A1_team_size
+
+    E2 --> A2_id
+    E2 --> A2_name
+    E2 --> A2_availability
+
+    E3 --> A3_id
+    E3 --> A3_title
+    E3 --> A3_priority
+    E3 --> A3_estimated_effort
+
+    E9 --> A9_id
+    E9 --> A9_start_date
+    E9 --> A9_end_date
+
+    E14 --> A14_id
+    E14 --> A14_status
+    E14 --> A14_total_effort
+
+    E15 --> A15_id
+    E15 --> A15_achievement_status
+
+    E17 --> A17_id
+    E17 --> A17_title
+    E17 --> A17_priority
+    E17 --> A17_story_points
+    E17 --> A17_status
+
+    E18 --> A18_id
+    E18 --> A18_title
+    E18 --> A18_status
+    E18 --> A18_effort
+
+    E20 --> A20_id
+    E20 --> A20_title
+    E20 --> A20_severity
+    E20 --> A20_status
+    E20 --> A20_detected_on
+    E20 --> A20_resolved_on
+
+    E22 --> A22_id
+    E22 --> A22_avg_story_points
+
+    %% Entity-Relation Connections
+    E1 --> R1 --> E0
+    E2 --> R2 --> E1
+    E2 --> R3 --> E4
+    E2 --> R4 --> E5
+    E6 --> R5 --> E8
+    E1 --> R6 --> E7
+    E8 --> R7 --> E3
+    E8 --> R8 --> E16
+    E16 --> R9 --> E17
+    E17 --> R10 --> E18
+    E17 --> R11 --> E14
+    E14 --> R12 --> E9
+    E9 --> R13 --> E15
+    E25 --> R14 --> E18
+    E26 --> R15 --> E3
+    E18 --> R16 --> E20
+    E21 --> R17 --> E12
+    E7 --> R18 --> E13
+    E22 --> R19 --> E1
+    E23 --> R20 --> E3
+    E23 --> R21 --> E24
+    E9 --> R22 --> E19
+
+    %% Goal-Entity/Attribute Connections
+    G0 --> E2
+    G0 --> A2_availability
+    G1 --> E0
+    G1 --> A0_project_end
+    G2 --> E3
+    G2 --> A3_priority
+    G3 --> E20
+    G3 --> A20_severity
+    G3 --> A20_detected_on
+    G3 --> A20_resolved_on
+    G4 --> E15
+    G4 --> A15_achievement_status
+    G5 --> E18
+    G5 --> A18_effort
+    G6 --> E22
+    G6 --> A22_avg_story_points
+    G7 --> E0
+    G7 --> A0_budget
+
+    %% Condition-Entity/Attribute Connections
+    C0 --> E1
+    C1 --> E2
+    C1 --> E1
+    C2 --> E14
+    C2 --> E9
+    C3 --> E3
+    C3 --> E8
+    C4 --> E17
+    C4 --> E16
+    C5 --> E18
+    C5 --> E17
+    C6 --> E1
+    C6 --> E7
+    C7 --> E8
+    C7 --> E6
+    C8 --> E9
+    C8 --> E15
+    C9 --> E3
+    C9 --> A3_priority
+    C9 --> E26
+
+    %% DecisionVariable-Entity Connections
+    DV0 --> E2
+    DV0 --> E1
+    DV1 --> E3
+    DV1 --> E9
+    DV2 --> E17
+    DV3 --> E1
+    DV4 --> E9
+    DV5 --> E2
+    DV6 --> E18
+    DV7 --> E3
+    DV8 --> E3
+    DV9 --> E18
+    DV9 --> E4

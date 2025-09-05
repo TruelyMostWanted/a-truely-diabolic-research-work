@@ -1,0 +1,12 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_must_be_cross_functional,The team must be of type 'cross-functional',False,min,Team,team_type,2,1.0
+C1,worker_must_be_available,Only workers with status 'available' can be assigned,False,min,Worker,status,2,1.0
+C2,feature_must_be_high_priority,Only features with priority 'High' or 'Critical' can be in the first release,False,min,Feature,priority,2,1.0
+C3,sprint_must_be_active,Can only assign tasks to a sprint with status 'planned' or 'active',False,min,Sprint,status,2,1.0
+C4,user_story_must_have_acceptance_criteria,A User Story must have defined acceptance criteria before being added to a sprint,False,min,UserStory,acceptance_criteria,1,1.0
+C5,task_cannot_be_blocked,Do not assign tasks that are currently blocked,False,min,Task,status,0,1.0
+C6,scrum_master_must_be_experienced,The Scrum Master should have an experience level above 'Beginner',False,min,ScrumMaster,experience,2,1.0
+C7,sprint_goal_must_be_defined,Every sprint must have a defined goal,False,min,SprintGoal,objective_description,1,1.0
+C8,budget_must_not_be_exceeded,The total project cost must not exceed the allocated budget,False,max,Project,budget,2,1.0
+C9,skill_must_match_role,Workers must have skills that match their assigned role's area of responsibility,False,min,Skill,category,1,1.0
+C10,release_must_include_core_features,The first release must include all features marked as 'Core',False,min,Feature,priority,2,1.0

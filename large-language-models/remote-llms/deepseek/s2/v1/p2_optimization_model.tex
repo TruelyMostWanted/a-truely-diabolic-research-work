@@ -1,0 +1,213 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=1in}
+
+\title{SCRUM Project Optimization Model}
+\author{AI Modeler}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $P$: Set of all Projects
+    \item $T$: Set of all Teams
+    \item $W$: Set of all Workers
+    \item $F$: Set of all Features
+    \item $S$: Set of all Skills
+    \item $R$: Set of all Roles
+    \item $PO$: Set of all Product Owners
+    \item $SM$: Set of all Scrum Masters
+    \item $PB$: Set of all Product Backlogs
+    \item $SP$: Set of all Sprints
+    \item $SPP$: Set of all Sprint Planning sessions
+    \item $DS$: Set of all Daily Scrum meetings
+    \item $SR$: Set of all Sprint Reviews
+    \item $SRE$: Set of all Sprint Retrospectives
+    \item $SBL$: Set of all Sprint Backlogs
+    \item $SG$: Set of all Sprint Goals
+    \item $E$: Set of all Epics
+    \item $US$: Set of all User Stories
+    \item $TSK$: Set of all Tasks
+    \item $DEV$: Set of all Development Snapshots
+    \item $BL$: Set of all Blockers
+    \item $SH$: Set of all Stakeholders
+    \item $VEL$: Set of all Velocity records
+    \item $REP$: Set of all Release Plans
+    \item $RM$: Set of all Roadmaps
+    \item $SCB$: Set of all Scrum Boards
+    \item $FED$: Set of all Feature Documentations
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$: Index for a Project
+    \item $t \in T$: Index for a Team
+    \item $w \in W$: Index for a Worker
+    \item $f \in F$: Index for a Feature
+    \item $s \in S$: Index for a Skill
+    \item $r \in R$: Index for a Role
+    \item $po \in PO$: Index for a Product Owner
+    \item $sm \in SM$: Index for a Scrum Master
+    \item $pb \in PB$: Index for a Product Backlog
+    \item $sp \in SP$: Index for a Sprint
+    \item $spp \in SPP$: Index for a Sprint Planning session
+    \item $ds \in DS$: Index for a Daily Scrum meeting
+    \item $sr \in SR$: Index for a Sprint Review
+    \item $sre \in SRE$: Index for a Sprint Retrospective
+    \item $sbl \in SBL$: Index for a Sprint Backlog
+    \item $sg \in SG$: Index for a Sprint Goal
+    \item $e \in E$: Index for an Epic
+    \item $us \in US$: Index for a User Story
+    \item $tsk \in TSK$: Index for a Task
+    \item $dev \in DEV$: Index for a Development Snapshot
+    \item $bl \in BL$: Index for a Blocker
+    \item $sh \in SH$: Index for a Stakeholder
+    \item $vel \in VEL$: Index for a Velocity record
+    \item $rep \in REP$: Index for a Release Plan
+    \item $rm \in RM$: Index for a Roadmap
+    \item $scb \in SCB$: Index for a Scrum Board
+    \item $fed \in FED$: Index for a Feature Documentation
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_utilization} \\
+          Maximize the average availability of all team members. \\
+          $\text{Maximize } Z_0 = \frac{1}{|W|} \sum_{w \in W} \text{availability}(w)$
+
+    \item \textbf{G1: minimize\_project\_duration} \\
+          Minimize the total duration of the project in days. \\
+          $\text{Minimize } Z_1 = \text{project\_end}(p^*) - \text{project\_start}(p^*)$ \quad \text{for main project } $p^*$
+
+    \item \textbf{G2: maximize\_feature\_delivery} \\
+          Maximize the number of high-priority features delivered. \\
+          $\text{Maximize } Z_2 = \sum_{f \in F} \mathbb{I}(\text{priority}(f) \geq \text{Priority}_{\text{threshold}} \wedge \text{status}(f) = \text{"Done"})$
+
+    \item \textbf{G3: minimize\_blocker\_impact} \\
+          Minimize the average severity of active blockers. \\
+          $\text{Minimize } Z_3 = \frac{1}{|BL_a|} \sum_{bl \in BL_a} \text{severity}(bl)$ \quad \text{where } $BL_a = \{bl \in BL \mid \text{status}(bl) = \text{"Active"}\}$
+
+    \item \textbf{G4: maximize\_sprint\_goal\_achievement} \\
+          Maximize the rate of successfully achieved sprint goals. \\
+          $\text{Maximize } Z_4 = \frac{1}{|SG|} \sum_{sg \in SG} \mathbb{I}(\text{achievement\_status}(sg) = \text{"Achieved"})$
+
+    \item \textbf{G5: minimize\_task\_effort\_variance} \\
+          Minimize the variance between estimated and actual effort for tasks. \\
+          $\text{Minimize } Z_5 = \frac{1}{|TSK|} \sum_{tsk \in TSK} (\text{effort}_{\text{actual}}(tsk) - \text{effort}_{\text{estimated}}(tsk))^2$
+
+    \item \textbf{G6: maximize\_stakeholder\_satisfaction} \\
+          Maximize the average influence level of satisfied stakeholders. \\
+          $\text{Maximize } Z_6 = \frac{1}{|SH_s|} \sum_{sh \in SH_s} \text{influence\_level}(sh)$ \quad \text{where } $SH_s = \{sh \in SH \mid \text{satisfied}(sh) = \text{True}\}$
+
+    \item \textbf{G7: minimize\_budget\_deviation} \\
+          Minimize the deviation from the initial project budget. \\
+          $\text{Minimize } Z_7 = | \text{budget}_{\text{actual}}(p^*) - \text{budget}_{\text{planned}}(p^*) |$
+
+    \item \textbf{G8: maximize\_team\_velocity} \\
+          Maximize the average velocity of the team over the last 5 sprints. \\
+          $\text{Maximize } Z_8 = \frac{1}{5} \sum_{i=n-4}^{n} \text{avg.\_story\_points}(vel_i)$ \quad \text{for latest sprints } $n, n-1, ..., n-4$
+
+    \item \textbf{G9: minimize\_sprint\_overhead} \\
+          Minimize the total time spent in meetings per sprint. \\
+          $\text{Minimize } Z_9 = \sum_{spp \in SPP_{sp}} \text{duration}(spp) + \sum_{ds \in DS_{sp}} \text{duration}(ds) + \text{duration}(sr_{sp}) + \text{duration}(sre_{sp})$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: team\_must\_be\_cross\_functional} \\
+          The team must possess skills in all required categories. \\
+          $\forall\, \text{category}_c \in \text{RequiredCategories},\ \exists\, w \in t, s \in S_w : \text{category}(s) = \text{category}_c$
+
+    \item \textbf{C1: feature\_must\_have\_acceptance\_criteria} \\
+          No user story can be started without defined acceptance criteria. \\
+          $\forall\, us \in US : \text{status}(us) \neq \text{"To Do"} \implies \text{acceptance\_criteria}(us) \neq \emptyset$
+
+    \item \textbf{C2: sprint\_must\_have\_goal} \\
+          Every sprint must have a defined and clear goal. \\
+          $\forall\, sp \in SP,\ \exists\, sg \in SG : \text{belongs\_to}(sg, sp) \wedge \text{objective\_description}(sg) \neq \emptyset$
+
+    \item \textbf{C3: task\_cannot\_be\_unassigned} \\
+          All tasks in the sprint backlog must be assigned to a worker. \\
+          $\forall\, tsk \in TSK_{sbl} : \text{status}(tsk) = \text{"In Progress"} \implies \exists\, w \in W : \text{is\_assigned\_to}(tsk, w)$
+
+    \item \textbf{C4: po\_must\_be\_available} \\
+          The Product Owner must have high availability during the sprint. \\
+          $\forall\, po \in PO : \text{availability}(po) \geq 0.8$
+
+    \item \textbf{C5: blocker\_must\_be\_high\_severity} \\
+          Only blockers with severity above 'Medium' require immediate escalation. \\
+          $\text{severity}(bl) > 2 \implies \text{status}(bl) = \text{"Escalated"}$
+
+    \item \textbf{C6: release\_must\_be\_on\_roadmap} \\
+          A release plan must be part of the long-term roadmap. \\
+          $\forall\, rep \in REP,\ \exists\, rm \in RM : \text{is\_part\_of\_roadmap}(rep, rm)$
+
+    \item \textbf{C7: worker\_may\_have\_certified\_skills} \\
+          Workers are encouraged but not required to have certified skills. \\
+          $\text{This is a soft constraint with a weight, not a hard requirement.}$
+
+    \item \textbf{C8: sprint\_cannot\_exceed\_timebox} \\
+          The duration of a daily scrum meeting cannot exceed 15 minutes. \\
+          $\forall\, ds \in DS : \text{duration}(ds) \leq 15$
+
+    \item \textbf{C9: snapshot\_must\_pass\_tests} \\
+          The development snapshot must have a test status of 'Passed' before release. \\
+          $\forall\, dev \in DEV : \text{is\_released}(dev) \implies \text{test\_status}(dev) = \text{"Passed"}$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{DV0: assign\_worker\_to\_task} \\
+          $x_{w, tsk} \in \{0, 1\}$ \\
+          Binary decision to assign a specific worker to a specific task.
+
+    \item \textbf{DV1: feature\_priority} \\
+          $pri_f \in \mathbb{Z},\ [1, 10]$ \\
+          The assigned priority level for a feature.
+
+    \item \textbf{DV2: story\_points} \\
+          $pts_{us} \in \mathbb{Z},\ [1, 13]$ \\
+          The number of story points estimated for a user story.
+
+    \item \textbf{DV3: sprint\_duration} \\
+          $d_{sp} \in \mathbb{Z},\ [7, 21]$ \\
+          The length of a sprint in days.
+
+    \item \textbf{DV4: team\_size} \\
+          $size_t \in \mathbb{Z},\ [3, 9]$ \\
+          The number of workers assigned to a team.
+
+    \item \textbf{DV5: worker\_availability} \\
+          $a_w \in \mathbb{R},\ [0.0, 1.0]$ \\
+          The percentage of time a worker is available for project work.
+
+    \item \textbf{DV6: task\_effort\_estimate} \\
+          $e_{tsk} \in \mathbb{R},\ [0.5, 40.0]$ \\
+          The estimated effort in hours for a task.
+
+    \item \textbf{DV7: blocker\_severity} \\
+          $s_{bl} \in \mathbb{Z},\ [1, 5]$ \\
+          The severity level of a identified blocker.
+
+    \item \textbf{DV8: meeting\_duration} \\
+          $m_{mtg} \in \mathbb{Z},\ [15, 240]$ \\
+          The planned duration for a scrum ceremony in minutes.
+
+    \item \textbf{DV9: project\_budget} \\
+          $b_p \in \mathbb{R},\ [0.0, 1000000.0]$ \\
+          The total allocated budget for the project.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,126 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Optimization Model},
+    bookmarks=true
+}
+
+\title{Mathematical Optimization Model for a SCRUM-Based Software Development Company}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+This document formalizes the optimization problem for resource allocation, scheduling, and process improvement in a SCRUM-based software development environment. The model is derived from a defined domain model consisting of Entities, Relationships, Goals, and Constraints.
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p_1, p_2, ..., p_n\}$: The set of all projects.
+    \item $\text{Team} = \{t_1, t_2, ..., t_n\}$: The set of all teams.
+    \item $\text{Worker} = \{w_1, w_2, ..., w_n\}$: The set of all workers/employees.
+    \item $\text{Feature} = \{f_1, f_2, ..., f_n\}$: The set of all features.
+    \item $\text{Skill} = \{s_1, s_2, ..., s_n\}$: The set of all skills.
+    \item $\text{Role} = \{r_1, r_2, ..., r_n\}$: The set of all roles.
+    \item $\text{ProductBacklog} = \{pb_1, pb_2, ..., pb_n\}$: The set of all product backlogs.
+    \item $\text{Sprint} = \{sp_1, sp_2, ..., sp_n\}$: The set of all sprints.
+    \item $\text{SprintBacklog} = \{sbl_1, sbl_2, ..., sbl_n\}$: The set of all sprint backlogs.
+    \item $\text{UserStory} = \{us_1, us_2, ..., us_n\}$: The set of all user stories.
+    \item $\text{Task} = \{tsk_1, tsk_2, ..., tsk_n\}$: The set of all tasks.
+    \item $\text{Blocker} = \{bl_1, bl_2, ..., bl_n\}$: The set of all blockers.
+    \item $\text{DevelopmentSnapshot} = \{dev_1, dev_2, ..., dev_n\}$: The set of all development snapshots.
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, q \in \text{Project}$
+    \item $t, u \in \text{Team}$
+    \item $w, v \in \text{Worker}$
+    \item $f, g \in \text{Feature}$
+    \item $s \in \text{Skill}$
+    \item $r \in \text{Role}$
+    \item $sp \in \text{Sprint}$
+    \item $sbl \in \text{SprintBacklog}$
+    \item $us \in \text{UserStory}$
+    \item $tsk \in \text{Task}$
+    \item $bl \in \text{Blocker}$
+    \item $dev \in \text{DevelopmentSnapshot}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_velocity} - Maximize the average velocity of the team.
+        \[ \text{Maximize } \sum_{t \in \text{Team}} \text{velocity}(t) \]
+    \item \textbf{G1: minimize\_blocker\_severity} - Minimize the impact of blockers.
+        \[ \text{Minimize } \sum_{bl \in \text{Blocker}} \text{severity}(bl) \]
+    \item \textbf{G2: maximize\_feature\_completion} - Maximize the number of features completed.
+        \[ \text{Maximize } \sum_{f \in \text{Feature}} \mathbb{I}(\text{status}(f) = \text{'Done'}) \]
+    \item \textbf{G3: minimize\_sprint\_overhead} - Minimize the total time spent in meetings.
+        \[ \text{Minimize } \sum_{sp \in \text{Sprint}} \text{meeting\_duration}(sp) \]
+    \item \textbf{G4: maximize\_stakeholder\_satisfaction} - Maximize stakeholder satisfaction.
+        \[ \text{Maximize } \sum_{sh \in \text{Stakeholder}} \text{satisfaction}(sh) \]
+    \item \textbf{G5: minimize\_task\_effort\_variance} - Minimize effort estimation variance for a task.
+        \[ \text{Minimize } |\text{estimated\_effort}(tsk) - \text{actual\_effort}(tsk)| \quad \forall \, tsk \in \text{Task} \]
+    \item \textbf{G6: maximize\_worker\_availability} - Maximize worker availability.
+        \[ \text{Maximize } \sum_{w \in \text{Worker}} \text{availability}(w) \]
+    \item \textbf{G7: minimize\_budget\_overrun} - Minimize the total budget overrun.
+        \[ \text{Minimize } \sum_{p \in \text{Project}} \max(0, \text{actual\_cost}(p) - \text{budget}(p)) \]
+    \item \textbf{G8: maximize\_sprint\_goal\_achievement} - Maximize sprint goal achievement rate.
+        \[ \text{Maximize } \sum_{sg \in \text{SprintGoal}} \mathbb{I}(\text{achievement\_status}(sg) = \text{'Achieved'}) \]
+    \item \textbf{G9: minimize\_technical\_debt} - Minimize the level of technical debt.
+        \[ \text{Minimize } \text{technical\_debt}(dev) \quad \forall \, dev \in \text{DevelopmentSnapshot} \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: team\_has\_scrum\_master} - A team must be supported by a Scrum Master.
+        \[ \exists \, sm \in \text{ScrumMaster} \, \text{supportedby}(t, sm) \quad \forall \, t \in \text{Team} \]
+    \item \textbf{C1: worker\_availability\_threshold} - A worker's availability must be $\geq 70\%$.
+        \[ \text{availability}(w) \geq 0.7 \quad \forall \, w \in \text{Worker} \]
+    \item \textbf{C2: feature\_high\_priority} - The feature must have a 'High' or 'Critical' priority.
+        \[ \text{priority}(f) \in \{\text{'High'}, \text{'Critical'}\} \quad \forall \, f \in \text{Feature} \]
+    \item \textbf{C3: blocker\_is\_resolved} - The blocker must have a status of 'Resolved'.
+        \[ \text{status}(bl) = \text{'Resolved'} \quad \forall \, bl \in \text{Blocker} \]
+    \item \textbf{C4: sprint\_is\_active} - The sprint must have an 'Active' status.
+        \[ \text{status}(sp) = \text{'Active'} \quad \forall \, sp \in \text{Sprint} \]
+    \item \textbf{C5: story\_has\_acceptance\_criteria} - A user story must have defined acceptance criteria.
+        \[ \text{acceptance\_criteria}(us) \neq \emptyset \quad \forall \, us \in \text{UserStory} \]
+    \item \textbf{C6: task\_is\_dev\_type} - The task must be of type 'Development'.
+        \[ \text{type}(tsk) = \text{'Development'} \quad \forall \, tsk \in \text{Task} \]
+    \item \textbf{C7: skill\_is\_certified} - The skill must be certified.
+        \[ \text{certified}(s) = \text{True} \quad \forall \, s \in \text{Skill} \]
+    \item \textbf{C8: project\_is\_running} - The project status must be 'In Progress'.
+        \[ \text{status}(p) = \text{'In Progress'} \quad \forall \, p \in \text{Project} \]
+    \item \textbf{C9: snapshot\_test\_passed} - The development snapshot test status must be 'Passed'.
+        \[ \text{test\_status}(dev) = \text{'Passed'} \quad \forall \, dev \in \text{DevelopmentSnapshot} \]
+    \item \textbf{C10: review\_has\_min\_attendees} - The sprint review must have $\geq 3$ attendees.
+        \[ \text{attendees\_count}(sr) \geq 3 \quad \forall \, sr \in \text{SprintReview} \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{DV0:} $x_{w,t} \in \{0, 1\}$ - Binary assignment of worker $w$ to team $t$.
+    \item \textbf{DV1:} $y_{f,sbl} \in \{0, 1\}$ - Binary inclusion of feature $f$ in sprint backlog $sbl$.
+    \item \textbf{DV2:} $z_{us} \in \mathbb{Z}^+$ - Story points for user story $us$, where $1 \leq z_{us} \leq 20$.
+    \item \textbf{DV3:} $d_{sp} \in \mathbb{Z}^+$ - Duration of sprint $sp$ in days, where $7 \leq d_{sp} \leq 30$.
+    \item \textbf{DV4:} $a_{tsk,w} \in \{0, 1\}$ - Binary assignment of task $tsk$ to worker $w$.
+    \item \textbf{DV5:} $p_f \in \mathbb{Z}^+$ - Priority level of feature $f$, where $1 \leq p_f \leq 5$.
+    \item \textbf{DV6:} $m_{sp} \in \mathbb{Z}^+$ - Total meeting minutes for sprint $sp$.
+    \item \textbf{DV7:} $av_w \in \mathbb{R}$ - Planned availability of worker $w$, where $0.0 \leq av_w \leq 1.0$.
+    \item \textbf{DV8:} $size_t \in \mathbb{Z}^+$ - Size of team $t$, where $3 \leq size_t \leq 9$.
+    \item \textbf{DV9:} $rd_p \in \mathbb{Z}^+$ - Release day for project $p$ (days from start), where $30 \leq rd_p \leq 365$.
+    \item \textbf{DV10:} $budget_f \in \mathbb{R}^+$ - Budget allocated to feature $f$.
+\end{itemize}
+
+\end{document}

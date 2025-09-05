@@ -1,0 +1,388 @@
+graph TD
+    %% Style Definitions
+    classDef entityStyle fill:#aaccff,stroke:#333,stroke-width:2px,color:black;
+    classDef attrStyle fill:#ffffff,stroke:#333,stroke-width:1px,color:black;
+    classDef relStyle fill:#ffcc80,stroke:#333,stroke-width:2px,color:black;
+    classDef goalStyle fill:#90EE90,stroke:#333,stroke-width:2px,color:black;
+    classDef condStyle fill:#ff9999,stroke:#333,stroke-width:2px,color:black;
+    classDef dvStyle fill:#d9b3ff,stroke:#333,stroke-width:2px,color:black;
+
+    %% Entities and their Attributes
+    E0("Project"):::entityStyle
+    E0_attr0("id"):::attrStyle
+    E0_attr1("name"):::attrStyle
+    E0_attr2("project_start"):::attrStyle
+    E0_attr3("project_end"):::attrStyle
+    E0_attr4("description"):::attrStyle
+    E0_attr5("budget"):::attrStyle
+    E0_attr6("status"):::attrStyle
+    E0_attr7("target_audience"):::attrStyle
+    E0_attr8("priority"):::attrStyle
+    
+    E1("Team"):::entityStyle
+    E1_attr0("id"):::attrStyle
+    E1_attr1("name"):::attrStyle
+    E1_attr2("team_size"):::attrStyle
+    E1_attr3("team_start"):::attrStyle
+    E1_attr4("team_status"):::attrStyle
+    E1_attr5("location"):::attrStyle
+    E1_attr6("team_type"):::attrStyle
+    
+    E2("Worker"):::entityStyle
+    E2_attr0("id"):::attrStyle
+    E2_attr1("name"):::attrStyle
+    E2_attr2("first_name"):::attrStyle
+    E2_attr3("email"):::attrStyle
+    E2_attr4("start_date"):::attrStyle
+    E2_attr5("status"):::attrStyle
+    E2_attr6("availability"):::attrStyle
+    
+    E3("Feature"):::entityStyle
+    E3_attr0("id"):::attrStyle
+    E3_attr1("title"):::attrStyle
+    E3_attr2("description"):::attrStyle
+    E3_attr3("status"):::attrStyle
+    E3_attr4("priority"):::attrStyle
+    E3_attr5("estimated_effort"):::attrStyle
+    
+    E4("Skill"):::entityStyle
+    E5("Role"):::entityStyle
+    E6("ProductOwner"):::entityStyle
+    E7("ScrumMaster"):::entityStyle
+    
+    E8("ProductBacklog"):::entityStyle
+    E8_attr0("id"):::attrStyle
+    E8_attr1("created_on"):::attrStyle
+    E8_attr2("last_updated"):::attrStyle
+    E8_attr3("number_of_entries"):::attrStyle
+    E8_attr4("status"):::attrStyle
+    
+    E9("Sprint"):::entityStyle
+    E9_attr0("id"):::attrStyle
+    E9_attr1("sprint_number"):::attrStyle
+    E9_attr2("start_date"):::attrStyle
+    E9_attr3("end_date"):::attrStyle
+    E9_attr4("status"):::attrStyle
+    E9_attr5("achievement_of_goal"):::attrStyle
+    
+    E10("SprintPlanning"):::entityStyle
+    E11("DailyScrum"):::entityStyle
+    E12("SprintReview"):::entityStyle
+    E13("SprintRetrospective"):::entityStyle
+    
+    E14("SprintBacklog"):::entityStyle
+    E14_attr0("id"):::attrStyle
+    E14_attr1("number_of_tasks"):::attrStyle
+    E14_attr2("last_updated"):::attrStyle
+    E14_attr3("status"):::attrStyle
+    E14_attr4("total_effort"):::attrStyle
+    
+    E15("SprintGoal"):::entityStyle
+    E15_attr0("id"):::attrStyle
+    E15_attr1("objective_description"):::attrStyle
+    E15_attr2("achievement_status"):::attrStyle
+    E15_attr3("benefit"):::attrStyle
+    
+    E16("Epic"):::entityStyle
+    E17("UserStory"):::entityStyle
+    E17_attr0("id"):::attrStyle
+    E17_attr1("title"):::attrStyle
+    E17_attr2("description"):::attrStyle
+    E17_attr3("acceptance_criteria"):::attrStyle
+    E17_attr4("priority"):::attrStyle
+    E17_attr5("story_points"):::attrStyle
+    E17_attr6("status"):::attrStyle
+    
+    E18("Task"):::entityStyle
+    E18_attr0("id"):::attrStyle
+    E18_attr1("title"):::attrStyle
+    E18_attr2("description"):::attrStyle
+    E18_attr3("status"):::attrStyle
+    E18_attr4("effort"):::attrStyle
+    E18_attr5("type"):::attrStyle
+    
+    E19("DevelopmentSnapshot"):::entityStyle
+    E20("Blocker"):::entityStyle
+    E20_attr0("id"):::attrStyle
+    E20_attr1("title"):::attrStyle
+    E20_attr2("description"):::attrStyle
+    E20_attr3("severity"):::attrStyle
+    E20_attr4("status"):::attrStyle
+    E20_attr5("detected_on"):::attrStyle
+    E20_attr6("resolved_on"):::attrStyle
+    
+    E21("Stakeholder"):::entityStyle
+    E21_attr0("id"):::attrStyle
+    E21_attr1("name"):::attrStyle
+    E21_attr2("organization"):::attrStyle
+    E21_attr3("role"):::attrStyle
+    E21_attr4("email"):::attrStyle
+    E21_attr5("area_of_interest"):::attrStyle
+    E21_attr6("influence_level"):::attrStyle
+    E21_attr7("relevance_to_feature"):::attrStyle
+    
+    E22("Velocity"):::entityStyle
+    E22_attr0("id"):::attrStyle
+    E22_attr1("number_of_sprints_used"):::attrStyle
+    E22_attr2("avg._story_points"):::attrStyle
+    E22_attr3("max_velocity"):::attrStyle
+    E22_attr4("min_velocity"):::attrStyle
+    E22_attr5("trend"):::attrStyle
+    
+    E23("ReleasePlan"):::entityStyle
+    E24("Roadmap"):::entityStyle
+    E25("ScrumBoard"):::entityStyle
+    E26("FeatureDocumentation"):::entityStyle
+
+    %% Entity-Attribute Connections
+    E0 --> E0_attr0
+    E0 --> E0_attr1
+    E0 --> E0_attr2
+    E0 --> E0_attr3
+    E0 --> E0_attr4
+    E0 --> E0_attr5
+    E0 --> E0_attr6
+    E0 --> E0_attr7
+    E0 --> E0_attr8
+    
+    E1 --> E1_attr0
+    E1 --> E1_attr1
+    E1 --> E1_attr2
+    E1 --> E1_attr3
+    E1 --> E1_attr4
+    E1 --> E1_attr5
+    E1 --> E1_attr6
+    
+    E2 --> E2_attr0
+    E2 --> E2_attr1
+    E2 --> E2_attr2
+    E2 --> E2_attr3
+    E2 --> E2_attr4
+    E2 --> E2_attr5
+    E2 --> E2_attr6
+    
+    E3 --> E3_attr0
+    E3 --> E3_attr1
+    E3 --> E3_attr2
+    E3 --> E3_attr3
+    E3 --> E3_attr4
+    E3 --> E3_attr5
+    
+    E8 --> E8_attr0
+    E8 --> E8_attr1
+    E8 --> E8_attr2
+    E8 --> E8_attr3
+    E8 --> E8_attr4
+    
+    E9 --> E9_attr0
+    E9 --> E9_attr1
+    E9 --> E9_attr2
+    E9 --> E9_attr3
+    E9 --> E9_attr4
+    E9 --> E9_attr5
+    
+    E14 --> E14_attr0
+    E14 --> E14_attr1
+    E14 --> E14_attr2
+    E14 --> E14_attr3
+    E14 --> E14_attr4
+    
+    E15 --> E15_attr0
+    E15 --> E15_attr1
+    E15 --> E15_attr2
+    E15 --> E15_attr3
+    
+    E17 --> E17_attr0
+    E17 --> E17_attr1
+    E17 --> E17_attr2
+    E17 --> E17_attr3
+    E17 --> E17_attr4
+    E17 --> E17_attr5
+    E17 --> E17_attr6
+    
+    E18 --> E18_attr0
+    E18 --> E18_attr1
+    E18 --> E18_attr2
+    E18 --> E18_attr3
+    E18 --> E18_attr4
+    E18 --> E18_attr5
+    
+    E20 --> E20_attr0
+    E20 --> E20_attr1
+    E20 --> E20_attr2
+    E20 --> E20_attr3
+    E20 --> E20_attr4
+    E20 --> E20_attr5
+    E20 --> E20_attr6
+    
+    E21 --> E21_attr0
+    E21 --> E21_attr1
+    E21 --> E21_attr2
+    E21 --> E21_attr3
+    E21 --> E21_attr4
+    E21 --> E21_attr5
+    E21 --> E21_attr6
+    E21 --> E21_attr7
+    
+    E22 --> E22_attr0
+    E22 --> E22_attr1
+    E22 --> E22_attr2
+    E22 --> E22_attr3
+    E22 --> E22_attr4
+    E22 --> E22_attr5
+
+    %% Relations
+    R1("is_assigned_to_project"):::relStyle
+    R2("belongs_to_team"):::relStyle
+    R3("has_skill"):::relStyle
+    R4("takes_on_role"):::relStyle
+    R5("manages_backlog"):::relStyle
+    R6("is_supported_by"):::relStyle
+    R7("contains_feature"):::relStyle
+    R8("contains_epic"):::relStyle
+    R9("contains_user_story"):::relStyle
+    R10("consists_of_tasks"):::relStyle
+    R11("is_in_sprint_backlog"):::relStyle
+    R12("belongs_to_sprint"):::relStyle
+    R13("pursues_goal"):::relStyle
+    R14("contains_tasks"):::relStyle
+    R15("documents_feature"):::relStyle
+    R16("is_blocked_by"):::relStyle
+    R17("participates_in"):::relStyle
+    R18("moderates_retrospective"):::relStyle
+    R19("refers_to_team"):::relStyle
+    R20("plans_release"):::relStyle
+    R21("is_part_of_roadmap"):::relStyle
+    R22("generates_snapshot"):::relStyle
+
+    %% Entity-Relation Connections
+    E1 --> R1
+    R1 --> E0
+    
+    E2 --> R2
+    R2 --> E1
+    
+    E2 --> R3
+    R3 --> E4
+    
+    E2 --> R4
+    R4 --> E5
+    
+    E6 --> R5
+    R5 --> E8
+    
+    E1 --> R6
+    R6 --> E7
+    
+    E8 --> R7
+    R7 --> E3
+    
+    E8 --> R8
+    R8 --> E16
+    
+    E16 --> R9
+    R9 --> E17
+    
+    E17 --> R10
+    R10 --> E18
+    
+    E17 --> R11
+    R11 --> E14
+    
+    E14 --> R12
+    R12 --> E9
+    
+    E9 --> R13
+    R13 --> E15
+    
+    E25 --> R14
+    R14 --> E18
+    
+    E26 --> R15
+    R15 --> E3
+    
+    E18 --> R16
+    R16 --> E20
+    
+    E21 --> R17
+    R17 --> E12
+    
+    E7 --> R18
+    R18 --> E13
+    
+    E22 --> R19
+    R19 --> E1
+    
+    E23 --> R20
+    R20 --> E3
+    
+    E23 --> R21
+    R21 --> E24
+    
+    E9 --> R22
+    R22 --> E19
+
+    %% Goals
+    G0("G0: maximize_team_availability"):::goalStyle
+    G1("G1: minimize_feature_effort"):::goalStyle
+    G2("G2: maximize_sprint_goal_achievement"):::goalStyle
+    G3("G3: minimize_blocker_severity"):::goalStyle
+    G4("G4: maximize_velocity"):::goalStyle
+    G5("G5: minimize_sprint_overdue"):::goalStyle
+    G6("G6: maximize_stakeholder_influence"):::goalStyle
+
+    %% Goal-Entity/Attribute Connections
+    G0 --> E2_attr6
+    G1 --> E3_attr5
+    G2 --> E15_attr2
+    G3 --> E20_attr3
+    G4 --> E22_attr2
+    G5 --> E18_attr3
+    G6 --> E21_attr6
+
+    %% Conditions
+    C0("C0: team_has_scrum_master"):::condStyle
+    C1("C1: product_backlog_has_owner"):::condStyle
+    C2("C2: user_story_has_acceptance_criteria"):::condStyle
+    C3("C3: task_not_blocked"):::condStyle
+    C4("C4: sprint_has_goal"):::condStyle
+    C5("C5: worker_has_required_skill"):::condStyle
+    C6("C6: feature_included_in_release"):::condStyle
+    C7("C7: budget_not_exceeded"):::condStyle
+
+    %% Condition-Entity/Attribute Connections
+    C0 --> E1_attr4
+    C1 --> E8_attr4
+    C2 --> E17_attr3
+    C3 --> E18_attr3
+    C4 --> E9_attr4
+    C5 --> E2_attr5
+    C6 --> E3_attr3
+    C7 --> E0_attr5
+
+    %% Decision Variables
+    DV0("DV0: assign_worker_to_task"):::dvStyle
+    DV1("DV1: select_feature_for_sprint"):::dvStyle
+    DV2("DV2: set_sprint_duration"):::dvStyle
+    DV3("DV3: set_team_size"):::dvStyle
+    DV4("DV4: set_story_points"):::dvStyle
+    DV5("DV5: assign_priority_to_feature"):::dvStyle
+    DV6("DV6: allocate_budget_to_feature"):::dvStyle
+
+    %% DecisionVariable-Entity Connections
+    DV0 --> E2
+    DV0 --> E18
+    
+    DV1 --> E3
+    DV1 --> E9
+    
+    DV2 --> E9
+    
+    DV3 --> E1
+    
+    DV4 --> E17
+    
+    DV5 --> E3
+    
+    DV6 --> E3
+    DV6 --> E0_attr5

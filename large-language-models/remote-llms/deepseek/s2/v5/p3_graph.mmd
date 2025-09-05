@@ -1,0 +1,314 @@
+graph TD
+    %% Style Definitions
+    classDef entityStyle fill:#a4c2f4,stroke:#333,stroke-width:2px,color:black;
+    classDef attrStyle fill:#ffffff,stroke:#333,stroke-width:1px,color:black;
+    classDef relStyle fill:#fce5cd,stroke:#333,stroke-width:2px,color:black;
+    classDef goalStyle fill:#b6d7a8,stroke:#333,stroke-width:2px,color:black;
+    classDef condStyle fill:#ea9999,stroke:#333,stroke-width:2px,color:black;
+    classDef varStyle fill:#d9d2e9,stroke:#333,stroke-width:2px,color:black;
+
+    %% Entities with Attributes
+    Project("Project (E0)"):::entityStyle
+    Project_id("id"):::attrStyle
+    Project_name("name"):::attrStyle
+    Project_start("project_start"):::attrStyle
+    Project_end("project_end"):::attrStyle
+    Project_desc("description"):::attrStyle
+    Project_budget("budget"):::attrStyle
+    Project_status("status"):::attrStyle
+    Project_audience("target_audience"):::attrStyle
+    Project_priority("priority"):::attrStyle
+    
+    Team("Team (E1)"):::entityStyle
+    Team_id("id"):::attrStyle
+    Team_name("name"):::attrStyle
+    Team_size("team_size"):::attrStyle
+    Team_start("team_start"):::attrStyle
+    Team_status("team_status"):::attrStyle
+    Team_location("location"):::attrStyle
+    Team_type("team_type"):::attrStyle
+    
+    Worker("Worker (E2)"):::entityStyle
+    Worker_id("id"):::attrStyle
+    Worker_name("name"):::attrStyle
+    Worker_fname("first_name"):::attrStyle
+    Worker_email("email"):::attrStyle
+    Worker_start("start_date"):::attrStyle
+    Worker_status("status"):::attrStyle
+    Worker_avail("availability"):::attrStyle
+    
+    Feature("Feature (E3)"):::entityStyle
+    Feature_id("id"):::attrStyle
+    Feature_title("title"):::attrStyle
+    Feature_desc("description"):::attrStyle
+    Feature_status("status"):::attrStyle
+    Feature_priority("priority"):::attrStyle
+    Feature_effort("estimated_effort"):::attrStyle
+    
+    Skill("Skill (E4)"):::entityStyle
+    Skill_id("id"):::attrStyle
+    Skill_label("label"):::attrStyle
+    Skill_desc("description"):::attrStyle
+    Skill_level("level"):::attrStyle
+    Skill_cert("certified"):::attrStyle
+    Skill_cat("category"):::attrStyle
+    
+    Blocker("Blocker (E20)"):::entityStyle
+    Blocker_id("id"):::attrStyle
+    Blocker_title("title"):::attrStyle
+    Blocker_desc("description"):::attrStyle
+    Blocker_severity("severity"):::attrStyle
+    Blocker_status("status"):::attrStyle
+    Blocker_detected("detected_on"):::attrStyle
+    Blocker_resolved("resolved_on"):::attrStyle
+    
+    SprintGoal("SprintGoal (E15)"):::entityStyle
+    SG_id("id"):::attrStyle
+    SG_desc("objective_description"):::attrStyle
+    SG_status("achievement_status"):::attrStyle
+    SG_benefit("benefit"):::attrStyle
+    
+    Velocity("Velocity (E22)"):::entityStyle
+    Vel_id("id"):::attrStyle
+    Vel_sprints("number_of_sprints_used"):::attrStyle
+    Vel_avg("avg._story_points"):::attrStyle
+    Vel_max("max_velocity"):::attrStyle
+    Vel_min("min_velocity"):::attrStyle
+    Vel_trend("trend"):::attrStyle
+    
+    Task("Task (E18)"):::entityStyle
+    Task_id("id"):::attrStyle
+    Task_title("title"):::attrStyle
+    Task_desc("description"):::attrStyle
+    Task_status("status"):::attrStyle
+    Task_effort("effort"):::attrStyle
+    Task_type("type"):::attrStyle
+    
+    Stakeholder("Stakeholder (E21)"):::entityStyle
+    SH_id("id"):::attrStyle
+    SH_name("name"):::attrStyle
+    SH_org("organization"):::attrStyle
+    SH_role("role"):::attrStyle
+    SH_email("email"):::attrStyle
+    SH_interest("area_of_interest"):::attrStyle
+    SH_influence("influence_level"):::attrStyle
+    SH_relevance("relevance_to_feature"):::attrStyle
+    
+    Sprint("Sprint (E9)"):::entityStyle
+    Sprint_id("id"):::attrStyle
+    Sprint_num("sprint_number"):::attrStyle
+    Sprint_start("start_date"):::attrStyle
+    Sprint_end("end_date"):::attrStyle
+    Sprint_status("status"):::attrStyle
+    Sprint_goal("achievement_of_goal"):::attrStyle
+    
+    ScrumMaster("ScrumMaster (E7)"):::entityStyle
+    SM_id("id"):::attrStyle
+    SM_name("name"):::attrStyle
+    SM_email("email"):::attrStyle
+    SM_exp("experience"):::attrStyle
+    
+    UserStory("UserStory (E17)"):::entityStyle
+    US_id("id"):::attrStyle
+    US_title("title"):::attrStyle
+    US_desc("description"):::attrStyle
+    US_criteria("acceptance_criteria"):::attrStyle
+    US_priority("priority"):::attrStyle
+    US_points("story_points"):::attrStyle
+    US_status("status"):::attrStyle
+
+    %% Entity-Attribute Connections
+    Project --> Project_id
+    Project --> Project_name
+    Project --> Project_start
+    Project --> Project_end
+    Project --> Project_desc
+    Project --> Project_budget
+    Project --> Project_status
+    Project --> Project_audience
+    Project --> Project_priority
+    
+    Team --> Team_id
+    Team --> Team_name
+    Team --> Team_size
+    Team --> Team_start
+    Team --> Team_status
+    Team --> Team_location
+    Team --> Team_type
+    
+    Worker --> Worker_id
+    Worker --> Worker_name
+    Worker --> Worker_fname
+    Worker --> Worker_email
+    Worker --> Worker_start
+    Worker --> Worker_status
+    Worker --> Worker_avail
+    
+    Feature --> Feature_id
+    Feature --> Feature_title
+    Feature --> Feature_desc
+    Feature --> Feature_status
+    Feature --> Feature_priority
+    Feature --> Feature_effort
+    
+    Skill --> Skill_id
+    Skill --> Skill_label
+    Skill --> Skill_desc
+    Skill --> Skill_level
+    Skill --> Skill_cert
+    Skill --> Skill_cat
+    
+    Blocker --> Blocker_id
+    Blocker --> Blocker_title
+    Blocker --> Blocker_desc
+    Blocker --> Blocker_severity
+    Blocker --> Blocker_status
+    Blocker --> Blocker_detected
+    Blocker --> Blocker_resolved
+    
+    SprintGoal --> SG_id
+    SprintGoal --> SG_desc
+    SprintGoal --> SG_status
+    SprintGoal --> SG_benefit
+    
+    Velocity --> Vel_id
+    Velocity --> Vel_sprints
+    Velocity --> Vel_avg
+    Velocity --> Vel_max
+    Velocity --> Vel_min
+    Velocity --> Vel_trend
+    
+    Task --> Task_id
+    Task --> Task_title
+    Task --> Task_desc
+    Task --> Task_status
+    Task --> Task_effort
+    Task --> Task_type
+    
+    Stakeholder --> SH_id
+    Stakeholder --> SH_name
+    Stakeholder --> SH_org
+    Stakeholder --> SH_role
+    Stakeholder --> SH_email
+    Stakeholder --> SH_interest
+    Stakeholder --> SH_influence
+    Stakeholder --> SH_relevance
+    
+    Sprint --> Sprint_id
+    Sprint --> Sprint_num
+    Sprint --> Sprint_start
+    Sprint --> Sprint_end
+    Sprint --> Sprint_status
+    Sprint --> Sprint_goal
+    
+    ScrumMaster --> SM_id
+    ScrumMaster --> SM_name
+    ScrumMaster --> SM_email
+    ScrumMaster --> SM_exp
+    
+    UserStory --> US_id
+    UserStory --> US_title
+    UserStory --> US_desc
+    UserStory --> US_criteria
+    UserStory --> US_priority
+    UserStory --> US_points
+    UserStory --> US_status
+
+    %% Relations
+    R1("R1: is_assigned_to_project"):::relStyle
+    R2("R2: belongs_to_team"):::relStyle
+    R3("R3: has_skill"):::relStyle
+    R16("R16: is_blocked_by"):::relStyle
+    R19("R19: refers_to_team"):::relStyle
+    R13("R13: pursues_goal"):::relStyle
+    R6("R6: is_supported_by"):::relStyle
+    R11("R11: is_in_sprint_backlog"):::relStyle
+    R10("R10: consists_of_tasks"):::relStyle
+    R7("R7: contains_feature"):::relStyle
+    R17("R17: participates_in"):::relStyle
+    R18("R18: moderates_retrospective"):::relStyle
+
+    %% Relation Connections
+    Team --> R1 --> Project
+    Worker --> R2 --> Team
+    Worker --> R3 --> Skill
+    Task --> R16 --> Blocker
+    Velocity --> R19 --> Team
+    Sprint --> R13 --> SprintGoal
+    Team --> R6 --> ScrumMaster
+    UserStory --> R11 --> Sprint
+    UserStory --> R10 --> Task
+    Project --> R7 --> Feature
+    Stakeholder --> R17 --> Sprint
+    ScrumMaster --> R18 --> Sprint
+
+    %% Goals
+    G0("G0: maximize_team_availability"):::goalStyle
+    G1("G1: minimize_project_budget"):::goalStyle
+    G2("G2: maximize_feature_priority"):::goalStyle
+    G3("G3: minimize_blocker_severity"):::goalStyle
+    G4("G4: maximize_sprint_goal_achievement"):::goalStyle
+    G5("G5: maximize_velocity"):::goalStyle
+    G6("G6: minimize_task_effort"):::goalStyle
+    G7("G7: maximize_stakeholder_satisfaction"):::goalStyle
+    G8("G8: minimize_sprint_duration"):::goalStyle
+
+    %% Goal Connections
+    G0 --> Worker_avail
+    G1 --> Project_budget
+    G2 --> Feature_priority
+    G3 --> Blocker_severity
+    G4 --> SG_status
+    G5 --> Vel_avg
+    G6 --> Task_effort
+    G7 --> SH_influence
+    G8 --> Sprint_start
+    G8 --> Sprint_end
+
+    %% Conditions
+    C0("C0: condition_team_cross_functional"):::condStyle
+    C1("C1: condition_worker_certified"):::condStyle
+    C2("C2: condition_project_on_budget"):::condStyle
+    C3("C3: condition_no_critical_blockers"):::condStyle
+    C4("C4: condition_sprint_goal_defined"):::condStyle
+    C5("C5: condition_user_story_estimated"):::condStyle
+    C6("C6: condition_task_status_valid"):::condStyle
+    C7("C7: condition_feature_high_priority"):::condStyle
+    C8("C8: condition_scrum_master_experienced"):::condStyle
+
+    %% Condition Connections
+    C0 --> Team_type
+    C1 --> Skill_cert
+    C2 --> Project_budget
+    C3 --> Blocker_severity
+    C3 --> Blocker_status
+    C4 --> SG_desc
+    C5 --> US_points
+    C6 --> Task_status
+    C7 --> Feature_priority
+    C8 --> SM_exp
+    C8 --> Team_size
+
+    %% Decision Variables
+    DV0("DV0: assign_worker_to_team"):::varStyle
+    DV1("DV1: select_feature_for_sprint"):::varStyle
+    DV2("DV2: assign_story_points"):::varStyle
+    DV3("DV3: set_task_priority"):::varStyle
+    DV4("DV4: allocate_budget"):::varStyle
+    DV5("DV5: team_size"):::varStyle
+    DV6("DV6: sprint_duration"):::varStyle
+    DV7("DV7: worker_availability"):::varStyle
+    DV8("DV8: feature_development_order"):::varStyle
+
+    %% Decision Variable Connections
+    DV0 --> Worker
+    DV0 --> Team
+    DV1 --> Feature
+    DV1 --> Sprint
+    DV2 --> UserStory
+    DV3 --> Task
+    DV4 --> Feature
+    DV5 --> Team
+    DV6 --> Sprint
+    DV7 --> Worker
+    DV8 --> Feature

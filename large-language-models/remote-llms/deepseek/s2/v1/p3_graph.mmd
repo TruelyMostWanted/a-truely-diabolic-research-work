@@ -1,0 +1,245 @@
+graph TD
+    %% Styling Definitions
+    classDef entityStyle fill:#6BB5FF,stroke:#333,stroke-width:2px,color:#000
+    classDef attrStyle fill:#fff,stroke:#333,stroke-width:1px,color:#000
+    classDef relStyle fill:#FFA500,stroke:#333,stroke-width:2px,color:#000
+    classDef goalStyle fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
+    classDef condStyle fill:#FF7276,stroke:#333,stroke-width:2px,color:#000
+    classDef decvarStyle fill:#CBC3E3,stroke:#333,stroke-width:2px,color:#000
+
+    %% ENTITIES AND THEIR ATTRIBUTES
+    subgraph Entities
+        P("Project (P)"):::entityStyle
+        P_id("id"):::attrStyle
+        P_name("name"):::attrStyle
+        P_start("project_start"):::attrStyle
+        P_end("project_end"):::attrStyle
+        P_budget("budget"):::attrStyle
+        P_status("status"):::attrStyle
+
+        T("Team (T)"):::entityStyle
+        T_id("id"):::attrStyle
+        T_name("name"):::attrStyle
+        T_size("team_size"):::attrStyle
+        T_status("team_status"):::attrStyle
+
+        W("Worker (W)"):::entityStyle
+        W_id("id"):::attrStyle
+        W_name("name"):::attrStyle
+        W_availability("availability"):::attrStyle
+
+        F("Feature (F)"):::entityStyle
+        F_id("id"):::attrStyle
+        F_priority("priority"):::attrStyle
+        F_status("status"):::attrStyle
+
+        S("Skill (S)"):::entityStyle
+        S_id("id"):::attrStyle
+        S_category("category"):::attrStyle
+        S_certified("certified"):::attrStyle
+
+        US("UserStory (US)"):::entityStyle
+        US_id("id"):::attrStyle
+        US_acceptance("acceptance_criteria"):::attrStyle
+        US_status("status"):::attrStyle
+        US_points("story_points"):::attrStyle
+
+        TSK("Task (TSK)"):::entityStyle
+        TSK_id("id"):::attrStyle
+        TSK_status("status"):::attrStyle
+        TSK_effort("effort"):::attrStyle
+
+        BL("Blocker (BL)"):::entityStyle
+        BL_id("id"):::attrStyle
+        BL_severity("severity"):::attrStyle
+        BL_status("status"):::attrStyle
+
+        PO("ProductOwner (PO)"):::entityStyle
+        PO_id("id"):::attrStyle
+        PO_availability("availability"):::attrStyle
+
+        SG("SprintGoal (SG)"):::entityStyle
+        SG_id("id"):::attrStyle
+        SG_desc("objective_description"):::attrStyle
+        SG_status("achievement_status"):::attrStyle
+
+        SH("Stakeholder (SH)"):::entityStyle
+        SH_id("id"):::attrStyle
+        SH_influence("influence_level"):::attrStyle
+
+        VEL("Velocity (VEL)"):::entityStyle
+        VEL_id("id"):::attrStyle
+        VEL_avg("avg._story_points"):::attrStyle
+
+        SPP("SprintPlanning (SPP)"):::entityStyle
+        SPP_id("id"):::attrStyle
+        SPP_duration("duration_(min)"):::attrStyle
+
+        DS("DailyScrum (DS)"):::entityStyle
+        DS_id("id"):::attrStyle
+        DS_duration("duration"):::attrStyle
+
+        DEV("DevelopmentSnapshot (DEV)"):::entityStyle
+        DEV_id("id"):::attrStyle
+        DEV_test("test_status"):::attrStyle
+
+        REP("ReleasePlan (REP)"):::entityStyle
+        REP_id("id"):::attrStyle
+        REP_status("status"):::attrStyle
+
+        RM("Roadmap (RM)"):::entityStyle
+        RM_id("id"):::attrStyle
+    end
+
+    %% Connect Entities to their Attributes
+    P --- P_id & P_name & P_start & P_end & P_budget & P_status
+    T --- T_id & T_name & T_size & T_status
+    W --- W_id & W_name & W_availability
+    F --- F_id & F_priority & F_status
+    S --- S_id & S_category & S_certified
+    US --- US_id & US_acceptance & US_status & US_points
+    TSK --- TSK_id & TSK_status & TSK_effort
+    BL --- BL_id & BL_severity & BL_status
+    PO --- PO_id & PO_availability
+    SG --- SG_id & SG_desc & SG_status
+    SH --- SH_id & SH_influence
+    VEL --- VEL_id & VEL_avg
+    SPP --- SPP_id & SPP_duration
+    DS --- DS_id & DS_duration
+    DEV --- DEV_id & DEV_test
+    REP --- REP_id & REP_status
+    RM --- RM_id
+
+    %% RELATIONS (Orange)
+    R1("is_assigned_to_project<br/>(Team → Project)"):::relStyle
+    R2("belongs_to_team<br/>(Worker → Team)"):::relStyle
+    R3("has_skill<br/>(Worker → Skill)"):::relStyle
+    R5("manages_backlog<br/>(PO → PB)"):::relStyle
+    R7("contains_feature<br/>(PB → Feature)"):::relStyle
+    R10("consists_of_tasks<br/>(US → Task)"):::relStyle
+    R12("belongs_to_sprint<br/>(SBL → Sprint)"):::relStyle
+    R13("pursues_goal<br/>(Sprint → SG)"):::relStyle
+    R16("is_blocked_by<br/>(Task → Blocker)"):::relStyle
+    R19("refers_to_team<br/>(Velocity → Team)"):::relStyle
+    R21("is_part_of_roadmap<br/>(ReleasePlan → Roadmap)"):::relStyle
+    R22("generates_snapshot<br/>(Sprint → DevSnapshot)"):::relStyle
+
+    %% Connect Relations to Entities
+    T -.-> R1
+    R1 -.-> P
+
+    W -.-> R2
+    R2 -.-> T
+
+    W -.-> R3
+    R3 -.-> S
+
+    PO -.-> R5
+    R5 -.-> PB
+
+    PB -.-> R7
+    R7 -.-> F
+
+    US -.-> R10
+    R10 -.-> TSK
+
+    SBL -.-> R12
+    R12 -.-> SP
+
+    SP -.-> R13
+    R13 -.-> SG
+
+    TSK -.-> R16
+    R16 -.-> BL
+
+    VEL -.-> R19
+    R19 -.-> T
+
+    REP -.-> R21
+    R21 -.-> RM
+
+    SP -.-> R22
+    R22 -.-> DEV
+
+    %% GOALS (Green)
+    G0("G0: maximize_team_utilization"):::goalStyle
+    G1("G1: minimize_project_duration"):::goalStyle
+    G2("G2: maximize_feature_delivery"):::goalStyle
+    G3("G3: minimize_blocker_impact"):::goalStyle
+    G4("G4: maximize_sprint_goal_achievement"):::goalStyle
+    G5("G5: minimize_task_effort_variance"):::goalStyle
+    G6("G6: maximize_stakeholder_satisfaction"):::goalStyle
+    G7("G7: minimize_budget_deviation"):::goalStyle
+    G8("G8: maximize_team_velocity"):::goalStyle
+    G9("G9: minimize_sprint_overhead"):::goalStyle
+
+    %% Connect Goals to Entity Attributes
+    G0 -.-> W_availability
+    G1 -.-> P_start
+    G1 -.-> P_end
+    G2 -.-> F_priority
+    G2 -.-> F_status
+    G3 -.-> BL_severity
+    G3 -.-> BL_status
+    G4 -.-> SG_status
+    G5 -.-> TSK_effort
+    G6 -.-> SH_influence
+    G7 -.-> P_budget
+    G8 -.-> VEL_avg
+    G9 -.-> SPP_duration
+    G9 -.-> DS_duration
+
+    %% CONDITIONS (Red)
+    C0("C0: team_must_be_cross_functional"):::condStyle
+    C1("C1: feature_must_have_acceptance_criteria"):::condStyle
+    C2("C2: sprint_must_have_goal"):::condStyle
+    C3("C3: task_cannot_be_unassigned"):::condStyle
+    C4("C4: po_must_be_available"):::condStyle
+    C5("C5: blocker_must_be_high_severity"):::condStyle
+    C6("C6: release_must_be_on_roadmap"):::condStyle
+    C7("C7: worker_may_have_certified_skills"):::condStyle
+    C8("C8: sprint_cannot_exceed_timebox"):::condStyle
+    C9("C9: snapshot_must_pass_tests"):::condStyle
+
+    %% Connect Conditions to Entity Attributes and Relations
+    C0 -.-> S_category
+    C0 -.-> R3
+    C1 -.-> US_acceptance
+    C1 -.-> US_status
+    C2 -.-> SG_desc
+    C2 -.-> R13
+    C3 -.-> TSK_status
+    C3 -.-> R2
+    C4 -.-> PO_availability
+    C5 -.-> BL_severity
+    C5 -.-> BL_status
+    C6 -.-> R21
+    C7 -.-> S_certified
+    C8 -.-> DS_duration
+    C9 -.-> DEV_test
+
+    %% DECISION VARIABLES (Purple)
+    DV0("DV0: assign_worker_to_task<br/>{0,1}"):::decvarStyle
+    DV1("DV1: feature_priority<br/>[1,10]"):::decvarStyle
+    DV2("DV2: story_points<br/>[1,13]"):::decvarStyle
+    DV3("DV3: sprint_duration<br/>[7,21]"):::decvarStyle
+    DV4("DV4: team_size<br/>[3,9]"):::decvarStyle
+    DV5("DV5: worker_availability<br/>[0.0,1.0]"):::decvarStyle
+    DV6("DV6: task_effort_estimate<br/>[0.5,40.0]"):::decvarStyle
+    DV7("DV7: blocker_severity<br/>[1,5]"):::decvarStyle
+    DV8("DV8: meeting_duration<br/>[15,240]"):::decvarStyle
+    DV9("DV9: project_budget<br/>[0.0,1e6]"):::decvarStyle
+
+    %% Connect Decision Variables to Entities/Attributes
+    DV0 -.-> W
+    DV0 -.-> TSK
+    DV1 -.-> F_priority
+    DV2 -.-> US_points
+    DV3 -.-> SP
+    DV4 -.-> T_size
+    DV5 -.-> W_availability
+    DV6 -.-> TSK_effort
+    DV7 -.-> BL_severity
+    DV8 -.-> SPP
+    DV8 -.-> DS
+    DV9 -.-> P_budget

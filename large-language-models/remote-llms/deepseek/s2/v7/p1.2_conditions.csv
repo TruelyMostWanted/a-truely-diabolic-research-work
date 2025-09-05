@@ -1,0 +1,11 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,condition_project_active,Only consider projects that are in an active status,False,min,Project,status,2,1.0
+C1,condition_worker_available,Only include workers whose status is 'available',False,max,Worker,status,2,1.0
+C2,condition_sprint_current,Apply velocity goal only to the most recent sprint,False,max,Sprint,status,2,1.0
+C3,condition_blocker_unresolved,Consider only blockers that have not been resolved,False,min,Blocker,status,2,1.0
+C4,condition_high_priority_feature,Focus on features with 'High' or 'Critical' priority,False,max,Feature,priority,1,1.0
+C5,condition_team_has_scrum_master,Ensure the team has an assigned Scrum Master,False,max,Team,team_status,1,1.0
+C6,condition_story_estimated,Only include user stories that have story points assigned,False,min,UserStory,story_points,2,1.0
+C7,condition_sprint_has_goal,Only evaluate sprints that have a defined goal,False,max,SprintGoal,objective_description,2,1.0
+C8,condition_certified_skills,Prefer skills that are officially certified,False,max,Skill,certified,1,1.0
+C9,condition_release_planned,Only include features that are part of a planned release,False,max,ReleasePlan,status,1,1.0

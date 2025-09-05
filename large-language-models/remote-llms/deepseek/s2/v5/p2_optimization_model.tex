@@ -1,0 +1,181 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Company Optimization Model},
+}
+
+\title{Optimization Model for a SCRUM-Based Software Development Company}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p_1, p_2, ..., p_n\}$ (P)
+    \item $\text{Team} = \{t_1, t_2, ..., t_n\}$ (T)
+    \item $\text{Worker} = \{w_1, w_2, ..., w_n\}$ (W)
+    \item $\text{Feature} = \{f_1, f_2, ..., f_n\}$ (F)
+    \item $\text{Skill} = \{s_1, s_2, ..., s_n\}$ (S)
+    \item $\text{Role} = \{r_1, r_2, ..., r_n\}$ (R)
+    \item $\text{ProductOwner} = \{po_1, po_2, ..., po_n\}$ (PO)
+    \item $\text{ScrumMaster} = \{sm_1, sm_2, ..., sm_n\}$ (SM)
+    \item $\text{ProductBacklog} = \{pb_1, pb_2, ..., pb_n\}$ (PB)
+    \item $\text{Sprint} = \{sp_1, sp_2, ..., sp_n\}$ (SP)
+    \item $\text{SprintGoal} = \{sg_1, sg_2, ..., sg_n\}$ (SG)
+    \item $\text{UserStory} = \{us_1, us_2, ..., us_n\}$ (US)
+    \item $\text{Task} = \{tsk_1, tsk_2, ..., tsk_n\}$ (TSK)
+    \item $\text{Blocker} = \{bl_1, bl_2, ..., bl_n\}$ (BL)
+    \item $\text{Stakeholder} = \{sh_1, sh_2, ..., sh_n\}$ (SH)
+    \item $\text{Velocity} = \{vel_1, vel_2, ..., vel_n\}$ (VEL)
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in \text{Project}$
+    \item $t \in \text{Team}$
+    \item $w \in \text{Worker}$
+    \item $f \in \text{Feature}$
+    \item $s \in \text{Skill}$
+    \item $r \in \text{Role}$
+    \item $po \in \text{ProductOwner}$
+    \item $sm \in \text{ScrumMaster}$
+    \item $sp \in \text{Sprint}$
+    \item $sg \in \text{SprintGoal}$
+    \item $us \in \text{UserStory}$
+    \item $tsk \in \text{Task}$
+    \item $bl \in \text{Blocker}$
+    \item $sh \in \text{Stakeholder}$
+    \item $vel \in \text{Velocity}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_availability} \\
+    Logical: Maximize the overall availability of all team members. \\
+    Mathematical: $\max \sum_{w \in \text{Worker}} \text{availability}(w)$
+    
+    \item \textbf{G1: minimize\_project\_budget} \\
+    Logical: Minimize the total budget spent across all projects. \\
+    Mathematical: $\min \sum_{p \in \text{Project}} \text{budget}(p)$
+    
+    \item \textbf{G2: maximize\_feature\_priority} \\
+    Logical: Maximize the average priority of features developed. \\
+    Mathematical: $\max \frac{1}{|\text{Feature}|} \sum_{f \in \text{Feature}} \text{priority}(f)$
+    
+    \item \textbf{G3: minimize\_blocker\_severity} \\
+    Logical: Minimize the severity of active blockers. \\
+    Mathematical: $\min \sum_{bl \in \text{Blocker} | \text{status}(bl) = \text{active}} \text{severity}(bl)$
+    
+    \item \textbf{G4: maximize\_sprint\_goal\_achievement} \\
+    Logical: Maximize the achievement status of sprint goals. \\
+    Mathematical: $\max \sum_{sg \in \text{SprintGoal}} \text{achievement\_status}(sg)$
+    
+    \item \textbf{G5: maximize\_velocity} \\
+    Logical: Maximize the average velocity of teams. \\
+    Mathematical: $\max \sum_{vel \in \text{Velocity}} \text{avg\_story\_points}(vel)$
+    
+    \item \textbf{G6: minimize\_task\_effort} \\
+    Logical: Minimize the total effort of tasks in the sprint backlog. \\
+    Mathematical: $\min \sum_{tsk \in \text{Task}} \text{effort}(tsk)$
+    
+    \item \textbf{G7: maximize\_stakeholder\_satisfaction} \\
+    Logical: Maximize the satisfaction level of stakeholders. \\
+    Mathematical: $\max \sum_{sh \in \text{Stakeholder}} \text{influence\_level}(sh)$
+    
+    \item \textbf{G8: minimize\_sprint\_duration} \\
+    Logical: Minimize the duration of sprints. \\
+    Mathematical: $\min \sum_{sp \in \text{Sprint}} (\text{end\_date}(sp) - \text{start\_date}(sp))$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: condition\_team\_cross\_functional} \\
+    Logical: Ensure a team has all required roles covered. \\
+    Mathematical: $\forall t \in \text{Team}, \exists w \in \text{Worker} \text{ assigned to } t \text{ for each } r \in \text{essential\_roles}$
+    
+    \item \textbf{C1: condition\_worker\_certified} \\
+    Logical: Critical features must be developed by certified workers. \\
+    Mathematical: $\forall f \in \text{Feature} | \text{priority}(f) = \text{critical}, \forall tsk \in \text{Task}(f), \text{certified}(\text{worker}(tsk)) = \text{True}$
+    
+    \item \textbf{C2: condition\_project\_on\_budget} \\
+    Logical: Project budget must not be exceeded. \\
+    Mathematical: $\forall p \in \text{Project}, \text{actual\_cost}(p) \leq \text{budget}(p)$
+    
+    \item \textbf{C3: condition\_no\_critical\_blockers} \\
+    Logical: No active blockers with 'critical' severity are allowed. \\
+    Mathematical: $\nexists bl \in \text{Blocker} | \text{status}(bl) = \text{active} \wedge \text{severity}(bl) = \text{critical}$
+    
+    \item \textbf{C4: condition\_sprint\_goal\_defined} \\
+    Logical: Every sprint must have a defined goal. \\
+    Mathematical: $\forall sp \in \text{Sprint}, \text{objective\_description}(\text{SprintGoal}(sp)) \neq \emptyset$
+    
+    \item \textbf{C5: condition\_user\_story\_estimated} \\
+    Logical: All user stories in a sprint must have story points. \\
+    Mathematical: $\forall us \in \text{UserStory} | \text{status}(us) = \text{in\_sprint}, \text{story\_points}(us) > 0$
+    
+    \item \textbf{C6: condition\_task\_status\_valid} \\
+    Logical: All tasks must have a valid status. \\
+    Mathematical: $\forall tsk \in \text{Task}, \text{status}(tsk) \in \{\text{todo}, \text{in\_progress}, \text{done}\}$
+    
+    \item \textbf{C7: condition\_feature\_high\_priority} \\
+    Logical: Features with 'critical' priority must be included in the next release. \\
+    Mathematical: $\forall f \in \text{Feature} | \text{priority}(f) = \text{critical}, f \in \text{next\_release}$
+    
+    \item \textbf{C8: condition\_scrum\_master\_experienced} \\
+    Logical: The Scrum Master must have sufficient experience for the team size. \\
+    Mathematical: $\forall t \in \text{Team}, \text{experience}(\text{ScrumMaster}(t)) \geq k \cdot \text{team\_size}(t)$
+\end{itemize}
+
+\section{DecisionVariables}
+\begin{itemize}
+    \item \textbf{DV0: assign\_worker\_to\_team} \\
+    $x_{w,t} \in \{0, 1\} \quad \forall w \in \text{Worker}, \forall t \in \text{Team}$ \\
+    Binary variable indicating if worker $w$ is assigned to team $t$.
+    
+    \item \textbf{DV1: select\_feature\_for\_sprint} \\
+    $y_{f,sp} \in \{0, 1\} \quad \forall f \in \text{Feature}, \forall sp \in \text{Sprint}$ \\
+    Binary variable indicating if feature $f$ is selected for sprint $sp$.
+    
+    \item \textbf{DV2: assign\_story\_points} \\
+    $z_{us} \in \{1,2,3,5,8,13,20,40,100\} \quad \forall us \in \text{UserStory}$ \\
+    Integer variable for the story points assigned to user story $us$.
+    
+    \item \textbf{DV3: set\_task\_priority} \\
+    $p_{tsk} \in \{1, 2, 3\} \quad \forall tsk \in \text{Task}$ \\
+    Integer variable for the priority level of task $tsk$.
+    
+    \item \textbf{DV4: allocate\_budget} \\
+    $b_f \in \mathbb{R}, 0.0 \leq b_f \leq 1,000,000.0 \quad \forall f \in \text{Feature}$ \\
+    Continuous variable for the budget allocated to feature $f$.
+    
+    \item \textbf{DV5: team\_size} \\
+    $n_t \in \mathbb{Z}^+, 3 \leq n_t \leq 9 \quad \forall t \in \text{Team}$ \\
+    Integer variable for the number of workers in team $t$.
+    
+    \item \textbf{DV6: sprint\_duration} \\
+    $d_{sp} \in \mathbb{Z}^+, 7 \leq d_{sp} \leq 30 \quad \forall sp \in \text{Sprint}$ \\
+    Integer variable for the duration of sprint $sp$ in days.
+    
+    \item \textbf{DV7: worker\_availability} \\
+    $a_w \in \mathbb{R}, 0.0 \leq a_w \leq 1.0 \quad \forall w \in \text{Worker}$ \\
+    Continuous variable for the percentage availability of worker $w$.
+    
+    \item \textbf{DV8: feature\_development\_order} \\
+    $o_f \in \mathbb{Z}^+, 1 \leq o_f \leq 100 \quad \forall f \in \text{Feature}$ \\
+    Integer variable for the sequential development order of feature $f$.
+\end{itemize}
+
+\end{document}
