@@ -1,14 +1,14 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-C0,capacity_respected,"Total task effort must not exceed available capacity.",True,min,Task,effort,2,1.0
-C1,mandatory_high_severity_blockers_addressed,"High-severity blockers must be resolved before release.",False,min,Blocker,status,2,1.2
-C2,stories_have_acceptance_criteria,"Only consider user stories with defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0
-C3,team_is_active,"Only active teams can be assigned sprint work.",False,max,Team,team_status,2,1.0
-C4,po_available_for_planning,"Product Owner must be available during sprint planning.",False,max,ProductOwner,availability,2,0.9
-C5,sm_experienced_threshold,"Scrum Master experience should meet a minimum threshold.",False,max,ScrumMaster,experience,1,0.6
-C6,feature_status_ready,"Features scheduled must be in a 'ready' status.",False,max,Feature,status,2,1.0
-C7,sprint_dates_valid,"Sprint end_date must be after start_date.",False,min,Sprint,start_date,2,1.0
-C8,backlog_is_current,"Backlog last_updated should be recent.",False,max,ProductBacklog,last_updated,1,0.5
-C9,release_has_planned_date,"Each release plan must include a planned date.",False,max,ReleasePlan,planned_date,2,1.0
-C10,roadmap_has_objectives,"Roadmap must specify objectives.",False,max,Roadmap,objectives,1,0.4
-C11,doc_linked_to_feature,"Feature documentation must link to its feature.",False,max,FeatureDocumentation,linked_requirements,2,0.8
-C12,team_size_within_bounds,"Team size should remain within acceptable range.",False,min,Team,team_size,1,0.7
+C0,enforce_max_team_size,A team must not have more than 9 members to maintain agility.,False,max,Team,team_size,2,1.0
+C1,enforce_min_team_size,A team must have at least 3 members to be cross-functional.,False,min,Team,team_size,2,1.0
+C2,enforce_project_budget,The total allocated budget for a project cannot be exceeded.,False,max,Project,budget,2,1.0
+C3,require_active_worker_status,Only workers with an 'active' status can be assigned to tasks.,False,max,Worker,status,2,1.0
+C4,respect_sprint_backlog_capacity,The total effort of a sprint backlog should ideally not exceed the team's velocity.,False,max,SprintBacklog,total_effort,1,1.0
+C5,require_high_feature_priority,Features with a priority lower than a defined threshold must not be planned.,False,min,Feature,priority,2,1.0
+C6,require_user_story_acceptance_criteria,A user story must have defined acceptance criteria before it can be moved to a sprint.,False,min,UserStory,acceptance_criteria,2,1.0
+C7,require_sprint_goal_definition,A sprint cannot start unless a corresponding Sprint Goal is defined and linked.,False,max,Sprint,SprintGoal,2,1.0
+C8,require_project_start_date,A project cannot be planned or have resources assigned without a defined start date.,False,min,Project,project_start,2,1.0
+C9,prefer_experienced_scrum_master,A team should preferably be supported by a Scrum Master with a high experience level.,False,min,ScrumMaster,experience,1,0.5
+C10,enforce_task_effort_limit,A single task should not exceed a maximum effort (e.g., 16 hours) to ensure it can be completed quickly.,False,max,Task,effort,1,1.0
+C11,require_feature_documentation_link,A feature is not considered complete until its documentation is created and linked.,False,min,FeatureDocumentation,id,2,1.0
+C12,prevent_work_on_closed_projects,No new user stories or tasks can be assigned to a project with the status 'closed'.,False,max,Project,status,0,1.0

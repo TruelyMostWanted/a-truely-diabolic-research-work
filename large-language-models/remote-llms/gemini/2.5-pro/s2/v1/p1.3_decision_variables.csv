@@ -1,14 +1,13 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_story_to_sprint,Binary decision to assign a given User Story to a specific Sprint.,Boolean,"{0,1}",0,1
+DV1,assign_worker_to_task,Binary decision to assign a specific Worker to a specific Task.,Boolean,"{0,1}",0,1
+DV2,select_feature_for_release,Binary decision to include a Feature in the next Release Plan.,Boolean,"{0,1}",0,1
+DV3,set_user_story_priority,Sets the priority of a User Story on a scale from 1 (lowest) to 5 (highest).,Integer,Range,1,5
+DV4,estimate_user_story_points,Sets the effort estimation for a User Story using a Fibonacci-like scale.,Integer,"{1,2,3,5,8,13,21}",1,21
+DV5,adjust_team_size,Sets the number of workers assigned to a Team.,Integer,Range,3,9
+DV6,set_project_budget,Allocates a specific financial budget to a Project.,Float,Range,50000,2000000
+DV7,change_task_status,Update the status of a Task (e.g., 0:ToDo, 1:InProgress, 2:Done).,Integer,"{0,1,2}",0,2
+DV8,define_sprint_duration_in_weeks,Sets the standard duration for all Sprints in weeks (e.g., 1, 2, 3, or 4).,Integer,"{1,2,3,4}",1,4
+DV9,assign_team_to_project,Binary decision to assign a Team to a Project.,Boolean,"{0,1}",0,1
+DV10,set_blocker_severity,Sets the severity of a Blocker on a scale from 1 (low) to 4 (critical).,Integer,Range,1,4
+DV11,prioritize_epic_in_backlog,Sets the priority of an Epic on a scale from 1 (lowest) to 10 (highest).,Integer,Range,1,10

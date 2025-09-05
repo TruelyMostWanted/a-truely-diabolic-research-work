@@ -1,14 +1,13 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_worker_to_task,Binary decision (0 or 1) to assign a specific worker to a specific task,Boolean,"{0,1}",0,1
+DV1,select_user_story_for_sprint,Binary decision to include a user story in the next sprint backlog,Boolean,"{0,1}",0,1
+DV2,set_feature_priority,Integer priority for a feature (1=lowest, 5=highest),Integer,"{1,2,3,4,5}",1,5
+DV3,adjust_team_size,The number of workers to assign to a specific team,Integer,,3,9
+DV4,allocate_effort_to_task,The amount of effort (in hours) to allocate for a task,Float,,1,40
+DV5,set_sprint_duration,The duration of a sprint in calendar days,Integer,"{7,14,21,30}",7,30
+DV6,set_story_points_for_user_story,Fibonacci scale story points for a user story,Integer,"{1,2,3,5,8,13}",1,13
+DV7,assign_team_to_project,Binary decision to assign a whole team to a specific project,Boolean,"{0,1}",0,1
+DV8,choose_blocker_severity,"Severity level for a new blocker (1=low, 3=critical)",Integer,"{1,2,3}",1,3
+DV9,approve_project_budget,The total budget in currency units approved for a project,Float,,50000,2000000
+DV10,select_feature_for_release,Binary decision to include a feature in the upcoming release plan,Boolean,"{0,1}",0,1
+DV11,set_worker_availability,Percentage of a worker's time available for the project,Integer,,25,100

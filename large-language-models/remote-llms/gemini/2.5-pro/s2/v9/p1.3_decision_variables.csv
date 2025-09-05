@@ -1,14 +1,14 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_story_to_sprint,"Binary decision to assign a specific User Story to the current Sprint",boolean,"{0,1}",0,1
+DV1,assign_worker_to_task,"Decision to assign a specific Worker to a specific Task",boolean,"{0,1}",0,1
+DV2,set_feature_priority,"Set the priority level for a Feature, where a higher number means higher priority",integer,,1,5
+DV3,set_user_story_points,"Estimate the story points for a User Story from a Fibonacci-like sequence",integer,"{1,2,3,5,8,13,21,40}",1,40
+DV4,select_team_for_project,"Categorical decision on which Team (ID) to assign to a Project",categorical,"{T0, T1, ...}",,
+DV5,set_sprint_duration_weeks,"Decide the length of a sprint in full weeks",integer,,1,4
+DV6,include_feature_in_release,"Binary decision whether to include a Feature in a specific Release Plan",boolean,"{0,1}",0,1
+DV7,set_task_effort_hours,"Estimate the effort in hours for a Task",integer,,1,16
+DV8,prioritize_blocker_resolution,"Binary decision indicating if a Blocker is to be actively worked on for resolution",boolean,"{0,1}",0,1
+DV9,assign_worker_to_team,"Decision to assign a specific Worker to a specific Team",boolean,"{0,1}",0,1
+DV10,set_blocker_severity,"Set the severity level for a Blocker",categorical,"{low, medium, high, critical}",,
+DV11,set_project_budget,"Set the initial budget for a project",float,,50000,5000000
+DV12,define_task_type,"Define the type of a task (e.g., for categorization and reporting)",categorical,"{bug, new_development, research, testing}",,

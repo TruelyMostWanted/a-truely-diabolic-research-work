@@ -1,14 +1,14 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-C0,capacity_respected,"Total task effort must not exceed available capacity.",True,min,Task,effort,2,1.0
-C1,mandatory_high_severity_blockers_addressed,"High-severity blockers must be resolved before release.",False,min,Blocker,status,2,1.2
-C2,stories_have_acceptance_criteria,"Only consider user stories with defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0
-C3,team_is_active,"Only active teams can be assigned sprint work.",False,max,Team,team_status,2,1.0
-C4,po_available_for_planning,"Product Owner must be available during sprint planning.",False,max,ProductOwner,availability,2,0.9
-C5,sm_experienced_threshold,"Scrum Master experience should meet a minimum threshold.",False,max,ScrumMaster,experience,1,0.6
-C6,feature_status_ready,"Features scheduled must be in a 'ready' status.",False,max,Feature,status,2,1.0
-C7,sprint_dates_valid,"Sprint end_date must be after start_date.",False,min,Sprint,start_date,2,1.0
-C8,backlog_is_current,"Backlog last_updated should be recent.",False,max,ProductBacklog,last_updated,1,0.5
-C9,release_has_planned_date,"Each release plan must include a planned date.",False,max,ReleasePlan,planned_date,2,1.0
-C10,roadmap_has_objectives,"Roadmap must specify objectives.",False,max,Roadmap,objectives,1,0.4
-C11,doc_linked_to_feature,"Feature documentation must link to its feature.",False,max,FeatureDocumentation,linked_requirements,2,0.8
-C12,team_size_within_bounds,"Team size should remain within acceptable range.",False,min,Team,team_size,1,0.7
+C0,worker_availability_constraint,"A worker must have an availability status of 'available' to be assigned to a task.",False,min,Worker,availability,2,1.0
+C1,team_size_limit,"The team size must be within the recommended Scrum range (e.g., 3 to 9).",False,max,Team,team_size,2,1.0
+C2,sprint_duration_fixed,"A sprint must not exceed its planned end date.",False,max,Sprint,end_date,2,1.0
+C3,project_budget_constraint,"The total cost of the project must not exceed the allocated budget.",True,max,Project,budget,2,1.0
+C4,task_skill_requirement,"A worker assigned to a task must possess the required skill for it.",False,min,Skill,level,2,1.0
+C5,epic_completion_dependency,"An Epic can only be marked as 'done' if all its User Stories are 'done'.",True,min,UserStory,status,2,1.0
+C6,one_product_owner_per_team,"Each team must be associated with exactly one Product Owner.",False,max,ProductOwner,id,2,1.0
+C7,one_scrum_master_per_team,"Each team must be associated with exactly one Scrum Master.",False,max,ScrumMaster,id,2,1.0
+C8,task_status_dependency,"A User Story can only be 'done' if all its tasks are 'done'.",True,min,Task,status,2,1.0
+C9,blocker_resolution_for_task,"A task cannot be completed if it has an active blocker.",False,max,Blocker,status,2,1.0
+C10,release_after_sprint_end,"The planned release date must be after the end date of the sprints containing its features.",False,min,ReleasePlan,planned_date,2,1.0
+C11,sprint_backlog_effort_limit,"The total effort of tasks in a Sprint Backlog should not exceed the team's velocity.",True,max,SprintBacklog,total_effort,1,1.0
+C12,user_story_in_one_sprint,"A user story can only be assigned to one active sprint at a time.",False,max,UserStory,id,2,1.0

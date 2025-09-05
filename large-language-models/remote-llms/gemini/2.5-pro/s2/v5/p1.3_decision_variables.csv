@@ -1,14 +1,13 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_worker_to_task,Binary decision whether to assign a specific worker to a specific task.,Boolean,"{0,1}",0,1
+DV1,assign_story_to_sprint,Binary decision whether to include a specific user story in a specific sprint.,Boolean,"{0,1}",0,1
+DV2,assign_team_to_project,Binary decision whether to assign a specific team to a specific project.,Boolean,"{0,1}",0,1
+DV3,select_feature_for_release,Binary decision whether to include a specific feature in a specific release plan.,Boolean,"{0,1}",0,1
+DV4,set_sprint_backlog_effort,Integer variable for the total planned effort (in story points) for a sprint backlog.,Integer,,0,200
+DV5,set_team_size,Integer variable to determine the number of members in a team.,Integer,,3,9
+DV6,schedule_release_date,Integer variable representing the planned release date (e.g., days from project start).,Integer,,1,
+DV7,update_task_status,Categorical variable to set the status of a task.,Categorical,"{'ToDo','InProgress','Done','Blocked'}",,
+DV8,prioritize_feature,Integer variable to set or adjust the priority of a feature in the product backlog.,Integer,,1,100
+DV9,assign_worker_to_team,Binary decision whether to assign a specific worker to a specific team.,Boolean,"{0,1}",0,1
+DV10,set_project_budget,Floating point variable to allocate a specific budget to a project.,Float,,0,
+DV11,approve_sprint_goal_achievement,Binary decision to mark a sprint goal as achieved or not achieved.,Boolean,"{0,1}",0,1

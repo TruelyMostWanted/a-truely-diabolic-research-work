@@ -1,14 +1,14 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-G0,maximize_team_velocity,"Maximize historical velocity to guide planning.",True,max,Velocity,max_velocity,1,1.0
-G1,minimize_blocker_severity,"Reduce the overall severity of blockers encountered.",True,min,Blocker,severity,2,1.0
-G2,minimize_task_effort,"Minimize total task effort selected for a sprint.",True,min,Task,effort,1,1.0
-G3,maximize_sprint_goal_achievement,"Increase the rate at which sprint goals are achieved.",True,max,Sprint,achievement_of_goal,2,1.2
-G4,minimize_backlog_size,"Keep the product backlog lean to reduce management overhead.",False,min,ProductBacklog,number_of_entries,1,0.6
-G5,minimize_project_budget,"Control total project budget consumption.",False,min,Project,budget,2,1.5
-G6,minimize_feature_effort,"Prefer features with lower implementation effort.",True,min,Feature,estimated_effort,1,1.0
-G7,maximize_user_story_points_done,"Select stories that raise delivered story points within capacity.",True,max,UserStory,story_points,1,0.9
-G8,maximize_stakeholder_relevance,"Favor requirements relevant to key stakeholders.",True,max,Stakeholder,relevance_to_feature,1,0.7
-G9,maximize_review_attendance,"Aim for broad stakeholder participation in sprint reviews.",True,max,SprintReview,attendees_count,1,0.5
-G10,maximize_team_availability,"Schedule work when team availability is high.",True,max,Worker,availability,2,1.1
-G11,maximize_benefit_of_sprint_goal,"Prefer sprint goals with higher business benefit.",True,max,SprintGoal,benefit,1,0.8
-G12,minimize_cycle_instability,"Prefer sprints with stable status progression.",False,min,Sprint,status,0,0.3
+C0,worker_availability_constraint,"A worker must have an availability status of 'available' to be assigned to a task.",False,min,Worker,availability,2,1.0
+C1,team_size_limit,"The team size must be within the recommended Scrum range (e.g., 3 to 9).",False,max,Team,team_size,2,1.0
+C2,sprint_duration_fixed,"A sprint must not exceed its planned end date.",False,max,Sprint,end_date,2,1.0
+C3,project_budget_constraint,"The total cost of the project must not exceed the allocated budget.",True,max,Project,budget,2,1.0
+C4,task_skill_requirement,"A worker assigned to a task must possess the required skill for it.",False,min,Skill,level,2,1.0
+C5,epic_completion_dependency,"An Epic can only be marked as 'done' if all its User Stories are 'done'.",True,min,UserStory,status,2,1.0
+C6,one_product_owner_per_team,"Each team must be associated with exactly one Product Owner.",False,max,ProductOwner,id,2,1.0
+C7,one_scrum_master_per_team,"Each team must be associated with exactly one Scrum Master.",False,max,ScrumMaster,id,2,1.0
+C8,task_status_dependency,"A User Story can only be 'done' if all its tasks are 'done'.",True,min,Task,status,2,1.0
+C9,blocker_resolution_for_task,"A task cannot be completed if it has an active blocker.",False,max,Blocker,status,2,1.0
+C10,release_after_sprint_end,"The planned release date must be after the end date of the sprints containing its features.",False,min,ReleasePlan,planned_date,2,1.0
+C11,sprint_backlog_effort_limit,"The total effort of tasks in a Sprint Backlog should not exceed the team's velocity.",True,max,SprintBacklog,total_effort,1,1.0
+C12,user_story_in_one_sprint,"A user story can only be assigned to one active sprint at a time.",False,max,UserStory,id,2,1.0

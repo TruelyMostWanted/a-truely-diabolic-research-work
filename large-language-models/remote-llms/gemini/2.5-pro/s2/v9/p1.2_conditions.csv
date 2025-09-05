@@ -1,14 +1,15 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-C0,capacity_respected,"Total task effort must not exceed available capacity.",True,min,Task,effort,2,1.0
-C1,mandatory_high_severity_blockers_addressed,"High-severity blockers must be resolved before release.",False,min,Blocker,status,2,1.2
-C2,stories_have_acceptance_criteria,"Only consider user stories with defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0
-C3,team_is_active,"Only active teams can be assigned sprint work.",False,max,Team,team_status,2,1.0
-C4,po_available_for_planning,"Product Owner must be available during sprint planning.",False,max,ProductOwner,availability,2,0.9
-C5,sm_experienced_threshold,"Scrum Master experience should meet a minimum threshold.",False,max,ScrumMaster,experience,1,0.6
-C6,feature_status_ready,"Features scheduled must be in a 'ready' status.",False,max,Feature,status,2,1.0
-C7,sprint_dates_valid,"Sprint end_date must be after start_date.",False,min,Sprint,start_date,2,1.0
-C8,backlog_is_current,"Backlog last_updated should be recent.",False,max,ProductBacklog,last_updated,1,0.5
-C9,release_has_planned_date,"Each release plan must include a planned date.",False,max,ReleasePlan,planned_date,2,1.0
-C10,roadmap_has_objectives,"Roadmap must specify objectives.",False,max,Roadmap,objectives,1,0.4
-C11,doc_linked_to_feature,"Feature documentation must link to its feature.",False,max,FeatureDocumentation,linked_requirements,2,0.8
-C12,team_size_within_bounds,"Team size should remain within acceptable range.",False,min,Team,team_size,1,0.7
+C0,project_budget_limit,"The total project cost must not exceed the allocated budget",True,max,Project,budget,2,1.0
+C1,team_size_upper_limit,"A team must not have more than 9 members to ensure agility",False,max,Team,team_size,2,1.0
+C2,sprint_end_date_is_fixed,"A sprint must strictly adhere to its planned end date (timeboxing)",False,max,Sprint,end_date,2,1.0
+C3,worker_availability_limit,"A worker's assigned work must not exceed their defined availability",False,max,Worker,availability,2,1.0
+C4,critical_task_skill_requirement,"A critical task requires a worker with a minimum skill level",False,min,Skill,level,2,1.0
+C5,feature_priority_is_set,"Every feature in the backlog must have an assigned priority greater than 0",False,min,Feature,priority,2,1.0
+C6,story_points_are_positive,"Every user story must have an estimated story point value greater than 0",False,min,UserStory,story_points,2,1.0
+C7,prefer_certified_skills,"Prefer workers with certified skills for completing tasks",False,max,Skill,certified,1,0.8
+C8,assigned_team_is_active,"A team assigned to a project must have an 'active' status",False,max,Team,team_status,2,1.0
+C9,task_effort_is_estimated,"The effort for every task must be estimated (value > 0)",False,min,Task,effort,2,1.0
+C10,sprint_must_have_goal,"Every sprint must have a clearly defined sprint goal",False,max,SprintGoal,objective_description,2,1.0
+C11,team_size_lower_limit,"A team must have at least 3 members to be effective",False,min,Team,team_size,2,1.0
+C12,avoid_high_severity_blockers,"Avoid having blockers with a high or critical severity status",False,min,Blocker,severity,1,1.5
+C13,epic_status_is_valid,"The status of an epic must be one of the predefined values (e.g., not null)",False,max,Epic,status,2,1.0
