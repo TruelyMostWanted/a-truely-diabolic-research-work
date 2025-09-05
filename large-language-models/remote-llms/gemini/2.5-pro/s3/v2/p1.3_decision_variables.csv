@@ -1,14 +1,13 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_worker_to_team,Binary variable, 1 if worker w is assigned to team t.,Binary,"{0,1}",0,1
+DV1,assign_story_to_sprint,Binary variable, 1 if user story u is assigned to sprint s.,Binary,"{0,1}",0,1
+DV2,assign_task_to_worker,Binary variable, 1 if task k is assigned to worker w.,Binary,"{0,1}",0,1
+DV3,select_feature_for_release,Binary variable, 1 if feature f is selected for release plan r.,Binary,"{0,1}",0,1
+DV4,set_sprint_start_date,The start date for a given sprint s.,Date,Date,2025-01-01,2030-12-31
+DV5,set_sprint_end_date,The end date for a given sprint s.,Date,Date,2025-01-01,2030-12-31
+DV6,select_feature_for_sprint,Binary variable, 1 if feature f is worked on in sprint s.,Binary,"{0,1}",0,1
+DV7,set_story_points,The estimated story points for user story u.,Integer,N,1,100
+DV8,order_sprints,The sequence number of sprint s in a project.,Integer,N,1,100
+DV9,assign_team_to_project,Binary variable, 1 if team t is assigned to project p.,Binary,"{0,1}",0,1
+DV10,resolve_blocker,Binary variable, 1 if action is taken to resolve blocker b in sprint s.,Binary,"{0,1}",0,1
+DV11,assign_worker_skill,Binary variable, 1 if worker w has skill s.,Binary,"{0,1}",0,1

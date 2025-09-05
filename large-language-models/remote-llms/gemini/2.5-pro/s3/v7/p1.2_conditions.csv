@@ -1,14 +1,13 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-C0,capacity_respected,"Total task effort must not exceed available capacity.",True,min,Task,effort,2,1.0
-C1,mandatory_high_severity_blockers_addressed,"High-severity blockers must be resolved before release.",False,min,Blocker,status,2,1.2
-C2,stories_have_acceptance_criteria,"Only consider user stories with defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0
-C3,team_is_active,"Only active teams can be assigned sprint work.",False,max,Team,team_status,2,1.0
-C4,po_available_for_planning,"Product Owner must be available during sprint planning.",False,max,ProductOwner,availability,2,0.9
-C5,sm_experienced_threshold,"Scrum Master experience should meet a minimum threshold.",False,max,ScrumMaster,experience,1,0.6
-C6,feature_status_ready,"Features scheduled must be in a 'ready' status.",False,max,Feature,status,2,1.0
-C7,sprint_dates_valid,"Sprint end_date must be after start_date.",False,min,Sprint,start_date,2,1.0
-C8,backlog_is_current,"Backlog last_updated should be recent.",False,max,ProductBacklog,last_updated,1,0.5
-C9,release_has_planned_date,"Each release plan must include a planned date.",False,max,ReleasePlan,planned_date,2,1.0
-C10,roadmap_has_objectives,"Roadmap must specify objectives.",False,max,Roadmap,objectives,1,0.4
-C11,doc_linked_to_feature,"Feature documentation must link to its feature.",False,max,FeatureDocumentation,linked_requirements,2,0.8
-C12,team_size_within_bounds,"Team size should remain within acceptable range.",False,min,Team,team_size,1,0.7
+C0,limit_team_size_max,"A team should not have more than 9 members",False,max,Team,team_size,2,1.0
+C1,limit_team_size_min,"A team must have at least 3 members",False,min,Team,team_size,2,1.0
+C2,sprint_duration_limit,"A sprint's duration must not exceed 4 weeks (28 days)",False,max,Sprint,end_date,2,1.0
+C3,daily_scrum_duration,"The Daily Scrum meeting must be exactly 15 minutes long",False,max,DailyScrum,duration,2,1.0
+C4,sprint_backlog_capacity,"The total effort of tasks in a sprint backlog must not exceed team velocity",True,max,SprintBacklog,total_effort,2,1.0
+C5,worker_must_have_role,"Each worker must be assigned at least one role",False,min,Worker,id,2,1.0
+C6,task_completion_required,"A User Story cannot be 'Done' unless all its tasks are 'Done'",False,max,Task,status,2,1.0
+C7,team_requires_scrum_master,"Every team must be supported by one Scrum Master",False,max,Team,id,2,1.0
+C8,positive_project_budget,"The budget for any project must be a non-negative value",False,min,Project,budget,2,1.0
+C9,positive_user_story_priority,"The priority for any user story must be greater than zero",False,min,UserStory,priority,2,1.0
+C10,positive_task_effort,"The effort for any task must be a positive number",False,min,Task,effort,2,1.0
+C11,po_manages_one_backlog,"A Product Owner must manage exactly one Product Backlog",False,max,ProductOwner,id,2,1.0

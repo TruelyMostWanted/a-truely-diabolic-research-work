@@ -1,14 +1,14 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-C0,capacity_respected,"Total task effort must not exceed available capacity.",True,min,Task,effort,2,1.0
-C1,mandatory_high_severity_blockers_addressed,"High-severity blockers must be resolved before release.",False,min,Blocker,status,2,1.2
-C2,stories_have_acceptance_criteria,"Only consider user stories with defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0
-C3,team_is_active,"Only active teams can be assigned sprint work.",False,max,Team,team_status,2,1.0
-C4,po_available_for_planning,"Product Owner must be available during sprint planning.",False,max,ProductOwner,availability,2,0.9
-C5,sm_experienced_threshold,"Scrum Master experience should meet a minimum threshold.",False,max,ScrumMaster,experience,1,0.6
-C6,feature_status_ready,"Features scheduled must be in a 'ready' status.",False,max,Feature,status,2,1.0
-C7,sprint_dates_valid,"Sprint end_date must be after start_date.",False,min,Sprint,start_date,2,1.0
-C8,backlog_is_current,"Backlog last_updated should be recent.",False,max,ProductBacklog,last_updated,1,0.5
-C9,release_has_planned_date,"Each release plan must include a planned date.",False,max,ReleasePlan,planned_date,2,1.0
-C10,roadmap_has_objectives,"Roadmap must specify objectives.",False,max,Roadmap,objectives,1,0.4
-C11,doc_linked_to_feature,"Feature documentation must link to its feature.",False,max,FeatureDocumentation,linked_requirements,2,0.8
-C12,team_size_within_bounds,"Team size should remain within acceptable range.",False,min,Team,team_size,1,0.7
+C0,team_size_constraint,"A team must have between 3 and 9 members.",False,min,Team,team_size,2,1.0
+C1,project_budget_limit,"The total cost must not exceed the project budget.",False,max,Project,budget,2,1.0
+C2,worker_assignment_limit,"A worker can be assigned to at most one team.",True,max,Worker,id,2,1.0
+C3,sprint_effort_capacity,"Total effort of user stories in a sprint cannot exceed team velocity.",True,max,UserStory,story_points,2,1.0
+C4,blocker_status_for_task,"A task with a high-severity blocker cannot have status 'done'.",False,min,Blocker,status,2,1.0
+C5,feature_status_for_release,"A feature must be 'done' to be included in a release plan.",False,min,Feature,status,2,1.0
+C6,required_skill_for_task,"A task requiring a specific skill must be assigned to a worker with that skill.",False,min,Skill,id,1,1.0
+C7,scrum_master_per_team,"Each team must be assigned exactly one Scrum Master.",False,min,Team,id,2,1.0
+C8,unique_sprint_number,"The sprint number must be unique within a project.",False,max,Sprint,sprint_number,2,1.0
+C9,product_owner_for_backlog,"Every product backlog must be managed by one Product Owner.",False,min,ProductBacklog,id,2,1.0
+C10,task_dependency,"A task cannot start before its prerequisite task is completed.",False,min,Task,status,2,1.0
+C11,release_plan_date,"The planned date for a release must be after the end date of all its included sprints.",False,min,ReleasePlan,planned_date,2,1.0
+C12,epic_story_containment,"An epic must contain at least one user story.",True,min,UserStory,id,1,1.0

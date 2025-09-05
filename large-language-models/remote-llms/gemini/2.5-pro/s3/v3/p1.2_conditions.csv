@@ -1,14 +1,14 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-C0,capacity_respected,"Total task effort must not exceed available capacity.",True,min,Task,effort,2,1.0
-C1,mandatory_high_severity_blockers_addressed,"High-severity blockers must be resolved before release.",False,min,Blocker,status,2,1.2
-C2,stories_have_acceptance_criteria,"Only consider user stories with defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0
-C3,team_is_active,"Only active teams can be assigned sprint work.",False,max,Team,team_status,2,1.0
-C4,po_available_for_planning,"Product Owner must be available during sprint planning.",False,max,ProductOwner,availability,2,0.9
-C5,sm_experienced_threshold,"Scrum Master experience should meet a minimum threshold.",False,max,ScrumMaster,experience,1,0.6
-C6,feature_status_ready,"Features scheduled must be in a 'ready' status.",False,max,Feature,status,2,1.0
-C7,sprint_dates_valid,"Sprint end_date must be after start_date.",False,min,Sprint,start_date,2,1.0
-C8,backlog_is_current,"Backlog last_updated should be recent.",False,max,ProductBacklog,last_updated,1,0.5
-C9,release_has_planned_date,"Each release plan must include a planned date.",False,max,ReleasePlan,planned_date,2,1.0
-C10,roadmap_has_objectives,"Roadmap must specify objectives.",False,max,Roadmap,objectives,1,0.4
-C11,doc_linked_to_feature,"Feature documentation must link to its feature.",False,max,FeatureDocumentation,linked_requirements,2,0.8
-C12,team_size_within_bounds,"Team size should remain within acceptable range.",False,min,Team,team_size,1,0.7
+C0,team_size_limit,A team must have between 3 and 9 members,False,min,Team,team_size,2,1.0
+C1,project_budget_limit,The allocated budget for a project cannot exceed the maximum defined budget,False,min,Project,budget,2,1.0
+C2,sprint_status_must_be_done,Only sprints with status 'done' are considered for velocity calculation,False,max,Sprint,status,2,1.0
+C3,feature_priority_threshold,A feature must have a priority of 3 or higher to be included in a release plan,False,max,Feature,priority,2,1.0
+C4,worker_availability_required,A worker must have an availability of at least 50% to be assigned to a task,False,max,Worker,availability,2,1.0
+C5,task_effort_cap,A single task should not exceed 16 hours of effort,False,min,Task,effort,2,1.0
+C6,critical_blocker_must_be_resolved,Blockers with the highest severity must be resolved within the current sprint,False,max,Blocker,status,2,1.0
+C7,expert_skill_level_required,Certain tasks require a worker with an 'expert' skill level,False,max,Skill,level,2,1.0
+C8,product_owner_must_be_assigned,Every project must have exactly one assigned Product Owner,False,max,ProductOwner,id,2,1.0
+C9,user_story_must_have_points,Every user story selected for a sprint must have story points greater than zero,False,max,UserStory,story_points,2,1.0
+C10,stakeholder_relevance_check,Only stakeholders with high relevance should be invited to the Sprint Review,False,max,Stakeholder,relevance_to_feature,2,1.0
+C11,project_priority_check,Only projects with 'high' priority should be assigned new teams,False,max,Project,priority,2,1.0
+C12,task_must_be_in_sprint,A task can only be worked on if it belongs to a user story in the current sprint backlog,False,max,Task,status,2,1.0
