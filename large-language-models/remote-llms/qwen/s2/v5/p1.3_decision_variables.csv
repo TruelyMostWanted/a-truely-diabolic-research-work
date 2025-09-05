@@ -1,14 +1,16 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,project_priority_assignment,Priority level assigned to a project,integer,"{1,2,3,4,5}",1,5
+DV1,team_size_allocation,Number of members assigned to a team,integer,,2,15
+DV2,worker_availability_percentage,Percentage of time a worker is available,float,,0.0,100.0
+DV3,task_effort_estimate,Estimated effort for a task in hours,float,,1.0,40.0
+DV4,user_story_priority,Priority of a user story,integer,"{1,2,3}",1,3
+DV5,feature_priority,Priority of a feature,integer,"{1,2,3}",1,3
+DV6,sprint_duration_days,Length of a sprint in days,integer,"{5,10,14,21}",5,21
+DV7,story_points_estimate,Story points assigned to a user story,integer,"{1,2,3,5,8,13}",1,13
+DV8,skill_level_rating,Proficiency level of a worker in a skill,integer,"{1,2,3,4,5}",1,5
+DV9,blocker_severity_level,Severity of a blocker,integer,"{1,2,3}",1,3
+DV10,team_satisfaction_score,Satisfaction score from retrospective,integer,,1,10
+DV11,release_version_number,Version identifier for a release,float,,1.0,10.0
+DV12,documentation_completion_status,Whether feature documentation is complete,boolean,"{0,1}",0,1
+DV13,task_status_code,Status code of a task (0=todo,1=doing,2=done),integer,"{0,1,2}",0,2
+DV14,velocity_trend_value,Trend indicator for velocity (e.g., +1 for increasing),float,,-1.0,2.0

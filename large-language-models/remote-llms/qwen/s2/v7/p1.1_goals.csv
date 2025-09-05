@@ -1,14 +1,16 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-G0,maximize_team_velocity,"Maximize historical velocity to guide planning.",True,max,Velocity,max_velocity,1,1.0
-G1,minimize_blocker_severity,"Reduce the overall severity of blockers encountered.",True,min,Blocker,severity,2,1.0
-G2,minimize_task_effort,"Minimize total task effort selected for a sprint.",True,min,Task,effort,1,1.0
-G3,maximize_sprint_goal_achievement,"Increase the rate at which sprint goals are achieved.",True,max,Sprint,achievement_of_goal,2,1.2
-G4,minimize_backlog_size,"Keep the product backlog lean to reduce management overhead.",False,min,ProductBacklog,number_of_entries,1,0.6
-G5,minimize_project_budget,"Control total project budget consumption.",False,min,Project,budget,2,1.5
-G6,minimize_feature_effort,"Prefer features with lower implementation effort.",True,min,Feature,estimated_effort,1,1.0
-G7,maximize_user_story_points_done,"Select stories that raise delivered story points within capacity.",True,max,UserStory,story_points,1,0.9
-G8,maximize_stakeholder_relevance,"Favor requirements relevant to key stakeholders.",True,max,Stakeholder,relevance_to_feature,1,0.7
-G9,maximize_review_attendance,"Aim for broad stakeholder participation in sprint reviews.",True,max,SprintReview,attendees_count,1,0.5
-G10,maximize_team_availability,"Schedule work when team availability is high.",True,max,Worker,availability,2,1.1
-G11,maximize_benefit_of_sprint_goal,"Prefer sprint goals with higher business benefit.",True,max,SprintGoal,benefit,1,0.8
-G12,minimize_cycle_instability,"Prefer sprints with stable status progression.",False,min,Sprint,status,0,0.3
+G0,maximize_project_budget,Maximize total budget allocated across all projects,True,max,Project,budget,2,1.5
+G1,maximize_team_size,Maximize total number of team members across teams,True,max,Team,team_size,1,1.0
+G2,maximize_worker_availability,Maximize sum of worker availability percentages,True,max,Worker,availability,2,1.2
+G3,minimize_sprint_duration,Minimize total duration of sprints (in days),True,min,Sprint,end_date,0,0.8
+G4,maximize_story_points,Maximize total story points completed in sprints,True,max,UserStory,story_points,2,1.4
+G5,minimize_task_effort,Minimize total estimated effort for tasks,False,min,Task,effort,1,0.9
+G6,maximize_velocity_trend,Maximize positive trend in team velocity,True,max,Velocity,trend,2,1.3
+G7,maximize_release_features,Maximize number of features included in release plans,True,max,ReleasePlan,included_features,2,1.1
+G8,minimize_epic_estimated_effort,Minimize total estimated effort for epics,False,min,Epic,estimated_effort,1,1.0
+G9,maximize_sprint_achievement,Maximize average achievement of sprint goals,True,max,Sprint,achievement_of_goal,2,1.6
+G10,minimize_blocker_severity,Minimize total severity of active blockers,False,min,Blocker,severity,0,0.7
+G11,maximize_documentation_coverage,Maximize number of features with documentation,True,max,FeatureDocumentation,title,2,1.0
+G12,minimize_worker_start_date,Minimize average start date (favor earlier hires),False,min,Worker,start_date,1,0.8
+G13,maximize_satisfaction_score,Maximize average team satisfaction in retrospectives,True,max,SprintRetrospective,team_satisfaction,2,1.5
+G14,maximize_planned_releases,Maximize number of planned releases in roadmap,True,max,Roadmap,versions,2,1.1

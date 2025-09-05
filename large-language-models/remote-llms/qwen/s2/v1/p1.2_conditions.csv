@@ -1,14 +1,16 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-C0,capacity_respected,"Total task effort must not exceed available capacity.",True,min,Task,effort,2,1.0
-C1,mandatory_high_severity_blockers_addressed,"High-severity blockers must be resolved before release.",False,min,Blocker,status,2,1.2
-C2,stories_have_acceptance_criteria,"Only consider user stories with defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0
-C3,team_is_active,"Only active teams can be assigned sprint work.",False,max,Team,team_status,2,1.0
-C4,po_available_for_planning,"Product Owner must be available during sprint planning.",False,max,ProductOwner,availability,2,0.9
-C5,sm_experienced_threshold,"Scrum Master experience should meet a minimum threshold.",False,max,ScrumMaster,experience,1,0.6
-C6,feature_status_ready,"Features scheduled must be in a 'ready' status.",False,max,Feature,status,2,1.0
-C7,sprint_dates_valid,"Sprint end_date must be after start_date.",False,min,Sprint,start_date,2,1.0
-C8,backlog_is_current,"Backlog last_updated should be recent.",False,max,ProductBacklog,last_updated,1,0.5
-C9,release_has_planned_date,"Each release plan must include a planned date.",False,max,ReleasePlan,planned_date,2,1.0
-C10,roadmap_has_objectives,"Roadmap must specify objectives.",False,max,Roadmap,objectives,1,0.4
-C11,doc_linked_to_feature,"Feature documentation must link to its feature.",False,max,FeatureDocumentation,linked_requirements,2,0.8
-C12,team_size_within_bounds,"Team size should remain within acceptable range.",False,min,Team,team_size,1,0.7
+C0,require_project_status_active,Only consider active projects,True,min,Project,status,2,1.0
+C1,require_team_status_active,Only include currently active teams,True,min,Team,team_status,2,1.0
+C2,require_worker_status_active,Only assign active workers,True,min,Worker,status,2,1.0
+C3,require_feature_status_completed,Only completed features count,False,max,Feature,status,2,1.0
+C4,require_task_status_done,Only completed tasks are valid,False,max,Task,status,2,1.0
+C5,require_sprint_status_completed,Only finished sprints are considered,False,max,Sprint,status,2,1.0
+C6,require_valid_role_assignment,Workers must have at least one role,True,min,Role,role_name,2,1.0
+C7,require_certified_skills,Only certified skills are allowed,True,min,Skill,certified,2,0.8
+C8,require_non_zero_story_points,Exclude user stories with zero story points,False,min,UserStory,story_points,1,0.5
+C9,require_positive_effort,Task effort must be greater than zero,False,min,Task,effort,2,1.0
+C10,require_valid_sprint_goal,Only sprints with defined goals are valid,True,min,SprintGoal,objective_description,2,1.0
+C11,require_documented_feature,Only features with documentation allowed,True,min,FeatureDocumentation,creation_date,2,0.7
+C12,require_planned_release_status,Only released or planned releases,True,min,ReleasePlan,status,2,0.9
+C13,require_roadmap_milestone_defined,Only roadmaps with milestones,True,min,Roadmap,milestones,1,0.6
+C14,require_non_empty_backlog,Product Backlog must have entries,True,min,ProductBacklog,number_of_entries,2,1.0

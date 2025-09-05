@@ -1,14 +1,16 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assignment_project_team,Assignment of team to project,Integer,{0,1},0,1
+DV1,assignment_worker_team,Assignment of worker to team,Integer,{0,1},0,1
+DV2,assignment_worker_skill,Assignment of skill to worker,Integer,{0,1},0,1
+DV3,assignment_worker_role,Assignment of role to worker,Integer,{0,1},0,1
+DV4,selection_product_backlog_item,Selection of feature/epic for backlog,Integer,{0,1},0,1
+DV5,selection_sprint_goal,Choice of sprint goal objective,String,,1,5
+DV6,planning_sprint_duration,Planned length of sprint in days,Integer,,1,30
+DV7,task_effort_estimation,Estimated effort for a task,Integer,,1,40
+DV8,story_point_estimation,Story points assigned to a user story,Integer,,1,13
+DV9,blocker_resolution_time,Estimated time to resolve a blocker (days),Integer,,0,60
+DV10,release_version_number,Version number for a release,Float,,1.0,10.0
+DV11,documentation_update_frequency,Frequency of documentation updates per sprint,Integer,,0,5
+DV12,team_satisfaction_target,Target satisfaction level for retrospectives,Integer,,1,5
+DV13,velocity_prediction,Predicted velocity for next sprint,Integer,,5,50
+DV14,deployment_target_selection,Choice of deployment environment,Integer,{0,1,2},0,2
