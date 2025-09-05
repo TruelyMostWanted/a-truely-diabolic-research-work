@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue}
+
+\title{Multi-Objective Optimization Model for a Scrum-Based Software Development Company}
+\author{TruelyMostWanted}
+\date{September 6, 2025}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Notation preface}
+Relations from the data are enforced as structural constraints. Where relationships used the label \emph{Employee}, it refers to entity \textbf{Worker}. Where a relation used \emph{Sprint Review}, it refers to entity \textbf{SprintReview}. Attributes from entities are treated as parameters (possibly normalized or binarized) when numeric optimization is required.
+
+\vspace{6pt}
+\noindent\textbf{Decision Variables (subset; full list in Section 5):}
+\begin{align*}
+x_{t,p} &\in \{0,1\} && \text{team $t$ assigned to project $p$ (R1)}\\
+y_{w,t} &\in \{0,1\} && \text{worker $w$ belongs to team $t$ (R2)}\\
+smt_{t,sm} &\in \{0,1\} && \text{Scrum Master $sm$ supports team $t$ (R6)}\\
+po_{po,pb} &\in \{0,1\} && \text{Product Owner $po$ manages Product Backlog $pb$ (R5)}\\
+bf_{pb,f} &\in \{0,1\} && \text{feature $f$ in Product Backlog $pb$ (R7)}\\
+be_{pb,ep} &\in \{0,1\} && \text{epic $ep$ in Product Backlog $pb$ (R8)}\\
+ue_{ep,us} &\in \{0,1\} && \text{user story $us$ in epic $ep$ (R9)}\\
+tu_{us,ts} &\in \{0,1\} && \text{task $ts$ in user story $us$ (R10)}\\
+usbl_{us,sbl} &\in \{0,1\} && \text{user story $us$ in sprint backlog $sbl$ (R11)}\\
+sblsp_{sbl,sp} &\in \{0,1\} && \text{sprint backlog $sbl$ belongs to sprint $sp$ (R12)}\\
+tb_{scb,ts} &\in \{0,1\} && \text{task $ts$ on scrum board $scb$ (R14)}\\
+rf_{rep,f} &\in \{0,1\} && \text{feature $f$ in release plan $rep$ (R20)}\\
+pg_{sp,sg} &\in \{0,1\} && \text{sprint $sp$ pursues sprint goal $sg$ (R13)}
+\end{align*}
+
+\noindent\textbf{Key Parameters (from entity attributes):}
+\begin{align*}
+\text{SP}_{us} &:= \text{UserStory.story\_points of $us$} \\
+\text{EFF}_{ts} &:= \text{Task.effort of $ts$}\\
+\text{SEV}_{bl} &:= \text{Blocker.severity of $bl$}\\
+\text{AOG}_{sp} &:= \text{Sprint.achievement\_of\_goal of $sp$} \\
+\overline{V}_{t} &:= \text{Velocity.avg\_story\_points for team $t$ (via R19)}\\
+\text{NE}_{pb} &:= \text{ProductBacklog.number\_of\_entries of $pb$}\\
+\text{BUD}_{p} &:= \text{Project.budget of $p$}\\
+\text{PRI}_{f} &:= \text{Feature.priority of $f$}\\
+\text{INF}_{sh} &:= \text{Stakeholder.influence\_level of $sh$}\\
+\text{SAT}_{sre} &:= \text{SprintRetrospective.team\_satisfaction of $sre$}\\
+\text{TPR}_{dev} &:= \text{DevelopmentSnapshot.test\_status mapped to } \{0,1\} \\
+\text{ATT}_{sr} &:= \text{SprintReview.attendees\_count of $sr$}\\
+\text{CAP}_{sbl} &:= \text{SprintBacklog.total\_effort capacity of $sbl$}
+\end{align*}
+Further relational parameters include $B_{ts,bl}\in\{0,1\}$ (R16: task $ts$ is blocked by blocker $bl$).
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item $P$ --- Projects
+  \item $T$ --- Teams
+  \item $W$ --- Workers
+  \item $F$ --- Features
+  \item $S$ --- Skills
+  \item $R$ --- Roles
+  \item $PO$ --- ProductOwners
+  \item $SM$ --- ScrumMasters
+  \item $PB$ --- ProductBacklogs
+  \item $SP$ --- Sprints
+  \item $SPP$ --- SprintPlannings
+  \item $DS$ --- DailyScrums
+  \item $SR$ --- SprintReviews
+  \item $SRE$ --- SprintRetrospectives
+  \item $SBL$ --- SprintBacklogs
+  \item $SG$ --- SprintGoals
+  \item $EPC$ --- Epics
+  \item $US$ --- UserStories
+  \item $TSK$ --- Tasks
+  \item $DEV$ --- DevelopmentSnapshots
+  \item $BL$ --- Blockers
+  \item $SH$ --- Stakeholders
+  \item $VEL$ --- Velocity records
+  \item $REP$ --- ReleasePlans
+  \item $RM$ --- Roadmaps
+  \item $SCB$ --- ScrumBoards
+  \item $FED$ --- FeatureDocumentations
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item $p\in P,\ t\in T,\ w\in W,\ f\in F,\ sk\in S,\ r\in R$
+  \item $po\in PO,\ sm\in SM,\ pb\in PB,\ sp\in SP,\ sbl\in SBL,\ sg\in SG$
+  \item $ep\in EPC,\ us\in US,\ ts\in TSK,\ dev\in DEV,\ bl\in BL$
+  \item $sh\in SH,\ v\in VEL,\ rep\in REP,\ rm\in RM,\ scb\in SCB,\ fed\in FED$
+\end{itemize}
+
+\section{3. Goals}
+Multi-objective model; we can solve via weighted sum $\max \sum_k \omega_k \mathcal{O}_k$ (for max goals) and $\min \sum_k \omega_k \mathcal{O}_k$ (for min goals), or via $\epsilon$-constraints. Below each goal lists its ID, name, and mathematical form.
+
+\begin{itemize}[leftmargin=*,itemsep=6pt]
+  \item \textbf{[G0] maximize\_delivered\_story\_points}:
+  \[
+  \max \ \mathcal{O}_0=\sum_{us\in US}\sum_{sbl\in SBL} \text{SP}_{us}\cdot usbl_{us,sbl}.
+  \]
+
+  \item \textbf{[G1] minimize\_total\_task\_effort}:
+  \[
+  \min \ \mathcal{O}_1=\sum_{ts\in TSK}\sum_{scb\in SCB} \text{EFF}_{ts}\cdot tb_{scb,ts}.
+  \]
+
+  \item \textbf{[G2] minimize\_blocker\_impact}:
+  \[
+  \min \ \mathcal{O}_2=\sum_{bl\in BL}\text{SEV}_{bl}\left(\sum_{ts\in TSK}\sum_{scb\in SCB} B_{ts,bl}\cdot tb_{scb,ts}\right).
+  \]
+
+  \item \textbf{[G3] maximize\_sprint\_goal\_achievement}:
+  \[
+  \max \ \mathcal{O}_3=\sum_{sp\in SP}\sum_{sg\in SG} \text{AOG}_{sp}\cdot pg_{sp,sg}.
+  \]
+
+  \item \textbf{[G4] maximize\_team\_velocity}:
+  \[
+  \max \ \mathcal{O}_4=\sum_{t\in T} \overline{V}_{t}\left(\sum_{p\in P} x_{t,p}\right).
+  \]
+
+  \item \textbf{[G5] minimize\_product\_backlog\_size}:
+  \[
+  \min \ \mathcal{O}_5=\sum_{pb\in PB}\left(\sum_{f\in F} bf_{pb,f}+\sum_{ep\in EPC} be_{pb,ep}\right).
+  \]
+
+  \item \textbf{[G6] minimize\_project\_budget\_consumption} (proxy):
+  \[
+  \min \ \mathcal{O}_6=\sum_{p\in P}\sum_{t\in T} \text{BUD}_{p}\cdot x_{t,p}.
+  \]
+
+  \item \textbf{[G7] maximize\_priority\_of\_released\_features}:
+  \[
+  \max \ \mathcal{O}_7=\sum_{rep\in REP}\sum_{f\in F} \text{PRI}_{f}\cdot rf_{rep,f}.
+  \]
+
+  \item \textbf{[G8] maximize\_stakeholder\_participation\_impact}:
+  Let $part_{sh,sr}\in\{0,1\}$ denote stakeholder participation in Sprint Reviews (R17). Then
+  \[
+  \max \ \mathcal{O}_8=\sum_{sr\in SR}\sum_{sh\in SH} \text{INF}_{sh}\cdot part_{sh,sr}.
+  \]
+
+  \item \textbf{[G9] maximize\_team\_satisfaction}:
+  \[
+  \max \ \mathcal{O}_9=\sum_{sre\in SRE} \text{SAT}_{sre}.
+  \]
+
+  \item \textbf{[G10] minimize\_unfinished\_tasks\_on\_board}:
+  Let $done_{ts}\in\{0,1\}$ from Task.status. Then
+  \[
+  \min \ \mathcal{O}_{10}=\sum_{ts\in TSK}\sum_{scb\in SCB} (1-done_{ts})\cdot tb_{scb,ts}.
+  \]
+
+  \item \textbf{[G11] maximize\_test\_pass\_rate}:
+  Let $pass_{dev}\in\{0,1\}$ mapped from DevelopmentSnapshot.test\_status. Then
+  \[
+  \max \ \mathcal{O}_{11}=\sum_{dev\in DEV} pass_{dev}.
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+Each condition encodes logical and relational constraints derived from the relationships and attributes.
+
+\begin{itemize}[leftmargin=*,itemsep=8pt]
+  \item \textbf{[C0] team\_assigned\_to\_exactly\_one\_project (R1)}:
+  \[
+  \sum_{p\in P} x_{t,p}=1 \quad \forall t\in T.
+  \]
+
+  \item \textbf{[C1] worker\_belongs\_to\_exactly\_one\_team (R2)}:
+  \[
+  \sum_{t\in T} y_{w,t}=1 \quad \forall w\in W.
+  \]
+
+  \item \textbf{[C2] scrummaster\_supports\_one\_team (R6)}:
+  \[
+  \sum_{sm\in SM} smt_{t,sm}=1 \quad \forall t\in T.
+  \]
+
+  \item \textbf{[C3] product\_owner\_manages\_one\_backlog (R5)}:
+  \[
+  \sum_{po\in PO} po_{po,pb}=1 \quad \forall pb\in PB.
+  \]
+
+  \item \textbf{[C4] feature\_in\_at\_most\_one\_backlog (R7)}:
+  \[
+  \sum_{pb\in PB} bf_{pb,f}\le 1 \quad \forall f\in F.
+  \]
+
+  \item \textbf{[C5] epic\_in\_at\_most\_one\_backlog (R8)}:
+  \[
+  \sum_{pb\in PB} be_{pb,ep}\le 1 \quad \forall ep\in EPC.
+  \]
+
+  \item \textbf{[C6] user\_story\_in\_exactly\_one\_epic (R9)}:
+  \[
+  \sum_{ep\in EPC} ue_{ep,us}=1 \quad \forall us\in US.
+  \]
+
+  \item \textbf{[C7] task\_in\_exactly\_one\_user\_story (R10)}:
+  \[
+  \sum_{us\in US} tu_{us,ts}=1 \quad \forall ts\in TSK.
+  \]
+
+  \item \textbf{[C8] user\_story\_in\_at\_most\_one\_sprint\_backlog (R11)}:
+  \[
+  \sum_{sbl\in SBL} usbl_{us,sbl}\le 1 \quad \forall us\in US.
+  \]
+
+  \item \textbf{[C9] sprint\_backlog\_belongs\_to\_one\_sprint (R12)}:
+  \[
+  \sum_{sp\in SP} sblsp_{sbl,sp}=1 \quad \forall sbl\in SBL.
+  \]
+
+  \item \textbf{[C10] sprint\_backlog\_capacity\_respected}:
+  \[
+  \sum_{us\in US}\sum_{ts\in TSK} \text{EFF}_{ts}\cdot tu_{us,ts}\cdot usbl_{us,sbl} \ \le\ \text{CAP}_{sbl}\quad \forall sbl\in SBL.
+  \]
+  (This bilinear form can be linearized using standard techniques, e.g., auxiliary variables and McCormick envelopes.)
+
+  \item \textbf{[C11] release\_only\_features\_in\_backlog (R20 \& R7)}:
+  \[
+  rf_{rep,f}\ \le\ \sum_{pb\in PB} bf_{pb,f}\quad \forall rep\in REP,\ \forall f\in F.
+  \]
+
+  \item \textbf{[C12] sprint\_pursues\_exactly\_one\_goal (R13)}:
+  \[
+  \sum_{sg\in SG} pg_{sp,sg}=1 \quad \forall sp\in SP.
+  \]
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=*,itemsep=4pt]
+  \item \textbf{DV0:} $x_{t,p}\in\{0,1\}$ --- team $t$ assigned to project $p$.
+  \item \textbf{DV1:} $y_{w,t}\in\{0,1\}$ --- worker $w$ belongs to team $t$.
+  \item \textbf{DV2:} $smt_{t,sm}\in\{0,1\}$ --- Scrum Master $sm$ supports team $t$.
+  \item \textbf{DV3:} $po_{po,pb}\in\{0,1\}$ --- Product Owner $po$ manages Product Backlog $pb$.
+  \item \textbf{DV4:} $bf_{pb,f}\in\{0,1\}$ --- feature $f$ in Product Backlog $pb$.
+  \item \textbf{DV5:} $be_{pb,ep}\in\{0,1\}$ --- epic $ep$ in Product Backlog $pb$.
+  \item \textbf{DV6:} $ue_{ep,us}\in\{0,1\}$ --- user story $us$ in epic $ep$.
+  \item \textbf{DV7:} $tu_{us,ts}\in\{0,1\}$ --- task $ts$ in user story $us$.
+  \item \textbf{DV8:} $usbl_{us,sbl}\in\{0,1\}$ --- user story $us$ in sprint backlog $sbl$.
+  \item \textbf{DV9:} $sblsp_{sbl,sp}\in\{0,1\}$ --- sprint backlog $sbl$ belongs to sprint $sp$.
+  \item \textbf{DV10:} $tb_{scb,ts}\in\{0,1\}$ --- task $ts$ on scrum board $scb$.
+  \item \textbf{DV11:} $rf_{rep,f}\in\{0,1\}$ --- feature $f$ in release plan $rep$.
+  \item \textbf{DV12:} $pg_{sp,sg}\in\{0,1\}$ --- sprint $sp$ pursues sprint goal $sg$.
+\end{itemize}
+
+\end{document}

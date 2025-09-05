@@ -1,0 +1,171 @@
+graph TD
+
+%% ========= Classes (colors) =========
+classDef entity fill:#dae8fc,stroke:#6c8ebf,color:#000;
+classDef attribute fill:#ffffff,stroke:#999,color:#000;
+classDef relation fill:#ffe6cc,stroke:#d79b00,color:#000;
+classDef goal fill:#d5f5e3,stroke:#2e7d32,color:#000;
+classDef condition fill:#f8d7da,stroke:#c0392b,color:#000;
+classDef decision fill:#e8daef,stroke:#8e44ad,color:#000;
+
+%% ========= Entities =========
+E_Project[Project]:::entity
+E_Team[Team]:::entity
+E_Worker[Worker]:::entity
+E_Feature[Feature]:::entity
+E_Epic[Epic]:::entity
+E_UserStory[UserStory]:::entity
+E_Task[Task]:::entity
+E_Blocker[Blocker]:::entity
+E_Sprint[Sprint]:::entity
+E_SprintBacklog[SprintBacklog]:::entity
+E_SprintGoal[SprintGoal]:::entity
+E_SprintReview[SprintReview]:::entity
+E_ScrumBoard[ScrumBoard]:::entity
+E_ProductBacklog[ProductBacklog]:::entity
+E_Velocity[Velocity]:::entity
+E_ReleasePlan[ReleasePlan]:::entity
+E_Stakeholder[Stakeholder]:::entity
+E_FeatureDoc[FeatureDocumentation]:::entity
+
+%% ========= Attributes (selected / referenced) =========
+A_US_story_points[story_points]:::attribute
+A_TSK_effort[effort]:::attribute
+A_BL_severity[severity]:::attribute
+A_SG_ach_status[achievement_status]:::attribute
+A_F_priority[priority]:::attribute
+A_P_budget[budget]:::attribute
+A_VEL_avgSP[avg._story_points]:::attribute
+A_REP_planned_date[planned_date]:::attribute
+A_SH_rel_feat[relevance_to_feature]:::attribute
+A_SCB_cards[number_of_cards]:::attribute
+A_SR_attendees[attendees_count]:::attribute
+A_FED_linked_reqs[linked_requirements]:::attribute
+A_DS_duration[duration]:::attribute
+A_SP_end_date[end_date]:::attribute
+A_W_availability[availability]:::attribute
+A_PB_status[status]:::attribute
+A_SBL_total_effort[total_effort]:::attribute
+A_VEL_trend[trend]:::attribute
+A_F_status[status]:::attribute
+
+%% ========= Wire attributes to their entities =========
+E_UserStory --- A_US_story_points
+E_Task --- A_TSK_effort
+E_Blocker --- A_BL_severity
+E_SprintGoal --- A_SG_ach_status
+E_Feature --- A_F_priority
+E_Project --- A_P_budget
+E_Velocity --- A_VEL_avgSP
+E_ReleasePlan --- A_REP_planned_date
+E_Stakeholder --- A_SH_rel_feat
+E_ScrumBoard --- A_SCB_cards
+E_SprintReview --- A_SR_attendees
+E_FeatureDoc --- A_FED_linked_reqs
+E_DailyScrum[DailyScrum]:::entity --- A_DS_duration
+E_Sprint --- A_SP_end_date
+E_Worker --- A_W_availability
+E_ProductBacklog --- A_PB_status
+E_SprintBacklog --- A_SBL_total_effort
+E_Velocity --- A_VEL_trend
+E_Feature --- A_F_status
+
+%% ========= Relationships (R1..R22) =========
+R1[is_assigned_to_project]:::relation
+R2[belongs_to_team (Employee≙Worker)]:::relation
+R3[has_skill]:::relation
+R4[takes_on_role]:::relation
+R5[manages_backlog]:::relation
+R6[is_supported_by]:::relation
+R7[contains_feature]:::relation
+R8[contains_epic]:::relation
+R9[contains_user_story]:::relation
+R10[consists_of_tasks]:::relation
+R11[is_in_sprint_backlog]:::relation
+R12[belongs_to_sprint]:::relation
+R13[pursues_goal]:::relation
+R14[contains_tasks]:::relation
+R15[documents_feature]:::relation
+R16[is_blocked_by]:::relation
+R17[participates_in]:::relation
+R18[moderates_retrospective]:::relation
+R19[refers_to_team]:::relation
+R20[plans_release]:::relation
+R21[is_part_of_roadmap]:::relation
+R22[generates_snapshot]:::relation
+
+%% Connect entities via relationships
+E_Team --> R1 --> E_Project
+E_Worker --> R2 --> E_Team
+E_Worker --> R3 --> E_Skill[Skill]:::entity
+E_Worker --> R4 --> E_Role[Role]:::entity
+E_ProductOwner[ProductOwner]:::entity --> R5 --> E_ProductBacklog
+E_Team --> R6 --> E_ScrumMaster[ScrumMaster]:::entity
+E_ProductBacklog --> R7 --> E_Feature
+E_ProductBacklog --> R8 --> E_Epic
+E_Epic --> R9 --> E_UserStory
+E_UserStory --> R10 --> E_Task
+E_UserStory --> R11 --> E_SprintBacklog
+E_SprintBacklog --> R12 --> E_Sprint
+E_Sprint --> R13 --> E_SprintGoal
+E_ScrumBoard --> R14 --> E_Task
+E_FeatureDoc --> R15 --> E_Feature
+E_Task --> R16 --> E_Blocker
+E_Stakeholder --> R17 --> E_SprintReview
+E_ScrumMaster --> R18 --> E_SprintRetrospective[SprintRetrospective]:::entity
+E_Velocity --> R19 --> E_Team
+E_ReleasePlan --> R20 --> E_Feature
+E_ReleasePlan --> R21 --> E_Roadmap[Roadmap]:::entity
+E_Sprint --> R22 --> E_DevSnap[DevelopmentSnapshot]:::entity
+
+%% ========= Goals (G0..G11) and links to attributes =========
+G0[maximize_story_points_completed]:::goal --> A_US_story_points
+G1[minimize_total_task_effort]:::goal --> A_TSK_effort
+G2[minimize_open_blocker_severity]:::goal --> A_BL_severity
+G3[maximize_sprint_goal_achievement]:::goal --> A_SG_ach_status
+G4[maximize_feature_priority_delivered]:::goal --> A_F_priority
+G5[minimize_project_budget_used]:::goal --> A_P_budget
+G6[maximize_velocity]:::goal --> A_VEL_avgSP
+G7[minimize_release_time]:::goal --> A_REP_planned_date
+G8[maximize_stakeholder_relevance_covered]:::goal --> A_SH_rel_feat
+G9[minimize_sprint_wip_cards]:::goal --> A_SCB_cards
+G10[maximize_review_attendance]:::goal --> A_SR_attendees
+G11[maximize_documentation_coverage]:::goal --> A_FED_linked_reqs
+
+%% ========= Conditions (C0..C12) and links to attributes =========
+C0[capacity_per_team_not_exceeded]:::condition --> A_TSK_effort
+C1[story_points_within_sprint_velocity]:::condition --> A_US_story_points
+C2[daily_scrum_duration_cap]:::condition --> A_DS_duration
+C3[sprint_duration_bounds]:::condition --> A_SP_end_date
+C4[worker_availability_respected]:::condition --> A_W_availability
+C5[product_backlog_active_only]:::condition --> A_PB_status
+C6[sprint_goal_defined_and_tracked]:::condition --> A_SG_ach_status
+C7[blockers_resolved_before_task_completion]:::condition --> A_BL_severity
+C8[sprint_backlog_effort_consistency]:::condition --> A_SBL_total_effort
+C9[scrum_board_cards_consistency]:::condition --> A_SCB_cards
+C10[release_includes_ready_features_only]:::condition --> A_F_status
+C11[velocity_trend_nonnegative]:::condition --> A_VEL_trend
+C12[minimum_review_attendance]:::condition --> A_SR_attendees
+
+%% ========= Decision Variables (DV0..DV13) and links to relevant entities =========
+DV0[assign_team_to_project[t,p]]:::decision --- E_Team
+DV0 --- E_Project
+DV1[assign_worker_to_team[w,t]]:::decision --- E_Worker
+DV1 --- E_Team
+DV2[select_user_story_in_sprint[us,sp]]:::decision --- E_UserStory
+DV2 --- E_Sprint
+DV3[complete_task[tsk]]:::decision --- E_Task
+DV4[resolve_blocker[bl]]:::decision --- E_Blocker
+DV5[achieve_sprint_goal[sp]]:::decision --- E_SprintGoal
+DV5 --- E_Sprint
+DV6[include_feature_in_release[f,rep]]:::decision --- E_Feature
+DV6 --- E_ReleasePlan
+DV7[sprint_duration_days[sp]]:::decision --- E_Sprint
+DV8[review_attendance_count[sr]]:::decision --- E_SprintReview
+DV9[sprint_velocity[sp]]:::decision --- E_Sprint
+DV10[budget_used[p]]:::decision --- E_Project
+DV11[stakeholder_coverage[sh,f]]:::decision --- E_Stakeholder
+DV11 --- E_Feature
+DV12[complete_user_story[us]]:::decision --- E_UserStory
+DV13[assign_task_to_sprint[tsk,sp]]:::decision --- E_Task
+DV13 --- E_Sprint

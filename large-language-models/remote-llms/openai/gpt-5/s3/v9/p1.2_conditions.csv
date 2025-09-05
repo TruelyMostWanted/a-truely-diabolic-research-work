@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,assign_user_story_to_one_sprint,"Each user story is assigned to at most one sprint",True,min,UserStory,story_points,2,1.0
+C1,limit_sprint_capacity_by_velocity,"Story points in a sprint do not exceed team velocity",True,min,Velocity,max_velocity,2,1.0
+C2,team_to_one_project,"Each team is assigned to exactly one project",True,min,Team,team_size,2,1.0
+C3,worker_to_at_most_one_team,"Each worker belongs to at most one team",True,min,Worker,availability,2,1.0
+C4,each_team_has_one_scrum_master,"Each team has exactly one Scrum Master supporting it",False,min,ScrumMaster,experience,2,1.0
+C5,po_manages_one_backlog,"Each Product Owner manages exactly one Product Backlog",False,min,ProductOwner,availability,2,1.0
+C6,feature_in_backlog_if_in_release,"A selected feature must appear in some Product Backlog",False,min,ProductBacklog,number_of_entries,2,1.0
+C7,epic_in_backlog_for_user_story,"A scheduled user story must belong to an epic that is in a Product Backlog",False,min,Epic,priority,2,1.0
+C8,task_only_if_user_story_in_sprint,"A task is assigned only if its user story is scheduled in some sprint",False,min,Task,type,2,1.0
+C9,resolve_blocker_if_task_selected,"If a task is selected, at least one of its blockers must be resolved",False,min,Blocker,status,2,1.0
+C10,budget_allocation_within_limit,"Allocated budget per project cannot exceed project budget",True,min,Project,budget,2,1.0
+C11,activate_sprint_if_has_user_stories,"A sprint is active if and only if it has at least one scheduled story",False,min,Sprint,status,2,1.0
+C12,review_only_if_sprint_active,"Sprint reviews can be scheduled only for active sprints",False,min,SprintReview,duration,2,1.0

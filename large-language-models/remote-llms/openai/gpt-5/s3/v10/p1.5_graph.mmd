@@ -1,0 +1,222 @@
+graph TD
+
+%% === Classes ===
+classDef entity fill:#1f77b4,color:#ffffff,stroke:#0b3d91,stroke-width:1px;
+classDef attr fill:#ffffff,color:#111111,stroke:#333333,stroke-width:1px;
+classDef relation fill:#ff7f0e,color:#111111,stroke:#a85b0b,stroke-width:1px;
+classDef goal fill:#2ca02c,color:#ffffff,stroke:#1b6e1b,stroke-width:1px;
+classDef condition fill:#d62728,color:#ffffff,stroke:#8c1b13,stroke-width:1px;
+classDef decision fill:#9467bd,color:#ffffff,stroke:#5e3d99,stroke-width:1px;
+
+%% === Entities ===
+e_Project["Project"]:::entity
+e_Team["Team"]:::entity
+e_Worker["Worker"]:::entity
+e_Feature["Feature"]:::entity
+e_Skill["Skill"]:::entity
+e_Role["Role"]:::entity
+e_PO["ProductOwner"]:::entity
+e_SM["ScrumMaster"]:::entity
+e_PB["ProductBacklog"]:::entity
+e_Sprint["Sprint"]:::entity
+e_SPP["SprintPlanning"]:::entity
+e_DS["DailyScrum"]:::entity
+e_SR["SprintReview"]:::entity
+e_SRE["SprintRetrospective"]:::entity
+e_SBL["SprintBacklog"]:::entity
+e_SG["SprintGoal"]:::entity
+e_Epic["Epic"]:::entity
+e_US["UserStory"]:::entity
+e_TSK["Task"]:::entity
+e_DEV["DevelopmentSnapshot"]:::entity
+e_BL["Blocker"]:::entity
+e_SH["Stakeholder"]:::entity
+e_VEL["Velocity"]:::entity
+e_REP["ReleasePlan"]:::entity
+e_RM["Roadmap"]:::entity
+e_SCB["ScrumBoard"]:::entity
+e_FED["FeatureDocumentation"]:::entity
+
+%% === Attributes (subset used by model) ===
+a_Project_budget["Project.budget"]:::attr
+a_Project_priority["Project.priority"]:::attr
+a_Team_size["Team.team_size"]:::attr
+a_Worker_avail["Worker.availability"]:::attr
+a_Feature_priority["Feature.priority"]:::attr
+a_Feature_effort["Feature.estimated_effort"]:::attr
+a_US_sp["UserStory.story_points"]:::attr
+a_US_priority["UserStory.priority"]:::attr
+a_TSK_effort["Task.effort"]:::attr
+a_SG_benefit["SprintGoal.benefit"]:::attr
+a_Sprint_goalach["Sprint.achievement_of_goal"]:::attr
+a_SPP_dur["SprintPlanning.duration_(min)"]:::attr
+a_DS_dur["DailyScrum.duration"]:::attr
+a_SR_dur["SprintReview.duration"]:::attr
+a_SR_att["SprintReview.attendees_count"]:::attr
+a_SRE_sat["SprintRetrospective.team_satisfaction"]:::attr
+a_SBL_eff["SprintBacklog.total_effort"]:::attr
+a_SBL_ntasks["SprintBacklog.number_of_tasks"]:::attr
+a_VEL_max["Velocity.max_velocity"]:::attr
+a_VEL_min["Velocity.min_velocity"]:::attr
+a_PB_n["ProductBacklog.number_of_entries"]:::attr
+a_SCB_cards["ScrumBoard.number_of_cards"]:::attr
+a_BL_sev["Blocker.severity"]:::attr
+a_Epic_eff["Epic.estimated_effort"]:::attr
+
+%% Entity -> Attribute edges
+e_Project --> a_Project_budget
+e_Project --> a_Project_priority
+e_Team --> a_Team_size
+e_Worker --> a_Worker_avail
+e_Feature --> a_Feature_priority
+e_Feature --> a_Feature_effort
+e_US --> a_US_sp
+e_US --> a_US_priority
+e_TSK --> a_TSK_effort
+e_SG --> a_SG_benefit
+e_Sprint --> a_Sprint_goalach
+e_SPP --> a_SPP_dur
+e_DS --> a_DS_dur
+e_SR --> a_SR_dur
+e_SR --> a_SR_att
+e_SRE --> a_SRE_sat
+e_SBL --> a_SBL_eff
+e_SBL --> a_SBL_ntasks
+e_VEL --> a_VEL_max
+e_VEL --> a_VEL_min
+e_PB --> a_PB_n
+e_SCB --> a_SCB_cards
+e_BL --> a_BL_sev
+e_Epic --> a_Epic_eff
+
+%% === Relationships (R1..R22) ===
+r1["R1 is_assigned_to_project"]:::relation
+r2["R2 belongs_to_team"]:::relation
+r3["R3 has_skill"]:::relation
+r4["R4 takes_on_role"]:::relation
+r5["R5 manages_backlog"]:::relation
+r6["R6 is_supported_by"]:::relation
+r7["R7 contains_feature"]:::relation
+r8["R8 contains_epic"]:::relation
+r9["R9 contains_user_story"]:::relation
+r10["R10 consists_of_tasks"]:::relation
+r11["R11 is_in_sprint_backlog"]:::relation
+r12["R12 belongs_to_sprint"]:::relation
+r13["R13 pursues_goal"]:::relation
+r14["R14 contains_tasks"]:::relation
+r15["R15 documents_feature"]:::relation
+r16["R16 is_blocked_by"]:::relation
+r17["R17 participates_in"]:::relation
+r18["R18 moderates_retrospective"]:::relation
+r19["R19 refers_to_team"]:::relation
+r20["R20 plans_release"]:::relation
+r21["R21 is_part_of_roadmap"]:::relation
+r22["R22 generates_snapshot"]:::relation
+
+e_Team --> r1 --> e_Project
+e_Worker --> r2 --> e_Team
+e_Worker --> r3 --> e_Skill
+e_Worker --> r4 --> e_Role
+e_PO --> r5 --> e_PB
+e_Team --> r6 --> e_SM
+e_PB --> r7 --> e_Feature
+e_PB --> r8 --> e_Epic
+e_Epic --> r9 --> e_US
+e_US --> r10 --> e_TSK
+e_US --> r11 --> e_SBL
+e_SBL --> r12 --> e_Sprint
+e_Sprint --> r13 --> e_SG
+e_SCB --> r14 --> e_TSK
+e_FED --> r15 --> e_Feature
+e_TSK --> r16 --> e_BL
+e_SH --> r17 --> e_SR
+e_SM --> r18 --> e_SRE
+e_VEL --> r19 --> e_Team
+e_REP --> r20 --> e_Feature
+e_REP --> r21 --> e_RM
+e_Sprint --> r22 --> e_DEV
+
+%% === Goals (G0..G11) ===
+g0["G0 maximize_sprint_goal_benefit"]:::goal
+g1["G1 minimize_project_budget_usage"]:::goal
+g2["G2 maximize_delivered_story_points"]:::goal
+g3["G3 minimize_total_task_effort"]:::goal
+g4["G4 maximize_feature_priority_released"]:::goal
+g5["G5 minimize_blocker_impact"]:::goal
+g6["G6 maximize_team_satisfaction"]:::goal
+g7["G7 minimize_sprint_planning_time"]:::goal
+g8["G8 minimize_daily_scrum_time"]:::goal
+g9["G9 minimize_sprint_review_time"]:::goal
+g10["G10 minimize_sprint_backlog_total_effort"]:::goal
+g11["G11 maximize_worker_availability_used"]:::goal
+
+g0 --> a_SG_benefit
+g1 --> a_Project_budget
+g2 --> a_US_sp
+g3 --> a_TSK_effort
+g4 --> a_Feature_priority
+g5 --> a_BL_sev
+g6 --> a_SRE_sat
+g7 --> a_SPP_dur
+g8 --> a_DS_dur
+g9 --> a_SR_dur
+g10 --> a_SBL_eff
+g11 --> a_Worker_avail
+
+%% === Conditions (C0..C11) ===
+c0["C0 unique_story_assignment"]:::condition --> a_US_sp
+c1["C1 sprint_capacity_story_points"]:::condition --> a_VEL_max
+c2["C2 worker_capacity_effort"]:::condition --> a_Worker_avail
+c3["C3 project_budget_cap"]:::condition --> a_Project_budget
+c4["C4 goal_activation_consistency"]:::condition --> a_Sprint_goalach
+c5["C5 feature_must_be_in_backlog"]:::condition --> a_PB_n
+c6["C6 minimum_review_attendance"]:::condition --> a_SR_att
+c7["C7 tasks_within_sprint_backlog"]:::condition --> a_SBL_ntasks
+c8["C8 blocked_task_requires_resolution"]:::condition --> a_BL_sev
+c9["C9 scrumboard_matches_scheduled_tasks"]:::condition --> a_SCB_cards
+c10["C10 epic_included_if_story_planned"]:::condition --> a_Epic_eff
+c11["C11 velocity_lower_bound"]:::condition --> a_VEL_min
+
+%% === Decision Variables (DV0..DV13) ===
+dv0["DV0 assign_user_story_to_sprint"]:::decision
+dv1["DV1 schedule_task_in_sprint"]:::decision
+dv2["DV2 assign_task_to_worker"]:::decision
+dv3["DV3 allocate_budget_to_feature"]:::decision
+dv4["DV4 sprint_goal_achieved"]:::decision
+dv5["DV5 include_feature_in_release_plan"]:::decision
+dv6["DV6 sprint_utilization"]:::decision
+dv7["DV7 capacity_team_per_sprint"]:::decision
+dv8["DV8 include_epic"]:::decision
+dv9["DV9 stakeholder_participation_in_review"]:::decision
+dv10["DV10 task_blocked"]:::decision
+dv11["DV11 resolve_blocker"]:::decision
+dv12["DV12 scrumboard_card_count"]:::decision
+dv13["DV13 assign_user_story_to_sprint_backlog"]:::decision
+
+dv0 --- e_US
+dv0 --- e_Sprint
+dv1 --- e_TSK
+dv1 --- e_Sprint
+dv2 --- e_TSK
+dv2 --- e_Worker
+dv3 --- e_Feature
+dv3 --- e_Project
+dv4 --- e_Sprint
+dv4 --- e_SG
+dv5 --- e_Feature
+dv5 --- e_REP
+dv6 --- e_Sprint
+dv6 --- e_VEL
+dv7 --- e_Sprint
+dv7 --- e_VEL
+dv8 --- e_Epic
+dv8 --- e_PB
+dv9 --- e_SR
+dv9 --- e_SH
+dv10 --- e_TSK
+dv10 --- e_BL
+dv11 --- e_BL
+dv12 --- e_SCB
+dv12 --- e_Sprint
+dv13 --- e_US
+dv13 --- e_SBL

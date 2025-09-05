@@ -1,0 +1,536 @@
+%% model_graph.mmd
+graph TD
+
+%% ---------- Class Definitions ----------
+classDef entity fill:#cfe8ff,stroke:#276fbf,stroke-width:1px,color:#000,rx:4px,ry:4px;
+classDef attribute fill:#ffffff,stroke:#555,stroke-width:1px,color:#000,rx:3px,ry:3px;
+classDef relation fill:#ffd799,stroke:#d97706,stroke-width:1px,color:#000,rx:4px,ry:4px;
+classDef goal fill:#d1f2d1,stroke:#2e7d32,stroke-width:1px,color:#000,rx:4px,ry:4px;
+classDef condition fill:#ffd6d6,stroke:#c62828,stroke-width:1px,color:#000,rx:4px,ry:4px;
+classDef decision fill:#e6ccff,stroke:#7b1fa2,stroke-width:1px,color:#000,rx:4px,ry:4px;
+
+%% ---------- Entities ----------
+Project["Project"]:::entity
+Team["Team"]:::entity
+Worker["Worker"]:::entity
+Feature["Feature"]:::entity
+Skill["Skill"]:::entity
+Role["Role"]:::entity
+ProductOwner["ProductOwner"]:::entity
+ScrumMaster["ScrumMaster"]:::entity
+ProductBacklog["ProductBacklog"]:::entity
+Sprint["Sprint"]:::entity
+SprintPlanning["SprintPlanning"]:::entity
+DailyScrum["DailyScrum"]:::entity
+SprintReview["SprintReview"]:::entity
+SprintRetrospective["SprintRetrospective"]:::entity
+SprintBacklog["SprintBacklog"]:::entity
+SprintGoal["SprintGoal"]:::entity
+Epic["Epic"]:::entity
+UserStory["UserStory"]:::entity
+Task["Task"]:::entity
+DevelopmentSnapshot["DevelopmentSnapshot"]:::entity
+Blocker["Blocker"]:::entity
+Stakeholder["Stakeholder"]:::entity
+Velocity["Velocity"]:::entity
+ReleasePlan["ReleasePlan"]:::entity
+Roadmap["Roadmap"]:::entity
+ScrumBoard["ScrumBoard"]:::entity
+FeatureDocumentation["FeatureDocumentation"]:::entity
+
+%% ---------- Attributes (per Entity) ----------
+%% Project
+Project_id["Project.id"]:::attribute
+Project_name["Project.name"]:::attribute
+Project_start["Project.project_start"]:::attribute
+Project_end["Project.project_end"]:::attribute
+Project_desc["Project.description"]:::attribute
+Project_budget["Project.budget"]:::attribute
+Project_status["Project.status"]:::attribute
+Project_target["Project.target_audience"]:::attribute
+Project_priority["Project.priority"]:::attribute
+Project-->Project_id
+Project-->Project_name
+Project-->Project_start
+Project-->Project_end
+Project-->Project_desc
+Project-->Project_budget
+Project-->Project_status
+Project-->Project_target
+Project-->Project_priority
+
+%% Team
+Team_id["Team.id"]:::attribute
+Team_name["Team.name"]:::attribute
+Team_size["Team.team_size"]:::attribute
+Team_start["Team.team_start"]:::attribute
+Team_status["Team.team_status"]:::attribute
+Team_location["Team.location"]:::attribute
+Team_type["Team.team_type"]:::attribute
+Team-->Team_id
+Team-->Team_name
+Team-->Team_size
+Team-->Team_start
+Team-->Team_status
+Team-->Team_location
+Team-->Team_type
+
+%% Worker
+Worker_id["Worker.id"]:::attribute
+Worker_name["Worker.name"]:::attribute
+Worker_first["Worker.first_name"]:::attribute
+Worker_email["Worker.email"]:::attribute
+Worker_start["Worker.start_date"]:::attribute
+Worker_status["Worker.status"]:::attribute
+Worker_avail["Worker.availability"]:::attribute
+Worker-->Worker_id
+Worker-->Worker_name
+Worker-->Worker_first
+Worker-->Worker_email
+Worker-->Worker_start
+Worker-->Worker_status
+Worker-->Worker_avail
+
+%% Feature
+Feature_id["Feature.id"]:::attribute
+Feature_title["Feature.title"]:::attribute
+Feature_desc["Feature.description"]:::attribute
+Feature_status["Feature.status"]:::attribute
+Feature_priority["Feature.priority"]:::attribute
+Feature_effort["Feature.estimated_effort"]:::attribute
+Feature-->Feature_id
+Feature-->Feature_title
+Feature-->Feature_desc
+Feature-->Feature_status
+Feature-->Feature_priority
+Feature-->Feature_effort
+
+%% Skill
+Skill_id["Skill.id"]:::attribute
+Skill_label["Skill.label"]:::attribute
+Skill_desc["Skill.description"]:::attribute
+Skill_level["Skill.level"]:::attribute
+Skill_cert["Skill.certified"]:::attribute
+Skill_cat["Skill.category"]:::attribute
+Skill-->Skill_id
+Skill-->Skill_label
+Skill-->Skill_desc
+Skill-->Skill_level
+Skill-->Skill_cert
+Skill-->Skill_cat
+
+%% Role
+Role_id["Role.id"]:::attribute
+Role_name["Role.role_name"]:::attribute
+Role_desc["Role.description"]:::attribute
+Role_area["Role.area_of_responsibility"]:::attribute
+Role-->Role_id
+Role-->Role_name
+Role-->Role_desc
+Role-->Role_area
+
+%% ProductOwner
+PO_id["ProductOwner.id"]:::attribute
+PO_name["ProductOwner.name"]:::attribute
+PO_email["ProductOwner.email"]:::attribute
+PO_avail["ProductOwner.availability"]:::attribute
+ProductOwner-->PO_id
+ProductOwner-->PO_name
+ProductOwner-->PO_email
+ProductOwner-->PO_avail
+
+%% ScrumMaster
+SM_id["ScrumMaster.id"]:::attribute
+SM_name["ScrumMaster.name"]:::attribute
+SM_email["ScrumMaster.email"]:::attribute
+SM_exp["ScrumMaster.experience"]:::attribute
+ScrumMaster-->SM_id
+ScrumMaster-->SM_name
+ScrumMaster-->SM_email
+ScrumMaster-->SM_exp
+
+%% ProductBacklog
+PB_id["ProductBacklog.id"]:::attribute
+PB_created["ProductBacklog.created_on"]:::attribute
+PB_updated["ProductBacklog.last_updated"]:::attribute
+PB_entries["ProductBacklog.number_of_entries"]:::attribute
+PB_status["ProductBacklog.status"]:::attribute
+ProductBacklog-->PB_id
+ProductBacklog-->PB_created
+ProductBacklog-->PB_updated
+ProductBacklog-->PB_entries
+ProductBacklog-->PB_status
+
+%% Sprint
+SP_id["Sprint.id"]:::attribute
+SP_num["Sprint.sprint_number"]:::attribute
+SP_start["Sprint.start_date"]:::attribute
+SP_end["Sprint.end_date"]:::attribute
+SP_status["Sprint.status"]:::attribute
+SP_goal["Sprint.achievement_of_goal"]:::attribute
+Sprint-->SP_id
+Sprint-->SP_num
+Sprint-->SP_start
+Sprint-->SP_end
+Sprint-->SP_status
+Sprint-->SP_goal
+
+%% SprintPlanning
+SPP_id["SprintPlanning.id"]:::attribute
+SPP_date["SprintPlanning.date"]:::attribute
+SPP_dur["SprintPlanning.duration_(min)"]:::attribute
+SPP_mod["SprintPlanning.moderation"]:::attribute
+SPP_out["SprintPlanning.outcome_documentation"]:::attribute
+SprintPlanning-->SPP_id
+SprintPlanning-->SPP_date
+SprintPlanning-->SPP_dur
+SprintPlanning-->SPP_mod
+SprintPlanning-->SPP_out
+
+%% DailyScrum
+DS_id["DailyScrum.id"]:::attribute
+DS_date["DailyScrum.date"]:::attribute
+DS_time["DailyScrum.time"]:::attribute
+DS_dur["DailyScrum.duration"]:::attribute
+DS_mod["DailyScrum.moderation"]:::attribute
+DailyScrum-->DS_id
+DailyScrum-->DS_date
+DailyScrum-->DS_time
+DailyScrum-->DS_dur
+DailyScrum-->DS_mod
+
+%% SprintReview
+SR_id["SprintReview.id"]:::attribute
+SR_date["SprintReview.date"]:::attribute
+SR_dur["SprintReview.duration"]:::attribute
+SR_feedback["SprintReview.feedback_documentation"]:::attribute
+SR_att["SprintReview.attendees_count"]:::attribute
+SprintReview-->SR_id
+SprintReview-->SR_date
+SprintReview-->SR_dur
+SprintReview-->SR_feedback
+SprintReview-->SR_att
+
+%% SprintRetrospective
+SRE_id["SprintRetrospective.id"]:::attribute
+SRE_date["SprintRetrospective.date"]:::attribute
+SRE_dur["SprintRetrospective.duration"]:::attribute
+SRE_actions["SprintRetrospective.improvement_actions"]:::attribute
+SRE_sat["SprintRetrospective.team_satisfaction"]:::attribute
+SRE_mod["SprintRetrospective.moderation"]:::attribute
+SprintRetrospective-->SRE_id
+SprintRetrospective-->SRE_date
+SprintRetrospective-->SRE_dur
+SprintRetrospective-->SRE_actions
+SprintRetrospective-->SRE_sat
+SprintRetrospective-->SRE_mod
+
+%% SprintBacklog
+SBL_id["SprintBacklog.id"]:::attribute
+SBL_tasks["SprintBacklog.number_of_tasks"]:::attribute
+SBL_updated["SprintBacklog.last_updated"]:::attribute
+SBL_status["SprintBacklog.status"]:::attribute
+SBL_effort["SprintBacklog.total_effort"]:::attribute
+SprintBacklog-->SBL_id
+SprintBacklog-->SBL_tasks
+SprintBacklog-->SBL_updated
+SprintBacklog-->SBL_status
+SprintBacklog-->SBL_effort
+
+%% SprintGoal
+SG_id["SprintGoal.id"]:::attribute
+SG_obj["SprintGoal.objective_description"]:::attribute
+SG_ach["SprintGoal.achievement_status"]:::attribute
+SG_benefit["SprintGoal.benefit"]:::attribute
+SprintGoal-->SG_id
+SprintGoal-->SG_obj
+SprintGoal-->SG_ach
+SprintGoal-->SG_benefit
+
+%% Epic
+Epic_id["Epic.id"]:::attribute
+Epic_title["Epic.title"]:::attribute
+Epic_desc["Epic.description"]:::attribute
+Epic_priority["Epic.priority"]:::attribute
+Epic_status["Epic.status"]:::attribute
+Epic_effort["Epic.estimated_effort"]:::attribute
+Epic-->Epic_id
+Epic-->Epic_title
+Epic-->Epic_desc
+Epic-->Epic_priority
+Epic-->Epic_status
+Epic-->Epic_effort
+
+%% UserStory
+US_id["UserStory.id"]:::attribute
+US_title["UserStory.title"]:::attribute
+US_desc["UserStory.description"]:::attribute
+US_acc["UserStory.acceptance_criteria"]:::attribute
+US_priority["UserStory.priority"]:::attribute
+US_sp["UserStory.story_points"]:::attribute
+US_status["UserStory.status"]:::attribute
+UserStory-->US_id
+UserStory-->US_title
+UserStory-->US_desc
+UserStory-->US_acc
+UserStory-->US_priority
+UserStory-->US_sp
+UserStory-->US_status
+
+%% Task
+TSK_id["Task.id"]:::attribute
+TSK_title["Task.title"]:::attribute
+TSK_desc["Task.description"]:::attribute
+TSK_status["Task.status"]:::attribute
+TSK_effort["Task.effort"]:::attribute
+TSK_type["Task.type"]:::attribute
+Task-->TSK_id
+Task-->TSK_title
+Task-->TSK_desc
+Task-->TSK_status
+Task-->TSK_effort
+Task-->TSK_type
+
+%% DevelopmentSnapshot
+DEV_id["DevelopmentSnapshot.id"]:::attribute
+DEV_ver["DevelopmentSnapshot.version_number"]:::attribute
+DEV_date["DevelopmentSnapshot.creation_date"]:::attribute
+DEV_test["DevelopmentSnapshot.test_status"]:::attribute
+DEV_target["DevelopmentSnapshot.deployment_target"]:::attribute
+DEV_doc["DevelopmentSnapshot.documentation"]:::attribute
+DevelopmentSnapshot-->DEV_id
+DevelopmentSnapshot-->DEV_ver
+DevelopmentSnapshot-->DEV_date
+DevelopmentSnapshot-->DEV_test
+DevelopmentSnapshot-->DEV_target
+DevelopmentSnapshot-->DEV_doc
+
+%% Blocker
+BL_id["Blocker.id"]:::attribute
+BL_title["Blocker.title"]:::attribute
+BL_desc["Blocker.description"]:::attribute
+BL_sev["Blocker.severity"]:::attribute
+BL_status["Blocker.status"]:::attribute
+BL_detect["Blocker.detected_on"]:::attribute
+BL_resolved["Blocker.resolved_on"]:::attribute
+Blocker-->BL_id
+Blocker-->BL_title
+Blocker-->BL_desc
+Blocker-->BL_sev
+Blocker-->BL_status
+Blocker-->BL_detect
+Blocker-->BL_resolved
+
+%% Stakeholder
+SH_id["Stakeholder.id"]:::attribute
+SH_name["Stakeholder.name"]:::attribute
+SH_org["Stakeholder.organization"]:::attribute
+SH_role["Stakeholder.role"]:::attribute
+SH_email["Stakeholder.email"]:::attribute
+SH_area["Stakeholder.area_of_interest"]:::attribute
+SH_infl["Stakeholder.influence_level"]:::attribute
+SH_rel["Stakeholder.relevance_to_feature"]:::attribute
+Stakeholder-->SH_id
+Stakeholder-->SH_name
+Stakeholder-->SH_org
+Stakeholder-->SH_role
+Stakeholder-->SH_email
+Stakeholder-->SH_area
+Stakeholder-->SH_infl
+Stakeholder-->SH_rel
+
+%% Velocity
+VEL_id["Velocity.id"]:::attribute
+VEL_n["Velocity.number_of_sprints_used"]:::attribute
+VEL_avg["Velocity.avg._story_points"]:::attribute
+VEL_max["Velocity.max_velocity"]:::attribute
+VEL_min["Velocity.min_velocity"]:::attribute
+VEL_trend["Velocity.trend"]:::attribute
+Velocity-->VEL_id
+Velocity-->VEL_n
+Velocity-->VEL_avg
+Velocity-->VEL_max
+Velocity-->VEL_min
+Velocity-->VEL_trend
+
+%% ReleasePlan
+REP_id["ReleasePlan.id"]:::attribute
+REP_ver["ReleasePlan.version"]:::attribute
+REP_date["ReleasePlan.planned_date"]:::attribute
+REP_features["ReleasePlan.included_features"]:::attribute
+REP_status["ReleasePlan.status"]:::attribute
+ReleasePlan-->REP_id
+ReleasePlan-->REP_ver
+ReleasePlan-->REP_date
+ReleasePlan-->REP_features
+ReleasePlan-->REP_status
+
+%% Roadmap
+RM_id["Roadmap.id"]:::attribute
+RM_start["Roadmap.start_date"]:::attribute
+RM_end["Roadmap.end_date"]:::attribute
+RM_milestones["Roadmap.milestones"]:::attribute
+RM_objectives["Roadmap.objectives"]:::attribute
+RM_versions["Roadmap.versions"]:::attribute
+Roadmap-->RM_id
+Roadmap-->RM_start
+Roadmap-->RM_end
+Roadmap-->RM_milestones
+Roadmap-->RM_objectives
+Roadmap-->RM_versions
+
+%% ScrumBoard
+SCB_id["ScrumBoard.id"]:::attribute
+SCB_type["ScrumBoard.board_type"]:::attribute
+SCB_cols["ScrumBoard.columns_(todo/done...)"]:::attribute
+SCB_cards["ScrumBoard.number_of_cards"]:::attribute
+SCB_updated["ScrumBoard.last_updated"]:::attribute
+ScrumBoard-->SCB_id
+ScrumBoard-->SCB_type
+ScrumBoard-->SCB_cols
+ScrumBoard-->SCB_cards
+ScrumBoard-->SCB_updated
+
+%% FeatureDocumentation
+FED_id["FeatureDocumentation.id"]:::attribute
+FED_title["FeatureDocumentation.title"]:::attribute
+FED_desc["FeatureDocumentation.description"]:::attribute
+FED_created["FeatureDocumentation.creation_date"]:::attribute
+FED_changelog["FeatureDocumentation.change_log"]:::attribute
+FED_linked["FeatureDocumentation.linked_requirements"]:::attribute
+FED_author["FeatureDocumentation.author"]:::attribute
+FeatureDocumentation-->FED_id
+FeatureDocumentation-->FED_title
+FeatureDocumentation-->FED_desc
+FeatureDocumentation-->FED_created
+FeatureDocumentation-->FED_changelog
+FeatureDocumentation-->FED_linked
+FeatureDocumentation-->FED_author
+
+%% ---------- Relations ----------
+R1["R1 is_assigned_to_project"]:::relation
+R2["R2 belongs_to_team"]:::relation
+R3["R3 has_skill"]:::relation
+R4["R4 takes_on_role"]:::relation
+R5["R5 manages_backlog"]:::relation
+R6["R6 is_supported_by"]:::relation
+R7["R7 contains_feature"]:::relation
+R8["R8 contains_epic"]:::relation
+R9["R9 contains_user_story"]:::relation
+R10["R10 consists_of_tasks"]:::relation
+R11["R11 is_in_sprint_backlog"]:::relation
+R12["R12 belongs_to_sprint"]:::relation
+R13["R13 pursues_goal"]:::relation
+R14["R14 contains_tasks"]:::relation
+R15["R15 documents_feature"]:::relation
+R16["R16 is_blocked_by"]:::relation
+R17["R17 participates_in"]:::relation
+R18["R18 moderates_retrospective"]:::relation
+R19["R19 refers_to_team"]:::relation
+R20["R20 plans_release"]:::relation
+R21["R21 is_part_of_roadmap"]:::relation
+R22["R22 generates_snapshot"]:::relation
+
+%% Connect entities through relations (normalized: Employee->Worker; Sprint Review->SprintReview)
+Team-->R1-->Project
+Worker-->R2-->Team
+Worker-->R3-->Skill
+Worker-->R4-->Role
+ProductOwner-->R5-->ProductBacklog
+Team-->R6-->ScrumMaster
+ProductBacklog-->R7-->Feature
+ProductBacklog-->R8-->Epic
+Epic-->R9-->UserStory
+UserStory-->R10-->Task
+UserStory-->R11-->SprintBacklog
+SprintBacklog-->R12-->Sprint
+Sprint-->R13-->SprintGoal
+ScrumBoard-->R14-->Task
+FeatureDocumentation-->R15-->Feature
+Task-->R16-->Blocker
+Stakeholder-->R17-->SprintReview
+ScrumMaster-->R18-->SprintRetrospective
+Velocity-->R19-->Team
+ReleasePlan-->R20-->Feature
+ReleasePlan-->R21-->Roadmap
+Sprint-->R22-->DevelopmentSnapshot
+
+%% ---------- Goals (connect to attributes) ----------
+G0["G0 maximize_velocity_avg_story_points"]:::goal
+G1["G1 minimize_product_backlog_entries"]:::goal
+G2["G2 minimize_project_budget_use"]:::goal
+G3["G3 maximize_sprint_goal_achievement"]:::goal
+G4["G4 minimize_blocker_severity"]:::goal
+G5["G5 minimize_task_effort"]:::goal
+G6["G6 maximize_story_points_scheduled"]:::goal
+G7["G7 maximize_team_satisfaction"]:::goal
+G8["G8 minimize_scrum_board_cards"]:::goal
+G9["G9 minimize_daily_scrum_duration"]:::goal
+G10["G10 maximize_feature_documentation_links"]:::goal
+G11["G11 maximize_deployment_target_coverage"]:::goal
+G12["G12 maximize_sprint_review_feedback"]:::goal
+
+G0-->VEL_avg
+G1-->PB_entries
+G2-->Project_budget
+G3-->SG_ach
+G4-->BL_sev
+G5-->TSK_effort
+G6-->US_sp
+G7-->SRE_sat
+G8-->SCB_cards
+G9-->DS_dur
+G10-->FED_linked
+G11-->DEV_target
+G12-->SR_feedback
+
+%% ---------- Conditions (connect to attributes) ----------
+C0["C0 limit_budget_by_project"]:::condition --> Project_budget
+C1["C1 respect_worker_availability"]:::condition --> Worker_avail
+C2["C2 cap_sprint_backlog_total_effort"]:::condition --> SBL_effort
+C3["C3 at_most_one_sprint_goal_per_sprint"]:::condition --> SG_ach
+C4["C4 block_unresolved_blockers"]:::condition --> BL_status
+C5["C5 daily_scrum_max_15_minutes"]:::condition --> DS_dur
+C6["C6 maintain_active_product_backlog"]:::condition --> PB_status
+C7["C7 release_within_roadmap_window"]:::condition --> REP_date
+C8["C8 sprint_review_attendees_cap"]:::condition --> SR_att
+C9["C9 documentation_required_for_selected_features"]:::condition --> FED_linked
+C10["C10 team_size_capacity_respected"]:::condition --> Team_size
+C11["C11 velocity_capacities_applied"]:::condition --> VEL_avg
+C12["C12 track_sprint_backlog_status"]:::condition --> SBL_status
+
+%% ---------- Decision Variables (connect to relevant entities) ----------
+DV0["DV0 schedule_story_us_s"]:::decision
+DV1["DV1 assign_task_tsk_w"]:::decision
+DV2["DV2 include_feature_rep_f"]:::decision
+DV3["DV3 mitigate_blocker_bl"]:::decision
+DV4["DV4 activate_sprint_s"]:::decision
+DV5["DV5 allocate_effort_w_s"]:::decision
+DV6["DV6 budget_spent_p"]:::decision
+DV7["DV7 story_points_committed_s"]:::decision
+DV8["DV8 deploy_snapshot_s"]:::decision
+DV9["DV9 choose_goal_sg_s"]:::decision
+DV10["DV10 select_team_for_project_t_p"]:::decision
+DV11["DV11 setup_daily_scrum_duration_ds"]:::decision
+DV12["DV12 select_feature_f"]:::decision
+
+DV0---UserStory
+DV0---Sprint
+DV12---Feature
+DV1---Task
+DV1---Worker
+DV2---ReleasePlan
+DV2---Feature
+DV3---Blocker
+DV4---Sprint
+DV5---Worker
+DV5---Sprint
+DV6---Project
+DV7---Sprint
+DV8---DevelopmentSnapshot
+DV8---Sprint
+DV9---SprintGoal
+DV9---Sprint
+DV10---Team
+DV10---Project
+DV11---DailyScrum

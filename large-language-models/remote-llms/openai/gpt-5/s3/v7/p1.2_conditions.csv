@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,limit_user_story_to_one_sprint_backlog,Each user story is assigned to at most one sprint backlog (R11),True,min,UserStory,status,2,1.0
+C1,sprint_backlog_belongs_to_one_sprint,Each sprint backlog belongs to exactly one sprint (R12),True,min,SprintBacklog,status,2,1.0
+C2,assign_team_to_exactly_one_project,Each team is assigned to exactly one project (R1),True,min,Team,team_status,2,1.0
+C3,team_has_exactly_one_scrum_master,Each team has exactly one Scrum Master (R6),True,min,Team,team_status,2,1.0
+C4,task_belongs_to_one_user_story,Each task belongs to exactly one user story (R10),True,min,Task,status,2,1.0
+C5,user_story_belongs_to_one_epic,Each user story belongs to exactly one epic (R9),True,min,UserStory,status,2,1.0
+C6,limit_blocker_severity_threshold,Total severity of blockers per sprint is below a threshold,True,min,Blocker,severity,2,1.0
+C7,enforce_wip_limit_on_scrumboard,Tasks on a scrum board may not exceed number_of_cards,True,min,ScrumBoard,number_of_cards,2,1.0
+C8,story_points_within_sprint_capacity,Story points planned into a sprint may not exceed sprint capacity,True,min,Sprint,sprint_number,2,1.0
+C9,daily_scrum_duration_limit,Each Daily Scrum duration is at most 15 minutes,False,min,DailyScrum,duration,2,1.0
+C10,sprint_planning_duration_limit,Each Sprint Planning duration is at most 240 minutes,False,min,SprintPlanning,duration_(min),2,1.0
+C11,sprint_review_min_attendees,Each Sprint Review must have at least a minimum number of attendees,False,max,SprintReview,attendees_count,2,1.0

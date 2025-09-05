@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,team_assigned_to_exactly_one_project,Each team must be assigned to exactly one project (R1),True,min,Team,team_status,2,1.0
+C1,worker_belongs_to_exactly_one_team,Each worker belongs to exactly one team (R2),True,min,Worker,availability,2,1.0
+C2,scrummaster_supports_one_team,Each team is supported by exactly one Scrum Master (R6),True,min,ScrumMaster,experience,2,1.0
+C3,product_owner_manages_one_backlog,Each Product Backlog is managed by exactly one Product Owner (R5),True,min,ProductOwner,availability,2,1.0
+C4,feature_in_at_most_one_backlog,Any feature appears in at most one Product Backlog (R7),True,min,ProductBacklog,status,2,1.0
+C5,epic_in_at_most_one_backlog,Any epic appears in at most one Product Backlog (R8),True,min,ProductBacklog,last_updated,2,1.0
+C6,user_story_in_exactly_one_epic,Each user story belongs to exactly one epic (R9),True,min,Epic,status,2,1.0
+C7,task_in_exactly_one_user_story,Each task belongs to exactly one user story (R10),True,min,UserStory,status,2,1.0
+C8,user_story_in_at_most_one_sprint_backlog,Each user story is assigned to at most one sprint backlog (R11),True,min,SprintBacklog,status,2,1.0
+C9,sprint_backlog_belongs_to_one_sprint,Each sprint backlog belongs to exactly one sprint (R12),True,min,Sprint,status,2,1.0
+C10,sprint_backlog_capacity_respected,Total planned effort in a sprint backlog does not exceed its effort capacity,True,min,SprintBacklog,total_effort,2,1.0
+C11,release_only_features_in_backlog,Release plans include only features that are present in some product backlog (R20,R7),True,min,ReleasePlan,status,2,1.0

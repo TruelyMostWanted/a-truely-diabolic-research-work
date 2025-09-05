@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,limit_project_budget,"Planned cost must not exceed each Project budget",False,min,Project,budget,2,1.0
+C1,team_assignment_uniqueness,"Each Team is assigned to exactly one Project (R1)",False,max,Team,team_size,2,1.0
+C2,worker_to_single_team,"Each Worker belongs to exactly one Team (R2)",False,max,Worker,availability,2,1.0
+C3,team_capacity_respects_size,"Members assigned to a Team must not exceed team_size",False,min,Team,team_size,2,1.0
+C4,user_story_to_one_epic,"Each User Story belongs to exactly one Epic (R9)",False,max,UserStory,priority,2,1.0
+C5,task_to_one_user_story,"Each Task belongs to exactly one User Story (R10)",False,max,Task,effort,2,1.0
+C6,user_story_to_max_one_sprint_backlog,"Each User Story is in at most one Sprint Backlog (R11)",False,min,UserStory,story_points,2,1.0
+C7,sprint_backlog_belongs_to_one_sprint,"Each Sprint Backlog belongs to exactly one Sprint (R12)",False,max,SprintBacklog,total_effort,2,1.0
+C8,sprint_has_one_goal,"Each Sprint has exactly one Sprint Goal (R13)",False,max,SprintGoal,achievement_status,2,1.0
+C9,backlog_entry_count_consistency,"Entries assigned to a Product Backlog do not exceed number_of_entries",True,min,ProductBacklog,number_of_entries,2,1.0
+C10,sprint_backlog_capacity,"Planned story points in a Sprint Backlog do not exceed total_effort",False,min,SprintBacklog,total_effort,2,1.0
+C11,velocity_floor,"Teams must reach at least their min_velocity when planning capacity",False,max,Velocity,min_velocity,2,1.0
+C12,stakeholder_influence_cap,"Bound max Stakeholder influence engaged per Sprint Review",True,min,Stakeholder,influence_level,1,0.5

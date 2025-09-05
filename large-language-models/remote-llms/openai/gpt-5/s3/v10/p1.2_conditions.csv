@@ -1,0 +1,13 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,unique_story_assignment,Each user story is assigned to at most one sprint,False,min,UserStory,story_points,2,1.0
+C1,sprint_capacity_story_points,Story points in a sprint do not exceed velocity capacity,True,min,Velocity,max_velocity,2,1.0
+C2,worker_capacity_effort,Effort assigned to a worker does not exceed availability,True,min,Worker,availability,2,1.0
+C3,project_budget_cap,Allocated feature budgets do not exceed project budget,True,min,Project,budget,2,1.0
+C4,goal_activation_consistency,Sprint goal variable cannot exceed achievement status,False,min,Sprint,achievement_of_goal,2,1.0
+C5,feature_must_be_in_backlog,Only features present in the Product Backlog can be released,False,min,ProductBacklog,number_of_entries,2,1.0
+C6,minimum_review_attendance,At least one stakeholder participates in Sprint Review,True,max,SprintReview,attendees_count,2,1.0
+C7,tasks_within_sprint_backlog,Number of scheduled tasks does not exceed Sprint Backlog capacity,True,min,SprintBacklog,number_of_tasks,2,1.0
+C8,blocked_task_requires_resolution,Blocked tasks cannot be scheduled unless their blocker is resolved,False,min,Blocker,severity,2,1.0
+C9,scrumboard_matches_scheduled_tasks,Scrum Board cards equal number of scheduled tasks,True,min,ScrumBoard,number_of_cards,2,1.0
+C10,epic_included_if_story_planned,If a story is planned its Epic must be included/active,False,min,Epic,estimated_effort,2,1.0
+C11,velocity_lower_bound,Selected team capacity per sprint is at least the minimum velocity,False,max,Velocity,min_velocity,2,1.0

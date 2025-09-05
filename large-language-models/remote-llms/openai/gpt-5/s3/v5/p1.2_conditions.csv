@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,capacity_per_team_not_exceeded,Sum of task efforts assigned to a sprint must not exceed team capacity,True,max,Task,effort,2,1.0
+C1,story_points_within_sprint_velocity,Sum of story points per sprint must not exceed sprint velocity,True,max,UserStory,story_points,2,1.0
+C2,daily_scrum_duration_cap,Daily Scrum duration must be ≤ 15 minutes,False,max,DailyScrum,duration,2,1.0
+C3,sprint_duration_bounds,Sprint duration between 1 and 30 days (end_date - start_date),False,max,Sprint,end_date,2,1.0
+C4,worker_availability_respected,Allocated work per worker must not exceed availability,True,max,Worker,availability,2,1.0
+C5,product_backlog_active_only,Active Product Backlogs cannot have status 'archived',False,min,ProductBacklog,status,0,1.0
+C6,sprint_goal_defined_and_tracked,Each sprint must have an associated goal and achievement status,False,min,SprintGoal,achievement_status,2,1.0
+C7,blockers_resolved_before_task_completion,Tasks cannot complete while any linked blocker is open,False,min,Blocker,status,2,1.0
+C8,sprint_backlog_effort_consistency,SprintBacklog total_effort equals sum of assigned task efforts,True,min,SprintBacklog,total_effort,2,1.0
+C9,scrum_board_cards_consistency,ScrumBoard number_of_cards equals number of active tasks in sprint,True,min,ScrumBoard,number_of_cards,2,1.0
+C10,release_includes_ready_features_only,Only features with status 'ready' can be planned in a release,False,min,Feature,status,2,1.0
+C11,velocity_trend_nonnegative,Velocity trend must be nonnegative for planned sprints,False,min,Velocity,trend,2,1.0
+C12,minimum_review_attendance,Sprint Review must meet a minimum attendees_count threshold,False,min,SprintReview,attendees_count,2,1.0

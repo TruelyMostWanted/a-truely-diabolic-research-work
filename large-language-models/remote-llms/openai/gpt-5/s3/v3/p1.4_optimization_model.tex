@@ -1,0 +1,213 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\geometry{margin=1in}
+\title{SCRUM Delivery Optimization Model}
+\author{Generated from Entities/Relations/Goals/Conditions/DecisionVariables}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Notation preface}
+We reconcile two minor naming inconsistencies from the relationship list: (i) ``Employee'' is taken to mean \textbf{Worker}; (ii) ``Sprint Review'' without space corresponds to entity \textbf{SprintReview}. All sets and parameters below are induced by the provided CSVs.
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+  \item $P$ : Projects (\texttt{Project})
+  \item $T$ : Teams (\texttt{Team})
+  \item $W$ : Workers (\texttt{Worker})
+  \item $F$ : Features (\texttt{Feature})
+  \item $S$ : Skills (\texttt{Skill})
+  \item $R$ : Roles (\texttt{Role})
+  \item $PO$ : Product Owners (\texttt{ProductOwner})
+  \item $SM$ : Scrum Masters (\texttt{ScrumMaster})
+  \item $PB$ : Product Backlogs (\texttt{ProductBacklog})
+  \item $SP$ : Sprints (\texttt{Sprint})
+  \item $SPP$ : Sprint Planning meetings (\texttt{SprintPlanning})
+  \item $DS$ : Daily Scrums (\texttt{DailyScrum})
+  \item $SR$ : Sprint Reviews (\texttt{SprintReview})
+  \item $SRE$ : Sprint Retrospectives (\texttt{SprintRetrospective})
+  \item $SBL$ : Sprint Backlogs (\texttt{SprintBacklog})
+  \item $SG$ : Sprint Goals (\texttt{SprintGoal})
+  \item $E$ : Epics (\texttt{Epic})
+  \item $US$ : User Stories (\texttt{UserStory})
+  \item $TS$ : Tasks (\texttt{Task})
+  \item $DEV$ : Development Snapshots (\texttt{DevelopmentSnapshot})
+  \item $BL$ : Blockers (\texttt{Blocker})
+  \item $SH$ : Stakeholders (\texttt{Stakeholder})
+  \item $V$ : Velocity records (\texttt{Velocity})
+  \item $REP$ : Release Plans (\texttt{ReleasePlan})
+  \item $RM$ : Roadmaps (\texttt{Roadmap})
+  \item $SCB$ : Scrum Boards (\texttt{ScrumBoard})
+  \item $FED$ : Feature Documentation (\texttt{FeatureDocumentation})
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+  \item $p\in P,\; t\in T,\; w\in W,\; f\in F,\; s\in S,\; r\in R,\; po\in PO,\; sm\in SM$
+  \item $pb\in PB,\; sp\in SP,\; sbl\in SBL,\; sg\in SG,\; e\in E,\; u\in US,\; k\in TS$
+  \item $bl\in BL,\; v\in V,\; rep\in REP,\; rm\in RM,\; sh\in SH,\; scb\in SCB,\; dev\in DEV$
+\end{itemize}
+
+\paragraph{Parameters from entity attributes}
+(All are taken from the corresponding entity attributes.)
+\begin{itemize}
+  \item $\text{story\_points}[u]\in\mathbb{Z}_{\ge 0}$ from \texttt{UserStory.story\_points}
+  \item $\text{effort}[k]\in\mathbb{R}_{\ge 0}$ from \texttt{Task.effort}
+  \item $\text{severity}[bl]\in\mathbb{R}_{\ge 0}$ from \texttt{Blocker.severity}
+  \item $\text{achievement\_of\_goal}[sp]\in\{0,1\}$ from \texttt{Sprint.achievement\_of\_goal}
+  \item $\text{team\_satisfaction}[sre]\in\mathbb{R}$ from \texttt{SprintRetrospective.team\_satisfaction}
+  \item $\text{number\_of\_entries}[pb]\in\mathbb{Z}_{\ge 0}$ from \texttt{ProductBacklog.number\_of\_entries}
+  \item $\text{avgV}[v]\in\mathbb{R}_{\ge 0}$, $\text{maxV}[v]\in\mathbb{R}_{\ge 0}$ from \texttt{Velocity.(avg\_story\_points,max\_velocity)}
+  \item $\text{benefit}[sg]\in\mathbb{R}$ from \texttt{SprintGoal.benefit}
+  \item $\text{priorityF}[f]\in\mathbb{R}$ from \texttt{Feature.priority}
+  \item $\text{durationDS}[d]\in\mathbb{R}_{\ge 0}$ from \texttt{DailyScrum.duration} for $d\in DS$
+  \item $\text{durationSPP}[m]\in\mathbb{R}_{\ge 0}$ from \texttt{SprintPlanning.duration\_(min)} for $m\in SPP$
+  \item $\text{attend}[sr]\in\mathbb{Z}_{\ge 0}$ from \texttt{SprintReview.attendees\_count} for $sr\in SR$
+\end{itemize}
+
+\paragraph{Decision variables (from DecisionVariables.csv)}
+All binaries take values in $\{0,1\}$.
+\begin{align*}
+x^{TP}_{t,p} &:= \texttt{team\_assigned\_to\_project (DV0)} \\
+x^{WT}_{w,t} &:= \texttt{worker\_belongs\_to\_team (DV1)} \\
+x^{WS}_{w,s} &:= \texttt{worker\_has\_skill (DV2)} \\
+x^{WR}_{w,r} &:= \texttt{worker\_takes\_role (DV3)} \\
+x^{PO\!-\!PB}_{po,pb} &:= \texttt{po\_manages\_product\_backlog (DV4)} \\
+x^{SMT}_{sm,t} &:= \texttt{scrum\_master\_supports\_team (DV5)} \\
+x^{PB\!F}_{pb,f} &:= \texttt{product\_backlog\_contains\_feature (DV6)} \\
+x^{PB\!E}_{pb,e} &:= \texttt{product\_backlog\_contains\_epic (DV7)} \\
+x^{E\!US}_{e,u} &:= \texttt{epic\_contains\_user\_story (DV8)} \\
+x^{US\!T}_{u,k} &:= \texttt{user\_story\_consists\_of\_task (DV9)} \\
+x^{US\!SBL}_{u,sbl} &:= \texttt{user\_story\_in\_sprint\_backlog (DV10)} \\
+x^{SBL\!SP}_{sbl,sp} &:= \texttt{sprint\_backlog\_in\_sprint (DV11)} \\
+x^{SP\!SG}_{sp,sg} &:= \texttt{sprint\_pursues\_goal (DV12)} \\
+x^{T\!BL}_{k,bl} &:= \texttt{task\_blocked\_by\_blocker (DV13)} \\
+x^{V\!T}_{v,t} &:= \texttt{velocity\_refers\_to\_team (DV14)}
+\end{align*}
+
+\section{3. Goals}
+\begin{itemize}
+  \item \textbf{G0 (maximize\_delivered\_story\_points)}:
+  \[
+    \max \; Z_0 \;=\; \sum_{u\in US}\sum_{sbl\in SBL}\sum_{sp\in SP} \text{story\_points}[u]\; x^{US\!SBL}_{u,sbl}\; x^{SBL\!SP}_{sbl,sp}.
+  \]
+  \item \textbf{G1 (minimize\_unresolved\_blocker\_severity)}:
+  \[
+    \min \; Z_1 \;=\; \sum_{k\in TS}\sum_{bl\in BL} \text{severity}[bl]\; x^{T\!BL}_{k,bl}.
+  \]
+  \item \textbf{G2 (maximize\_sprint\_goal\_achievement)}:
+  \[
+    \max \; Z_2 \;=\; \sum_{sp\in SP}\sum_{sg\in SG} \text{achievement\_of\_goal}[sp]\; x^{SP\!SG}_{sp,sg}.
+  \]
+  \item \textbf{G3 (minimize\_open\_task\_effort)}:
+  \[
+    \min \; Z_3 \;=\; \sum_{u\in US}\sum_{k\in TS} \text{effort}[k]\; x^{US\!T}_{u,k}.
+  \]
+  \item \textbf{G4 (maximize\_team\_satisfaction)}:
+  \[
+    \max \; Z_4 \;=\; \sum_{sre\in SRE} \text{team\_satisfaction}[sre].
+  \]
+  \item \textbf{G5 (minimize\_product\_backlog\_size)}:
+  \[
+    \min \; Z_5 \;=\; \sum_{pb\in PB} \text{number\_of\_entries}[pb].
+  \]
+  \item \textbf{G6 (maximize\_velocity\_avg)}:
+  \[
+    \max \; Z_6 \;=\; \sum_{v\in V}\sum_{t\in T} \text{avgV}[v]\; x^{V\!T}_{v,t}.
+  \]
+  \item \textbf{G7 (maximize\_sprint\_goal\_benefit)}:
+  \[
+    \max \; Z_7 \;=\; \sum_{sp\in SP}\sum_{sg\in SG} \text{benefit}[sg]\; x^{SP\!SG}_{sp,sg}.
+  \]
+  \item \textbf{G8 (maximize\_feature\_priority\_delivered)}:
+  \[
+    \max \; Z_8 \;=\; \sum_{pb\in PB}\sum_{f\in F} \text{priorityF}[f]\; x^{PB\!F}_{pb,f}.
+  \]
+  \item \textbf{G9 (minimize\_daily\_scrum\_duration)}:
+  \[
+    \min \; Z_9 \;=\; \sum_{d\in DS} \text{durationDS}[d].
+  \]
+  \item \textbf{G10 (minimize\_sprint\_planning\_duration)}:
+  \[
+    \min \; Z_{10} \;=\; \sum_{m\in SPP} \text{durationSPP}[m].
+  \]
+  \item \textbf{G11 (maximize\_stakeholder\_participation)}:
+  \[
+    \max \; Z_{11} \;=\; \sum_{sr\in SR} \text{attend}[sr].
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+  \item \textbf{C0 (user\_story\_must\_have\_acceptance\_criteria)}: For all $u\in US$, acceptance criteria exists:
+  \[
+    \mathbf{1}\{\text{acceptance\_criteria}[u]\ \text{defined}\}=1.
+  \]
+  \item \textbf{C1 (user\_story\_status\_cannot\_be\_done\_if\_not\_in\_sprint)}: Let $\text{done}[u]\in\{0,1\}$ flag if status is ``done''. Then
+  \[
+    \sum_{sbl\in SBL} x^{US\!SBL}_{u,sbl} \;\ge\; \text{done}[u],\quad \forall u\in US.
+  \]
+  \item \textbf{C2 (task\_type\_may\_match\_bug\_or\_chore)}: Soft-preference only (no hard inequality).
+  \item \textbf{C3 (sprint\_end\_after\_start)}: For all $sp\in SP$,
+  \[
+    \text{end\_date}[sp] - \text{start\_date}[sp] \;>\; 0.
+  \]
+  \item \textbf{C4 (sprint\_backlog\_status\_active)}: Status consistency for $sbl\in SBL$ (parameter-level requirement).
+  \item \textbf{C5 (sprint\_goal\_achievement\_status\_defined)}: $\mathbf{1}\{\text{achievement\_status}[sg]\ \text{defined}\}=1,\ \forall sg\in SG$.
+  \item \textbf{C6 (scrum\_board\_columns\_defined)}: $\mathbf{1}\{\text{columns}[scb]\ \text{defined}\}=1,\ \forall scb\in SCB$.
+  \item \textbf{C7 (worker\_availability\_positive)}: $\text{availability}[w] > 0,\ \forall w\in W$.
+  \item \textbf{C8 (product\_backlog\_status\_defined)}: $\mathbf{1}\{\text{status}[pb]\ \text{defined}\}=1,\ \forall pb\in PB$.
+  \item \textbf{C9 (role\_area\_of\_responsibility\_defined)}: $\mathbf{1}\{\text{area\_of\_responsibility}[r]\ \text{defined}\}=1,\ \forall r\in R$.
+  \item \textbf{C10 (skill\_certified\_preferred)}: Soft-preference (used in scoring/weighting), no hard inequality.
+  \item \textbf{C11 (blocker\_status\_cannot\_match\_done\_without\_task)}: If a blocker is marked done, it must be linked to at least one task:
+  \[
+    \text{done}[bl] \;\le\; \sum_{k\in TS} x^{T\!BL}_{k,bl},\quad \forall bl\in BL.
+  \]
+  \item \textbf{C12 (release\_plan\_planned\_date\_defined)}: $\mathbf{1}\{\text{planned\_date}[rep]\ \text{defined}\}=1,\ \forall rep\in REP$.
+  \item \textbf{Relational cardinalities (from Relationships.csv):}
+  \begin{align*}
+    &\sum_{p\in P} x^{TP}_{t,p} = 1, && \forall t\in T \quad \text{(R1: team $\to$ exactly one project)} \\
+    &\sum_{t\in T} x^{WT}_{w,t} = 1, && \forall w\in W \quad \text{(R2: worker $\to$ team)} \\
+    &\sum_{r\in R} x^{WR}_{w,r} \le 1, && \forall w\in W \quad \text{(R4: at most one role)} \\
+    &\sum_{pb\in PB} x^{PO\!-\!PB}_{po,pb} = 1, && \forall po\in PO \quad \text{(R5)} \\
+    &\sum_{po\in PO} x^{PO\!-\!PB}_{po,pb} = 1, && \forall pb\in PB \quad \text{(R5 bijection)} \\
+    &\sum_{sm\in SM} x^{SMT}_{sm,t} = 1, && \forall t\in T \quad \text{(R6: one SM per team)} \\
+    &\sum_{pb\in PB} x^{PB\!F}_{pb,f} = 1, && \forall f\in F \quad \text{(R7: feature in exactly one PB)} \\
+    &\sum_{pb\in PB} x^{PB\!E}_{pb,e} = 1, && \forall e\in E \quad \text{(R8: epic in exactly one PB)} \\
+    &\sum_{e\in E} x^{E\!US}_{e,u} = 1, && \forall u\in US \quad \text{(R9: US in exactly one epic)} \\
+    &\sum_{u\in US} x^{US\!T}_{u,k} = 1, && \forall k\in TS \quad \text{(R10: task in exactly one US)} \\
+    &\sum_{sbl\in SBL} x^{US\!SBL}_{u,sbl} \le 1, && \forall u\in US \quad \text{(R11: US in $\le$1 sprint backlog)} \\
+    &\sum_{sp\in SP} x^{SBL\!SP}_{sbl,sp} = 1, && \forall sbl\in SBL \quad \text{(R12: each SBL in exactly one sprint)} \\
+    &\sum_{sg\in SG} x^{SP\!SG}_{sp,sg} = 1, && \forall sp\in SP \quad \text{(R13: each sprint pursues 1 goal)} \\
+  \end{align*}
+  \item \textbf{Capacity (velocity) coupling (loose upper bound)}:
+  \[
+    \sum_{u\in US}\sum_{sbl\in SBL} \text{story\_points}[u]\; x^{US\!SBL}_{u,sbl}\; x^{SBL\!SP}_{sbl,sp}
+    \;\le\; \sum_{v\in V}\text{maxV}[v],\quad \forall sp\in SP.
+  \]
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+  \item DV0: \texttt{team\_assigned\_to\_project} ($x^{TP}_{t,p}\in\{0,1\}$)
+  \item DV1: \texttt{worker\_belongs\_to\_team} ($x^{WT}_{w,t}\in\{0,1\}$)
+  \item DV2: \texttt{worker\_has\_skill} ($x^{WS}_{w,s}\in\{0,1\}$)
+  \item DV3: \texttt{worker\_takes\_role} ($x^{WR}_{w,r}\in\{0,1\}$)
+  \item DV4: \texttt{po\_manages\_product\_backlog} ($x^{PO\!-\!PB}_{po,pb}\in\{0,1\}$)
+  \item DV5: \texttt{scrum\_master\_supports\_team} ($x^{SMT}_{sm,t}\in\{0,1\}$)
+  \item DV6: \texttt{product\_backlog\_contains\_feature} ($x^{PB\!F}_{pb,f}\in\{0,1\}$)
+  \item DV7: \texttt{product\_backlog\_contains\_epic} ($x^{PB\!E}_{pb,e}\in\{0,1\}$)
+  \item DV8: \texttt{epic\_contains\_user\_story} ($x^{E\!US}_{e,u}\in\{0,1\}$)
+  \item DV9: \texttt{user\_story\_consists\_of\_task} ($x^{US\!T}_{u,k}\in\{0,1\}$)
+  \item DV10: \texttt{user\_story\_in\_sprint\_backlog} ($x^{US\!SBL}_{u,sbl}\in\{0,1\}$)
+  \item DV11: \texttt{sprint\_backlog\_in\_sprint} ($x^{SBL\!SP}_{sbl,sp}\in\{0,1\}$)
+  \item DV12: \texttt{sprint\_pursues\_goal} ($x^{SP\!SG}_{sp,sg}\in\{0,1\}$)
+  \item DV13: \texttt{task\_blocked\_by\_blocker} ($x^{T\!BL}_{k,bl}\in\{0,1\}$)
+  \item DV14: \texttt{velocity\_refers\_to\_team} ($x^{V\!T}_{v,t}\in\{0,1\}$)
+\end{itemize}
+
+\end{document}

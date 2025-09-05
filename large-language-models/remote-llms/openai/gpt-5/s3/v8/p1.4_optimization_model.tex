@@ -1,0 +1,159 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,geometry}
+\geometry{margin=1in}
+\title{SCRUM Planning Optimization Model}
+\author{TruelyMostWanted}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+  \item Projects $P$ (Entity \textbf{Project}).
+  \item Teams $T$ (Entity \textbf{Team}).
+  \item Workers $W$ (Entity \textbf{Worker}).
+  \item Features $F$ (Entity \textbf{Feature}).
+  \item Skills $S$ (Entity \textbf{Skill}).
+  \item Roles $R$ (Entity \textbf{Role}).
+  \item Product Owners $PO$ (Entity \textbf{ProductOwner}).
+  \item Scrum Masters $SM$ (Entity \textbf{ScrumMaster}).
+  \item Product Backlogs $PB$ (Entity \textbf{ProductBacklog}).
+  \item Sprints $SP$ (Entity \textbf{Sprint}).
+  \item Sprint Plannings $SPP$ (Entity \textbf{SprintPlanning}).
+  \item Daily Scrums $DS$ (Entity \textbf{DailyScrum}).
+  \item Sprint Reviews $SR$ (Entity \textbf{SprintReview}).
+  \item Sprint Retrospectives $SRE$ (Entity \textbf{SprintRetrospective}).
+  \item Sprint Backlogs $SBL$ (Entity \textbf{SprintBacklog}).
+  \item Sprint Goals $SG$ (Entity \textbf{SprintGoal}).
+  \item Epics $E$ (Entity \textbf{Epic}).
+  \item User Stories $US$ (Entity \textbf{UserStory}).
+  \item Tasks $TSK$ (Entity \textbf{Task}).
+  \item Development Snapshots $DEV$ (Entity \textbf{DevelopmentSnapshot}).
+  \item Blockers $BL$ (Entity \textbf{Blocker}).
+  \item Stakeholders $SH$ (Entity \textbf{Stakeholder}).
+  \item Velocities $VEL$ (Entity \textbf{Velocity}).
+  \item Release Plans $REP$ (Entity \textbf{ReleasePlan}).
+  \item Roadmaps $RM$ (Entity \textbf{Roadmap}).
+  \item Scrum Boards $SCB$ (Entity \textbf{ScrumBoard}).
+  \item Feature Documentations $FED$ (Entity \textbf{FeatureDocumentation}).
+  \item \emph{Relation sets (from Relationships.csv)}: \\
+  $R1:T\to P$, $R2:W\to T$, $R3:W\to S$, $R4:W\to R$, $R5:PO\to PB$, $R6:T\leftrightarrow SM$, $R7:PB\to F$, $R8:PB\to E$, $R9:E\to US$, $R10:US\to TSK$, $R11:US\to SBL$, $R12:SBL\to SP$, $R13:SP\to SG$, $R14:SCB\to TSK$, $R15:FED\to F$, $R16:TSK\to BL$, $R17:SH\to SR$, $R18:SM\to SRE$, $R19:VEL\to T$, $R20:REP\to F$, $R21:REP\to RM$, $R22:SP\to DEV$.
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+  \item $p\in P,\; t\in T,\; w\in W,\; f\in F,\; s\in S,\; r\in R,\; po\in PO,\; sm\in SM,$
+  \item $pb\in PB,\; sp\in SP,\; sbl\in SBL,\; sg\in SG,\; e\in E,\; us\in US,\; tsk\in TSK,$
+  \item $bl\in BL,\; sr\in SR,\; scb\in SCB,\; vel\in VEL$.
+\end{itemize}
+
+\paragraph{Parameters (from entity attributes).}
+\begin{itemize}
+  \item $budget_p$ (Project.budget), $teamSize_t$ (Team.team\_size).
+  \item $priority_f$ (Feature.priority), $effort_{tsk}$ (Task.effort).
+  \item $storyPts_{us}$ (UserStory.story\_points).
+  \item $entries_{pb}$ (ProductBacklog.number\_of\_entries).
+  \item $benefit_{sg}$ (SprintGoal.benefit), $achieve_{sp}$ (Sprint.achievement\_of\_goal).
+  \item $sat$ aggregated per team/sprint from retrospectives (SprintRetrospective.team\_satisfaction).
+  \item $sev_{bl}$ (Blocker.severity).
+  \item $\overline{vel}_t$ velocity linked via $R19$ (Velocity.avg.\_story\_points for team $t$).
+  \item $attend_{sr}$ (SprintReview.attendees\_count).
+\end{itemize}
+
+\section{3. Goals}
+We consider a (potentially) multi-objective model. Each goal $Gk$ is listed with its ID, name, and mathematical form. In practice one may (i) optimize lexicographically, or (ii) use a weighted sum $\max Z=\sum_k w_k \cdot \text{obj}_k$ where $w_k$ are the CSV weights and minimization targets appear with a negative sign.
+
+\begin{itemize}
+  \item \textbf{G0 maximize\_story\_points\_completed}: 
+  \[
+    \max~ \sum_{us\in US}\sum_{sbl\in SBL} storyPts_{us}\; x^{USBL}_{us,sbl}.
+  \]
+  \item \textbf{G1 minimize\_total\_task\_effort}:
+  \[
+    \min~ \sum_{tsk\in TSK} effort_{tsk}.
+  \]
+  \item \textbf{G2 minimize\_open\_blocker\_severity}:
+  \[
+    \min~ \sum_{tsk\in TSK}\sum_{bl\in BL} sev_{bl}\; x^{TBL}_{tsk,bl}.
+  \]
+  \item \textbf{G3 maximize\_average\_velocity} (prefer loading higher-velocity teams):
+  \[
+    \max~ \sum_{t\in T}\sum_{p\in P} \overline{vel}_t \; x^{TP}_{t,p}.
+  \]
+  \item \textbf{G4 maximize\_sprint\_goal\_achievement}:
+  \[
+    \max~ \sum_{sp\in SP}\sum_{sg\in SG} achieve_{sp}\; x^{SPSG}_{sp,sg}.
+  \]
+  \item \textbf{G5 maximize\_team\_satisfaction} (proxy aggregated from retrospectives):
+  \[
+    \max~ \sum_{t\in T} sat_t.
+  \]
+  \item \textbf{G6 minimize\_project\_budget} (budget of projects we activate by staffing them):
+  \[
+    \min~ \sum_{t\in T}\sum_{p\in P} budget_p \; x^{TP}_{t,p}.
+  \]
+  \item \textbf{G7 maximize\_sprint\_goal\_benefit}:
+  \[
+    \max~ \sum_{sp\in SP}\sum_{sg\in SG} benefit_{sg}\; x^{SPSG}_{sp,sg}.
+  \]
+  \item \textbf{G8 maximize\_review\_attendance}:
+  \[
+    \max~ \sum_{sh\in SH}\sum_{sr\in SR} x^{SHSR}_{sh,sr}.
+  \]
+  \item \textbf{G9 minimize\_sprint\_backlog\_tasks}:
+  \[
+    \min~ \sum_{sbl\in SBL} \text{number\_of\_tasks}_{sbl}.
+  \]
+  \item \textbf{G10 maximize\_feature\_priority\_delivered}:
+  \[
+    \max~ \sum_{pb\in PB}\sum_{f\in F} priority_f\; x^{BF}_{pb,f}.
+  \]
+  \item \textbf{G11 maximize\_documentation\_linkage} (proxy for documentation coverage):
+  \[
+    \max~ \sum_{fed\in FED} \text{linked\_requirements}_{fed}.
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+Each condition $Ck$ is listed with ID, name, and constraint(s).
+
+\begin{itemize}
+  \item \textbf{C0 worker\_one\_team:} $\displaystyle \sum_{t\in T} x^{WT}_{w,t} \le 1 \quad \forall w\in W.$
+  \item \textbf{C1 team\_capacity\_by\_size:} $\displaystyle \sum_{w\in W} x^{WT}_{w,t} \le teamSize_t \quad \forall t\in T.$
+  \item \textbf{C2 us\_has\_at\_least\_one\_task:} $\displaystyle \sum_{tsk\in TSK} x^{UST}_{us,tsk} \ge 1 \quad \forall us\in US.$
+  \item \textbf{C3 us\_at\_most\_one\_sbl:} $\displaystyle \sum_{sbl\in SBL} x^{USBL}_{us,sbl} \le 1 \quad \forall us\in US.$
+  \item \textbf{C4 sbl\_exactly\_one\_sprint:} $\displaystyle \sum_{sp\in SP} x^{SBLSP}_{sbl,sp} = 1 \quad \forall sbl\in SBL.$
+  \item \textbf{C5 sprint\_exactly\_one\_goal:} $\displaystyle \sum_{sg\in SG} x^{SPSG}_{sp,sg} = 1 \quad \forall sp\in SP.$
+  \item \textbf{C6 backlog\_has\_one\_product\_owner:} $\displaystyle \sum_{po\in PO} x^{PO}_{po,pb} = 1 \quad \forall pb\in PB.$
+  \item \textbf{C7 sm\_supports\_at\_most\_one\_team:} $\displaystyle \sum_{t\in T} x^{SMT}_{sm,t} \le 1 \quad \forall sm\in SM.$
+  \item \textbf{C8 team\_at\_most\_one\_project:} $\displaystyle \sum_{p\in P} x^{TP}_{t,p} \le 1 \quad \forall t\in T.$
+  \item \textbf{C9 task\_at\_most\_one\_blocker:} $\displaystyle \sum_{bl\in BL} x^{TBL}_{tsk,bl} \le 1 \quad \forall tsk\in TSK.$
+  \item \textbf{C10 feature\_exactly\_one\_backlog:} $\displaystyle \sum_{pb\in PB} x^{BF}_{pb,f} = 1 \quad \forall f\in F.$
+  \item \textbf{C11 epic\_has\_at\_least\_one\_user\_story:} $\displaystyle \sum_{us\in US} x^{EU}_{e,us} \ge 1 \quad \forall e\in E.$
+  \item \textbf{C12 backlog\_feature\_entries\_limit:} $\displaystyle \sum_{f\in F} x^{BF}_{pb,f} \le entries_{pb} \quad \forall pb\in PB.$
+  \item \textbf{C13 role\_assignment\_requires\_skill:} $\displaystyle x^{WR}_{w,r} \le \sum_{s\in S} x^{WS}_{w,s} \quad \forall w\in W, \forall r\in R.$
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+  \item $x^{TP}_{t,p}\in\{0,1\}$ (DV0) — \emph{assign\_team\_to\_project}.
+  \item $x^{WT}_{w,t}\in\{0,1\}$ (DV1) — \emph{assign\_worker\_to\_team}.
+  \item $x^{WS}_{w,s}\in\{0,1\}$ (DV2) — \emph{worker\_has\_skill}.
+  \item $x^{WR}_{w,r}\in\{0,1\}$ (DV3) — \emph{worker\_takes\_role}.
+  \item $x^{PO}_{po,pb}\in\{0,1\}$ (DV4) — \emph{po\_manages\_backlog}.
+  \item $x^{SMT}_{sm,t}\in\{0,1\}$ (DV5) — \emph{sm\_supports\_team}.
+  \item $x^{BF}_{pb,f}\in\{0,1\}$ (DV6) — \emph{backlog\_contains\_feature}.
+  \item $x^{EU}_{e,us}\in\{0,1\}$ (DV7) — \emph{epic\_contains\_user\_story}.
+  \item $x^{USBL}_{us,sbl}\in\{0,1\}$ (DV8) — \emph{user\_story\_in\_sprint\_backlog}.
+  \item $x^{SBLSP}_{sbl,sp}\in\{0,1\}$ (DV9) — \emph{sprint\_backlog\_in\_sprint}.
+  \item $x^{SPSG}_{sp,sg}\in\{0,1\}$ (DV10) — \emph{sprint\_pursues\_goal}.
+  \item $x^{SCT}_{scb,tsk}\in\{0,1\}$ (DV11) — \emph{scrum\_board\_contains\_task}.
+  \item $x^{TBL}_{tsk,bl}\in\{0,1\}$ (DV12) — \emph{task\_blocked\_by}.
+  \item $x^{SHSR}_{sh,sr}\in\{0,1\}$ (DV13) — \emph{stakeholder\_participates\_in\_review}.
+  \item $x^{UST}_{us,tsk}\in\{0,1\}$ (DV14) — \emph{user\_story\_has\_task}.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,14 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,budget_respects_project_budget,"Total planned cost from selected work must not exceed total Project budgets",True,min,Project,budget,2,1.0
+C1,sprint_capacity_respects_velocity,"Per-sprint assigned story points must not exceed team velocity",True,min,Velocity,"avg._story_points",2,1.0
+C2,user_story_at_most_one_sprint,"Each User Story is assigned to at most one Sprint",False,min,UserStory,status,2,1.0
+C3,task_requires_selected_story,"A Task can be scheduled only if its User Story is selected",False,min,Task,status,2,1.0
+C4,epic_selection_implies_stories,"Selecting an Epic implies (enables) selecting its User Stories",False,min,Epic,status,2,1.0
+C5,feature_must_be_in_backlog,"A selected Feature must be contained in a Product Backlog",False,min,ProductBacklog,status,2,1.0
+C6,sprint_backlog_belongs_to_sprint,"Every Sprint Backlog belongs to exactly one Sprint",False,min,SprintBacklog,status,2,1.0
+C7,blocker_resolved_before_task_done,"Tasks blocked by a Blocker cannot be completed until it is resolved",False,min,Blocker,status,2,1.0
+C8,retrospective_moderated_by_sm,"Every Sprint Retrospective is moderated by a Scrum Master",False,min,SprintRetrospective,moderation,2,1.0
+C9,po_manages_one_backlog,"Each Product Owner manages exactly one Product Backlog",False,min,ProductBacklog,status,2,1.0
+C10,team_at_most_one_project,"Each Team is assigned to at most one Project",False,min,Team,team_status,2,1.0
+C11,worker_exactly_one_team,"Each Worker belongs to exactly one Team",False,min,Worker,status,2,1.0
+C12,task_exactly_one_sprint_if_done,"Each completed Task is scheduled in exactly one Sprint",False,min,Task,status,2,1.0

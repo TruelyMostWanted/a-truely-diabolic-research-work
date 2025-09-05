@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,geometry}
+\usepackage{enumitem}
+\geometry{margin=1in}
+\title{SCRUM Planning and Delivery Optimization Model}
+\author{TruelyMostWanted}
+\date{\today}
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}[leftmargin=2em]
+  \item $P$ (Project): set of projects (Entity \texttt{Project}).
+  \item $T$ (Team): set of teams (Entity \texttt{Team}).
+  \item $W$ (Worker): set of workers (Entity \texttt{Worker}).
+  \item $F$ (Feature): set of features (Entity \texttt{Feature}).
+  \item $S$ (Skill): set of skills (Entity \texttt{Skill}).
+  \item $R$ (Role): set of roles (Entity \texttt{Role}).
+  \item $O$ (ProductOwner): set of product owners.
+  \item $M$ (ScrumMaster): set of scrum masters.
+  \item $B$ (ProductBacklog): set of product backlogs.
+  \item $SP$ (Sprint): set of sprints.
+  \item $SPP$ (SprintPlanning): set of sprint planning events.
+  \item $DS$ (DailyScrum): set of daily scrums.
+  \item $SR$ (SprintReview): set of sprint reviews.
+  \item $SRE$ (SprintRetrospective): set of sprint retrospectives.
+  \item $SBL$ (SprintBacklog): set of sprint backlogs.
+  \item $G$ (SprintGoal): set of sprint goals.
+  \item $E$ (Epic): set of epics.
+  \item $U$ (UserStory): set of user stories.
+  \item $K$ (Task): set of tasks.
+  \item $D$ (DevelopmentSnapshot): set of development snapshots.
+  \item $BL$ (Blocker): set of blockers.
+  \item $H$ (Stakeholder): set of stakeholders.
+  \item $V$ (Velocity): set of velocity measurements.
+  \item $RP$ (ReleasePlan): set of release plans.
+  \item $RM$ (Roadmap): set of roadmaps.
+  \item $CB$ (ScrumBoard): set of scrum boards.
+  \item $FD$ (FeatureDocumentation): set of feature documentation records.
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}[leftmargin=2em]
+  \item $p\in P,~ t\in T,~ w\in W,~ f\in F,~ s\in S,~ r\in R,$
+  \item $o\in O,~ m\in M,~ b\in B,~ sp\in SP,~ spp\in SPP,~ ds\in DS,$
+  \item $sr\in SR,~ sre\in SRE,~ sbl\in SBL,~ g\in G,~ e\in E,~ u\in U,$
+  \item $k\in K,~ d\_v\in D,~ bl\in BL,~ h\in H,~ v\in V,~ rp\in RP,$
+  \item $rm\in RM,~ cb\in CB,~ fd\in FD.$
+\end{itemize}
+
+\noindent \textbf{Relationship incidence (from Relationships.csv).} We interpret \textit{Employee} as \textit{Worker} and \textit{Sprint Review} as \textit{SprintReview}. Let the following binary parameters encode relations:
+\[
+\begin{aligned}
+&\mathsf{R1}[t,p]\in\{0,1\} && \text{Team $t$ is assigned to Project $p$},\\
+&\mathsf{R2}[w,t],~\mathsf{R3}[w,s],~\mathsf{R4}[w,r],\\
+&\mathsf{R5}[o,b],~\mathsf{R6}[t,m],~\mathsf{R7}[b,f],~\mathsf{R8}[b,e],\\
+&\mathsf{R9}[e,u],~\mathsf{R10}[u,k],~\mathsf{R11}[u,sbl],~\mathsf{R12}[sbl,sp],\\
+&\mathsf{R13}[sp,g],~\mathsf{R14}[cb,k],~\mathsf{R15}[fd,f],~\mathsf{R16}[k,bl],\\
+&\mathsf{R17}[h,sr],~\mathsf{R18}[m,sre],~\mathsf{R19}[v,t],~\mathsf{R20}[rp,f],\\
+&\mathsf{R21}[rp,rm],~\mathsf{R22}[sp,d\_v].
+\end{aligned}
+\]
+
+\noindent \textbf{Attributes as parameters (from Entities.csv).} For each entity, its attributes become data parameters. Examples (non-exhaustive):
+\[
+\begin{aligned}
+&\text{Project budget: } \mathrm{budget}[p]\ge 0; \quad
+\text{Feature effort: } \mathrm{eff}^{F}[f]\ge 0; \quad
+\text{Epic effort: } \mathrm{eff}^{E}[e]\ge 0; \\
+&\text{Task effort: } \mathrm{eff}^{K}[k]\ge 0; \quad
+\text{User Story points: } \mathrm{sp}[u]\ge 0; \\
+&\text{Velocity average SP: } \overline{\mathrm{SP}}[v]\ge 0; \quad
+\text{Velocity trend: } \mathrm{trend}[v]\in\mathbb{R};\\
+&\text{Blocker severity: } \mathrm{sev}[bl]\ge 0; \quad
+\text{Review attendees: } \mathrm{att}[sr]\ge 0.
+\end{aligned}
+\]
+
+\noindent \textbf{Costs and calendars.} Let $c^{F},c^{E},c^{K}\ge 0$ be cost per effort unit for features, epics, and tasks; dates are converted to numeric time (e.g., days).
+
+\section{3. Goals}
+\begin{itemize}[leftmargin=2em]
+  \item[\textbf{G0} \texttt{maximize\_story\_points\_completed}] \emph{Logic:} maximize delivered value measured in story points. \\
+  \emph{Math:} 
+  \[
+  \max~ Z\_0=\sum\_{sp\in SP}\sum\_{u\in U} \mathrm{sp}[u]\; y\_{u,sp}
+  \]
+  where $y\_{u,sp}=\text{DV0}$.
+
+  \item[\textbf{G1} \texttt{maximize\_sprint\_goal\_achievement}] \emph{Logic:} reward sprints achieving their goals. \\
+  \emph{Math:}
+  \[
+  \max~ Z\_1=\sum\_{sp\in SP} g\_{sp}
+  \]
+  where $g\_{sp}=\text{DV10}$ corresponds to Sprint.achievement\_of\_goal.
+
+  \item[\textbf{G2} \texttt{minimize\_unresolved\_blocker\_severity}] \emph{Logic:} drive down severity of unresolved blockers. \\
+  \emph{Math:}
+  \[
+  \min~ Z\_2=\sum\_{bl\in BL} \mathrm{sev}[bl]\;(1-r\_{bl})
+  \]
+  where $r\_{bl}=\text{DV8}$ (1 if resolved).
+
+  \item[\textbf{G3} \texttt{minimize\_total\_feature\_effort}] \emph{Logic:} prefer lower-effort features. \\
+  \emph{Math:}
+  \[
+  \min~ Z\_3=\sum\_{f\in F} \mathrm{eff}^{F}[f]\; s\_f
+  \]
+  where $s\_f=\text{DV4}$.
+
+  \item[\textbf{G4} \texttt{minimize\_total\_task\_effort}] \emph{Logic:} minimize workload planned in sprints. \\
+  \emph{Math:}
+  \[
+  \min~ Z\_4=\sum\_{sp\in SP}\sum\_{k\in K} \mathrm{eff}^{K}[k]\; z\_{k,sp}
+  \]
+  where $z\_{k,sp}=\text{DV1}$.
+
+  \item[\textbf{G5} \texttt{maximize\_velocity\_trend}] \emph{Logic:} encourage improving velocity. \\
+  \emph{Math:}
+  \[
+  \max~ Z\_5=\sum\_{v\in V}\mathrm{trend}[v]
+  \]
+
+  \item[\textbf{G6} \texttt{maximize\_feature\_priority\_delivered}] \emph{Logic:} deliver higher-priority features. \\
+  \emph{Math:}
+  \[
+  \max~ Z\_6=\sum\_{f\in F}\mathrm{priority}[f]\; s\_f
+  \]
+
+  \item[\textbf{G7} \texttt{maximize\_epic\_priority\_delivered}] \emph{Logic:} deliver higher-priority epics. \\
+  \emph{Math:}
+  \[
+  \max~ Z\_7=\sum\_{e\in E}\mathrm{priority}[e]\; s\_e
+  \]
+  where $s\_e=\text{DV5}$.
+
+  \item[\textbf{G8} \texttt{maximize\_review\_attendance}] \emph{Logic:} increase stakeholder engagement. \\
+  \emph{Math:}
+  \[
+  \max~ Z\_8=\sum\_{sr\in SR}\mathrm{att}[sr]
+  \]
+
+  \item[\textbf{G9} \texttt{minimize\_budget\_overrun}] \emph{Logic:} keep planned cost within budgets. Let $\mathrm{Spend} = \sum\_f c^{F}\mathrm{eff}^{F}[f]s\_f+\sum\_e c^{E}\mathrm{eff}^{E}[e]s\_e+\sum\_{sp,k} c^{K}\mathrm{eff}^{K}[k]z\_{k,sp}$.\\
+  \emph{Math:}
+  \[
+  \min~ Z\_9=\max\left\{0,\ \mathrm{Spend}-\sum\_{p\in P}\mathrm{budget}[p]\right\}
+  \]
+  (piecewise-linear; can be linearized with an overrun slack variable).
+
+  \item[\textbf{G10} \texttt{maximize\_sprint\_backlog\_throughput}] \emph{Logic:} favor sprints processing more tasks. \\
+  \emph{Math:}
+  \[
+  \max~ Z\_{10}=\sum\_{sp\in SP} w\_{sp}
+  \]
+  where $w\_{sp}=\text{DV11}$ approximates processed story points per sprint.
+
+  \item[\textbf{G11} \texttt{minimize\_blocker\_resolution\_time}] \emph{Logic:} resolve blockers quickly. Given numeric dates $\mathrm{det}[bl]$ and $\mathrm{res}[bl]$.\\
+  \emph{Math:}
+  \[
+  \min~ Z\_{11}=\sum\_{bl\in BL} (\mathrm{res}[bl]-\mathrm{det}[bl])\; r\_{bl}
+  \]
+
+  \item[\textbf{G12} \texttt{maximize\_product\_backlog\_freshness}] \emph{Logic:} encourage frequent backlog updates. With numeric recency score $\mathrm{fresh}[b]$.\\
+  \emph{Math:}
+  \[
+  \max~ Z\_{12}=\sum\_{b\in B} \mathrm{fresh}[b]
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}[leftmargin=2em]
+  \item[\textbf{C0} \texttt{budget\_respects\_project\_budget}] \emph{Logic:} spend within budget. \\
+  \emph{Math:} 
+  \[
+  \sum\_{f} c^{F}\mathrm{eff}^{F}[f]s\_f+\sum\_{e} c^{E}\mathrm{eff}^{E}[e]s\_e+\sum\_{sp,k} c^{K}\mathrm{eff}^{K}[k]z\_{k,sp}\ \le\ \sum\_{p}\mathrm{budget}[p].
+  \]
+
+  \item[\textbf{C1} \texttt{sprint\_capacity\_respects\_velocity}] \emph{Logic:} per-sprint load capped by velocity. For each $sp$ belonging to team $t$ via $\mathsf{R19}$ mapping. \\
+  \emph{Math:}
+  \[
+  \sum\_{u\in U}\mathrm{sp}[u]\; y\_{u,sp}\ \le\ \mathrm{Cap}[sp],\quad \mathrm{Cap}[sp]:=\overline{\mathrm{SP}}[v]\ \text{for any } v \text{ with } \mathsf{R19}[v,t]=1.
+  \]
+
+  \item[\textbf{C2} \texttt{user\_story\_at\_most\_one\_sprint}] \emph{Logic:} no double scheduling of a User Story. \\
+  \emph{Math:}\quad $\sum\_{sp\in SP} y\_{u,sp}\ \le\ 1,\ \forall u\in U.$
+
+  \item[\textbf{C3} \texttt{task\_requires\_selected\_story}] \emph{Logic:} tasks only if their story is selected. If $\mathsf{R10}[u,k]=1$. \\
+  \emph{Math:}\quad $\sum\_{sp} z\_{k,sp}\ \le\ s\_u,\ \forall (u,k):\mathsf{R10}[u,k]=1.$
+
+  \item[\textbf{C4} \texttt{epic\_selection\_implies\_stories}] \emph{Logic:} selecting an epic enables its stories. \\
+  \emph{Math:}\quad $s\_u \le s\_e,\ \forall (e,u):\mathsf{R9}[e,u]=1.$
+
+  \item[\textbf{C5} \texttt{feature\_must\_be\_in\_backlog}] \emph{Logic:} selected features must exist in some backlog. \\
+  \emph{Math:}\quad $s\_f \le \sum\_{b\in B}\mathsf{R7}[b,f],\ \forall f\in F.$
+
+  \item[\textbf{C6} \texttt{sprint\_backlog\_belongs\_to\_sprint}] \emph{Logic:} each sprint backlog belongs to exactly one sprint (data integrity). \\
+  \emph{Math:}\quad $\sum\_{sp\in SP}\mathsf{R12}[sbl,sp]=1,\ \forall sbl\in SBL.$
+
+  \item[\textbf{C7} \texttt{blocker\_resolved\_before\_task\_done}] \emph{Logic:} blocked tasks can't be closed until blocker resolved. If $\mathsf{R16}[k,bl]=1$. \\
+  \emph{Math:}\quad $d\_k \le r\_{bl},\ \forall (k,bl):\mathsf{R16}[k,bl]=1.$
+
+  \item[\textbf{C8} \texttt{retrospective\_moderated\_by\_sm}] \emph{Logic:} every retrospective has a Scrum Master moderator. \\
+  \emph{Math:}\quad $\sum\_{m\in M}\mathsf{R18}[m,sre]\ge 1,\ \forall sre\in SRE.$
+
+  \item[\textbf{C9} \texttt{po\_manages\_one\_backlog}] \emph{Logic:} each Product Owner manages exactly one backlog. \\
+  \emph{Math:}\quad $\sum\_{b\in B}\mathsf{R5}[o,b]=1,\ \forall o\in O.$
+
+  \item[\textbf{C10} \texttt{team\_at\_most\_one\_project}] \emph{Logic:} team focuses on one project. \\
+  \emph{Math:}\quad $\sum\_{p\in P} a\_{t,p}\le 1,\ \forall t\in T.$
+
+  \item[\textbf{C11} \texttt{worker\_exactly\_one\_team}] \emph{Logic:} a worker belongs to exactly one team. \\
+  \emph{Math:}\quad $\sum\_{t\in T} a\_{w,t}=1,\ \forall w\in W.$
+
+  \item[\textbf{C12} \texttt{task\_exactly\_one\_sprint\_if\_done}] \emph{Logic:} completed tasks are scheduled in exactly one sprint. \\
+  \emph{Math:}\quad $\sum\_{sp\in SP} z\_{k,sp}= d\_k,\ \forall k\in K.$
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}[leftmargin=2em]
+  \item DV0 $y\_{u,sp}\in\{0,1\}$: assign User Story $u$ to Sprint $sp$.
+  \item DV1 $z\_{k,sp}\in\{0,1\}$: schedule Task $k$ in Sprint $sp$.
+  \item DV2 $a\_{w,t}\in\{0,1\}$: assign Worker $w$ to Team $t$.
+  \item DV3 $a\_{t,p}\in\{0,1\}$: assign Team $t$ to Project $p$.
+  \item DV4 $s\_f\in\{0,1\}$: select Feature $f$.
+  \item DV5 $s\_e\in\{0,1\}$: select Epic $e$.
+  \item DV6 $s\_u\in\{0,1\}$: select User Story $u$.
+  \item DV7 $d\_k\in\{0,1\}$: Task $k$ done (within its sprint).
+  \item DV8 $r\_{bl}\in\{0,1\}$: Blocker $bl$ resolved.
+  \item DV9 $r\_{rp,f}\in\{0,1\}$: include Feature $f$ in Release Plan $rp$.
+  \item DV10 $g\_{sp}\in\{0,1\}$: Sprint $sp$ achieves its Sprint Goal.
+  \item DV11 $w\_{sp}\in\mathbb{R}\_{\ge 0}$: planned sprint workload (story points).
+  \item DV12 $x\_{sp}\in\{0,1\}$: Sprint $sp$ generates a Development Snapshot.
+\end{itemize}
+
+\end{document}

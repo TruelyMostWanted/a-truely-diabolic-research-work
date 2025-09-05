@@ -1,0 +1,245 @@
+% model.tex
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm,geometry}
+\geometry{margin=1in}
+\title{Optimization Model for a SCRUM-based Software Development Company}
+\author{TruelyMostWanted}
+\date{September 6, 2025}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+We formulate a mixed-integer optimization model that uses the provided \texttt{Entities.csv}, \texttt{Relationships.csv}, and the generated \texttt{Goals.csv}, \texttt{Conditions.csv}, and \texttt{DecisionVariables.csv}. The model aligns team structure, backlog composition, sprint planning, and delivery outcomes under SCRUM.
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+  \item $P$ — Projects (\textsf{Project})
+  \item $T$ — Teams (\textsf{Team})
+  \item $W$ — Workers (\textsf{Worker})
+  \item $F$ — Features (\textsf{Feature})
+  \item $\mathcal{S}$ — Skills (\textsf{Skill})
+  \item $R$ — Roles (\textsf{Role})
+  \item $PO$ — Product Owners (\textsf{ProductOwner})
+  \item $SM$ — Scrum Masters (\textsf{ScrumMaster})
+  \item $PB$ — Product Backlogs (\textsf{ProductBacklog})
+  \item $SP$ — Sprints (\textsf{Sprint})
+  \item $SPP$ — Sprint Plannings (\textsf{SprintPlanning})
+  \item $DS$ — Daily Scrums (\textsf{DailyScrum})
+  \item $SR$ — Sprint Reviews (\textsf{SprintReview})
+  \item $SRE$ — Sprint Retrospectives (\textsf{SprintRetrospective})
+  \item $SBL$ — Sprint Backlogs (\textsf{SprintBacklog})
+  \item $SG$ — Sprint Goals (\textsf{SprintGoal})
+  \item $E$ — Epics (\textsf{Epic})
+  \item $US$ — User Stories (\textsf{UserStory})
+  \item $TK$ — Tasks (\textsf{Task})
+  \item $DEV$ — Development Snapshots (\textsf{DevelopmentSnapshot})
+  \item $BL$ — Blockers (\textsf{Blocker})
+  \item $SH$ — Stakeholders (\textsf{Stakeholder})
+  \item $VEL$ — Velocity records (\textsf{Velocity})
+  \item $REP$ — Release Plans (\textsf{ReleasePlan})
+  \item $RM$ — Roadmaps (\textsf{Roadmap})
+  \item $SCB$ — Scrum Boards (\textsf{ScrumBoard})
+  \item $FED$ — Feature Documentations (\textsf{FeatureDocumentation})
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+  \item $p\!\in\!P,\ t\!\in\!T,\ w\!\in\!W,\ f\!\in\!F,\ r\!\in\!R,\ po\!\in\!PO,\ sm\!\in\!SM,\ pb\!\in\!PB$
+  \item $sp\!\in\!SP,\ sbl\!\in\!SBL,\ sg\!\in\!SG,\ e\!\in\!E,\ us\!\in\!US,\ tk\!\in\!TK,\ dev\!\in\!DEV$
+  \item $bl\!\in\!BL,\ sh\!\in\!SH,\ vel\!\in\!VEL,\ rep\!\in\!REP,\ rm\!\in\!RM,\ scb\!\in\!SCB,\ fed\!\in\!FED$
+\end{itemize}
+
+\paragraph{Parameters (from entity attributes).}
+\begin{itemize}
+  \item $budget_p$ (Project.budget), $priority_f$ (Feature.priority), $effort_{tk}$ (Task.effort), $storypts_{us}$ (UserStory.story\_points)
+  \item $totalEff_{sbl}$ (SprintBacklog.total\_effort), $cards_{scb}$ (ScrumBoard.number\_of\_cards), $entries_{pb}$ (ProductBacklog.number\_of\_entries)
+  \item $severity_{bl}$ (Blocker.severity), $achv_{sg}$ (SprintGoal.achievement\_status), $attend_{sr}$ (SprintReview.attendees\_count)
+  \item $sat_{sre}$ (SprintRetrospective.team\_satisfaction), $relev_{sh}$ (Stakeholder.relevance\_to\_feature)
+  \item $maxvel_{vel}$, $minvel_{vel}$ (Velocity.max\_velocity / min\_velocity), $teamsize_t$ (Team.team\_size)
+\end{itemize}
+
+\paragraph{Relationship incidence parameters (from \texttt{Relationships.csv}).}
+Binary constants $A^{(k)}$ capture fixed links when needed; e.g.,
+$A^{R19}_{vel,t}=1$ if Velocity record $vel$ refers to Team $t$ (R19), otherwise $0$.
+Similar incidence tensors can be defined for R17, R20, R21 if treated as data.
+
+\paragraph{Decision variables (from \texttt{DecisionVariables.csv}).}
+All variables are binary unless stated.
+\[
+\begin{aligned}
+&X_{t,p} &&\text{(DV0) Team $t$ assigned to Project $p$} \\
+&Y_{w,t} &&\text{(DV1) Worker $w$ belongs to Team $t$} \\
+&R_{w,r} &&\text{(DV2) Worker $w$ takes Role $r$} \\
+&A_{po,pb} &&\text{(DV3) PO $po$ manages Backlog $pb$} \\
+&S_{t,sm} &&\text{(DV4) SM $sm$ supports Team $t$} \\
+&B_{f,pb} &&\text{(DV5) Feature $f$ in Backlog $pb$} \\
+&E_{e,pb} &&\text{(DV6) Epic $e$ in Backlog $pb$} \\
+&U_{us,e} &&\text{(DV7) User Story $us$ in Epic $e$} \\
+&V_{tk,us} &&\text{(DV8) Task $tk$ belongs to Story $us$} \\
+&PICK_{us,sbl} &&\text{(DV9) Story $us$ in SprintBacklog $sbl$} \\
+&D_{sbl,sp} &&\text{(DV10) SprintBacklog $sbl$ belongs to Sprint $sp$} \\
+&G_{sp,sg} &&\text{(DV11) Sprint $sp$ pursues Goal $sg$} \\
+&C_{scb,tk} &&\text{(DV12) Task $tk$ shown on ScrumBoard $scb$} \\
+&FDoc_{fed,f} &&\text{(DV13) Documentation $fed$ belongs to Feature $f$} \\
+&Q_{sp,dev} &&\text{(DV14) Sprint $sp$ generates DevSnapshot $dev$}
+\end{aligned}
+\]
+
+\section{3. Goals}
+Let weights $w_g$ be taken from \texttt{Goals.csv} (column \texttt{Weight}). The global objective is a weighted sum of the individual goals $Z_g$, respecting their min/max polarity. For readability we list each goal with its ID, name, and mathematical form.
+
+\begin{itemize}
+  \item \textbf{G0 maximize\_story\_points\_delivered}:
+  \[
+    Z_{0} = \sum_{us\in US} storypts_{us} \cdot \left( \sum_{sbl\in SBL} PICK_{us,sbl} \right),
+    \quad \max
+  \]
+  \item \textbf{G1 minimize\_total\_task\_effort}:
+  \[
+    Z_{1} = \sum_{tk\in TK} effort_{tk} \cdot \left( \sum_{us\in US} V_{tk,us} \right),
+    \quad \min
+  \]
+  \item \textbf{G2 minimize\_blocker\_severity}:
+  \[
+    Z_{2} = \sum_{bl\in BL} severity_{bl}, \quad \min
+  \]
+  \item \textbf{G3 maximize\_feature\_priority}:
+  \[
+    Z_{3} = \sum_{f\in F}\sum_{pb\in PB} priority_{f}\, B_{f,pb}, \quad \max
+  \]
+  \item \textbf{G4 minimize\_project\_budget}:
+  \[
+    Z_{4} = \sum_{p\in P} budget_{p}, \quad \min
+  \]
+  \item \textbf{G5 maximize\_velocity\_ceiling}:
+  \[
+    Z_{5} = \sum_{vel\in VEL} \maxvel_{vel}, \quad \max
+  \]
+  \item \textbf{G6 maximize\_stakeholder\_relevance}:
+  \[
+    Z_{6} = \sum_{sh\in SH} relev_{sh}, \quad \max
+  \]
+  \item \textbf{G7 maximize\_sprint\_goal\_achievement}:
+  \[
+    Z_{7} = \sum_{sp\in SP}\sum_{sg\in SG} achv_{sg}\, G_{sp,sg}, \quad \max
+  \]
+  \item \textbf{G8 minimize\_scrum\_board\_wip}:
+  \[
+    Z_{8} = \sum_{scb\in SCB} cards_{scb}, \quad \min
+  \]
+  \item \textbf{G9 minimize\_product\_backlog\_size}:
+  \[
+    Z_{9} = \sum_{pb\in PB} entries_{pb}, \quad \min
+  \]
+  \item \textbf{G10 maximize\_sprint\_review\_engagement}:
+  \[
+    Z_{10} = \sum_{sr\in SR} attend_{sr}, \quad \max
+  \]
+  \item \textbf{G11 maximize\_team\_satisfaction}:
+  \[
+    Z_{11} = \sum_{sre\in SRE} sat_{sre}, \quad \max
+  \]
+  \item \textbf{G12 maximize\_feature\_throughput}:
+  \[
+    Z_{12} = \sum_{f\in F} \sum_{pb\in PB} \mathrm{estimated\_effort}_f \, B_{f,pb}, \quad \max
+  \]
+\end{itemize}
+
+\noindent\textbf{Composite objective.} Let $\mathcal{G}_{\max}=\{0,3,5,6,7,10,11,12\}$ and $\mathcal{G}_{\min}=\{1,2,4,8,9\}$. With weights $w_g$:
+\[
+\max\ \sum_{g\in \mathcal{G}_{\max}} w_g Z_g \;-\; \sum_{g\in \mathcal{G}_{\min}} w_g Z_g
+\]
+
+\section{4. Conditions}
+Below, each condition references the \texttt{Conditions.csv} entry and is expressed as linear constraints when applicable.
+
+\begin{itemize}
+  \item \textbf{C1 team\_assignment\_uniqueness (R1)}: Each team has exactly one project.
+  \[
+    \sum_{p\in P} X_{t,p} = 1 \qquad \forall t\in T
+  \]
+  \item \textbf{C2 worker\_to\_single\_team (R2)}: Each worker belongs to exactly one team.
+  \[
+    \sum_{t\in T} Y_{w,t} = 1 \qquad \forall w\in W
+  \]
+  \item \textbf{C3 team\_capacity\_respects\_size}: Team headcount cannot exceed team\_size.
+  \[
+    \sum_{w\in W} Y_{w,t} \le teamsize_t \qquad \forall t\in T
+  \]
+  \item \textbf{C4 user\_story\_to\_one\_epic (R9)}:
+  \[
+    \sum_{e\in E} U_{us,e} = 1 \qquad \forall us\in US
+  \]
+  \item \textbf{C5 task\_to\_one\_user\_story (R10)}:
+  \[
+    \sum_{us\in US} V_{tk,us} = 1 \qquad \forall tk\in TK
+  \]
+  \item \textbf{C6 user\_story\_to\_max\_one\_sprint\_backlog (R11)}:
+  \[
+    \sum_{sbl\in SBL} PICK_{us,sbl} \le 1 \qquad \forall us\in US
+  \]
+  \item \textbf{C7 sprint\_backlog\_belongs\_to\_one\_sprint (R12)}:
+  \[
+    \sum_{sp\in SP} D_{sbl,sp} = 1 \qquad \forall sbl\in SBL
+  \]
+  \item \textbf{C8 sprint\_has\_one\_goal (R13)}:
+  \[
+    \sum_{sg\in SG} G_{sp,sg} = 1 \qquad \forall sp\in SP
+  \]
+  \item \textbf{C9 backlog\_entry\_count\_consistency}:
+  \[
+    \sum_{f\in F} B_{f,pb} + \sum_{e\in E} E_{e,pb} \le entries_{pb} \qquad \forall pb\in PB
+  \]
+  \item \textbf{C10 sprint\_backlog\_capacity}:
+  \[
+    \sum_{us\in US} storypts_{us}\,PICK_{us,sbl} \le totalEff_{sbl} \qquad \forall sbl\in SBL
+  \]
+  \item \textbf{C11 velocity\_floor}: Using incidence $A^{R19}_{vel,t}$, enforce team capacity lower bound (planning guideline).
+  \[
+    \sum_{us\in US} storypts_{us}\,\sum_{sbl\in SBL} PICK_{us,sbl} \ \ge\ \sum_{t\in T}\left(\sum_{vel\in VEL} A^{R19}_{vel,t}\, minvel_{vel}\right)
+  \]
+  \item \textbf{C12 stakeholder\_influence\_cap} (planning governance over reviews):
+  \[
+    \sum_{sh\in SH} \mathrm{influence\_level}_{sh} \ \le\ \Gamma
+  \]
+  where $\Gamma$ is a policy parameter.
+  \item \textbf{C0 limit\_project\_budget} (portfolio guardrail): with unit cost $\kappa$ per story point,
+  \[
+    \kappa \sum_{us\in US} storypts_{us}\,\sum_{sbl\in SBL} PICK_{us,sbl}\ \le\ \sum_{p\in P} budget_p
+  \]
+\end{itemize}
+
+\paragraph{Further relationship guards (always-on).}
+\begin{align*}
+&\sum_{pb\in PB} A_{po,pb} \le 1 && \forall po\in PO \quad\text{(R5)} \\
+&\sum_{po\in PO} A_{po,pb} = 1 && \forall pb\in PB \quad\text{(R5)} \\
+&\sum_{sm\in SM} S_{t,sm} = 1 && \forall t\in T \quad\text{(R6)} \\
+&\sum_{pb\in PB} B_{f,pb} \le 1 && \forall f\in F \quad\text{(R7)} \\
+&\sum_{pb\in PB} E_{e,pb} \le 1 && \forall e\in E \quad\text{(R8)} \\
+&\sum_{f\in F} FDoc_{fed,f} = 1 && \forall fed\in FED \quad\text{(R15)} \\
+&\sum_{dev\in DEV} Q_{sp,dev} = 1 && \forall sp\in SP \quad\text{(R22)}
+\end{align*}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+  \item \textbf{DV0 assign\_team\_to\_project} $X_{t,p}\in\{0,1\}$
+  \item \textbf{DV1 assign\_worker\_to\_team} $Y_{w,t}\in\{0,1\}$
+  \item \textbf{DV2 assign\_worker\_to\_role} $R_{w,r}\in\{0,1\}$
+  \item \textbf{DV3 assign\_po\_to\_backlog} $A_{po,pb}\in\{0,1\}$
+  \item \textbf{DV4 assign\_scrum\_master\_to\_team} $S_{t,sm}\in\{0,1\}$
+  \item \textbf{DV5 put\_feature\_in\_backlog} $B_{f,pb}\in\{0,1\}$
+  \item \textbf{DV6 put\_epic\_in\_backlog} $E_{e,pb}\in\{0,1\}$
+  \item \textbf{DV7 link\_userstory\_to\_epic} $U_{us,e}\in\{0,1\}$
+  \item \textbf{DV8 link\_task\_to\_userstory} $V_{tk,us}\in\{0,1\}$
+  \item \textbf{DV9 pick\_userstory\_into\_sprint\_backlog} $PICK_{us,sbl}\in\{0,1\}$
+  \item \textbf{DV10 link\_sprint\_backlog\_to\_sprint} $D_{sbl,sp}\in\{0,1\}$
+  \item \textbf{DV11 link\_sprint\_to\_goal} $G_{sp,sg}\in\{0,1\}$
+  \item \textbf{DV12 show\_task\_on\_scrum\_board} $C_{scb,tk}\in\{0,1\}$
+  \item \textbf{DV13 link\_feature\_doc\_to\_feature} $FDoc_{fed,f}\in\{0,1\}$
+  \item \textbf{DV14 link\_sprint\_to\_development\_snapshot} $Q_{sp,dev}\in\{0,1\}$
+\end{itemize}
+
+\end{document}

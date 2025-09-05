@@ -1,0 +1,130 @@
+% model.tex
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{SCRUM Portfolio \& Sprint Planning Optimization Model}
+\author{Automatically generated from Entities, Relationships, Goals, Conditions, Decision Variables}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+  \item $P$ (Projects, \texttt{Project}): attributes $\{\text{id},\text{name},\text{project\_start},\text{project\_end},\text{description},\text{budget},\text{status},\text{target\_audience},\text{priority}\}$.
+  \item $T$ (Teams, \texttt{Team}): attributes $\{\text{id},\text{name},\text{team\_size},\text{team\_start},\text{team\_status},\text{location},\text{team\_type}\}$.
+  \item $W$ (Workers, \texttt{Worker}): attributes $\{\text{id},\text{name},\text{first\_name},\text{email},\text{start\_date},\text{status},\text{availability}\}$.
+  \item $F$ (Features, \texttt{Feature}): attributes $\{\text{id},\text{title},\text{description},\text{status},\text{priority},\text{estimated\_effort}\}$.
+  \item $S$ (Skills, \texttt{Skill}): attributes $\{\text{id},\text{label},\text{description},\text{level},\text{certified},\text{category}\}$.
+  \item $R$ (Roles, \texttt{Role}): attributes $\{\text{id},\text{role\_name},\text{description},\text{area\_of\_responsibility}\}$.
+  \item $PO$ (Product Owners, \texttt{ProductOwner}): attributes $\{\text{id},\text{name},\text{email},\text{availability}\}$.
+  \item $SM$ (Scrum Masters, \texttt{ScrumMaster}): attributes $\{\text{id},\text{name},\text{email},\text{experience}\}$.
+  \item $PB$ (Product Backlogs, \texttt{ProductBacklog}): attributes $\{\text{id},\text{created\_on},\text{last\_updated},\text{number\_of\_entries},\text{status}\}$.
+  \item $SP$ (Sprints, \texttt{Sprint}): attributes $\{\text{id},\text{sprint\_number},\text{start\_date},\text{end\_date},\text{status},\text{achievement\_of\_goal}\}$.
+  \item $SPP$ (Sprint Plannings, \texttt{SprintPlanning}): attributes $\{\text{id},\text{date},\text{duration\_(min)},\text{moderation},\text{outcome\_documentation}\}$.
+  \item $DS$ (Daily Scrums, \texttt{DailyScrum}): attributes $\{\text{id},\text{date},\text{time},\text{duration},\text{moderation}\}$.
+  \item $SR$ (Sprint Reviews, \texttt{SprintReview}): attributes $\{\text{id},\text{date},\text{duration},\text{feedback\_documentation},\text{attendees\_count}\}$.
+  \item $SRE$ (Retrospectives, \texttt{SprintRetrospective}): attributes $\{\text{id},\text{date},\text{duration},\text{improvement\_actions},\text{team\_satisfaction},\text{moderation}\}$.
+  \item $SBL$ (Sprint Backlogs, \texttt{SprintBacklog}): attributes $\{\text{id},\text{number\_of\_tasks},\text{last\_updated},\text{status},\text{total\_effort}\}$.
+  \item $SG$ (Sprint Goals, \texttt{SprintGoal}): attributes $\{\text{id},\text{objective\_description},\text{achievement\_status},\text{benefit}\}$.
+  \item $E$ (Epics, \texttt{Epic}): attributes $\{\text{id},\text{title},\text{description},\text{priority},\text{status},\text{estimated\_effort}\}$.
+  \item $US$ (User Stories, \texttt{UserStory}): attributes $\{\text{id},\text{title},\text{description},\text{acceptance\_criteria},\text{priority},\text{story\_points},\text{status}\}$.
+  \item $TSK$ (Tasks, \texttt{Task}): attributes $\{\text{id},\text{title},\text{description},\text{status},\text{effort},\text{type}\}$.
+  \item $DEV$ (Development Snapshots, \texttt{DevelopmentSnapshot}): attributes $\{\text{id},\text{version\_number},\text{creation\_date},\text{test\_status},\text{deployment\_target},\text{documentation}\}$.
+  \item $BL$ (Blockers, \texttt{Blocker}): attributes $\{\text{id},\text{title},\text{description},\text{severity},\text{status},\text{detected\_on},\text{resolved\_on}\}$.
+  \item $SH$ (Stakeholders, \texttt{Stakeholder}): attributes $\{\text{id},\text{name},\text{organization},\text{role},\text{email},\text{area\_of\_interest},\text{influence\_level},\text{relevance\_to\_feature}\}$.
+  \item $VEL$ (Velocity, \texttt{Velocity}): attributes $\{\text{id},\text{number\_of\_sprints\_used},\text{avg.\_story\_points},\text{max\_velocity},\text{min\_velocity},\text{trend}\}$.
+  \item $REP$ (Release Plans, \texttt{ReleasePlan}): attributes $\{\text{id},\text{version},\text{planned\_date},\text{included\_features},\text{status}\}$.
+  \item $RM$ (Roadmaps, \texttt{Roadmap}): attributes $\{\text{id},\text{start\_date},\text{end\_date},\text{milestones},\text{objectives},\text{versions}\}$.
+  \item $SCB$ (Scrum Boards, \texttt{ScrumBoard}): attributes $\{\text{id},\text{board\_type},\text{columns\_(todo/done...)},\text{number\_of\_cards},\text{last\_updated}\}$.
+  \item $FED$ (Feature Docs, \texttt{FeatureDocumentation}): attributes $\{\text{id},\text{title},\text{description},\text{creation\_date},\text{change\_log},\text{linked\_requirements},\text{author}\}$.
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+  \item $p \in P,\ t \in T,\ w \in W,\ f \in F,\ s \in S,\ r \in R,\ po \in PO,\ sm \in SM,$
+  \item $pb \in PB,\ sp \in SP,\ spp \in SPP,\ ds \in DS,\ sr \in SR,\ sre \in SRE,$
+  \item $sbl \in SBL,\ sg \in SG,\ e \in E,\ us \in US,\ k \in TSK,\ dev \in DEV,$
+  \item $bl \in BL,\ sh \in SH,\ vel \in VEL,\ rep \in REP,\ rm \in RM,\ scb \in SCB,\ fed \in FED.$
+\end{itemize}
+
+\noindent \textbf{Relational reference (from Relationships R1--R22):}
+\begin{itemize}[leftmargin=2em]
+  \item R1: Teams $\to$ Projects; R2: Workers (``Employees'') $\to$ Teams; R3: Workers $\to$ Skills; R4: Workers $\to$ Roles;
+  \item R5: ProductOwner $\leftrightarrow$ ProductBacklog; R6: Teams $\leftrightarrow$ ScrumMaster;
+  \item R7: ProductBacklog $\to$ Feature; R8: ProductBacklog $\to$ Epic; R9: Epic $\to$ UserStory;
+  \item R10: UserStory $\to$ Task; R11: UserStory $\leftrightarrow$ SprintBacklog; R12: SprintBacklog $\to$ Sprint;
+  \item R13: Sprint $\to$ SprintGoal; R14: ScrumBoard $\to$ Task; R15: FeatureDocumentation $\to$ Feature;
+  \item R16: Task $\leftrightarrow$ Blocker; R17: Stakeholder $\leftrightarrow$ SprintReview;
+  \item R18: ScrumMaster $\to$ SprintRetrospective; R19: Velocity $\to$ Team;
+  \item R20: ReleasePlan $\to$ Feature; R21: ReleasePlan $\to$ Roadmap; R22: Sprint $\to$ DevelopmentSnapshot.
+\end{itemize}
+
+\section{3. Goals}
+Let the following parameters be read from entity attributes: 
+$\text{budget}_p$, $\text{priority}_f$, $\text{priority}^E_e$, $\text{sp}_\text{us}$, $\text{effort}_k$, $\text{achGoal}_{sp}$, $\text{totEff}_{sbl}$, $\text{sev}_{bl}$, $\overline{SP}_{vel}$, $\text{trend}_{vel}$, $\text{infl}_{sh}$, $\text{durDS}_{ds}$, $\text{durSPP}_{spp}$, $\text{sat}_{sre}$.
+Decision variables are given in Sec.~5.
+
+\begin{itemize}
+  \item[\textbf{G0 minimize\_project\_budget}] $\displaystyle \min \sum_{t\in T}\sum_{p\in P} \text{budget}_p \cdot x^{TP}_{t,p}$.
+  \item[\textbf{G1 maximize\_feature\_priority\_delivered}] $\displaystyle \max \sum_{f\in F}\sum_{rep\in REP} \text{priority}_f \cdot x^{FR}_{f,rep}$.
+  \item[\textbf{G2 maximize\_user\_story\_story\_points}] $\displaystyle \max \sum_{us\in US}\sum_{sbl\in SBL} \text{sp}_{us} \cdot x^{US,SB}_{us,sbl}$.
+  \item[\textbf{G3 minimize\_task\_effort}] $\displaystyle \min \sum_{k\in TSK}\sum_{us\in US} \text{effort}_k \cdot x^{K,US}_{k,us}$.
+  \item[\textbf{G4 maximize\_sprint\_goal\_achievement}] $\displaystyle \max \sum_{sp\in SP} \text{achGoal}_{sp}$.
+  \item[\textbf{G5 minimize\_sprint\_backlog\_total\_effort}] $\displaystyle \min \sum_{sbl\in SBL}\sum_{sp\in SP} \text{totEff}_{sbl}\cdot x^{SB,SP}_{sbl,sp}$.
+  \item[\textbf{G6 minimize\_blocker\_severity}] $\displaystyle \min \sum_{k\in TSK}\sum_{bl\in BL} \text{sev}_{bl}\cdot x^{K,BL}_{k,bl}$.
+  \item[\textbf{G7 maximize\_velocity\_avg\_story\_points}] $\displaystyle \max \sum_{vel\in VEL}\sum_{t\in T} \overline{SP}_{vel}\cdot x^{VEL,T}_{vel,t}$.
+  \item[\textbf{G8 maximize\_velocity\_trend}] $\displaystyle \max \sum_{vel\in VEL}\sum_{t\in T} \text{trend}_{vel}\cdot x^{VEL,T}_{vel,t}$.
+  \item[\textbf{G9 maximize\_stakeholder\_influence\_addressed}] $\displaystyle \max \sum_{sh\in SH}\sum_{sr\in SR} \text{infl}_{sh}\cdot x^{SH,SR}_{sh,sr}$.
+  \item[\textbf{G10 minimize\_daily\_scrum\_duration}] $\displaystyle \min \sum_{ds\in DS} \text{durDS}_{ds}$.
+  \item[\textbf{G11 minimize\_sprint\_planning\_duration}] $\displaystyle \min \sum_{spp\in SPP} \text{durSPP}_{spp}$.
+  \item[\textbf{G12 maximize\_team\_satisfaction}] $\displaystyle \max \sum_{sre\in SRE} \text{sat}_{sre}$.
+\end{itemize}
+
+\noindent \textit{(Optional scalarization)} Using weights $w_i$ from Goals.csv, one can form a single objective:
+\[
+\max \ \sum_{i \in \{\text{max-goals}\}} w_i \cdot g_i \ - \ \sum_{j \in \{\text{min-goals}\}} w_j \cdot g_j .
+\]
+
+\section{4. Conditions}
+Let $C^{\max}_{sp}$ denote exogenous capacity (story points) for sprint $sp$ (e.g., derived from velocity), $S^{\max}$ a blocker severity cap per sprint, $\text{WIP}_{scb}$ the board WIP limit. The following constraints correspond to Conditions.csv and encode key relationships (R1,R6,R9--R12,R16,R17,R20,R22) and operational bounds.
+
+\begin{itemize}
+  \item[\textbf{C0 limit\_user\_story\_to\_one\_sprint\_backlog}] $\displaystyle \sum_{sbl\in SBL} x^{US,SB}_{us,sbl} \le 1,\ \forall us\in US.$
+  \item[\textbf{C1 sprint\_backlog\_belongs\_to\_one\_sprint}] $\displaystyle \sum_{sp\in SP} x^{SB,SP}_{sbl,sp} = 1,\ \forall sbl\in SBL.$
+  \item[\textbf{C2 assign\_team\_to\_exactly\_one\_project}] $\displaystyle \sum_{p\in P} x^{TP}_{t,p} = 1,\ \forall t\in T.$
+  \item[\textbf{C3 team\_has\_exactly\_one\_scrum\_master}] $\displaystyle \sum_{sm\in SM} x^{T,SM}_{t,sm} = 1,\ \forall t\in T.$
+  \item[\textbf{C4 task\_belongs\_to\_one\_user\_story}] $\displaystyle \sum_{us\in US} x^{K,US}_{k,us} = 1,\ \forall k\in TSK.$
+  \item[\textbf{C5 user\_story\_belongs\_to\_one\_epic}] $\displaystyle \sum_{e\in E} x^{US,E}_{us,e} = 1,\ \forall us\in US.$
+  \item[\textbf{C6 limit\_blocker\_severity\_threshold}] $\displaystyle \sum_{bl\in BL} \text{sev}_{bl}\cdot x^{K,BL}_{k,bl} \le S^{\max},\ \forall k\in TSK.$
+  \item[\textbf{C7 enforce\_wip\_limit\_on\_scrumboard}] $\displaystyle \sum_{k\in TSK} \mathbb{1}[k\ \text{on}\ scb] \le \text{WIP}_{scb}=\text{number\_of\_cards}_{scb},\ \forall scb\in SCB.$
+  \item[\textbf{C8 story\_points\_within\_sprint\_capacity}] $\displaystyle \sum_{us\in US}\sum_{sbl\in SBL} \text{sp}_{us}\, x^{US,SB}_{us,sbl}\, x^{SB,SP}_{sbl,sp} \le C^{\max}_{sp},\ \forall sp\in SP.$
+  \item[\textbf{C9 daily\_scrum\_duration\_limit}] $\displaystyle \text{durDS}_{ds} \le 15,\ \forall ds\in DS.$
+  \item[\textbf{C10 sprint\_planning\_duration\_limit}] $\displaystyle \text{durSPP}_{spp} \le 240,\ \forall spp\in SPP.$
+  \item[\textbf{C11 sprint\_review\_min\_attendees}] $\displaystyle \sum_{sh\in SH} x^{SH,SR}_{sh,sr} \ge A^{\min},\ \forall sr\in SR.$
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+  \item \textbf{D0 assign\_user\_story\_to\_sprint\_backlog}:\ $x^{US,SB}_{us,sbl}\in\{0,1\}$.
+  \item \textbf{D1 assign\_task\_to\_user\_story}:\ $x^{K,US}_{k,us}\in\{0,1\}$.
+  \item \textbf{D2 include\_feature\_in\_release\_plan}:\ $x^{FR}_{f,rep}\in\{0,1\}$.
+  \item \textbf{D3 assign\_team\_to\_project}:\ $x^{TP}_{t,p}\in\{0,1\}$.
+  \item \textbf{D4 assign\_scrum\_master\_to\_team}:\ $x^{T,SM}_{t,sm}\in\{0,1\}$.
+  \item \textbf{D5 assign\_user\_story\_to\_epic}:\ $x^{US,E}_{us,e}\in\{0,1\}$.
+  \item \textbf{D6 link\_blocker\_to\_task}:\ $x^{K,BL}_{k,bl}\in\{0,1\}$.
+  \item \textbf{D7 attach\_sprint\_backlog\_to\_sprint}:\ $x^{SB,SP}_{sbl,sp}\in\{0,1\}$.
+  \item \textbf{D8 invite\_stakeholder\_to\_sprint\_review}:\ $x^{SH,SR}_{sh,sr}\in\{0,1\}$.
+  \item \textbf{D9 bind\_velocity\_to\_team}:\ $x^{VEL,T}_{vel,t}\in\{0,1\}$.
+  \item \textbf{D10 generate\_snapshot\_for\_sprint}:\ $x^{SP,DEV}_{sp,dev}\in\{0,1\}$.
+  \item \textbf{D11 assign\_worker\_to\_team}:\ $x^{W,T}_{w,t}\in\{0,1\}$.
+  \item \textbf{D12 assign\_skill\_to\_worker}:\ $x^{W,S}_{w,s}\in\{0,1\}$.
+  \item \textbf{D13 assign\_role\_to\_worker}:\ $x^{W,R}_{w,r}\in\{0,1\}$.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[a4paper,margin=1in]{geometry}
+
+\title{SCRUM Planning Optimization Model}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section*{Introduction}
+This document formulates a mixed-integer optimization model that uses the provided Entities, Relationships, Goals, Conditions, and Decision Variables to plan SCRUM delivery: assign teams and workers, plan sprints, select backlog items, respect capacities and budgets, and schedule releases while maximizing value and minimizing risk.
+
+\section{1. Sets (Entities)}
+\begin{itemize}
+  \item $P$: Projects (\texttt{Project})
+  \item $T$: Teams (\texttt{Team})
+  \item $W$: Workers (\texttt{Worker})
+  \item $F$: Features (\texttt{Feature})
+  \item $S$: Skills (\texttt{Skill})
+  \item $R$: Roles (\texttt{Role})
+  \item $PO$: Product Owners (\texttt{ProductOwner})
+  \item $SM$: Scrum Masters (\texttt{ScrumMaster})
+  \item $PB$: Product Backlogs (\texttt{ProductBacklog})
+  \item $SP$: Sprints (\texttt{Sprint})
+  \item $SPP$: Sprint Plannings (\texttt{SprintPlanning})
+  \item $DS$: Daily Scrums (\texttt{DailyScrum})
+  \item $SR$: Sprint Reviews (\texttt{SprintReview})
+  \item $SRE$: Sprint Retrospectives (\texttt{SprintRetrospective})
+  \item $SBL$: Sprint Backlogs (\texttt{SprintBacklog})
+  \item $SG$: Sprint Goals (\texttt{SprintGoal})
+  \item $E$: Epics (\texttt{Epic})
+  \item $US$: User Stories (\texttt{UserStory})
+  \item $TSK$: Tasks (\texttt{Task})
+  \item $DEV$: Development Snapshots (\texttt{DevelopmentSnapshot})
+  \item $BL$: Blockers (\texttt{Blocker})
+  \item $SH$: Stakeholders (\texttt{Stakeholder})
+  \item $VEL$: Velocity records (\texttt{Velocity})
+  \item $REP$: Release Plans (\texttt{ReleasePlan})
+  \item $RM$: Roadmaps (\texttt{Roadmap})
+  \item $SCB$: Scrum Boards (\texttt{ScrumBoard})
+  \item $FED$: Feature Documentation items (\texttt{FeatureDocumentation})
+\end{itemize}
+
+\section{2. Indices}
+\begin{itemize}
+  \item Indices: $p\in P$, $t\in T$, $w\in W$, $f\in F$, $e\in E$, $us\in US$, $tsk\in TSK$, $sp\in SP$, $sbl\in SBL$, $sr\in SR$, $bl\in BL$, $sh\in SH$, $rep\in REP$, $pb\in PB$.
+  \item Relationship-induced subsets (from \textbf{Relationships.csv}):
+    \begin{itemize}
+      \item $T(p)$: teams assigned to project $p$ (R1).
+      \item $W(t)$: workers belonging to team $t$ (R2; Employee $\equiv$ Worker).
+      \item $S(w)$: skills of worker $w$ (R3).
+      \item $RL(w)$: roles of worker $w$ (R4).
+      \item $F(pb)$: features in product backlog $pb$ (R7).
+      \item $E(pb)$: epics in product backlog $pb$ (R8).
+      \item $US(e)$: user stories in epic $e$ (R9).
+      \item $TSK(us)$: tasks of user story $us$ (R10).
+      \item $SBL(sp)$: the sprint backlog belonging to sprint $sp$ (R12).
+      \item $SG(sp)$: the sprint goal associated with sprint $sp$ (R13).
+      \item $TSK(sp)$: tasks shown on the Scrum Board for sprint $sp$ (R14).
+      \item $BL(tsk)$: blockers that can block task $tsk$ (R16).
+      \item $SR(sh)$: reviews attended by stakeholder $sh$ (R17; maps to \texttt{SprintReview}).
+      \item $SRE(sm)$: retrospectives moderated by scrum master $sm$ (R18).
+      \item $T(vel)$: team referenced by velocity record $vel$ (R19).
+      \item $F(rep)$: features included by release plan $rep$ (R20).
+      \item $REP(rm)$: release plans in roadmap $rm$ (R21).
+    \end{itemize}
+  \item Attribute functions (from \textbf{Entities.csv}): 
+  $\text{story\_points}(us)$, $\text{priority}(f)$, $\text{effort}(tsk)$, $\text{severity}(bl)$, $\text{budget}(p)$, $\text{trend}(vel)$, $\text{avgSP}(vel)$, $\text{attendees\_count}(sr)$, $\text{number\_of\_cards}(scb)$, $\text{total\_effort}(sbl)$, $\text{availability}(w)$, $\text{achievement\_status}(sg)$, etc.
+\end{itemize}
+
+\section{3. Goals}
+\begin{itemize}
+  \item \textbf{G0 maximize\_story\_points\_completed} (\textit{max}): 
+  \[
+    \max \sum_{us\in US} \text{story\_points}(us)\cdot c_{us}
+  \]
+  where $c_{us}=\texttt{complete\_user\_story}[us]\in\{0,1\}$.
+
+  \item \textbf{G1 minimize\_total\_task\_effort} (\textit{min}):
+  \[
+    \min \sum_{tsk\in TSK}\text{effort}(tsk)\cdot z_{tsk}
+  \]
+  with $z_{tsk}=\texttt{complete\_task}[tsk]\in\{0,1\}$.
+
+  \item \textbf{G2 minimize\_open\_blocker\_severity} (\textit{min}):
+  \[
+    \min \sum_{bl\in BL}\text{severity}(bl)\cdot (1-r_{bl})
+  \]
+  where $r_{bl}=\texttt{resolve\_blocker}[bl]$.
+
+  \item \textbf{G3 maximize\_sprint\_goal\_achievement} (\textit{max}):
+  \[
+    \max \sum_{sp\in SP} g_{sp},\qquad g_{sp}=\texttt{achieve\_sprint\_goal}[sp]\in\{0,1\}.
+  \]
+
+  \item \textbf{G4 maximize\_feature\_priority\_delivered} (\textit{max}):
+  \[
+    \max \sum_{rep\in REP}\sum_{f\in F} \text{priority}(f)\cdot q_{f,rep},
+  \]
+  where $q_{f,rep}=\texttt{include\_feature\_in\_release}[f,rep]$.
+
+  \item \textbf{G5 minimize\_project\_budget\_used} (\textit{min}):
+  \[
+    \min \sum_{p\in P} b_p,\qquad b_p=\texttt{budget\_used}[p]\in\mathbb{R}_+.
+  \]
+
+  \item \textbf{G6 maximize\_velocity} (\textit{max}):
+  \[
+    \max \sum_{sp\in SP} v_{sp},\qquad v_{sp}=\texttt{sprint\_velocity}[sp]\in\mathbb{Z}_+.
+  \]
+
+  \item \textbf{G7 minimize\_release\_time} (\textit{min}):
+  \[
+    \min \sum_{rep\in REP} \tau_{rep},\qquad \tau_{rep}=\texttt{release\_time}[rep]\in\mathbb{Z}_+.
+  \]
+
+  \item \textbf{G8 maximize\_stakeholder\_relevance\_covered} (\textit{max}):
+  \[
+    \max \sum_{sh\in SH}\sum_{f\in F} \texttt{stakeholder\_coverage}[sh,f]\cdot \text{relevance\_to\_feature}(sh).
+  \]
+
+  \item \textbf{G9 minimize\_sprint\_wip\_cards} (\textit{min}):
+  \[
+    \min \sum_{scb\in SCB}\text{number\_of\_cards}(scb).
+  \]
+
+  \item \textbf{G10 maximize\_review\_attendance} (\textit{max}):
+  \[
+    \max \sum_{sr\in SR} a_{sr},\qquad a_{sr}=\texttt{review\_attendance\_count}[sr]\in\mathbb{Z}_+.
+  \]
+
+  \item \textbf{G11 maximize\_documentation\_coverage} (\textit{max}):
+  \[
+    \max \sum_{fed\in FED}\text{linked\_requirements}(fed).
+  \]
+\end{itemize}
+
+\section{4. Conditions}
+\begin{itemize}
+  \item \textbf{C0 capacity\_per\_team\_not\_exceeded}:
+  \[
+    \sum_{us\in US}\sum_{sp\in SP}\text{story\_points}(us)\cdot y_{us,sp} \;\le\; \sum_{sp\in SP} v_{sp},
+  \]
+  $y_{us,sp}=\texttt{select\_user\_story\_in\_sprint}[us,sp]\in\{0,1\}$.
+
+  \item \textbf{C1 story\_points\_within\_sprint\_velocity}:
+  \[
+    \forall sp\in SP:\quad \sum_{us\in US}\text{story\_points}(us)\cdot y_{us,sp} \;\le\; v_{sp}.
+  \]
+
+  \item \textbf{C2 daily\_scrum\_duration\_cap}:
+  \[
+    \forall ds\in DS:\quad \text{duration}(ds)\le 15.
+  \]
+
+  \item \textbf{C3 sprint\_duration\_bounds}:
+  \[
+    \forall sp\in SP:\quad 1 \le d_{sp}\le 30,\qquad d_{sp}=\texttt{sprint\_duration\_days}[sp].
+  \]
+
+  \item \textbf{C4 worker\_availability\_respected}:
+  \[
+    \forall w\in W:\quad \sum_{tsk\in TSK}\text{effort}(tsk)\cdot \alpha_{w,tsk} \;\le\; \text{availability}(w),
+  \]
+  where $\alpha_{w,tsk}\in\{0,1\}$ (implicit assignment of a task to a worker; derived from $W(t)$ and team ownership).
+
+  \item \textbf{C5 product\_backlog\_active\_only} (logical):
+  \[
+    \forall pb\in PB:\; \text{status}(pb)\neq \text{`archived'}.
+  \]
+
+  \item \textbf{C6 sprint\_goal\_defined\_and\_tracked}:
+  \[
+    \forall sp\in SP:\; g_{sp}\le \frac{1}{|US|}\sum_{us\in US}\sum_{s\in SP} y_{us,s},\qquad g_{sp}\in\{0,1\}.
+  \]
+
+  \item \textbf{C7 blockers\_resolved\_before\_task\_completion}:
+  \[
+    \forall tsk\in TSK,\;\forall bl\in BL(tsk):\quad z_{tsk}\le r_{bl},\quad r_{bl}\in\{0,1\}.
+  \]
+
+  \item \textbf{C8 sprint\_backlog\_effort\_consistency}:
+  \[
+    \forall sp\in SP:\quad \text{total\_effort}(SBL(sp)) \;=\; \sum_{tsk\in TSK}\text{effort}(tsk)\cdot s_{tsk,sp},
+  \]
+  $s_{tsk,sp}=\texttt{assign\_task\_to\_sprint}[tsk,sp]\in\{0,1\}$.
+
+  \item \textbf{C9 scrum\_board\_cards\_consistency}:
+  \[
+    \forall sp\in SP:\quad \text{number\_of\_cards}(SCB(sp)) \;=\; \sum_{tsk\in TSK} s_{tsk,sp}.
+  \]
+
+  \item \textbf{C10 release\_includes\_ready\_features\_only} (logical):
+  \[
+    \forall rep\in REP,\;\forall f\in F:\quad q_{f,rep}\le \mathbf{1}\{\text{status}(f)=\text{`ready'}\}.
+  \]
+
+  \item \textbf{C11 velocity\_trend\_nonnegative}:
+  \[
+    \forall vel\in VEL:\quad \text{trend}(vel)\ge 0.
+  \]
+
+  \item \textbf{C12 minimum\_review\_attendance}:
+  \[
+    \forall sr\in SR:\quad a_{sr}\ge A_{\min},
+  \]
+  with threshold $A_{\min}\in\mathbb{Z}_+$ (policy parameter).
+  
+  \item \textit{Linking user-story completion to tasks (supports G0):}
+  \[
+    \forall us\in US:\quad c_{us}\le \frac{1}{|TSK(us)|}\sum_{tsk\in TSK(us)} z_{tsk},\qquad c_{us}\in\{0,1\}.
+  \]
+\end{itemize}
+
+\section{5. DecisionVariables}
+\begin{itemize}
+  \item $x_{t,p}=\texttt{assign\_team\_to\_project}[t,p]\in\{0,1\}$
+  \item $k_{w,t}=\texttt{assign\_worker\_to\_team}[w,t]\in\{0,1\}$
+  \item $y_{us,sp}=\texttt{select\_user\_story\_in\_sprint}[us,sp]\in\{0,1\}$
+  \item $z_{tsk}=\texttt{complete\_task}[tsk]\in\{0,1\}$
+  \item $r_{bl}=\texttt{resolve\_blocker}[bl]\in\{0,1\}$
+  \item $g_{sp}=\texttt{achieve\_sprint\_goal}[sp]\in\{0,1\}$
+  \item $q_{f,rep}=\texttt{include\_feature\_in\_release}[f,rep]\in\{0,1\}$
+  \item $d_{sp}=\texttt{sprint\_duration\_days}[sp]\in\mathbb{Z}_+$
+  \item $a_{sr}=\texttt{review\_attendance\_count}[sr]\in\mathbb{Z}_+$
+  \item $v_{sp}=\texttt{sprint\_velocity}[sp]\in\mathbb{Z}_+$
+  \item $b_{p}=\texttt{budget\_used}[p]\in\mathbb{R}_+$
+  \item $h_{sh,f}=\texttt{stakeholder\_coverage}[sh,f]\in\{0,1\}$
+  \item $c_{us}=\texttt{complete\_user\_story}[us]\in\{0,1\}$
+  \item $s_{tsk,sp}=\texttt{assign\_task\_to\_sprint}[tsk,sp]\in\{0,1\}$
+\end{itemize}
+
+\end{document}

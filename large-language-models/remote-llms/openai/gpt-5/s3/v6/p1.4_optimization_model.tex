@@ -1,0 +1,235 @@
+% optimization_model.tex
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{enumitem}
+\geometry{margin=1in}
+
+\title{SCRUM Planning Optimization Model}
+\author{Generated for TruelyMostWanted}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}[leftmargin=2em]
+  \item $P$ — Projects (\texttt{Project})
+  \item $T$ — Teams (\texttt{Team})
+  \item $W$ — Workers (\texttt{Worker})
+  \item $F$ — Features (\texttt{Feature})
+  \item $S$ — Skills (\texttt{Skill})
+  \item $R$ — Roles (\texttt{Role})
+  \item $PO$ — Product Owners (\texttt{ProductOwner})
+  \item $SM$ — Scrum Masters (\texttt{ScrumMaster})
+  \item $PB$ — Product Backlogs (\texttt{ProductBacklog})
+  \item $SP$ — Sprints (\texttt{Sprint})
+  \item $SPP$ — Sprint Plannings (\texttt{SprintPlanning})
+  \item $DS$ — Daily Scrums (\texttt{DailyScrum})
+  \item $SR$ — Sprint Reviews (\texttt{SprintReview})
+  \item $SRE$ — Sprint Retrospectives (\texttt{SprintRetrospective})
+  \item $SBL$ — Sprint Backlogs (\texttt{SprintBacklog}), assume a unique backlog per sprint $s\in SP$
+  \item $SG$ — Sprint Goals (\texttt{SprintGoal})
+  \item $E$ — Epics (\texttt{Epic})
+  \item $US$ — User Stories (\texttt{UserStory})
+  \item $TSK$ — Tasks (\texttt{Task})
+  \item $DEV$ — Development Snapshots (\texttt{DevelopmentSnapshot})
+  \item $BL$ — Blockers (\texttt{Blocker})
+  \item $SH$ — Stakeholders (\texttt{Stakeholder})
+  \item $VEL$ — Velocity records (\texttt{Velocity})
+  \item $REP$ — Release Plans (\texttt{ReleasePlan})
+  \item $RM$ — Roadmaps (\texttt{Roadmap})
+  \item $SCB$ — Scrum Boards (\texttt{ScrumBoard})
+  \item $FED$ — Feature Documentations (\texttt{FeatureDocumentation})
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}[leftmargin=2em]
+  \item $p\in P$, $t\in T$, $w\in W$, $f\in F$, $e\in E$, $us\in US$, $tsk\in TSK$, $bl\in BL$, $s\in SP$, $sbl\in SBL$, $sg\in SG$, $vel\in VEL$, $rep\in REP$, $pb\in PB$, $sr\in SR$, $ds\in DS$, $scb\in SCB$, $fed\in FED$
+  \item Relation indicator parameters (from \texttt{Relationships.csv}): 
+  \begin{itemize}
+    \item $\text{R\_containsUS}(e,us)\in\{0,1\}$ for \texttt{contains\_user\_story} (R10)
+    \item $\text{R\_USinSBL}(us,s)\in\{0,1\}$ allowed by \texttt{is\_in\_sprint\_backlog} + \texttt{belongs\_to\_sprint} (R11, R12)
+    \item $\text{R\_taskBlocked}(tsk,bl)\in\{0,1\}$ for \texttt{is\_blocked\_by} (R16)
+    \item $\text{R\_featureInREP}(rep,f)\in\{0,1\}$ for \texttt{plans\_release} (R20)
+    \item $\text{R\_PBcontainsF}(pb,f)$, $\text{R\_PBcontainsE}(pb,e)$ (R7, R8)
+    \item $\text{R\_Sgoal}(s,sg)\in\{0,1\}$ for \texttt{pursues\_goal} (R13)
+  \end{itemize}
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{G0 maximize\_velocity\_avg\_story\_points}: 
+  \[
+    \max \; \sum_{vel\in VEL} \alpha_{G0}\cdot \text{avgsp}_{vel}
+  \]
+  where $\alpha_{G0}=1.00$ and $\text{avgsp}_{vel}$ corresponds to \texttt{Velocity.avg.\_story\_points}.
+  
+  \item \textbf{G1 minimize\_product\_backlog\_entries}: 
+  \[
+    \min \; \sum_{pb\in PB} \alpha_{G1}\cdot \text{entries}_{pb}
+  \]
+  with $\alpha_{G1}=0.40$ and $\text{entries}_{pb}=$ \texttt{ProductBacklog.number\_of\_entries}.
+  
+  \item \textbf{G2 minimize\_project\_budget\_use}: 
+  \[
+    \min \; \sum_{p\in P} \alpha_{G2}\cdot \text{budgetSpent}_{p}
+  \]
+  $\alpha_{G2}=0.85$, decision variable $\text{budgetSpent}_{p}=\texttt{DV6 }(p)$, bounded by \texttt{Project.budget}.
+  
+  \item \textbf{G3 maximize\_sprint\_goal\_achievement}:
+  \[
+    \max \; \sum_{s\in SP}\sum_{sg\in SG} \alpha_{G3}\cdot \text{ach}_{sg}\cdot \texttt{choose\_goal}_{sg,s}
+  \]
+  $\alpha_{G3}=0.80$, $\text{ach}_{sg}$ from \texttt{SprintGoal.achievement\_status}.
+  
+  \item \textbf{G4 minimize\_blocker\_severity}:
+  \[
+    \min \; \sum_{bl\in BL} \alpha_{G4}\cdot \text{sev}_{bl}\cdot (1-\texttt{mitigate\_blocker}_{bl})
+  \]
+  $\alpha_{G4}=0.90$, $\text{sev}_{bl}$ from \texttt{Blocker.severity}.
+  
+  \item \textbf{G5 minimize\_task\_effort}:
+  \[
+    \min \; \sum_{tsk\in TSK}\sum_{w\in W} \alpha_{G5}\cdot \text{eff}_{tsk}\cdot \texttt{assign\_task}_{tsk,w}
+  \]
+  $\alpha_{G5}=0.60$, $\text{eff}_{tsk}$ from \texttt{Task.effort}.
+  
+  \item \textbf{G6 maximize\_story\_points\_scheduled}:
+  \[
+    \max \; \sum_{us\in US}\sum_{s\in SP} \alpha_{G6}\cdot \text{sp}_{us}\cdot \texttt{schedule\_story}_{us,s}
+  \]
+  $\alpha_{G6}=1.00$, $\text{sp}_{us}$ from \texttt{UserStory.story\_points}.
+  
+  \item \textbf{G7 maximize\_team\_satisfaction}:
+  \[
+    \max \; \sum_{s\in SP} \alpha_{G7}\cdot \text{sat}_{s}
+  \]
+  with $\alpha_{G7}=0.70$, $\text{sat}_{s}$ from \texttt{SprintRetrospective.team\_satisfaction}.
+  
+  \item \textbf{G8 minimize\_scrum\_board\_cards}:
+  \[
+    \min \; \sum_{scb\in SCB} \alpha_{G8}\cdot \text{cards}_{scb}
+  \]
+  $\alpha_{G8}=0.50$, $\text{cards}_{scb}$ from \texttt{ScrumBoard.number\_of\_cards}.
+  
+  \item \textbf{G9 minimize\_daily\_scrum\_duration}:
+  \[
+    \min \; \sum_{ds\in DS} \alpha_{G9}\cdot \texttt{setup\_daily\_scrum\_duration}_{ds}
+  \]
+  $\alpha_{G9}=0.30$.
+  
+  \item \textbf{G10 maximize\_feature\_documentation\_links}:
+  \[
+    \max \; \sum_{fed\in FED} \alpha_{G10}\cdot \text{links}_{fed}
+  \]
+  $\alpha_{G10}=0.20$, $\text{links}_{fed}$ from \texttt{FeatureDocumentation.linked\_requirements} (normalized count).
+  
+  \item \textbf{G11 maximize\_deployment\_target\_coverage}:
+  \[
+    \max \; \sum_{dev\in DEV} \alpha_{G11}\cdot \text{depCov}_{dev}
+  \]
+  $\alpha_{G11}=0.20$, $\text{depCov}_{dev}$ derived from \texttt{DevelopmentSnapshot.deployment\_target}.
+  
+  \item \textbf{G12 maximize\_sprint\_review\_feedback}:
+  \[
+    \max \; \sum_{sr\in SR} \alpha_{G12}\cdot \text{fb}_{sr}
+  \]
+  $\alpha_{G12}=0.35$, $\text{fb}_{sr}$ from \texttt{SprintReview.feedback\_documentation}.
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{C0 limit\_budget\_by\_project} (Must-match): 
+  \[
+    \sum_{p\in P} \texttt{budget\_spent}_{p} \le \sum_{p\in P} \text{budget}_{p}
+  \]
+  where $\text{budget}_{p}$ is \texttt{Project.budget}.
+  
+  \item \textbf{C1 respect\_worker\_availability} (Must-match):
+  \[
+    \forall w\in W:\quad \sum_{s\in SP} \texttt{allocate\_effort}_{w,s} \le \text{avail}_{w}
+  \]
+  $\text{avail}_{w}$ from \texttt{Worker.availability}.
+  
+  \item \textbf{C2 cap\_sprint\_backlog\_total\_effort} (Must-match):
+  \[
+    \forall s\in SP:\quad \sum_{us\in US} \text{sp}_{us}\cdot \texttt{schedule\_story}_{us,s} \le \text{capSB}_{s}
+  \]
+  $\text{capSB}_{s}$ from \texttt{SprintBacklog.total\_effort}.
+  
+  \item \textbf{C3 at\_most\_one\_sprint\_goal\_per\_sprint} (Must-match):
+  \[
+    \forall s\in SP:\quad \sum_{sg\in SG} \texttt{choose\_goal}_{sg,s} \le 1
+  \]
+  
+  \item \textbf{C4 block\_unresolved\_blockers} (Cannot-match):
+  \[
+    \forall tsk\in TSK:\quad \sum_{w\in W}\texttt{assign\_task}_{tsk,w} \le \sum_{bl\in BL} \text{R\_taskBlocked}(tsk,bl)\cdot \texttt{mitigate\_blocker}_{bl}
+  \]
+  i.e., a task can be assigned only if its active blockers are mitigated.
+  
+  \item \textbf{C5 daily\_scrum\_max\_15\_minutes} (Must-match):
+  \[
+    \forall ds\in DS:\quad \texttt{setup\_daily\_scrum\_duration}_{ds} \le 15
+  \]
+  
+  \item \textbf{C6 maintain\_active\_product\_backlog} (Must-match):
+  \[
+    \forall pb\in PB:\quad \text{status}_{pb}=\text{``active''}
+  \]
+  
+  \item \textbf{C7 release\_within\_roadmap\_window} (Must-match):
+  \[
+    \forall rep\in REP:\quad \text{plannedDate}_{rep} \le \text{endDate}_{RM(rep)}
+  \]
+  linking \texttt{ReleasePlan.planned\_date} with \texttt{Roadmap.end\_date}.
+  
+  \item \textbf{C8 sprint\_review\_attendees\_cap} (Must-match):
+  \[
+    \forall sr\in SR:\quad \text{attendees}_{sr} \le \overline{A}
+  \]
+  with $\overline{A}$ a management cap; \texttt{SprintReview.attendees\_count}.
+  
+  \item \textbf{C9 documentation\_required\_for\_selected\_features} (Must-match):
+  \[
+    \forall f\in F:\quad \texttt{select\_feature}_{f} \Rightarrow \sum_{fed\in FED(f)} 1 \ge 1
+  \]
+  
+  \item \textbf{C10 team\_size\_capacity\_respected} (Must-match):
+  \[
+    \forall t\in T, p\in P:\quad \texttt{select\_team\_for\_project}_{t,p}\cdot \underline{m} \le \text{teamSize}_{t}
+  \]
+  where $\underline{m}$ is the minimum required staffing; \texttt{Team.team\_size}.
+  
+  \item \textbf{C11 velocity\_capacities\_applied} (Must-match):
+  \[
+    \forall s\in SP:\quad \texttt{story\_points\_committed}_{s} \le \sum_{vel\in VEL(s)} \text{avgsp}_{vel}
+  \]
+  
+  \item \textbf{C12 track\_sprint\_backlog\_status} (Must-match):
+  \[
+    \forall s\in SP:\quad \text{status}_{sbl(s)}=\text{``active''}
+  \]
+\end{itemize}
+
+\section{DecisionVariables}
+\begin{itemize}[leftmargin=2em]
+  \item Binary $x_{us,s}=\texttt{schedule\_story}_{us,s}$ (\texttt{DV0})
+  \item Binary $y_{tsk,w}=\texttt{assign\_task}_{tsk,w}$ (\texttt{DV1})
+  \item Binary $z_{rep,f}=\texttt{include\_feature}_{rep,f}$ (\texttt{DV2})
+  \item Binary $m_{bl}=\texttt{mitigate\_blocker}_{bl}$ (\texttt{DV3})
+  \item Binary $a_{s}=\texttt{activate\_sprint}_{s}$ (\texttt{DV4})
+  \item Continuous $q_{w,s}=\texttt{allocate\_effort}_{w,s}\in[0,1]$ (\texttt{DV5})
+  \item Continuous $b_{p}=\texttt{budget\_spent}_{p}\in[0,1]$ (\texttt{DV6})
+  \item Integer $c_{s}=\texttt{story\_points\_committed}_{s}\in\mathbb{Z}_{\ge0}$ (\texttt{DV7})
+  \item Binary $d_{s}=\texttt{deploy\_snapshot}_{s}$ (\texttt{DV8})
+  \item Binary $g_{sg,s}=\texttt{choose\_goal}_{sg,s}$ (\texttt{DV9})
+  \item Binary $u_{t,p}=\texttt{select\_team\_for\_project}_{t,p}$ (\texttt{DV10})
+  \item Integer $h_{ds}=\texttt{setup\_daily\_scrum\_duration}_{ds}\in[0,30]$ (\texttt{DV11})
+  \item Binary $r_{f}=\texttt{select\_feature}_{f}$ (\texttt{DV12})
+\end{itemize}
+
+\end{document}
