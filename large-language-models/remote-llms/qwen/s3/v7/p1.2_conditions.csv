@@ -1,14 +1,16 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-C0,capacity_respected,"Total task effort must not exceed available capacity.",True,min,Task,effort,2,1.0
-C1,mandatory_high_severity_blockers_addressed,"High-severity blockers must be resolved before release.",False,min,Blocker,status,2,1.2
-C2,stories_have_acceptance_criteria,"Only consider user stories with defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0
-C3,team_is_active,"Only active teams can be assigned sprint work.",False,max,Team,team_status,2,1.0
-C4,po_available_for_planning,"Product Owner must be available during sprint planning.",False,max,ProductOwner,availability,2,0.9
-C5,sm_experienced_threshold,"Scrum Master experience should meet a minimum threshold.",False,max,ScrumMaster,experience,1,0.6
-C6,feature_status_ready,"Features scheduled must be in a 'ready' status.",False,max,Feature,status,2,1.0
-C7,sprint_dates_valid,"Sprint end_date must be after start_date.",False,min,Sprint,start_date,2,1.0
-C8,backlog_is_current,"Backlog last_updated should be recent.",False,max,ProductBacklog,last_updated,1,0.5
-C9,release_has_planned_date,"Each release plan must include a planned date.",False,max,ReleasePlan,planned_date,2,1.0
-C10,roadmap_has_objectives,"Roadmap must specify objectives.",False,max,Roadmap,objectives,1,0.4
-C11,doc_linked_to_feature,"Feature documentation must link to its feature.",False,max,FeatureDocumentation,linked_requirements,2,0.8
-C12,team_size_within_bounds,"Team size should remain within acceptable range.",False,min,Team,team_size,1,0.7
+C0,require_worker_email,Worker must have valid email,False,0,Worker,email,2,1.0
+C1,require_team_location,Team must have defined location,False,0,Team,location,2,0.9
+C2,require_product_owner,Each project must have a Product Owner,False,0,ProductOwner,name,2,1.5
+C3,require_scrum_master,Each team must have a Scrum Master,False,0,ScrumMaster,name,2,1.5
+C4,enforce_task_status,Task status must not be null,False,0,Task,status,2,1.2
+C5,require_user_story_priority,User story must have priority assigned,False,0,UserStory,priority,2,1.1
+C6,require_sprint_dates,Sprint must have valid start and end dates,False,0,Sprint,start_date,2,1.3
+C7,limit_worker_per_team,Limit number of workers per team,True,min,Worker,team_id,2,1.0
+C8,enforce_feature_status,Feature status must be one of {planned,in_progress,done},False,0,Feature,status,2,1.0
+C9,require_release_status,ReleasePlan must have status field filled,False,0,ReleasePlan,status,2,0.8
+C10,ensure_backlog_entries,ProductBacklog must have at least one entry,False,0,ProductBacklog,number_of_entries,2,1.2
+C11,require_skill_certification,Skill should be certified for critical roles,False,0,Skill,certified,1,0.7
+C12,enforce_sprint_goal,Sprint must have a defined goal,False,0,SprintGoal,objective_description,2,1.4
+C13,require_roadmap_milestones,Roadmap must define key milestones,False,0,Roadmap,milestones,2,0.9
+C14,prevent_duplicate_tasks,No two tasks should have identical titles,False,0,Task,title,0,1.0

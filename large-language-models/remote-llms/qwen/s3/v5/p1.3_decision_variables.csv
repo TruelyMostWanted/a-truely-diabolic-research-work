@@ -1,14 +1,16 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_worker_to_task,Binary: assign worker to task,Boolean,{0,1},0,1
+DV1,select_feature_for_sprint,Binary: include feature in sprint,Boolean,{0,1},0,1
+DV2,plan_sprint_duration,Integer: length of sprint in days,Integer,{7,14,21},7,21
+DV3,allocate_budget_to_project,Continuous: budget assigned to project,Float,,1000,100000
+DV4,schedule_daily_scrum,Binary: daily scrum held on day,Boolean,{0,1},0,1
+DV5,activate_team,Binary: activate team for project,Boolean,{0,1},0,1
+DV6,start_project,Binary: initiate project timeline,Boolean,{0,1},0,1
+DV7,resolve_blocker,Binary: resolve blocker within sprint,Boolean,{0,1},0,1
+DV8,approve_release,Binary: approve release plan,Boolean,{0,1},0,1
+DV9,update_documentation,Binary: update documentation version,Boolean,{0,1},0,1
+DV10,moderate_retrospective,Binary: Scrum Master moderates retrospective,Boolean,{0,1},0,1
+DV11,estimate_story_points,Integer: assign story points to user story,Integer,,1,13
+DV12,define_sprint_goal,Binary: define sprint goal before sprint,Boolean,{0,1},0,1
+DV13,track_velocity,Binary: calculate velocity after sprint,Boolean,{0,1},0,1
+DV14,invite_stakeholder,Binary: invite stakeholder to review,Boolean,{0,1},0,1

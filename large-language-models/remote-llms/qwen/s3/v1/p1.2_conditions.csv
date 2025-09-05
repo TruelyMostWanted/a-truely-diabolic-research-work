@@ -1,14 +1,15 @@
 ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
-C0,capacity_respected,"Total task effort must not exceed available capacity.",True,min,Task,effort,2,1.0
-C1,mandatory_high_severity_blockers_addressed,"High-severity blockers must be resolved before release.",False,min,Blocker,status,2,1.2
-C2,stories_have_acceptance_criteria,"Only consider user stories with defined acceptance criteria.",False,max,UserStory,acceptance_criteria,2,1.0
-C3,team_is_active,"Only active teams can be assigned sprint work.",False,max,Team,team_status,2,1.0
-C4,po_available_for_planning,"Product Owner must be available during sprint planning.",False,max,ProductOwner,availability,2,0.9
-C5,sm_experienced_threshold,"Scrum Master experience should meet a minimum threshold.",False,max,ScrumMaster,experience,1,0.6
-C6,feature_status_ready,"Features scheduled must be in a 'ready' status.",False,max,Feature,status,2,1.0
-C7,sprint_dates_valid,"Sprint end_date must be after start_date.",False,min,Sprint,start_date,2,1.0
-C8,backlog_is_current,"Backlog last_updated should be recent.",False,max,ProductBacklog,last_updated,1,0.5
-C9,release_has_planned_date,"Each release plan must include a planned date.",False,max,ReleasePlan,planned_date,2,1.0
-C10,roadmap_has_objectives,"Roadmap must specify objectives.",False,max,Roadmap,objectives,1,0.4
-C11,doc_linked_to_feature,"Feature documentation must link to its feature.",False,max,FeatureDocumentation,linked_requirements,2,0.8
-C12,team_size_within_bounds,"Team size should remain within acceptable range.",False,min,Team,team_size,1,0.7
+C0,require_project_status_active,Only active projects are considered,True,min,Project,status,2,1.0
+C1,ensure_team_has_scrum_master,Each team must have a Scrum Master,False,min,Team,team_status,2,1.2
+C2,worker_must_be_available,Only available workers can be assigned,True,min,Worker,availability,2,1.3
+C3,feature_must_have_priority,Features without priority cannot be scheduled,True,min,Feature,priority,2,1.1
+C4,user_story_requires_acceptance_criteria,User stories must have acceptance criteria,False,min,UserStory,acceptance_criteria,2,1.0
+C5,sprint_must_have_goal,Each sprint must define a sprint goal,False,min,SprintGoal,objective_description,2,1.4
+C6,tasks_must_be_tracked_on_board,All tasks must appear on Scrum Board,True,min,Task,status,2,0.9
+C7,epic_cannot_exceed_estimated_effort,Epic effort must not exceed threshold,True,min,Epic,estimated_effort,0,0.8
+C8,blocker_must_be_resolved_quickly,Unresolved blockers after 7 days violate condition,True,min,Blocker,resolved_on,0,1.6
+C9,velocity_based_on_recent_sprints,Velocity must use at least 3 sprints,False,min,Velocity,number_of_sprints_used,2,0.7
+C10,release_plan_must_include_features,Each release must include at least one feature,True,min,ReleasePlan,included_features,2,1.0
+C11,daily_scrum_held_every_day,Team must hold daily scrum,True,min,DailyScrum,date,2,1.2
+C12,product_owner_must_manage_backlog,Each backlog must have an assigned Product Owner,False,min,ProductBacklog,id,2,1.1
+C13,worker_cannot_exceed_capacity,Total assigned effort must not exceed worker capacity,True,min,Worker,availability,0,1.4

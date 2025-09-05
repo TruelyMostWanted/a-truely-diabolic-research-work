@@ -1,14 +1,15 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_worker_to_task,Indicates if a worker is assigned to a task,bool,{0,1},0,1
+DV1,include_feature_in_sprint,Whether a feature is selected for current sprint,bool,{0,1},0,1
+DV2,start_new_sprint,Decide to initiate a new sprint cycle,bool,{0,1},0,1
+DV3,estimate_story_points,Estimated story points for a user story,int,[1,20],1,20
+DV4,allocate_effort_per_task,Planned effort (hours) for a task,float,[0,40],0,40
+DV5,schedule_sprint_review,Whether sprint review is scheduled,bool,{0,1},0,1
+DV6,update_product_backlog,Indicates backlog update activity,bool,{0,1},0,1
+DV7,resolve_blocker,Decision to resolve a blocker immediately,bool,{0,1},0,1
+DV8,document_feature,Whether feature documentation is created,bool,{0,1},0,1
+DV9,adjust_velocity_prediction,Modify predicted velocity based on trends,float,[0.5,2.0],0.5,2.0
+DV10,plan_release_version,Define next release version number,int,[1,100],1,100
+DV11,set_sprint_duration,Set length of sprint in days,int,{10,14,21},10,21
+DV12,moderate_retrospective_with_sm,Assign Scrum Master to moderate,bool,{0,1},0,1
+DV13,deploy_snapshot_after_sprint,Decide whether to deploy development snapshot,bool,{0,1},0,1

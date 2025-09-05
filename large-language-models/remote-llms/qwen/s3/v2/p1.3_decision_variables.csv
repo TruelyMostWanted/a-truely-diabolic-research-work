@@ -1,14 +1,16 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_worker_to_team,Binary: assign worker to team,bool,"{0,1}",0,1
+DV1,select_feature_for_backlog,Binary: include feature in backlog,bool,"{0,1}",0,1
+DV2,plan_sprint_duration,Integer: sprint length in days,int,,1,30
+DV3,allocate_story_points,Continuous: story points assigned per sprint,float,0,1,200
+DV4,estimate_task_effort,Continuous: effort estimate for a task in hours,float,0,160,0,160
+DV5,schedule_release_date,Continuous: release date as timestamp,float,0,32503680000,0,32503680000
+DV6,adjust_team_size,Integer: number of members in team,int,,1,50
+DV7,set_sprint_goal_achievement,Binary: whether sprint goal was met,bool,"{0,1}",0,1
+DV8,activate_skill_certification,Binary: enable certification path for skill,bool,"{0,1}",0,1
+DV9,moderate_retrospective_count,Integer: number of retrospectives moderated,int,,0,100
+DV10,update_documentation_frequency,Continuous: frequency of documentation updates per sprint,float,0,10,0,10
+DV11,resolve_blocker_time,Integer: time to resolve blocker in hours,int,,0,720
+DV12,set_influence_level,Continuous: stakeholder influence score,float,0,10,0,10
+DV13,track_velocity_trend,Continuous: trend value of velocity over time,float,-10,10,-10,10
+DV14,deploy_snapshot_target,Binary: deploy development snapshot,bool,"{0,1}",0,1

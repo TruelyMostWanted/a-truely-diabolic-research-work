@@ -1,14 +1,15 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_worker_to_team,Assignment of worker to team,integer,"{0,1}",0,1
+DV1,select_user_story_for_sprint,Inclusion of user story in sprint,integer,"{0,1}",0,1
+DV2,plan_sprint_duration,Planned duration of a sprint in days,real,,1,30
+DV3,estimate_task_effort,Estimated effort for a task,real,,0,40
+DV4,set_feature_priority,Priority level assigned to a feature,integer,,1,5
+DV5,allocate_budget_to_project,Budget allocation to a project,real,,1000,1000000
+DV6,schedule_release_date,Planned release date as day of year,integer,,1,365
+DV7,define_team_size,Number of members in a team,integer,,3,12
+DV8,adjust_velocity_trend,Trend adjustment factor for velocity,real,[-1.0,1.0],-1.0,1.0
+DV9,moderate_retrospective_time,Duration of retrospective in minutes,real,,15,90
+DV10,update_documentation_version,Version number of documentation,real,,1.0,10.0
+DV11,resolve_blocker_flag,Flag indicating if blocker is resolved,integer,"{0,1}",0,1
+DV12,attend_stakeholder_review,Stakeholder attends sprint review,integer,"{0,1}",0,1
+DV13,deploy_snapshot_target,Target environment for deployment,integer,"{0,1,2}",0,2

@@ -1,14 +1,15 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_worker_to_team,Binary assignment of workers to teams,bool,{0,1},0,1
+DV1,select_user_story_for_sprint,Binary selection of user stories for sprint,bool,{0,1},0,1
+DV2,estimate_task_effort,Estimated effort for a task,integer,"[1,40]",1,40
+DV3,set_sprint_duration,Duration of a sprint in days,integer,"[5,30]",5,30
+DV4,allocate_budget_to_project,Budget allocated to a project,float,"[0,1000000]",0,1000000
+DV5,schedule_sprint_start_date,Planned start date of a sprint,date,"[2024-01-01,2026-12-31]",2024-01-01,2026-12-31
+DV6,define_task_status,Status of a task during sprint,string,"{todo,in_progress,blocked,done}",,,
+DV7,plan_release_version,Version number for release,string,"{v1.0,v1.1,v2.0,v2.1,v3.0}",,,
+DV8,set_worker_availability,Weekly availability of worker in hours,float,"[0,40]",0,40
+DV9,choose_documentation_format,Format type for feature documentation,string,"{markdown,pdf,confluence}",,,
+DV10,moderate_retrospective_assignment,Assignment of Scrum Master to moderate,string,"{assigned,pending}",,,
+DV11,update_product_backlog_order,Order index of item in backlog,integer,"[0,1000]",0,1000
+DV12,trigger_development_snapshot,Whether a snapshot is generated after sprint,bool,{0,1},0,1
+DV13,set_epic_priority,Priority level for an epic,string,"{low,medium,high,critical}",,,

@@ -1,14 +1,16 @@
 ID,Name,Description,DataType,Domain,MinValue,MaxValue
-DV0,select_feature_for_release,"Binary decision to include a feature in the upcoming release.",binary,{0,1},0,1
-DV1,assign_user_story_to_sprint,"Assign a user story to the current sprint.",binary,{0,1},0,1
-DV2,activate_task,"Select a task for implementation this sprint.",binary,{0,1},0,1
-DV3,allocate_budget_project,"Amount of budget allocated to the project in this planning cycle.",real,R+,0,100000000
-DV4,set_story_priority_adjustment,"Integer adjustment applied to user story priority.",integer,Z,-5,5
-DV5,team_capacity_reserved_points,"Story points reserved for the team this sprint.",integer,Z+,0,500
-DV6,set_sprint_goal_focus,"Categorical encoding for chosen sprint goal focus area.",integer,{0,1,2,3},0,3
-DV7,staff_availability_override,"Override factor applied to worker availability for planning.",real,[0.0,1.0],0,1
-DV8,select_blocker_fix_now,"Immediate fix decision for a given blocker.",binary,{0,1},0,1
-DV9,enable_ci_stage_deploy,"Toggle deployment to a given environment in CI/CD.",binary,{0,1},0,1
-DV10,number_of_review_attendees_target,"Target number of attendees for sprint review invites.",integer,Z+,0,200
-DV11,set_release_batch_size,"Number of features batched into the next release.",integer,Z+,0,200
-DV12,limit_backlog_entries_visible,"Cap of visible entries to enforce focus during refinement.",integer,Z+,0,1000
+DV0,assign_worker_to_team,Assignment of worker to team,integer,"{0,1}",0,1
+DV1,select_feature_for_backlog,Whether a feature is selected for Product Backlog,integer,"{0,1}",0,1
+DV2,include_story_in_sprint,Whether a user story is included in current sprint,integer,"{0,1}",0,1
+DV3,estimate_task_effort,Estimated effort for a given task,continuous,,0,40
+DV4,plan_sprint_duration,Planned length of a sprint in days,integer,,1,30
+DV5,set_story_points,Assign story points to a user story,integer,,1,13
+DV6,allocate_budget_to_project,Amount of budget allocated to a project,continuous,,0,1000000
+DV7,schedule_sprint_start,Start date of a sprint,continuous,,0,365
+DV8,define_team_size,Number of members in a team,integer,,1,20
+DV9,moderate_retrospective,Scrum Master moderates retrospective,integer,"{0,1}",0,1
+DV10,resolve_blocker,Time taken to resolve a blocker,continuous,,0,30
+DV11,update_documentation,Whether documentation is updated,integer,"{0,1}",0,1
+DV12,set_velocity,Target velocity for next sprint,continuous,,0,100
+DV13,plan_release_date,Planned release date in days from start,continuous,,0,730
+DV14,manage_product_backlog,Product Owner manages backlog (binary),integer,"{0,1}",0,1
