@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Optimization Model},
+    bookmarks=true,
+}
+
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $Project$ : The product or initiative to be developed
+    \item $Team$ : Self-organized, cross-functional development team
+    \item $Worker$ : Individual team member working on the project
+    \item $Feature$ : Mid-sized functionality
+    \item $Skill$ : Professional or social competence of a worker
+    \item $Role$ : Defined responsibilities within the Scrum team
+    \item $ProductOwner$ : Responsible for product vision and Product Backlog
+    \item $ScrumMaster$ : Supports the team in applying Scrum
+    \item $ProductBacklog$ : Ordered list of all requirements
+    \item $Sprint$ : Fixed time period for creating an increment
+    \item $SprintPlanning$ : Kick-off meeting for Sprint preparation
+    \item $DailyScrum$ : Daily 15-minute team meeting
+    \item $SprintReview$ : Presentation and acceptance of results
+    \item $SprintRetrospective$ : Retrospective for process improvement
+    \item $SprintBacklog$ : Selected backlog items + implementation plan
+    \item $SprintGoal$ : Objective to be achieved within the sprint
+    \item $Epic$ : Large requirement that can be split into stories
+    \item $UserStory$ : Requirement from the perspective of a user
+    \item $Task$ : Smallest unit of work within a sprint
+    \item $DevelopmentSnapshot$ : Product at the end of a sprint
+    \item $Blocker$ : Obstacle hindering progress
+    \item $Stakeholder$ : Interested party in the product (internal/external)
+    \item $Velocity$ : Average amount of work per sprint
+    \item $ReleasePlan$ : Plan for releasing specific features
+    \item $Roadmap$ : Long-term planning across releases
+    \item $ScrumBoard$ : Visual representation of tasks during the sprint
+    \item $FeatureDocumentation$ : Documentation for a specific feature
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, p' \in Project$
+    \item $t \in Team$
+    \item $w \in Worker$
+    \item $f \in Feature$
+    \item $s \in Skill$
+    \item $r \in Role$
+    \item $po \in ProductOwner$
+    \item $sm \in ScrumMaster$
+    \item $pb \in ProductBacklog$
+    \item $sp \in Sprint$
+    \item $spp \in SprintPlanning$
+    \item $ds \in DailyScrum$
+    \item $sr \in SprintReview$
+    \item $sre \in SprintRetrospective$
+    \item $sbl \in SprintBacklog$
+    \item $sg \in SprintGoal$
+    \item $e \in Epic$
+    \item $us \in UserStory$
+    \item $tsk \in Task$
+    \item $dev \in DevelopmentSnapshot$
+    \item $bl \in Blocker$
+    \item $sh \in Stakeholder$
+    \item $vel \in Velocity$
+    \item $rep \in ReleasePlan$
+    \item $rm \in Roadmap$
+    \item $scb \in ScrumBoard$
+    \item $fed \in FeatureDocumentation$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_velocity} - Maximize the average velocity of the team
+          \[ \text{maximize} \sum_{t} \text{velocity.avg\_story\_points}(t) \]
+    \item \textbf{G1: minimize\_project\_budget} - Minimize the total project budget
+          \[ \text{minimize } \text{project.budget}(p) \]
+    \item \textbf{G2: minimize\_blocker\_severity} - Minimize the severity of active blockers
+          \[ \text{minimize} \sum_{bl} \text{blocker.severity}(bl) \]
+    \item \textbf{G3: maximize\_feature\_priority} - Maximize the total priority of features in the release
+          \[ \text{maximize} \sum_{f} \text{feature.priority}(f) \]
+    \item \textbf{G4: maximize\_worker\_availability} - Maximize the overall availability of the team
+          \[ \text{maximize} \sum_{w} \text{worker.availability}(w) \]
+    \item \textbf{G5: minimize\_sprint\_duration} - Minimize the duration of sprint meetings
+          \[ \text{minimize } \text{sprintplanning.duration\_min}(spp) \]
+    \item \textbf{G6: maximize\_stakeholder\_influence} - Maximize the influence level of engaged stakeholders
+          \[ \text{maximize} \sum_{sh} \text{stakeholder.influence\_level}(sh) \]
+    \item \textbf{G7: minimize\_task\_effort} - Minimize the total effort of tasks in the sprint
+          \[ \text{minimize} \sum_{tsk} \text{task.effort}(tsk) \]
+    \item \textbf{G8: maximize\_sprint\_goal\_achievement} - Maximize the achievement status of the sprint goal
+          \[ \text{maximize } \text{sprintgoal.achievement\_status}(sg) \]
+    \item \textbf{G9: maximize\_skill\_level} - Maximize the average skill level of the team
+          \[ \text{maximize} \sum_{s} \text{skill.level}(s) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: project\_budget\_limit} - The total project budget must not be exceeded
+          \[ \text{project.budget}(p) \leq B_{\text{max}} \]
+    \item \textbf{C1: sprint\_duration\_fixed} - Sprint duration is fixed and cannot be changed
+          \[ \text{sprint.end\_date}(sp) - \text{sprint.start\_date}(sp) = D_{\text{fixed}} \]
+    \item \textbf{C2: team\_size\_minimum} - The team must have a minimum size
+          \[ \text{team.team\_size}(t) \geq T_{\text{min}} \]
+    \item \textbf{C3: worker\_availability\_threshold} - Each worker's availability must be above a threshold
+          \[ \text{worker.availability}(w) \geq A_{\text{min}}, \forall w \]
+    \item \textbf{C4: feature\_priority\_high} - Only high-priority features can be selected
+          \[ \text{feature.priority}(f) \geq P_{\text{high}}, \forall f \text{ selected} \]
+    \item \textbf{C5: story\_points\_capacity} - Total story points in a sprint cannot exceed team velocity
+          \[ \sum_{us} \text{userstory.story\_points}(us) \cdot X_{us} \leq V_{\text{team}} \]
+    \item \textbf{C6: task\_effort\_capacity} - Total effort of tasks cannot exceed team capacity
+          \[ \sum_{tsk} \text{task.effort}(tsk) \cdot Y_{tsk} \leq C_{\text{team}} \]
+    \item \textbf{C7: blocker\_must\_be\_resolved} - Critical blockers must be resolved before deployment
+          \[ \text{blocker.severity}(bl) \leq S_{\text{non-critical}}, \forall bl \text{ active} \]
+    \item \textbf{C8: snapshot\_test\_status} - Development snapshot must pass tests before release
+          \[ \text{developmentsnapshot.test\_status}(dev) = \text{"Pass"} \]
+    \item \textbf{C9: skill\_required\_for\_task} - Task assignment requires worker to have necessary skill
+          \[ \text{skill.level}(s_{w}) \geq \text{skill.level}(s_{\text{req}}), \forall \text{assignment} \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $DV0$: $assign\_worker\_to\_task(w, tsk) \in \{0, 1\}$ : Whether a specific worker is assigned to a specific task
+    \item $DV1$: $select\_feature\_for\_sprint(f, sp) \in \{0, 1\}$ : Whether a specific feature is included in the current sprint
+    \item $DV2$: $select\_user\_story\_for\_sprint(us, sp) \in \{0, 1\}$ : Whether a specific user story is included in the current sprint
+    \item $DV3$: $set\_sprint\_velocity(sp) \in \mathbb{Z}^{+}, [5, 50]$ : The planned velocity for the upcoming sprint
+    \item $DV4$: $allocate\_budget\_to\_feature(f) \in \mathbb{R}^{+}, [0, 1000000]$ : The amount of budget allocated to a specific feature
+    \item $DV5$: $set\_worker\_availability(w) \in \mathbb{R}^{+}, [0, 100]$ : The planned availability percentage for a worker
+    \item $DV6$: $assign\_skill\_level(tsk, s) \in \mathbb{Z}^{+}, [1, 5]$ : The required skill level for a task
+    \item $DV7$: $resolve\_blocker\_priority(bl) \in \mathbb{Z}^{+}, [1, 3]$ : The priority level for resolving a blocker
+    \item $DV8$: $set\_sprint\_goal\_achievement(sg) \in \mathbb{R}^{+}, [0, 100]$ : The target achievement percentage for the sprint goal
+    \item $DV9$: $number\_of\_sprints(p) \in \mathbb{Z}^{+}, [1, 20]$ : The total number of sprints for the project
+\end{itemize}
+
+\end{document}

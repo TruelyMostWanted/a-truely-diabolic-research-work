@@ -1,0 +1,318 @@
+graph TD
+    %% Color Definitions
+    classDef entity fill:#aaccff,stroke:#333,stroke-width:2px
+    classDef attribute fill:#ffffff,stroke:#666,stroke-width:1px
+    classDef relation fill:#ffcc80,stroke:#333,stroke-width:2px
+    classDef goal fill:#90EE90,stroke:#333,stroke-width:2px
+    classDef condition fill:#ffcccc,stroke:#333,stroke-width:2px
+    classDef decision fill:#e0c0ff,stroke:#333,stroke-width:2px
+
+    %% Entities and their Attributes
+    E0(Project):::entity
+    A0_0(id):::attribute
+    A0_1(name):::attribute
+    A0_2(project_start):::attribute
+    A0_3(project_end):::attribute
+    A0_4(description):::attribute
+    A0_5(budget):::attribute
+    A0_6(status):::attribute
+    A0_7(target_audience):::attribute
+    A0_8(priority):::attribute
+    E0 --> A0_0
+    E0 --> A0_1
+    E0 --> A0_2
+    E0 --> A0_3
+    E0 --> A0_4
+    E0 --> A0_5
+    E0 --> A0_6
+    E0 --> A0_7
+    E0 --> A0_8
+
+    E1(Team):::entity
+    A1_0(id):::attribute
+    A1_1(name):::attribute
+    A1_2(team_size):::attribute
+    A1_3(team_start):::attribute
+    A1_4(team_status):::attribute
+    A1_5(location):::attribute
+    A1_6(team_type):::attribute
+    E1 --> A1_0
+    E1 --> A1_1
+    E1 --> A1_2
+    E1 --> A1_3
+    E1 --> A1_4
+    E1 --> A1_5
+    E1 --> A1_6
+
+    E2(Worker):::entity
+    A2_0(id):::attribute
+    A2_1(name):::attribute
+    A2_2(first_name):::attribute
+    A2_3(email):::attribute
+    A2_4(start_date):::attribute
+    A2_5(status):::attribute
+    A2_6(availability):::attribute
+    E2 --> A2_0
+    E2 --> A2_1
+    E2 --> A2_2
+    E2 --> A2_3
+    E2 --> A2_4
+    E2 --> A2_5
+    E2 --> A2_6
+
+    E3(Feature):::entity
+    A3_0(id):::attribute
+    A3_1(title):::attribute
+    A3_2(description):::attribute
+    A3_3(status):::attribute
+    A3_4(priority):::attribute
+    A3_5(estimated_effort):::attribute
+    E3 --> A3_0
+    E3 --> A3_1
+    E3 --> A3_2
+    E3 --> A3_3
+    E3 --> A3_4
+    E3 --> A3_5
+
+    E4(Skill):::entity
+    A4_0(id):::attribute
+    A4_1(label):::attribute
+    A4_2(description):::attribute
+    A4_3(level):::attribute
+    A4_4(certified):::attribute
+    A4_5(category):::attribute
+    E4 --> A4_0
+    E4 --> A4_1
+    E4 --> A4_2
+    E4 --> A4_3
+    E4 --> A4_4
+    E4 --> A4_5
+
+    E20(Blocker):::entity
+    A20_0(id):::attribute
+    A20_1(title):::attribute
+    A20_2(description):::attribute
+    A20_3(severity):::attribute
+    A20_4(status):::attribute
+    A20_5(detected_on):::attribute
+    A20_6(resolved_on):::attribute
+    E20 --> A20_0
+    E20 --> A20_1
+    E20 --> A20_2
+    E20 --> A20_3
+    E20 --> A20_4
+    E20 --> A20_5
+    E20 --> A20_6
+
+    E21(Stakeholder):::entity
+    A21_0(id):::attribute
+    A21_1(name):::attribute
+    A21_2(organization):::attribute
+    A21_3(role):::attribute
+    A21_4(email):::attribute
+    A21_5(area_of_interest):::attribute
+    A21_6(influence_level):::attribute
+    A21_7(relevance_to_feature):::attribute
+    E21 --> A21_0
+    E21 --> A21_1
+    E21 --> A21_2
+    E21 --> A21_3
+    E21 --> A21_4
+    E21 --> A21_5
+    E21 --> A21_6
+    E21 --> A21_7
+
+    E9(Sprint):::entity
+    A9_0(id):::attribute
+    A9_1(sprint_number):::attribute
+    A9_2(start_date):::attribute
+    A9_3(end_date):::attribute
+    A9_4(status):::attribute
+    A9_5(achievement_of_goal):::attribute
+    E9 --> A9_0
+    E9 --> A9_1
+    E9 --> A9_2
+    E9 --> A9_3
+    E9 --> A9_4
+    E9 --> A9_5
+
+    E18(Task):::entity
+    A18_0(id):::attribute
+    A18_1(title):::attribute
+    A18_2(description):::attribute
+    A18_3(status):::attribute
+    A18_4(effort):::attribute
+    A18_5(type):::attribute
+    E18 --> A18_0
+    E18 --> A18_1
+    E18 --> A18_2
+    E18 --> A18_3
+    E18 --> A18_4
+    E18 --> A18_5
+
+    E15(SprintGoal):::entity
+    A15_0(id):::attribute
+    A15_1(objective_description):::attribute
+    A15_2(achievement_status):::attribute
+    A15_3(benefit):::attribute
+    E15 --> A15_0
+    E15 --> A15_1
+    E15 --> A15_2
+    E15 --> A15_3
+
+    E17(UserStory):::entity
+    A17_0(id):::attribute
+    A17_1(title):::attribute
+    A17_2(description):::attribute
+    A17_3(acceptance_criteria):::attribute
+    A17_4(priority):::attribute
+    A17_5(story_points):::attribute
+    A17_6(status):::attribute
+    E17 --> A17_0
+    E17 --> A17_1
+    E17 --> A17_2
+    E17 --> A17_3
+    E17 --> A17_4
+    E17 --> A17_5
+    E17 --> A17_6
+
+    %% Relations (Simplified subset for clarity)
+    R1(is_assigned_to_project):::relation
+    E1 -- R1 --> E0
+
+    R2(belongs_to_team):::relation
+    E2 -- R2 --> E1
+
+    R16(is_blocked_by):::relation
+    E18 -- R16 --> E20
+
+    R13(pursues_goal):::relation
+    E9 -- R13 --> E15
+
+    R10(consists_of_tasks):::relation
+    E17 -- R10 --> E18
+
+    %% Goals
+    G0("G0: maximize_team_velocity"):::goal
+    G0 --> E1
+    G0 --> A1_2
+
+    G1("G1: minimize_project_budget"):::goal
+    G1 --> E0
+    G1 --> A0_5
+
+    G2("G2: maximize_feature_priority"):::goal
+    G2 --> E3
+    G2 --> A3_4
+
+    G3("G3: minimize_blocker_severity"):::goal
+    G3 --> E20
+    G3 --> A20_3
+
+    G4("G4: maximize_stakeholder_influence"):::goal
+    G4 --> E21
+    G4 --> A21_6
+
+    G5("G5: minimize_sprint_goal_failure"):::goal
+    G5 --> E9
+    G5 --> A9_5
+
+    G6("G6: maximize_worker_availability"):::goal
+    G6 --> E2
+    G6 --> A2_6
+
+    G7("G7: minimize_task_effort"):::goal
+    G7 --> E18
+    G7 --> A18_4
+
+    G8("G8: maximize_skill_level"):::goal
+    G8 --> E4
+    G8 --> A4_3
+
+    G9("G9: minimize_sprint_duration"):::goal
+    G9 --> E9
+    G9 --> A9_2
+    G9 --> A9_3
+
+    %% Conditions
+    C0("C0: project_must_have_team"):::condition
+    C0 --> E0
+    C0 --> R1
+
+    C1("C1: worker_availability_threshold"):::condition
+    C1 --> E2
+    C1 --> A2_6
+
+    C2("C2: feature_priority_range"):::condition
+    C2 --> E3
+    C2 --> A3_4
+
+    C3("C3: blocker_severity_limit"):::condition
+    C3 --> E20
+    C3 --> A20_3
+
+    C4("C4: sprint_goal_must_be_set"):::condition
+    C4 --> E9
+    C4 --> R13
+    C4 --> E15
+
+    C5("C5: task_effort_positive"):::condition
+    C5 --> E18
+    C5 --> A18_4
+
+    C6("C6: team_size_limit"):::condition
+    C6 --> E1
+    C6 --> A1_2
+
+    C7("C7: user_story_has_acceptance_criteria"):::condition
+    C7 --> E17
+    C7 --> A17_3
+
+    C8("C8: sprint_duration_fixed"):::condition
+    C8 --> E9
+    C8 --> A9_2
+    C8 --> A9_3
+
+    C9("C9: budget_not_exceeded"):::condition
+    C9 --> E0
+    C9 --> A0_5
+
+    %% Decision Variables
+    DV0("DV0: assign_worker_to_team"):::decision
+    DV0 --> E2
+    DV0 --> E1
+
+    DV1("DV1: select_feature_for_sprint"):::decision
+    DV1 --> E3
+    DV1 --> E9
+
+    DV2("DV2: assign_task_to_worker"):::decision
+    DV2 --> E18
+    DV2 --> E2
+
+    DV3("DV3: team_size"):::decision
+    DV3 --> E1
+    DV3 --> A1_2
+
+    DV4("DV4: project_budget_spent"):::decision
+    DV4 --> E0
+    DV4 --> A0_5
+
+    DV5("DV5: sprint_velocity"):::decision
+    DV5 --> E9
+
+    DV6("DV6: worker_availability_percentage"):::decision
+    DV6 --> E2
+    DV6 --> A2_6
+
+    DV7("DV7: feature_priority_value"):::decision
+    DV7 --> E3
+    DV7 --> A3_4
+
+    DV8("DV8: blocker_severity_level"):::decision
+    DV8 --> E20
+    DV8 --> A20_3
+
+    DV9("DV9: sprint_goal_achieved"):::decision
+    DV9 --> E9
+    DV9 --> A9_5

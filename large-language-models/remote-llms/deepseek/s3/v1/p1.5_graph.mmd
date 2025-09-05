@@ -1,0 +1,183 @@
+graph TD
+    %% Define Styles
+    classDef entity fill:#a4c2f4,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#fff,stroke:#666,stroke-width:1px;
+    classDef relation fill:#f6b26b,stroke:#333,stroke-width:2px;
+    classDef goal fill:#b6d7a8,stroke:#333,stroke-width:2px;
+    classDef condition fill:#ea9999,stroke:#333,stroke-width:2px;
+    classDef decision fill:#d9d2e9,stroke:#333,stroke-width:2px;
+
+    %% Entities and their Attributes (Subgraphs for clarity)
+    subgraph ProjectEntity[Project Entity]
+        Project("Project (E0)"):::entity
+        P_attr1("id"):::attribute
+        P_attr2("name"):::attribute
+        P_attr3("budget"):::attribute
+        P_attr4("status"):::attribute
+        Project --- P_attr1
+        Project --- P_attr2
+        Project --- P_attr3
+        Project --- P_attr4
+    end
+
+    subgraph TeamEntity[Team Entity]
+        Team("Team (E1)"):::entity
+        T_attr1("id"):::attribute
+        T_attr2("name"):::attribute
+        T_attr3("team_size"):::attribute
+        Team --- T_attr1
+        Team --- T_attr2
+        Team --- T_attr3
+    end
+
+    subgraph WorkerEntity[Worker Entity]
+        Worker("Worker (E2)"):::entity
+        W_attr1("id"):::attribute
+        W_attr2("name"):::attribute
+        W_attr3("availability"):::attribute
+        Worker --- W_attr1
+        Worker --- W_attr2
+        Worker --- W_attr3
+    end
+
+    subgraph FeatureEntity[Feature Entity]
+        Feature("Feature (E3)"):::entity
+        F_attr1("id"):::attribute
+        F_attr2("title"):::attribute
+        F_attr3("priority"):::attribute
+        Feature --- F_attr1
+        Feature --- F_attr2
+        Feature --- F_attr3
+    end
+
+    subgraph VelocityEntity[Velocity Entity]
+        Velocity("Velocity (E22)"):::entity
+        V_attr1("id"):::attribute
+        V_attr2("avg._story_points"):::attribute
+        Velocity --- V_attr1
+        Velocity --- V_attr2
+    end
+
+    subgraph BlockerEntity[Blocker Entity]
+        Blocker("Blocker (E20)"):::entity
+        B_attr1("id"):::attribute
+        B_attr2("title"):::attribute
+        B_attr3("severity"):::attribute
+        Blocker --- B_attr1
+        Blocker --- B_attr2
+        Blocker --- B_attr3
+    end
+
+    subgraph UserStoryEntity[UserStory Entity]
+        UserStory("UserStory (E17)"):::entity
+        US_attr1("id"):::attribute
+        US_attr2("story_points"):::attribute
+        UserStory --- US_attr1
+        UserStory --- US_attr2
+    end
+
+    subgraph TaskEntity[Task Entity]
+        Task("Task (E18)"):::entity
+        Tsk_attr1("id"):::attribute
+        Tsk_attr2("effort"):::attribute
+        Task --- Tsk_attr1
+        Task --- Tsk_attr2
+    end
+
+    subgraph StakeholderEntity[Stakeholder Entity]
+        Stakeholder("Stakeholder (E21)"):::entity
+        SH_attr1("id"):::attribute
+        SH_attr2("influence_level"):::attribute
+        Stakeholder --- SH_attr1
+        Stakeholder --- SH_attr2
+    end
+
+    subgraph SkillEntity[Skill Entity]
+        Skill("Skill (E4)"):::entity
+        S_attr1("id"):::attribute
+        S_attr2("level"):::attribute
+        Skill --- S_attr1
+        Skill --- S_attr2
+    end
+
+    subgraph SprintGoalEntity[SprintGoal Entity]
+        SprintGoal("SprintGoal (E15)"):::entity
+        SG_attr1("id"):::attribute
+        SG_attr2("achievement_status"):::attribute
+        SprintGoal --- SG_attr1
+        SprintGoal --- SG_attr2
+    end
+
+    %% Core Relationships
+    R1("is_assigned_to_project (R1)"):::relation
+    R2("belongs_to_team (R2)"):::relation
+    R19("refers_to_team (R19)"):::relation
+
+    Team -.->|R1| Project
+    Worker -.->|R2| Team
+    Velocity -.->|R19| Team
+
+    %% Goals
+    G0("G0: maximize_team_availability"):::goal
+    G1("G1: minimize_project_budget"):::goal
+    G2("G2: maximize_velocity"):::goal
+    G3("G3: minimize_blocker_severity"):::goal
+    G4("G4: maximize_feature_priority"):::goal
+    G7("G7: minimize_task_effort"):::goal
+    G6("G6: maximize_stakeholder_influence"):::goal
+    G8("G8: maximize_skill_level"):::goal
+    G9("G9: minimize_sprint_goal_failure"):::goal
+
+    G0 -.-o|Targets| W_attr3
+    G1 -.-o|Targets| P_attr3
+    G2 -.-o|Targets| V_attr2
+    G3 -.-o|Targets| B_attr3
+    G4 -.-o|Targets| F_attr3
+    G7 -.-o|Targets| Tsk_attr2
+    G6 -.-o|Targets| SH_attr2
+    G8 -.-o|Targets| S_attr2
+    G9 -.-o|Targets| SG_attr2
+
+    %% Conditions
+    C0("C0: team_size_constraint"):::condition
+    C1("C1: project_status_active"):::condition
+    C3("C3: story_points_positive"):::condition
+    C4("C4: task_effort_positive"):::condition
+    C5("C5: budget_non_negative"):::condition
+    C6("C6: worker_availability_range"):::condition
+    C7("C7: blocker_severity_range"):::condition
+    C8("C8: feature_priority_range"):::condition
+    C9("C9: sprint_goal_achievement_binary"):::condition
+
+    C0 -.-x|Constrains| T_attr3
+    C1 -.-x|Constrains| P_attr4
+    C3 -.-x|Constrains| US_attr2
+    C4 -.-x|Constrains| Tsk_attr2
+    C5 -.-x|Constrains| P_attr3
+    C6 -.-x|Constrains| W_attr3
+    C7 -.-x|Constrains| B_attr3
+    C8 -.-x|Constrains| F_attr3
+    C9 -.-x|Constrains| SG_attr2
+
+    %% Decision Variables
+    DV0("DV0: assign_worker_to_team"):::decision
+    DV1("DV1: select_feature_for_release"):::decision
+    DV2("DV2: allocate_budget_to_project"):::decision
+    DV3("DV3: set_sprint_velocity"):::decision
+    DV4("DV4: assign_story_points"):::decision
+    DV5("DV5: set_worker_availability"):::decision
+    DV6("DV6: set_task_effort"):::decision
+    DV7("DV7: set_feature_priority"):::decision
+    DV8("DV8: set_blocker_severity"):::decision
+    DV9("DV9: set_sprint_goal_status"):::decision
+
+    DV0 -.-)|Sets| R2
+    DV1 -.-)|Sets| R20
+    DV2 -.-)|Sets| P_attr3
+    DV3 -.-)|Sets| V_attr2
+    DV4 -.-)|Sets| US_attr2
+    DV5 -.-)|Sets| W_attr3
+    DV6 -.-)|Sets| Tsk_attr2
+    DV7 -.-)|Sets| F_attr3
+    DV8 -.-)|Sets| B_attr3
+    DV9 -.-)|Sets| SG_attr2

@@ -1,0 +1,197 @@
+graph TD
+    %% Entity Definitions (Blue)
+    E0[Project]:::entity
+    E1[Team]:::entity
+    E2[Worker]:::entity
+    E3[Feature]:::entity
+    E4[Skill]:::entity
+    E5[Role]:::entity
+    E6[ProductOwner]:::entity
+    E7[ScrumMaster]:::entity
+    E8[ProductBacklog]:::entity
+    E9[Sprint]:::entity
+    E10[SprintPlanning]:::entity
+    E11[DailyScrum]:::entity
+    E12[SprintReview]:::entity
+    E13[SprintRetrospective]:::entity
+    E14[SprintBacklog]:::entity
+    E15[SprintGoal]:::entity
+    E16[Epic]:::entity
+    E17[UserStory]:::entity
+    E18[Task]:::entity
+    E19[DevelopmentSnapshot]:::entity
+    E20[Blocker]:::entity
+    E21[Stakeholder]:::entity
+    E22[Velocity]:::entity
+    E23[ReleasePlan]:::entity
+    E24[Roadmap]:::entity
+    E25[ScrumBoard]:::entity
+    E26[FeatureDocumentation]:::entity
+
+    %% Attribute Definitions (White)
+    A_E0_id[id]:::attribute
+    A_E0_name[name]:::attribute
+    A_E0_budget[budget]:::attribute
+    A_E0_status[status]:::attribute
+
+    A_E1_id[id]:::attribute
+    A_E1_name[name]:::attribute
+    A_E1_team_size[team_size]:::attribute
+    A_E1_avg_story_points[avg._story_points]:::attribute
+
+    A_E2_id[id]:::attribute
+    A_E2_name[name]:::attribute
+    A_E2_availability[availability]:::attribute
+
+    A_E3_id[id]:::attribute
+    A_E3_priority[priority]:::attribute
+    A_E3_estimated_effort[estimated_effort]:::attribute
+    A_E3_status[status]:::attribute
+
+    A_E7_experience[experience]:::attribute
+
+    A_E15_achievement_status[achievement_status]:::attribute
+
+    A_E17_story_points[story_points]:::attribute
+
+    A_E18_effort[effort]:::attribute
+
+    A_E20_severity[severity]:::attribute
+    A_E20_status[status]:::attribute
+    A_E20_resolved_on[resolved_on]:::attribute
+
+    A_E21_influence_level[influence_level]:::attribute
+
+    %% Connect Entities to their Attributes
+    E0 --> A_E0_id
+    E0 --> A_E0_name
+    E0 --> A_E0_budget
+    E0 --> A_E0_status
+
+    E1 --> A_E1_id
+    E1 --> A_E1_name
+    E1 --> A_E1_team_size
+    E1 --> A_E1_avg_story_points
+
+    E2 --> A_E2_id
+    E2 --> A_E2_name
+    E2 --> A_E2_availability
+
+    E3 --> A_E3_id
+    E3 --> A_E3_priority
+    E3 --> A_E3_estimated_effort
+    E3 --> A_E3_status
+
+    E7 --> A_E7_experience
+
+    E15 --> A_E15_achievement_status
+
+    E17 --> A_E17_story_points
+
+    E18 --> A_E18_effort
+
+    E20 --> A_E20_severity
+    E20 --> A_E20_status
+    E20 --> A_E20_resolved_on
+
+    E21 --> A_E21_influence_level
+
+    %% Relation Definitions (Orange)
+    R1(is_assigned_to_project):::relation
+    R2(belongs_to_team):::relation
+    R5(manages_backlog):::relation
+    R6(is_supported_by):::relation
+    R7(contains_feature):::relation
+    R10(consists_of_tasks):::relation
+    R11(is_in_sprint_backlog):::relation
+    R12(belongs_to_sprint):::relation
+    R13(pursues_goal):::relation
+    R16(is_blocked_by):::relation
+    R17(participates_in):::relation
+    R18(moderates_retrospective):::relation
+    R19(refers_to_team):::relation
+
+    %% Connect Relations to Entities
+    E1 -- R1 --> E0
+    E2 -- R2 --> E1
+    E6 -- R5 --> E8
+    E1 -- R6 --> E7
+    E8 -- R7 --> E3
+    E17 -- R10 --> E18
+    E17 -- R11 --> E14
+    E14 -- R12 --> E9
+    E9 -- R13 --> E15
+    E18 -- R16 --> E20
+    E21 -- R17 --> E12
+    E7 -- R18 --> E13
+    E22 -- R19 --> E1
+
+    %% Goal Definitions (Green)
+    G0[maximize_team_velocity]:::goal
+    G1[minimize_project_budget]:::goal
+    G2[maximize_feature_priority]:::goal
+    G3[minimize_blocker_severity]:::goal
+    G4[maximize_stakeholder_satisfaction]:::goal
+    G5[minimize_task_effort]:::goal
+    G6[maximize_sprint_goal_achievement]:::goal
+    G7[minimize_worker_availability_gap]:::goal
+
+    %% Connect Goals to Entity Attributes
+    G0 --> A_E1_avg_story_points
+    G1 --> A_E0_budget
+    G2 --> A_E3_priority
+    G3 --> A_E20_severity
+    G4 --> A_E21_influence_level
+    G5 --> A_E18_effort
+    G6 --> A_E15_achievement_status
+    G7 --> A_E2_availability
+
+    %% Condition Definitions (Red)
+    C0[project_status_active]:::condition
+    C1[team_size_min]:::condition
+    C2[worker_availability_threshold]:::condition
+    C3[feature_effort_max]:::condition
+    C4[sprint_duration_fixed]:::condition
+    C5[story_points_positive]:::condition
+    C6[blocker_resolved_date]:::condition
+    C7[scrum_master_experience]:::condition
+
+    %% Connect Conditions to Entity Attributes
+    C0 --> A_E0_status
+    C1 --> A_E1_team_size
+    C2 --> A_E2_availability
+    C3 --> A_E3_estimated_effort
+    C4 --> E9
+    C5 --> A_E17_story_points
+    C6 --> A_E20_status
+    C6 --> A_E20_resolved_on
+    C7 --> A_E7_experience
+
+    %% Decision Variable Definitions (Purple)
+    DV0[assign_worker_to_task]:::decisionvariable
+    DV1[feature_priority]:::decisionvariable
+    DV2[sprint_length]:::decisionvariable
+    DV3[team_size]:::decisionvariable
+    DV4[story_point_estimate]:::decisionvariable
+    DV5[worker_availability]:::decisionvariable
+    DV6[project_budget_allocation]:::decisionvariable
+    DV7[blocker_severity_score]:::decisionvariable
+
+    %% Connect Decision Variables to relevant Entities/Attributes
+    DV0 --> E2
+    DV0 --> E18
+    DV1 --> A_E3_priority
+    DV2 --> E9
+    DV3 --> A_E1_team_size
+    DV4 --> A_E17_story_points
+    DV5 --> A_E2_availability
+    DV6 --> A_E0_budget
+    DV7 --> A_E20_severity
+
+    %% Styling
+    classDef entity fill:#a4c2f4,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#fff,stroke:#666,stroke-width:1px;
+    classDef relation fill:#f6b26b,stroke:#333,stroke-width:2px;
+    classDef goal fill:#93c47d,stroke:#333,stroke-width:2px;
+    classDef condition fill:#e06666,stroke:#333,stroke-width:2px;
+    classDef decisionvariable fill:#b4a7d6,stroke:#333,stroke-width:2px;

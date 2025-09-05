@@ -1,0 +1,11 @@
+ID,Name,Description,IsSum,GoalType,EntityName,EntityAttribute,CriteriaType,Weight
+C0,project_budget_limit,The total project cost must not exceed the budget,False,max,Project,budget,2,1.0
+C1,sprint_goal_achieved,The sprint goal must be achieved,False,max,SprintGoal,achievement_status,2,1.0
+C2,team_cross_functional,The team must have all required roles covered,False,max,Role,role_name,2,1.0
+C3,worker_availability_min,Each worker must have at least 80% availability,False,min,Worker,availability,2,1.0
+C4,feature_priority_high,Critical features must have a priority above a threshold,False,min,Feature,priority,2,1.0
+C5,story_points_per_sprint,The total story points per sprint must not exceed team velocity,True,max,SprintBacklog,total_effort,2,1.0
+C6,no_severe_blockers,No active blocker with severity above 'High' is allowed,False,max,Blocker,severity,0,1.0
+C7,task_status_done,All tasks in the sprint backlog must be 'Done' by the end,False,max,Task,status,2,1.0
+C8,snapshot_test_passed,The development snapshot must have a 'Passed' test status,False,max,DevelopmentSnapshot,test_status,2,1.0
+C9,review_attendance,Key stakeholders must attend the sprint review,False,min,SprintReview,attendees_count,2,1.0

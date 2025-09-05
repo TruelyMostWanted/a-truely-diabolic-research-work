@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage[toc, page]{appendix}
+
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\text{Project} = \{p | p \text{ is a Project}\}$
+    \item $\text{Team} = \{t | t \text{ is a Team}\}$
+    \item $\text{Worker} = \{w | w \text{ is a Worker}\}$
+    \item $\text{Feature} = \{f | f \text{ is a Feature}\}$
+    \item $\text{Skill} = \{s | s \text{ is a Skill}\}$
+    \item $\text{Role} = \{r | r \text{ is a Role}\}$
+    \item $\text{ProductOwner} = \{po | po \text{ is a ProductOwner}\}$
+    \item $\text{ScrumMaster} = \{sm | sm \text{ is a ScrumMaster}\}$
+    \item $\text{ProductBacklog} = \{pb | pb \text{ is a ProductBacklog}\}$
+    \item $\text{Sprint} = \{sp | sp \text{ is a Sprint}\}$
+    \item $\text{SprintPlanning} = \{spp | spp \text{ is a SprintPlanning}\}$
+    \item $\text{DailyScrum} = \{ds | ds \text{ is a DailyScrum}\}$
+    \item $\text{SprintReview} = \{sr | sr \text{ is a SprintReview}\}$
+    \item $\text{SprintRetrospective} = \{sre | sre \text{ is a SprintRetrospective}\}$
+    \item $\text{SprintBacklog} = \{sbl | sbl \text{ is a SprintBacklog}\}$
+    \item $\text{SprintGoal} = \{sg | sg \text{ is a SprintGoal}\}$
+    \item $\text{Epic} = \{e | e \text{ is an Epic}\}$
+    \item $\text{UserStory} = \{us | us \text{ is a UserStory}\}$
+    \item $\text{Task} = \{tsk | tsk \text{ is a Task}\}$
+    \item $\text{DevelopmentSnapshot} = \{dev | dev \text{ is a DevelopmentSnapshot}\}$
+    \item $\text{Blocker} = \{bl | bl \text{ is a Blocker}\}$
+    \item $\text{Stakeholder} = \{sh | sh \text{ is a Stakeholder}\}$
+    \item $\text{Velocity} = \{vel | vel \text{ is a Velocity}\}$
+    \item $\text{ReleasePlan} = \{rep | rep \text{ is a ReleasePlan}\}$
+    \item $\text{Roadmap} = \{rm | rm \text{ is a Roadmap}\}$
+    \item $\text{ScrumBoard} = \{scb | scb \text{ is a ScrumBoard}\}$
+    \item $\text{FeatureDocumentation} = \{fed | fed \text{ is a FeatureDocumentation}\}$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, p' \in \text{Project}$
+    \item $t, t' \in \text{Team}$
+    \item $w, w' \in \text{Worker}$
+    \item $f, f' \in \text{Feature}$
+    \item $s, s' \in \text{Skill}$
+    \item $sp, sp' \in \text{Sprint}$
+    \item $us, us' \in \text{UserStory}$
+    \item $tsk, tsk' \in \text{Task}$
+    \item $bl, bl' \in \text{Blocker}$
+    \item $sr, sr' \in \text{SprintReview}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item[\textbf{G0}] \texttt{maximize\_team\_velocity} - Maximize the average velocity of the team
+        \[ \text{maximize} \sum_{t \in \text{Team}} \text{avg\_story\_points}(t) \]
+    \item[\textbf{G1}] \texttt{minimize\_project\_budget} - Minimize the total project budget spent
+        \[ \text{minimize} \sum_{p \in \text{Project}} \text{budget}(p) \]
+    \item[\textbf{G2}] \texttt{maximize\_feature\_completion} - Maximize the number of features with status 'Done'
+        \[ \text{maximize} \sum_{f \in \text{Feature}} \mathbb{I}[\text{status}(f) = \text{'Done'}] \]
+    \item[\textbf{G3}] \texttt{minimize\_blocker\_severity} - Minimize the maximum severity of active blockers
+        \[ \text{minimize} \max_{bl \in \text{Blocker}} \text{severity}(bl) \]
+    \item[\textbf{G4}] \texttt{maximize\_stakeholder\_satisfaction} - Maximize the satisfaction level from sprint reviews
+        \[ \text{maximize} \sum_{sr \in \text{SprintReview}} \text{satisfaction\_score}(\text{feedback\_documentation}(sr)) \]
+    \item[\textbf{G5}] \texttt{minimize\_task\_effort} - Minimize the total effort of tasks in the sprint backlog
+        \[ \text{minimize} \sum_{sbl \in \text{SprintBacklog}} \text{total\_effort}(sbl) \]
+    \item[\textbf{G6}] \texttt{maximize\_team\_availability} - Maximize the average availability of team members
+        \[ \text{maximize} \frac{1}{|\text{Worker}|} \sum_{w \in \text{Worker}} \text{availability}(w) \]
+    \item[\textbf{G7}] \texttt{minimize\_sprint\_duration} - Minimize the duration of sprints to increase release frequency
+        \[ \text{minimize} (\text{end\_date}(sp) - \text{start\_date}(sp)) \quad \forall sp \in \text{Sprint} \]
+    \item[\textbf{G8}] \texttt{maximize\_sprint\_goal\_achievement} - Maximize the rate of achieved sprint goals
+        \[ \text{maximize} \sum_{sg \in \text{SprintGoal}} \mathbb{I}[\text{achievement\_status}(sg) = \text{'Achieved'}] \]
+    \item[\textbf{G9}] \texttt{minimize\_skill\_gap} - Minimize the gap between required and available skill levels
+        \[ \text{minimize} \sum_{s \in \text{Skill}} |\text{required\_level}(s) - \text{level}(s)| \]
+    \item[\textbf{G10}] \texttt{maximize\_code\_quality} - Maximize the test status of development snapshots
+        \[ \text{maximize} \sum_{dev \in \text{DevelopmentSnapshot}} \text{test\_status\_score}(\text{test\_status}(dev)) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item[\textbf{C0}] \texttt{project\_status\_active} - $\text{status}(p) = \text{'Active'} \quad \forall p \in \text{Project}$
+    \item[\textbf{C1}] \texttt{worker\_availability\_gt\_80} - $\text{availability}(w) > 80 \quad \forall w \in \text{Worker}$
+    \item[\textbf{C2}] \texttt{feature\_priority\_high} - $\text{priority}(f) = \text{'High'} \quad \forall f \in \text{Feature}$
+    \item[\textbf{C3}] \texttt{blocker\_status\_active} - $\text{status}(bl) \neq \text{'Resolved'} \quad \forall bl \in \text{Blocker}$
+    \item[\textbf{C4}] \texttt{sprint\_current} - $\text{status}(sp) = \text{'In Progress'} \quad \forall sp \in \text{Sprint}$
+    \item[\textbf{C5}] \texttt{story\_points\_gt\_5} - $\text{story\_points}(us) > 5 \quad \forall us \in \text{UserStory}$
+    \item[\textbf{C6}] \texttt{task\_type\_development} - $\text{type}(tsk) = \text{'Development'} \quad \forall tsk \in \text{Task}$
+    \item[\textbf{C7}] \texttt{skill\_certified\_true} - $\text{certified}(s) = \text{True} \quad \forall s \in \text{Skill}$
+    \item[\textbf{C8}] \texttt{snapshot\_version\_latest} - $\text{version\_number}(dev) = \max(\text{version\_number}(\text{DevelopmentSnapshot}))$
+    \item[\textbf{C9}] \texttt{team\_size\_lte\_10} - $\text{team\_size}(t) \leq 10 \quad \forall t \in \text{Team}$
+    \item[\textbf{C10}] \texttt{review\_attendees\_gt\_3} - $\text{attendees\_count}(sr) > 3 \quad \forall sr \in \text{SprintReview}$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item[\textbf{DV0}] $x_{w, tsk} \in \{0, 1\}$ - \texttt{assign\_worker\_to\_task}
+    \item[\textbf{DV1}] $y_{f, sp} \in \{0, 1\}$ - \texttt{select\_feature\_for\_sprint}
+    \item[\textbf{DV2}] $z_f \in [0, 1000000] \subset \mathbb{R}$ - \texttt{allocated\_budget}
+    \item[\textbf{DV3}] $sp_{us} \in \{1, 2, ..., 20\} \subset \mathbb{Z}$ - \texttt{story\_point\_estimate}
+    \item[\textbf{DV4}] $d_{tsk}^{start} \in \{1, 2, ..., 30\} \subset \mathbb{Z}$ - \texttt{task\_start\_date}
+    \item[\textbf{DV5}] $l_{s, tsk} \in \{1, 2, 3, 4, 5\} \subset \mathbb{Z}$ - \texttt{skill\_assignment\_level}
+    \item[\textbf{DV6}] $n_{sp}^{review} \in \{1, 2, 3, 4, 5\} \subset \mathbb{Z}$ - \texttt{number\_of\_sprint\_reviews}
+    \item[\textbf{DV7}] $t_{t}^{form} \in \{0, 1\}$ - \texttt{team\_formation\_selection}
+    \item[\textbf{DV8}] $w_f^{priority} \in [0.1, 1.0] \subset \mathbb{R}$ - \texttt{priority\_weight}
+    \item[\textbf{DV9}] $\Delta_{sp} \in \{7, 8, ..., 30\} \subset \mathbb{Z}$ - \texttt{sprint\_duration}
+    \item[\textbf{DV10}] $r_{bl} \in [0, 100] \subset \mathbb{R}$ - \texttt{blocker\_resolution\_resource}
+\end{itemize}
+
+\end{document}

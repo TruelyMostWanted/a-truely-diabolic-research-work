@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\title{Optimization Model for SCRUM Software Development}
+\author{AI Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $Project$ : The product or initiative to be developed
+    \item $Team$ : Self-organized, cross-functional development team
+    \item $Worker$ : Individual team member working on the project
+    \item $Feature$ : Mid-sized functionality
+    \item $Skill$ : Professional or social competence of a worker
+    \item $Role$ : Defined responsibilities within the Scrum team
+    \item $ProductOwner$ : Responsible for product vision and Product Backlog
+    \item $ScrumMaster$ : Supports the team in applying Scrum
+    \item $ProductBacklog$ : Ordered list of all requirements
+    \item $Sprint$ : Fixed time period for creating an increment
+    \item $SprintPlanning$ : Kick-off meeting for Sprint preparation
+    \item $DailyScrum$ : Daily 15-minute team meeting
+    \item $SprintReview$ : Presentation and acceptance of results
+    \item $SprintRetrospective$ : Retrospective for process improvement
+    \item $SprintBacklog$ : Selected backlog items + implementation plan
+    \item $SprintGoal$ : Objective to be achieved within the sprint
+    \item $Epic$ : Large requirement that can be split into stories
+    \item $UserStory$ : Requirement from the perspective of a user
+    \item $Task$ : Smallest unit of work within a sprint
+    \item $DevelopmentSnapshot$ : Product at the end of a sprint
+    \item $Blocker$ : Obstacle hindering progress
+    \item $Stakeholder$ : Interested party in the product (internal/external)
+    \item $Velocity$ : Average amount of work per sprint
+    \item $ReleasePlan$ : Plan for releasing specific features
+    \item $Roadmap$ : Long-term planning across releases
+    \item $ScrumBoard$ : Visual representation of tasks during the sprint
+    \item $FeatureDocumentation$ : Documentation for a specific feature
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, p' \in Project$
+    \item $t, t' \in Team$
+    \item $w, w' \in Worker$
+    \item $f, f' \in Feature$
+    \item $s, s' \in Skill$
+    \item $r, r' \in Role$
+    \item $po \in ProductOwner$
+    \item $sm \in ScrumMaster$
+    \item $pb \in ProductBacklog$
+    \item $sp, sp' \in Sprint$
+    \item $spp \in SprintPlanning$
+    \item $ds \in DailyScrum$
+    \item $sr \in SprintReview$
+    \item $sre \in SprintRetrospective$
+    \item $sbl \in SprintBacklog$
+    \item $sg \in SprintGoal$
+    \item $e, e' \in Epic$
+    \item $us, us' \in UserStory$
+    \item $tsk, tsk' \in Task$
+    \item $dev \in DevelopmentSnapshot$
+    \item $bl, bl' \in Blocker$
+    \item $sh, sh' \in Stakeholder$
+    \item $vel \in Velocity$
+    \item $rep \in ReleasePlan$
+    \item $rm \in Roadmap$
+    \item $scb \in ScrumBoard$
+    \item $fed \in FeatureDocumentation$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_velocity} - Maximize the average velocity of the team
+        \[ \text{maximize} \sum_{t \in Team} vel.avg\_story\_points(t) \]
+    \item \textbf{G1: minimize\_blocker\_severity} - Minimize the total severity of active blockers
+        \[ \text{minimize} \sum_{bl \in Blocker} bl.severity(bl) \]
+    \item \textbf{G2: maximize\_feature\_priority} - Maximize the total priority of features in the release
+        \[ \text{maximize} \sum_{f \in Feature} f.priority(f) \]
+    \item \textbf{G3: minimize\_sprint\_effort\_variance} - Minimize the variance between estimated and actual effort in a sprint
+        \[ \text{minimize} \ | sbl.total\_effort_{estimated} - sbl.total\_effort_{actual} | \]
+    \item \textbf{G4: maximize\_worker\_availability} - Maximize the total availability of workers
+        \[ \text{maximize} \sum_{w \in Worker} w.availability(w) \]
+    \item \textbf{G5: minimize\_project\_budget} - Minimize the total project budget
+        \[ \text{minimize} \ p.budget(p) \]
+    \item \textbf{G6: maximize\_stakeholder\_satisfaction} - Maximize the average satisfaction from sprint reviews
+        \[ \text{maximize} \sum_{sr \in SprintReview} sr.feedback\_documentation(sr) \]
+    \item \textbf{G7: minimize\_task\_blocked\_time} - Minimize the time tasks spend in a blocked state
+        \[ \text{minimize} \sum_{bl \in Blocker} (bl.resolved\_on(bl) - bl.detected\_on(bl)) \]
+    \item \textbf{G8: maximize\_skill\_coverage} - Maximize the coverage of required skills in the team
+        \[ \text{maximize} \sum_{s \in Skill} s.level(s) \]
+    \item \textbf{G9: minimize\_sprint\_goal\_failure} - Minimize the number of sprints where the goal was not achieved
+        \[ \text{minimize} \sum_{sg \in SprintGoal} (1 - sg.achievement\_status(sg)) \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: team\_has\_scrum\_master} - A team must have a Scrum Master assigned
+        \[ \forall t \in Team, \exists sm \in ScrumMaster : is\_supported\_by(t, sm) \]
+    \item \textbf{C1: worker\_availability\_gt\_80} - Worker availability must be greater than 80\%
+        \[ \forall w \in Worker, w.availability(w) > 0.8 \]
+    \item \textbf{C2: project\_budget\_lt\_100000} - Project budget must not exceed 100,000
+        \[ \forall p \in Project, p.budget(p) \leq 100000 \]
+    \item \textbf{C3: sprint\_duration\_lte\_4\_weeks} - Sprint duration must be 4 weeks or less
+        \[ \forall sp \in Sprint, (sp.end\_date(sp) - sp.start\_date(sp)) \leq 28 \]
+    \item \textbf{C4: user\_story\_has\_acceptance\_criteria} - A User Story must have defined acceptance criteria
+        \[ \forall us \in UserStory, us.acceptance\_criteria(us) \neq \emptyset \]
+    \item \textbf{C5: feature\_in\_backlog\_has\_priority} - A Feature in the backlog must have a priority set
+        \[ \forall f \in Feature, f.priority(f) \neq \emptyset \]
+    \item \textbf{C6: blocker\_must\_have\_severity} - A Blocker must have a severity level defined
+        \[ \forall bl \in Blocker, bl.severity(bl) \neq \emptyset \]
+    \item \textbf{C7: sprint\_goal\_defined} - A Sprint must have a defined goal
+        \[ \forall sp \in Sprint, \exists sg \in SprintGoal : pursues\_goal(sp, sg) \]
+    \item \textbf{C8: task\_effort\_gt\_0} - A Task must have an effort greater than 0
+        \[ \forall tsk \in Task, tsk.effort(tsk) > 0 \]
+    \item \textbf{C9: velocity\_based\_on\_min\_1\_sprint} - Velocity calculation must be based on at least one sprint
+        \[ \forall vel \in Velocity, vel.number\_of\_sprints\_used(vel) \geq 1 \]
+\end{itemize}
+
+\section{DecisionVariables}
+\begin{itemize}
+    \item $DV0_{w,t}$: assign\_worker\_to\_team $\in$ {0,1}
+    \item $DV1_{f,sp}$: select\_feature\_for\_sprint $\in$ {0,1}
+    \item $DV2_{sp}$: set\_sprint\_duration $\in$ {7,14,21,28}
+    \item $DV3_{f}$: allocate\_budget\_to\_feature $\in$ [0, 100000]
+    \item $DV4_{w}$: set\_worker\_availability $\in$ [0, 1]
+    \item $DV5_{us}$: assign\_story\_points $\in$ $\mathbb{N}$, $1 \leq DV5_{us} \leq 20$
+    \item $DV6_{f}$: prioritize\_feature $\in$ {1,2,3,4,5}
+    \item $DV7_{bl}$: set\_blocker\_severity $\in$ {1,2,3,4,5}
+    \item $DV8_{t}$: define\_team\_size $\in$ $\mathbb{N}$, $3 \leq DV8_{t} \leq 9$
+    \item $DV9_{sg}$: set\_sprint\_goal\_status $\in$ {0,1}
+\end{itemize}
+
+\end{document}

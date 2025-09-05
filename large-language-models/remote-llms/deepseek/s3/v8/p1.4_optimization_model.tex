@@ -1,0 +1,105 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Domain Optimization Model},
+}
+\title{SCRUM Domain Optimization Model}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $Project = \{p | p \text{ is a Project}\}$, with attributes: $id, name, project\_start, project\_end, description, budget, status, target\_audience, priority$
+    \item $Team = \{t | t \text{ is a Team}\}$, with attributes: $id, name, team\_size, team\_start, team\_status, location, team\_type$
+    \item $Worker = \{w | w \text{ is a Worker}\}$, with attributes: $id, name, first\_name, email, start\_date, status, availability$
+    \item $Feature = \{f | f \text{ is a Feature}\}$, with attributes: $id, title, description, status, priority, estimated\_effort$
+    \item $Skill = \{s | s \text{ is a Skill}\}$, with attributes: $id, label, description, level, certified, category$
+    \item $Role = \{r | r \text{ is a Role}\}$, with attributes: $id, role\_name, description, area\_of\_responsibility$
+    \item $\ldots$ (Other entities from the provided list follow the same pattern)
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in Project$
+    \item $t \in Team$
+    \item $w \in Worker$
+    \item $f \in Feature$
+    \item $s \in Skill$
+    \item $r \in Role$
+    \item $\ldots$ (Indices for all other entities)
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_availability} - Maximize the overall availability of all team workers
+        \[ \text{Maximize } \sum_{w \in Worker} availability_w \]
+    \item \textbf{G1: minimize\_project\_budget} - Minimize the total budget spent on the project
+        \[ \text{Minimize } budget_{p0} \quad \text{for the main project } p0 \]
+    \item \textbf{G2: maximize\_feature\_priority} - Maximize the number of high-priority features delivered
+        \[ \text{Maximize } \sum_{f \in Feature} priority_f \]
+    \item \textbf{G3: minimize\_blocker\_severity} - Minimize the severity level of active blockers
+        \[ \text{Minimize } \sum_{b \in Blocker} severity_b \]
+    \item \textbf{G4: maximize\_velocity\_avg} - Maximize the average velocity of the team
+        \[ \text{Maximize } avg\_story\_points_{v0} \quad \text{for the team's velocity } v0 \]
+    \item \textbf{G5: minimize\_sprint\_duration} - Minimize the duration of sprint planning meetings
+        \[ \text{Minimize } \sum_{sp \in SprintPlanning} duration\_min_{sp} \]
+    \item \textbf{G6: maximize\_story\_points} - Maximize the sum of story points completed per sprint
+        \[ \text{Maximize } \sum_{us \in UserStory} story\_points_{us} \]
+    \item \textbf{G7: minimize\_task\_effort} - Minimize the total effort estimated for all tasks
+        \[ \text{Minimize } \sum_{tsk \in Task} effort_{tsk} \]
+    \item \textbf{G8: maximize\_stakeholder\_influence} - Maximize engagement from high-influence stakeholders
+        \[ \text{Maximize } \sum_{sh \in Stakeholder} influence\_level_{sh} \]
+    \item \textbf{G9: maximize\_goal\_achievement} - Maximize the achievement status of sprint goals
+        \[ \text{Maximize } \sum_{sg \in SprintGoal} achievement\_status_{sg} \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: project\_status\_active} - The project status must be 'active'
+        \[ status_{p0} = \text{'active'} \]
+    \item \textbf{C1: team\_size\_minimum} - The team size must be at least 3 members
+        \[ team\_size_t \geq 3 \quad \forall t \in Team \]
+    \item \textbf{C2: worker\_availability\_limit} - An individual worker's availability must be at least 50\%
+        \[ availability_w \geq 0.5 \quad \forall w \in Worker \]
+    \item \textbf{C3: feature\_priority\_high} - Critical features must have a 'high' priority
+        \[ priority_{f_{crit}} = \text{'high'} \quad \text{for critical features } f_{crit} \subset Feature \]
+    \item \textbf{C4: blocker\_severity\_critical} - No blocker should have a 'critical' severity
+        \[ severity_b \neq \text{'critical'} \quad \forall b \in Blocker \]
+    \item \textbf{C5: sprint\_status\_closed} - Only consider sprints with status 'closed' for velocity
+        \[ status_{sp} = \text{'closed'} \Rightarrow sp \in Sprint_{velocity} \]
+    \item \textbf{C6: story\_points\_positive} - Story points for a user story must be a positive integer
+        \[ story\_points_{us} \in \mathbb{Z}^+ \quad \forall us \in UserStory \]
+    \item \textbf{C7: task\_effort\_max} - The effort for a single task cannot exceed 40 hours
+        \[ effort_{tsk} \leq 40 \quad \forall tsk \in Task \]
+    \item \textbf{C8: stakeholder\_influence\_high} - Key features require a stakeholder with 'high' influence
+        \[ \exists sh \in Stakeholder : (influence\_level_{sh} = \text{'high'} \land \text{is linked to feature } f_{key}) \]
+    \item \textbf{C9: sprint\_goal\_defined} - Every sprint must have a defined goal
+        \[ \forall sp \in Sprint, \exists sg \in SprintGoal : \text{ sg is associated with sp} \land objective\_description_{sg} \neq \emptyset \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $DV0_{w, tsk}$: assign\_worker\_to_task $\in \{0, 1\}$ for $w \in Worker$, $tsk \in Task$
+    \item $DV1_{f, sp}$: select\_feature\_for\_sprint $\in \{0, 1\}$ for $f \in Feature$, $sp \in Sprint$
+    \item $DV2_{f}$: allocated\_budget $ \in \mathbb{R}, 0 \leq DV2_{f} \leq 1,000,000$ for $f \in Feature$
+    \item $DV3_{t}$: team\_size $ \in \mathbb{Z}, 3 \leq DV3_{t} \leq 12$ for $t \in Team$
+    \item $DV4_{sp}$: sprint\_duration $ \in \mathbb{Z}, 7 \leq DV4_{sp} \leq 30$ for $sp \in Sprint$
+    \item $DV5_{w}$: worker\_availability $ \in \mathbb{R}, 0.5 \leq DV5_{w} \leq 1.0$ for $w \in Worker$
+    \item $DV6_{us}$: story\_point\_estimate $ \in \mathbb{Z}, 1 \leq DV6_{us} \leq 20$ for $us \in UserStory$
+    \item $DV7_{tsk}$: task\_effort\_estimate $ \in \mathbb{Z}, 1 \leq DV7_{tsk} \leq 40$ for $tsk \in Task$
+    \item $DV8_{b}$: blocker\_severity\_level $ \in \{1, 2, 3, 4\}$ for $b \in Blocker$
+    \item $DV9_{sg}$: sprint\_goal\_achievement $ \in \mathbb{R}, 0.0 \leq DV9_{sg} \leq 1.0$ for $sg \in SprintGoal$
+\end{itemize}
+
+\end{document}

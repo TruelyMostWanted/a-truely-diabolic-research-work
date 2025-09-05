@@ -1,0 +1,168 @@
+graph TD
+    %% Entity Nodes (Blue)
+    E0("Project"):::entity
+    E1("Team"):::entity
+    E2("Worker"):::entity
+    E3("Feature"):::entity
+    E9("Sprint"):::entity
+    E14("SprintBacklog"):::entity
+    E15("SprintGoal"):::entity
+    E16("Epic"):::entity
+    E17("UserStory"):::entity
+    E18("Task"):::entity
+    E20("Blocker"):::entity
+    E21("Stakeholder"):::entity
+    E22("Velocity"):::entity
+
+    %% Attribute Nodes (White)
+    A0_id["id"]:::attribute
+    A0_name["name"]:::attribute
+    A0_budget["budget"]:::attribute
+
+    A1_id["id"]:::attribute
+    A1_name["name"]:::attribute
+    A1_team_size["team_size"]:::attribute
+    A1_velocity["avg._story_points"]:::attribute
+
+    A2_id["id"]:::attribute
+    A2_name["name"]:::attribute
+    A2_availability["availability"]:::attribute
+
+    A3_id["id"]:::attribute
+    A3_title["title"]:::attribute
+    A3_priority["priority"]:::attribute
+
+    A9_id["id"]:::attribute
+    A9_duration["duration_(min)"]:::attribute
+
+    A14_id["id"]:::attribute
+    A14_total_effort["total_effort"]:::attribute
+
+    A15_id["id"]:::attribute
+    A15_achievement_status["achievement_status"]:::attribute
+
+    A17_id["id"]:::attribute
+    A17_story_points["story_points"]:::attribute
+
+    A20_id["id"]:::attribute
+    A20_severity["severity"]:::attribute
+    A20_resolved_on["resolved_on"]:::attribute
+
+    A21_id["id"]:::attribute
+    A21_influence_level["influence_level"]:::attribute
+
+    %% Connect Entities to their Attributes
+    E0 --> A0_id
+    E0 --> A0_name
+    E0 --> A0_budget
+
+    E1 --> A1_id
+    E1 --> A1_name
+    E1 --> A1_team_size
+    E22 --> A1_velocity
+
+    E2 --> A2_id
+    E2 --> A2_name
+    E2 --> A2_availability
+
+    E3 --> A3_id
+    E3 --> A3_title
+    E3 --> A3_priority
+
+    E9 --> A9_id
+    E9 --> A9_duration
+
+    E14 --> A14_id
+    E14 --> A14_total_effort
+
+    E15 --> A15_id
+    E15 --> A15_achievement_status
+
+    E17 --> A17_id
+    E17 --> A17_story_points
+
+    E20 --> A20_id
+    E20 --> A20_severity
+    E20 --> A20_resolved_on
+
+    E21 --> A21_id
+    E21 --> A21_influence_level
+
+    %% Relation Nodes (Orange)
+    R2("belongs_to_team"):::relation
+    R7("contains_feature"):::relation
+    R10("consists_of_tasks"):::relation
+    R11("is_in_sprint_backlog"):::relation
+    R12("belongs_to_sprint"):::relation
+    R13("pursues_goal"):::relation
+    R16("is_blocked_by"):::relation
+    R19("refers_to_team"):::relation
+
+    %% Connect Relations to Entities
+    E2 -- R2 --> E1
+    E14 -- R7 --> E3
+    E17 -- R10 --> E18
+    E17 -- R11 --> E14
+    E14 -- R12 --> E9
+    E9 -- R13 --> E15
+    E18 -- R16 --> E20
+    E22 -- R19 --> E1
+
+    %% Goal Nodes (Green)
+    G0("G0: maximize_team_velocity"):::goal
+    G1("G1: minimize_project_budget"):::goal
+    G2("G2: minimize_blocker_severity"):::goal
+    G3("G3: maximize_feature_priority"):::goal
+    G4("G4: maximize_worker_availability"):::goal
+    G7("G7: minimize_task_effort"):::goal
+    G9("G9: minimize_sprint_goal_failure"):::goal
+
+    %% Connect Goals to Attributes/Entities
+    G0 -.-> A1_velocity
+    G1 -.-> A0_budget
+    G2 -.-> A20_severity
+    G3 -.-> A3_priority
+    G4 -.-> A2_availability
+    G7 -.-> A14_total_effort
+    G9 -.-> A15_achievement_status
+
+    %% Condition Nodes (Red)
+    C0("C0: project_budget_limit"):::condition
+    C2("C2: worker_availability_limit"):::condition
+    C3("C3: team_size_minimum"):::condition
+    C4("C4: team_size_maximum"):::condition
+    C5("C5: story_points_per_sprint"):::condition
+    C7("C7: blocker_must_be_resolved"):::condition
+
+    %% Connect Conditions to Attributes/Entities
+    C0 -.-> A0_budget
+    C2 -.-> A2_availability
+    C3 -.-> A1_team_size
+    C4 -.-> A1_team_size
+    C5 -.-> A14_total_effort
+    C5 -.-> A1_velocity
+    C7 -.-> A20_severity
+    C7 -.-> A20_resolved_on
+
+    %% Decision Variable Nodes (Purple)
+    DV0("DV0: assign_worker_to_team"):::decisionvariable
+    DV1("DV1: select_feature_for_release"):::decisionvariable
+    DV2("DV2: assign_story_points"):::decisionvariable
+    DV3("DV3: set_sprint_duration"):::decisionvariable
+    DV7("DV7: worker_availability_percent"):::decisionvariable
+
+    %% Connect DecisionVariables to Entities
+    DV0 -.-> E2
+    DV0 -.-> E1
+    DV1 -.-> E3
+    DV2 -.-> E17
+    DV3 -.-> E9
+    DV7 -.-> E2
+
+    %% Styling
+    classDef entity fill:#a4c2f4,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#fff,stroke:#666,stroke-width:1px;
+    classDef relation fill:#f6b26b,stroke:#333,stroke-width:2px;
+    classDef goal fill:#b6d7a8,stroke:#333,stroke-width:2px;
+    classDef condition fill:#ea9999,stroke:#333,stroke-width:2px;
+    classDef decisionvariable fill:#d9d2e9,stroke:#333,stroke-width:2px;

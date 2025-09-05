@@ -1,0 +1,225 @@
+graph TD
+    %% Color Scheme
+    classDef entity fill:#6b9cce,stroke:#333,stroke-width:2px,color:#000;
+    classDef attribute fill:#fff,stroke:#666,stroke-width:1px,color:#000;
+    classDef relation fill:#ffa500,stroke:#333,stroke-width:2px,color:#000;
+    classDef goal fill:#90ee90,stroke:#333,stroke-width:2px,color:#000;
+    classDef condition fill:#ffcccb,stroke:#333,stroke-width:2px,color:#000;
+    classDef decision fill:#d8bfd8,stroke:#333,stroke-width:2px,color:#000;
+
+    %% Subgraph for Core Entities and their Attributes
+    subgraph CoreEntities
+        E0[Project]:::entity
+        A0_0([id]):::attribute
+        A0_1([name]):::attribute
+        A0_2([project_start]):::attribute
+        A0_3([project_end]):::attribute
+        A0_4([description]):::attribute
+        A0_5([budget]):::attribute
+        A0_6([status]):::attribute
+        A0_7([target_audience]):::attribute
+        A0_8([priority]):::attribute
+
+        E1[Team]:::entity
+        A1_0([id]):::attribute
+        A1_1([name]):::attribute
+        A1_2([team_size]):::attribute
+        A1_3([team_start]):::attribute
+        A1_4([team_status]):::attribute
+        A1_5([location]):::attribute
+        A1_6([team_type]):::attribute
+
+        E2[Worker]:::entity
+        A2_0([id]):::attribute
+        A2_1([name]):::attribute
+        A2_2([first_name]):::attribute
+        A2_3([email]):::attribute
+        A2_4([start_date]):::attribute
+        A2_5([status]):::attribute
+        A2_6([availability]):::attribute
+
+        E3[Feature]:::entity
+        A3_0([id]):::attribute
+        A3_1([title]):::attribute
+        A3_2([description]):::attribute
+        A3_3([status]):::attribute
+        A3_4([priority]):::attribute
+        A3_5([estimated_effort]):::attribute
+
+        E18[Task]:::entity
+        A18_0([id]):::attribute
+        A18_1([title]):::attribute
+        A18_2([description]):::attribute
+        A18_3([status]):::attribute
+        A18_4([effort]):::attribute
+        A18_5([type]):::attribute
+
+        E20[Blocker]:::entity
+        A20_0([id]):::attribute
+        A20_1([title]):::attribute
+        A20_2([description]):::attribute
+        A20_3([severity]):::attribute
+        A20_4([status]):::attribute
+        A20_5([detected_on]):::attribute
+        A20_6([resolved_on]):::attribute
+
+        E12[SprintReview]:::entity
+        A12_0([id]):::attribute
+        A12_1([date]):::attribute
+        A12_2([duration]):::attribute
+        A12_3([feedback_documentation]):::attribute
+        A12_4([attendees_count]):::attribute
+
+        E14[SprintBacklog]:::entity
+        A14_0([id]):::attribute
+        A14_1([number_of_tasks]):::attribute
+        A14_2([last_updated]):::attribute
+        A14_3([status]):::attribute
+        A14_4([total_effort]):::attribute
+
+        E15[SprintGoal]:::entity
+        A15_0([id]):::attribute
+        A15_1([objective_description]):::attribute
+        A15_2([achievement_status]):::attribute
+        A15_3([benefit]):::attribute
+
+        E4[Skill]:::entity
+        A4_0([id]):::attribute
+        A4_1([label]):::attribute
+        A4_2([description]):::attribute
+        A4_3([level]):::attribute
+        A4_4([certified]):::attribute
+        A4_5([category]):::attribute
+
+        E19[DevelopmentSnapshot]:::entity
+        A19_0([id]):::attribute
+        A19_1([version_number]):::attribute
+        A19_2([creation_date]):::attribute
+        A19_3([test_status]):::attribute
+        A19_4([deployment_target]):::attribute
+        A19_5([documentation]):::attribute
+
+        E22[Velocity]:::entity
+        A22_0([id]):::attribute
+        A22_1([number_of_sprints_used]):::attribute
+        A22_2([avg._story_points]):::attribute
+        A22_3([max_velocity]):::attribute
+        A22_4([min_velocity]):::attribute
+        A22_5([trend]):::attribute
+    end
+
+    E0 --- A0_0 & A0_1 & A0_2 & A0_3 & A0_4 & A0_5 & A0_6 & A0_7 & A0_8
+    E1 --- A1_0 & A1_1 & A1_2 & A1_3 & A1_4 & A1_5 & A1_6
+    E2 --- A2_0 & A2_1 & A2_2 & A2_3 & A2_4 & A2_5 & A2_6
+    E3 --- A3_0 & A3_1 & A3_2 & A3_3 & A3_4 & A3_5
+    E18 --- A18_0 & A18_1 & A18_2 & A18_3 & A18_4 & A18_5
+    E20 --- A20_0 & A20_1 & A20_2 & A20_3 & A20_4 & A20_5 & A20_6
+    E12 --- A12_0 & A12_1 & A12_2 & A12_3 & A12_4
+    E14 --- A14_0 & A14_1 & A14_2 & A14_3 & A14_4
+    E15 --- A15_0 & A15_1 & A15_2 & A15_3
+    E4 --- A4_0 & A4_1 & A4_2 & A4_3 & A4_4 & A4_5
+    E19 --- A19_0 & A19_1 & A19_2 & A19_3 & A19_4 & A19_5
+    E22 --- A22_0 & A22_1 & A22_2 & A22_3 & A22_4 & A22_5
+
+    %% Subgraph for Key Relationships
+    subgraph KeyRelations
+        R1[is_assigned_to_project]:::relation
+        R2[belongs_to_team]:::relation
+        R3[has_skill]:::relation
+        R7[contains_feature]:::relation
+        R10[consists_of_tasks]:::relation
+        R11[is_in_sprint_backlog]:::relation
+        R12[belongs_to_sprint]:::relation
+        R13[pursues_goal]:::relation
+        R16[is_blocked_by]:::relation
+        R17[participates_in]:::relation
+        R19[refers_to_team]:::relation
+        R22[generates_snapshot]:::relation
+    end
+
+    E1 -- R1 --> E0
+    E2 -- R2 --> E1
+    E2 -- R3 --> E4
+    E8 -- R7 --> E3
+    E17 -- R10 --> E18
+    E17 -- R11 --> E14
+    E14 -- R12 --> E9
+    E9 -- R13 --> E15
+    E18 -- R16 --> E20
+    E21 -- R17 --> E12
+    E22 -- R19 --> E1
+    E9 -- R22 --> E19
+
+    %% Subgraph for Goals
+    subgraph Goals
+        G0["G0: maximize_team_velocity<br/>Maximize avg velocity"]:::goal
+        G1["G1: minimize_project_budget<br/>Minimize budget"]:::goal
+        G2["G2: maximize_feature_completion<br/>Maximize 'Done' features"]:::goal
+        G3["G3: minimize_blocker_severity<br/>Minimize max severity"]:::goal
+        G4["G4: maximize_stakeholder_satisfaction<br/>Maximize feedback score"]:::goal
+        G5["G5: minimize_task_effort<br/>Minimize total effort"]:::goal
+        G6["G6: maximize_team_availability<br/>Maximize avg availability"]:::goal
+        G8["G8: maximize_sprint_goal_achievement<br/>Maximize achievement rate"]:::goal
+        G9["G9: minimize_skill_gap<br/>Minimize level gap"]:::goal
+        G10["G10: maximize_code_quality<br/>Maximize test status"]:::goal
+    end
+
+    G0 --> A22_2
+    G1 --> A0_5
+    G2 --> A3_3
+    G3 --> A20_3
+    G4 --> A12_3
+    G5 --> A14_4
+    G6 --> A2_6
+    G8 --> A15_2
+    G9 --> A4_3
+    G10 --> A19_3
+
+    %% Subgraph for Conditions
+    subgraph Conditions
+        C0["C0: project_status_active<br/>status='Active'"]:::condition
+        C1["C1: worker_availability_gt_80<br/>availability>80%"]:::condition
+        C2["C2: feature_priority_high<br/>priority='High'"]:::condition
+        C3["C3: blocker_status_active<br/>status≠'Resolved'"]:::condition
+        C4["C4: sprint_current<br/>status='In Progress'"]:::condition
+        C5["C5: story_points_gt_5<br/>story_points>5"]:::condition
+        C6["C6: task_type_development<br/>type='Development'"]:::condition
+        C7["C7: skill_certified_true<br/>certified=True"]:::condition
+        C9["C9: team_size_lte_10<br/>team_size≤10"]:::condition
+        C10["C10: review_attendees_gt_3<br/>attendees_count>3"]:::condition
+    end
+
+    C0 --> A0_6
+    C1 --> A2_6
+    C2 --> A3_4
+    C3 --> A20_4
+    C4 --> E9:::entity
+    C5 --> E17:::entity
+    C6 --> A18_5
+    C7 --> A4_4
+    C9 --> A1_2
+    C10 --> A12_4
+
+    %% Subgraph for Decision Variables
+    subgraph DecisionVariables
+        DV0["DV0: assign_worker_to_task<br/>{0,1}"]:::decision
+        DV1["DV1: select_feature_for_sprint<br/>{0,1}"]:::decision
+        DV2["DV2: allocated_budget<br/>[0,1e6]"]:::decision
+        DV3["DV3: story_point_estimate<br/>{1..20}"]:::decision
+        DV4["DV4: task_start_date<br/>{1..30}"]:::decision
+        DV5["DV5: skill_assignment_level<br/>{1..5}"]:::decision
+        DV9["DV9: sprint_duration<br/>{7..30}"]:::decision
+        DV10["DV10: blocker_resolution_resource<br/>[0,100]"]:::decision
+    end
+
+    DV0 --> E2
+    DV0 --> E18
+    DV1 --> E3
+    DV1 --> E9
+    DV2 --> E3
+    DV3 --> E17
+    DV4 --> E18
+    DV5 --> E4
+    DV5 --> E18
+    DV9 --> E9
+    DV10 --> E20

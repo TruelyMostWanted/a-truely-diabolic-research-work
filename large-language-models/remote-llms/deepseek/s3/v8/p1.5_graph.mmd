@@ -1,0 +1,139 @@
+graph TD
+    %% Entity Nodes (Blue)
+    E0[Project]:::entity
+    E1[Team]:::entity
+    E2[Worker]:::entity
+    E3[Feature]:::entity
+    E9[Sprint]:::entity
+    E16[Epic]:::entity
+    E17[UserStory]:::entity
+    E18[Task]:::entity
+    E20[Blocker]:::entity
+    E21[Stakeholder]:::entity
+    E22[Velocity]:::entity
+    E15[SprintGoal]:::entity
+    E10[SprintPlanning]:::entity
+
+    %% Attribute Nodes (White)
+    A_E0_budget[budget]:::attribute
+    A_E2_availability[availability]:::attribute
+    A_E3_priority[priority]:::attribute
+    A_E20_severity[severity]:::attribute
+    A_E22_avg[avg._story_points]:::attribute
+    A_E10_duration[duration_(min)]:::attribute
+    A_E17_storypoints[story_points]:::attribute
+    A_E18_effort[effort]:::attribute
+    A_E21_influence[influence_level]:::attribute
+    A_E15_achievement[achievement_status]:::attribute
+    A_E0_status[status]:::attribute
+    A_E1_size[team_size]:::attribute
+    A_E15_description[objective_description]:::attribute
+
+    %% Relation Nodes (Orange)
+    R2("belongs_to_team<br>(N,1)"):::relation
+    R10("consists_of_tasks<br>(1,N)"):::relation
+    R16("is_blocked_by<br>(N,M)"):::relation
+    R19("refers_to_team<br>(1,1)"):::relation
+    R13("pursues_goal<br>(1,1)"):::relation
+
+    %% Goal Nodes (Green)
+    G0[maximize_team_availability]:::goal
+    G1[minimize_project_budget]:::goal
+    G2[maximize_feature_priority]:::goal
+    G3[minimize_blocker_severity]:::goal
+    G4[maximize_velocity_avg]:::goal
+    G5[minimize_sprint_duration]:::goal
+    G6[maximize_story_points]:::goal
+    G7[minimize_task_effort]:::goal
+    G8[maximize_stakeholder_influence]:::goal
+    G9[maximize_goal_achievement]:::goal
+
+    %% Condition Nodes (Red)
+    C0[project_status_active]:::condition
+    C1[team_size_minimum]:::condition
+    C2[worker_availability_limit]:::condition
+    C3[feature_priority_high]:::condition
+    C4[blocker_severity_critical]:::condition
+    C5[sprint_status_closed]:::condition
+    C6[story_points_positive]:::condition
+    C7[task_effort_max]:::condition
+    C8[stakeholder_influence_high]:::condition
+    C9[sprint_goal_defined]:::condition
+
+    %% Decision Variable Nodes (Purple)
+    DV0[assign_worker_to_task<br>{0,1}]:::decisionvariable
+    DV1[select_feature_for_sprint<br>{0,1}]:::decisionvariable
+    DV2[allocated_budget<br>0..1e6]:::decisionvariable
+    DV3[team_size<br>3..12]:::decisionvariable
+    DV4[sprint_duration<br>7..30]:::decisionvariable
+    DV5[worker_availability<br>0.5..1.0]:::decisionvariable
+    DV6[story_point_estimate<br>1..20]:::decisionvariable
+    DV7[task_effort_estimate<br>1..40]:::decisionvariable
+    DV8[blocker_severity_level<br>{1,2,3,4}]:::decisionvariable
+    DV9[sprint_goal_achievement<br>0.0..1.0]:::decisionvariable
+
+    %% Connections - Entities to their Attributes
+    E0 --> A_E0_budget
+    E0 --> A_E0_status
+    E2 --> A_E2_availability
+    E3 --> A_E3_priority
+    E20 --> A_E20_severity
+    E22 --> A_E22_avg
+    E10 --> A_E10_duration
+    E17 --> A_E17_storypoints
+    E18 --> A_E18_effort
+    E21 --> A_E21_influence
+    E15 --> A_E15_achievement
+    E1 --> A_E1_size
+    E15 --> A_E15_description
+
+    %% Connections - Entity Relations
+    E2 -- R2 --> E1
+    E17 -- R10 --> E18
+    E18 -- R16 --> E20
+    E22 -- R19 --> E1
+    E9 -- R13 --> E15
+
+    %% Connections - Goals to Entity/Attributes
+    G0 -.-> A_E2_availability
+    G1 -.-> A_E0_budget
+    G2 -.-> A_E3_priority
+    G3 -.-> A_E20_severity
+    G4 -.-> A_E22_avg
+    G5 -.-> A_E10_duration
+    G6 -.-> A_E17_storypoints
+    G7 -.-> A_E18_effort
+    G8 -.-> A_E21_influence
+    G9 -.-> A_E15_achievement
+
+    %% Connections - Conditions to Entity/Attributes
+    C0 -.-> A_E0_status
+    C1 -.-> A_E1_size
+    C2 -.-> A_E2_availability
+    C3 -.-> A_E3_priority
+    C4 -.-> A_E20_severity
+    C6 -.-> A_E17_storypoints
+    C7 -.-> A_E18_effort
+    C8 -.-> A_E21_influence
+    C9 -.-> A_E15_description
+
+    %% Connections - Decision Variables to relevant Entities
+    DV0 -.-> E2
+    DV0 -.-> E18
+    DV1 -.-> E3
+    DV1 -.-> E9
+    DV2 -.-> E3
+    DV3 -.-> E1
+    DV4 -.-> E9
+    DV5 -.-> E2
+    DV6 -.-> E17
+    DV7 -.-> E18
+    DV8 -.-> E20
+    DV9 -.-> E15
+
+    classDef entity fill:#a4c2f4,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#fff,stroke:#666,stroke-width:1px;
+    classDef relation fill:#f6b26b,stroke:#333,stroke-width:2px;
+    classDef goal fill:#b6d7a8,stroke:#333,stroke-width:2px;
+    classDef condition fill:#ea9999,stroke:#333,stroke-width:2px;
+    classDef decisionvariable fill:#d9d2e9,stroke:#333,stroke-width:2px;

@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage[table]{xcolor}
+\usepackage{tocloft}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+\title{Optimization Model for SCRUM-Based Software Development}
+\author{AI Operations Research Analyst}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $Project = \{p | p \text{ is a Project}\}$, described by $(id, name, project\_start, project\_end, description, budget, status, target\_audience, priority)$
+    \item $Team = \{t | t \text{ is a Team}\}$, described by $(id, name, team\_size, team\_start, team\_status, location, team\_type)$
+    \item $Worker = \{w | w \text{ is a Worker}\}$, described by $(id, name, first\_name, email, start\_date, status, availability)$
+    \item $Feature = \{f | f \text{ is a Feature}\}$, described by $(id, title, description, status, priority, estimated\_effort)$
+    \item $Skill = \{s | s \text{ is a Skill}\}$, described by $(id, label, description, level, certified, category)$
+    \item $Role = \{r | r \text{ is a Role}\}$, described by $(id, role\_name, description, area\_of\_responsibility)$
+    \item $ProductOwner = \{po | po \text{ is a ProductOwner}\}$, described by $(id, name, email, availability)$
+    \item $ScrumMaster = \{sm | sm \text{ is a ScrumMaster}\}$, described by $(id, name, email, experience)$
+    \item $ProductBacklog = \{pb | pb \text{ is a ProductBacklog}\}$, described by $(id, created\_on, last\_updated, number\_of\_entries, status)$
+    \item $Sprint = \{sp | sp \text{ is a Sprint}\}$, described by $(id, sprint\_number, start\_date, end\_date, status, achievement\_of\_goal)$
+    \item $SprintPlanning = \{spp | spp \text{ is a SprintPlanning}\}$, described by $(id, date, duration\_(min), moderation, outcome\_documentation)$
+    \item $DailyScrum = \{ds | ds \text{ is a DailyScrum}\}$, described by $(id, date, time, duration, moderation)$
+    \item $SprintReview = \{sr | sr \text{ is a SprintReview}\}$, described by $(id, date, duration, feedback\_documentation, attendees\_count)$
+    \item $SprintRetrospective = \{sre | sre \text{ is a SprintRetrospective}\}$, described by $(id, date, duration, improvement\_actions, team\_satisfaction, moderation)$
+    \item $SprintBacklog = \{sbl | sbl \text{ is a SprintBacklog}\}$, described by $(id, number\_of\_tasks, last\_updated, status, total\_effort)$
+    \item $SprintGoal = \{sg | sg \text{ is a SprintGoal}\}$, described by $(id, objective\_description, achievement\_status, benefit)$
+    \item $Epic = \{e | e \text{ is an Epic}\}$, described by $(id, title, description, priority, status, estimated\_effort)$
+    \item $UserStory = \{us | us \text{ is a UserStory}\}$, described by $(id, title, description, acceptance\_criteria, priority, story\_points, status)$
+    \item $Task = \{tsk | tsk \text{ is a Task}\}$, described by $(id, title, description, status, effort, type)$
+    \item $DevelopmentSnapshot = \{dev | dev \text{ is a DevelopmentSnapshot}\}$, described by $(id, version\_number, creation\_date, test\_status, deployment\_target, documentation)$
+    \item $Blocker = \{bl | bl \text{ is a Blocker}\}$, described by $(id, title, description, severity, status, detected\_on, resolved\_on)$
+    \item $Stakeholder = \{sh | sh \text{ is a Stakeholder}\}$, described by $(id, name, organization, role, email, area\_of\_interest, influence\_level, relevance\_to\_feature)$
+    \item $Velocity = \{vel | vel \text{ is a Velocity}\}$, described by $(id, number\_of\_sprints\_used, avg.\_story\_points, max\_velocity, min\_velocity, trend)$
+    \item $ReleasePlan = \{rep | rep \text{ is a ReleasePlan}\}$, described by $(id, version, planned\_date, included\_features, status)$
+    \item $Roadmap = \{rm | rm \text{ is a Roadmap}\}$, described by $(id, start\_date, end\_date, milestones, objectives, versions)$
+    \item $ScrumBoard = \{scb | scb \text{ is a ScrumBoard}\}$, described by $(id, board\_type, columns\_(todo/done...), number\_of\_cards, last\_updated)$
+    \item $FeatureDocumentation = \{fed | fed \text{ is a FeatureDocumentation}\}$, described by $(id, title, description, creation\_date, change\_log, linked\_requirements, author)$
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, pb, po, sm, rm, rep, vel \in$ Planning and Management Entities
+    \item $t \in Team$
+    \item $w \in Worker$
+    \item $sp, spp, ds, sr, sre, sbl, sg, dev \in$ Sprint-Related Entities
+    \item $e, f, us, tsk, bl, fed \in$ Product and Work Item Entities
+    \item $s \in Skill$
+    \item $r \in Role$
+    \item $sh \in Stakeholder$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{[G0] maximize\_team\_availability}: $\text{Maximize } \sum_{w \in Worker} availability(w)$
+    \item \textbf{[G1] minimize\_project\_budget}: $\text{Minimize } budget(p) \quad \forall p \in Project$
+    \item \textbf{[G2] maximize\_velocity}: $\text{Maximize } avg.\_story\_points(vel) \quad \forall vel \in Velocity$
+    \item \textbf{[G3] minimize\_blocker\_severity}: $\text{Minimize } severity(bl) \quad \forall bl \in Blocker$
+    \item \textbf{[G4] maximize\_feature\_priority}: $\text{Maximize } \sum_{f \in Feature} priority(f)$
+    \item \textbf{[G5] minimize\_sprint\_duration}: $\text{Minimize } duration(ds) \quad \forall ds \in DailyScrum$
+    \item \textbf{[G6] maximize\_stakeholder\_influence}: $\text{Maximize } \sum_{sh \in Stakeholder} influence\_level(sh)$
+    \item \textbf{[G7] minimize\_task\_effort}: $\text{Minimize } \sum_{tsk \in Task} effort(tsk)$
+    \item \textbf{[G8] maximize\_skill\_level}: $\text{Maximize } \sum_{s \in Skill} level(s)$
+    \item \textbf{[G9] minimize\_sprint\_goal\_failure}: $\text{Minimize } \sum_{sg \in SprintGoal} (1 - achievement\_status(sg))$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{[C0] team\_size\_constraint}: $5 \leq team\_size(t) \leq 9 \quad \forall t \in Team$
+    \item \textbf{[C1] project\_status\_active}: $status(p) = \text{"active"} \quad \forall p \in Project \text{ (for relevant constraints)}$
+    \item \textbf{[C2] sprint\_duration\_fixed}: $end\_date(sp) - start\_date(sp) = 14 \quad \forall sp \in Sprint$
+    \item \textbf{[C3] story\_points\_positive}: $story\_points(us) \geq 1 \quad \forall us \in UserStory$
+    \item \textbf{[C4] task\_effort\_positive}: $effort(tsk) > 0 \quad \forall tsk \in Task$
+    \item \textbf{[C5] budget\_non\_negative}: $budget(p) \geq 0 \quad \forall p \in Project$
+    \item \textbf{[C6] worker\_availability\_range}: $0 \leq availability(w) \leq 1 \quad \forall w \in Worker$
+    \item \textbf{[C7] blocker\_severity\_range}: $1 \leq severity(bl) \leq 5 \quad \forall bl \in Blocker$
+    \item \textbf{[C8] feature\_priority\_range}: $1 \leq priority(f) \leq 10 \quad \forall f \in Feature$
+    \item \textbf{[C9] sprint\_goal\_achievement\_binary}: $achievement\_status(sg) \in \{0, 1\} \quad \forall sg \in SprintGoal$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $assign\_worker\_to\_team_{w,t} \in \{0, 1\} \quad \forall w \in Worker, \forall t \in Team$
+    \item $select\_feature\_for\_release_{f,rep} \in \{0, 1\} \quad \forall f \in Feature, \forall rep \in ReleasePlan$
+    \item $allocate\_budget\_to\_project_{p} \in \mathbb{Z}^{+} \quad \forall p \in Project, \quad 0 \leq p \leq 10000000$
+    \item $set\_sprint\_velocity_{t,sp} \in \mathbb{Z}^{+} \quad \forall t \in Team, \forall sp \in Sprint, \quad 0 \leq sp \leq 100$
+    \item $assign\_story\_points_{us} \in \mathbb{Z}^{+} \quad \forall us \in UserStory, \quad 1 \leq us \leq 20$
+    \item $set\_worker\_availability_{w} \in \mathbb{R} \quad \forall w \in Worker, \quad 0 \leq w \leq 1$
+    \item $set\_task\_effort_{tsk} \in \mathbb{R}^{+} \quad \forall tsk \in Task, \quad 0.1 \leq tsk \leq 100$
+    \item $set\_feature\_priority_{f} \in \{1,2,...,10\} \quad \forall f \in Feature$
+    \item $set\_blocker\_severity_{bl} \in \{1,2,3,4,5\} \quad \forall bl \in Blocker$
+    \item $set\_sprint\_goal\_status_{sg} \in \{0, 1\} \quad \forall sg \in SprintGoal$
+\end{itemize}
+
+\end{document}

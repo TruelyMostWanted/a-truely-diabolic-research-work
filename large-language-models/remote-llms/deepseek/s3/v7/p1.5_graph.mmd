@@ -1,0 +1,235 @@
+graph TD
+    %% Entity and Attribute Styling
+    classDef entity fill:#aaccff,stroke:#333,stroke-width:2px,color:black;
+    classDef attribute fill:#ffffff,stroke:#666,stroke-width:1px,color:black;
+    classDef relation fill:#ffcc80,stroke:#333,stroke-width:2px,color:black;
+    classDef goal fill:#80ff80,stroke:#333,stroke-width:2px,color:black;
+    classDef condition fill:#ff9999,stroke:#333,stroke-width:2px,color:black;
+    classDef decision fill:#cc99ff,stroke:#333,stroke-width:2px,color:black;
+
+    %% Entities
+    P[Project]:::entity
+    T[Team]:::entity
+    W[Worker]:::entity
+    F[Feature]:::entity
+    S[Skill]:::entity
+    R[Role]:::entity
+    PO[ProductOwner]:::entity
+    SM[ScrumMaster]:::entity
+    PB[ProductBacklog]:::entity
+    SP[Sprint]:::entity
+    SPP[SprintPlanning]:::entity
+    DS[DailyScrum]:::entity
+    SR[SprintReview]:::entity
+    SRE[SprintRetrospective]:::entity
+    SBL[SprintBacklog]:::entity
+    SG[SprintGoal]:::entity
+    E[Epic]:::entity
+    US[UserStory]:::entity
+    TSK[Task]:::entity
+    DEV[DevelopmentSnapshot]:::entity
+    BL[Blocker]:::entity
+    SH[Stakeholder]:::entity
+    VEL[Velocity]:::entity
+    REP[ReleasePlan]:::entity
+    RM[Roadmap]:::entity
+    SCB[ScrumBoard]:::entity
+    FED[FeatureDocumentation]:::entity
+
+    %% Project Attributes
+    P_id[ID]:::attribute
+    P_name[name]:::attribute
+    P_start[project_start]:::attribute
+    P_end[project_end]:::attribute
+    P_desc[description]:::attribute
+    P_budget[budget]:::attribute
+    P_status[status]:::attribute
+    P_audience[target_audience]:::attribute
+    P_priority[priority]:::attribute
+
+    %% Team Attributes
+    T_id[ID]:::attribute
+    T_name[name]:::attribute
+    T_size[team_size]:::attribute
+    T_start[team_start]:::attribute
+    T_status[team_status]:::attribute
+    T_location[location]:::attribute
+    T_type[team_type]:::attribute
+    T_vel[avg._story_points]:::attribute
+
+    %% Worker Attributes
+    W_id[ID]:::attribute
+    W_name[name]:::attribute
+    W_fname[first_name]:::attribute
+    W_email[email]:::attribute
+    W_start[start_date]:::attribute
+    W_status[status]:::attribute
+    W_avail[availability]:::attribute
+
+    %% Feature Attributes
+    F_id[ID]:::attribute
+    F_title[title]:::attribute
+    F_desc[description]:::attribute
+    F_status[status]:::attribute
+    F_priority[priority]:::attribute
+    F_effort[estimated_effort]:::attribute
+
+    %% Blocker Attributes
+    BL_id[ID]:::attribute
+    BL_title[title]:::attribute
+    BL_desc[description]:::attribute
+    BL_severity[severity]:::attribute
+    BL_status[status]:::attribute
+    BL_detected[detected_on]:::attribute
+    BL_resolved[resolved_on]:::attribute
+
+    %% SprintBacklog Attributes
+    SBL_id[ID]:::attribute
+    SBL_tasks[number_of_tasks]:::attribute
+    SBL_updated[last_updated]:::attribute
+    SBL_status[status]:::attribute
+    SBL_effort[total_effort]:::attribute
+
+    %% SprintGoal Attributes
+    SG_id[ID]:::attribute
+    SG_desc[objective_description]:::attribute
+    SG_status[achievement_status]:::attribute
+    SG_benefit[benefit]:::attribute
+
+    %% SprintReview Attributes
+    SR_id[ID]:::attribute
+    SR_date[date]:::attribute
+    SR_dur[duration]:::attribute
+    SR_feedback[feedback_documentation]:::attribute
+    SR_attendees[attendees_count]:::attribute
+
+    %% Velocity Attributes
+    VEL_id[ID]:::attribute
+    VEL_sprints[number_of_sprints_used]:::attribute
+    VEL_avg[avg._story_points]:::attribute
+    VEL_max[max_velocity]:::attribute
+    VEL_min[min_velocity]:::attribute
+    VEL_trend[trend]:::attribute
+
+    %% Skill Attributes
+    S_id[ID]:::attribute
+    S_label[label]:::attribute
+    S_desc[description]:::attribute
+    S_level[level]:::attribute
+    S_cert[certified]:::attribute
+    S_cat[category]:::attribute
+
+    %% Task Attributes
+    TSK_id[ID]:::attribute
+    TSK_title[title]:::attribute
+    TSK_desc[description]:::attribute
+    TSK_status[status]:::attribute
+    TSK_effort[effort]:::attribute
+    TSK_type[type]:::attribute
+
+    %% UserStory Attributes
+    US_id[ID]:::attribute
+    US_title[title]:::attribute
+    US_desc[description]:::attribute
+    US_accept[acceptance_criteria]:::attribute
+    US_priority[priority]:::attribute
+    US_points[story_points]:::attribute
+    US_status[status]:::attribute
+
+    %% Entity-Attribute Links
+    P --- P_id & P_name & P_start & P_end & P_desc & P_budget & P_status & P_audience & P_priority
+    T --- T_id & T_name & T_size & T_start & T_status & T_location & T_type & T_vel
+    W --- W_id & W_name & W_fname & W_email & W_start & W_status & W_avail
+    F --- F_id & F_title & F_desc & F_status & F_priority & F_effort
+    BL --- BL_id & BL_title & BL_desc & BL_severity & BL_status & BL_detected & BL_resolved
+    SBL --- SBL_id & SBL_tasks & SBL_updated & SBL_status & SBL_effort
+    SG --- SG_id & SG_desc & SG_status & SG_benefit
+    SR --- SR_id & SR_date & SR_dur & SR_feedback & SR_attendees
+    VEL --- VEL_id & VEL_sprints & VEL_avg & VEL_max & VEL_min & VEL_trend
+    S --- S_id & S_label & S_desc & S_level & S_cert & S_cat
+    TSK --- TSK_id & TSK_title & TSK_desc & TSK_status & TSK_effort & TSK_type
+    US --- US_id & US_title & US_desc & US_accept & US_priority & US_points & US_status
+
+    %% Relations
+    R1(is_assigned_to_project):::relation --> T
+    R1 --> P
+
+    R2(belongs_to_team):::relation --> W
+    R2 --> T
+
+    R3(has_skill):::relation --> W
+    R3 --> S
+
+    R5(manages_backlog):::relation --> PO
+    R5 --> PB
+
+    R6(is_supported_by):::relation --> T
+    R6 --> SM
+
+    R7(contains_feature):::relation --> PB
+    R7 --> F
+
+    R10(consists_of_tasks):::relation --> US
+    R10 --> TSK
+
+    R11(is_in_sprint_backlog):::relation --> US
+    R11 --> SBL
+
+    R12(belongs_to_sprint):::relation --> SBL
+    R12 --> SP
+
+    R13(pursues_goal):::relation --> SP
+    R13 --> SG
+
+    R16(is_blocked_by):::relation --> TSK
+    R16 --> BL
+
+    R19(refers_to_team):::relation --> VEL
+    R19 --> T
+
+    %% Goals
+    G0("G0: maximize_team_velocity"):::goal --> T_vel
+    G1("G1: minimize_blocker_severity"):::goal --> BL_severity
+    G2("G2: maximize_feature_priority"):::goal --> F_priority
+    G3("G3: minimize_sprint_effort_variance"):::goal --> SBL_effort
+    G4("G4: maximize_worker_availability"):::goal --> W_avail
+    G5("G5: minimize_project_budget"):::goal --> P_budget
+    G6("G6: maximize_stakeholder_satisfaction"):::goal --> SR_feedback
+    G7("G7: minimize_task_blocked_time"):::goal --> BL_resolved
+    G8("G8: maximize_skill_coverage"):::goal --> S_level
+    G9("G9: minimize_sprint_goal_failure"):::goal --> SG_status
+
+    %% Conditions
+    C0("C0: team_has_scrum_master"):::condition --> T_status
+    C1("C1: worker_availability_gt_80"):::condition --> W_avail
+    C2("C2: project_budget_lt_100000"):::condition --> P_budget
+    C3("C3: sprint_duration_lte_4_weeks"):::condition --> SP
+    C4("C4: user_story_has_acceptance_criteria"):::condition --> US_accept
+    C5("C5: feature_in_backlog_has_priority"):::condition --> F_priority
+    C6("C6: blocker_must_have_severity"):::condition --> BL_severity
+    C7("C7: sprint_goal_defined"):::condition --> SG
+    C8("C8: task_effort_gt_0"):::condition --> TSK_effort
+    C9("C9: velocity_based_on_min_1_sprint"):::condition --> VEL_sprints
+
+    %% Decision Variables
+    DV0("DV0: assign_worker_to_team"):::decision --> W
+    DV0 --> T
+
+    DV1("DV1: select_feature_for_sprint"):::decision --> F
+    DV1 --> SP
+
+    DV2("DV2: set_sprint_duration"):::decision --> SP
+
+    DV3("DV3: allocate_budget_to_feature"):::decision --> F
+
+    DV4("DV4: set_worker_availability"):::decision --> W_avail
+
+    DV5("DV5: assign_story_points"):::decision --> US_points
+
+    DV6("DV6: prioritize_feature"):::decision --> F_priority
+
+    DV7("DV7: set_blocker_severity"):::decision --> BL_severity
+
+    DV8("DV8: define_team_size"):::decision --> T_size
+
+    DV9("DV9: set_sprint_goal_status"):::decision --> SG_status

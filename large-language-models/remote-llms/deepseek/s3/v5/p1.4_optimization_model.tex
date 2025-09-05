@@ -1,0 +1,105 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={SCRUM Domain Optimization Model},
+    bookmarks=true
+}
+
+\title{Optimization Model for a SCRUM-Based Software Development Company}
+\author{AI Assistant}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $Project = \{p_1, p_2, ..., p_n\}$: The set of all projects. Attributes: $id, name, project\_start, project\_end, description, budget, status, target\_audience, priority$.
+    \item $Team = \{t_1, t_2, ..., t_m\}$: The set of all teams. Attributes: $id, name, team\_size, team\_start, team\_status, location, team\_type$.
+    \item $Worker = \{w_1, w_2, ..., w_o\}$: The set of all workers. Attributes: $id, name, first\_name, email, start\_date, status, availability$.
+    \item $Feature = \{f_1, f_2, ..., f_p\}$: The set of all features. Attributes: $id, title, description, status, priority, estimated\_effort$.
+    \item $Blocker = \{b_1, b_2, ..., b_q\}$: The set of all blockers. Attributes: $id, title, description, severity, status, detected\_on, resolved\_on$.
+    \item $Stakeholder = \{sh_1, sh_2, ..., sh_r\}$: The set of all stakeholders. Attributes: $id, name, organization, role, email, area\_of\_interest, influence\_level, relevance\_to\_feature$.
+    \item $SprintGoal = \{sg_1, sg_2, ..., sg_s\}$: The set of all sprint goals. Attributes: $id, objective\_description, achievement\_status, benefit$.
+    \item $Task = \{tsk_1, tsk_2, ..., tsk_t\}$: The set of all tasks. Attributes: $id, title, description, status, effort, type$.
+    \item $ScrumMaster = \{sm_1, sm_2, ..., sm_u\}$: The set of all Scrum Masters. Attributes: $id, name, email, experience$.
+    \item $UserStory = \{us_1, us_2, ..., us_v\}$: The set of all user stories. Attributes: $id, title, description, acceptance\_criteria, priority, story\_points, status$.
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p, p' \in Project$: Index over projects.
+    \item $t \in Team$: Index over teams.
+    \item $w \in Worker$: Index over workers.
+    \item $f \in Feature$: Index over features.
+    \item $b \in Blocker$: Index over blockers.
+    \item $sh \in Stakeholder$: Index over stakeholders.
+    \item $sg \in SprintGoal$: Index over sprint goals.
+    \item $tsk \in Task$: Index over tasks.
+    \item $sm \in ScrumMaster$: Index over Scrum Masters.
+    \item $us \in UserStory$: Index over user stories.
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_velocity} - Maximize the average velocity of all teams.
+        \[ \text{Maximize } \sum_{t \in Team} t.avg\_story\_points \]
+    \item \textbf{G1: minimize\_project\_budget} - Minimize the total budget spent on all projects.
+        \[ \text{Minimize } \sum_{p \in Project} p.budget \]
+    \item \textbf{G2: maximize\_feature\_priority} - Maximize the sum of priorities for completed features.
+        \[ \text{Maximize } \sum_{\substack{f \in Feature \\ f.status = 'done'}} f.priority \]
+    \item \textbf{G3: minimize\_blocker\_severity} - Minimize the total severity of all active blockers.
+        \[ \text{Minimize } \sum_{\substack{b \in Blocker \\ b.status = 'active'}} b.severity \]
+    \item \textbf{G4: maximize\_stakeholder\_satisfaction} - Maximize the average influence level of satisfied stakeholders.
+        \[ \text{Maximize } \frac{1}{|Stakeholder|} \sum_{sh \in Stakeholder} sh.influence\_level \quad \text{(where satisfaction criteria are met)} \]
+    \item \textbf{G5: minimize\_task\_effort} - Minimize the total effort of all tasks in the sprint.
+        \[ \text{Minimize } \sum_{tsk \in Task} tsk.effort \]
+    \item \textbf{G6: maximize\_sprint\_goal\_achievement} - Maximize the number of sprints where the goal was fully achieved.
+        \[ \text{Maximize } \sum_{\substack{sg \in SprintGoal \\ sg.achievement\_status = 'achieved'}} 1 \]
+    \item \textbf{G7: minimize\_worker\_availability\_gap} - Minimize the gap between required and actual worker availability.
+        \[ \text{Minimize } |1.0 - w.availability| \quad \forall w \in Worker \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: project\_status\_active} - Only consider projects with status 'active'.
+        \[ p.status = 'active' \quad \forall p \in Project \text{ considered in the model} \]
+    \item \textbf{C1: team\_size\_min} - Ensure team size is at least 3 members.
+        \[ t.team\_size \geq 3 \quad \forall t \in Team \]
+    \item \textbf{C2: worker\_availability\_threshold} - Worker availability must be greater than 0.7.
+        \[ w.availability > 0.7 \quad \forall w \in Worker \]
+    \item \textbf{C3: feature\_effort\_max} - The estimated effort for a feature must not exceed 100 story points.
+        \[ f.estimated\_effort \leq 100 \quad \forall f \in Feature \]
+    \item \textbf{C4: sprint\_duration\_fixed} - Sprint duration must be exactly 14 days.
+        \[ (s.end\_date - s.start\_date) = 14 \quad \forall s \in Sprint \]
+    \item \textbf{C5: story\_points\_positive} - Story points for a User Story must be a positive integer.
+        \[ us.story\_points \in \mathbb{Z}^+ \quad \forall us \in UserStory \]
+    \item \textbf{C6: blocker\_resolved\_date} - If a blocker is resolved, it must have a resolved\_on date.
+        \[ (b.status = 'resolved') \implies (b.resolved\_on \neq \text{null}) \quad \forall b \in Blocker \]
+    \item \textbf{C7: scrum\_master\_experience} - Scrum Master must have an experience level of at least 2.
+        \[ sm.experience \geq 2 \quad \forall sm \in ScrumMaster \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $DV0: x_{w, tsk} \in \{0, 1\}$ - Binary variable for assigning worker $w$ to task $tsk$.
+    \item $DV1: y_f \in \{1, 2, 3\}$ - Integer variable for the priority level of feature $f$.
+    \item $DV2: z_s \in \mathbb{Z}, 7 \leq z_s \leq 30$ - Integer variable for the length (in days) of sprint $s$.
+    \item $DV3: size_t \in \mathbb{Z}, 1 \leq size_t \leq 15$ - Integer variable for the size of team $t$.
+    \item $DV4: sp_{us} \in \mathbb{Z}, 1 \leq sp_{us} \leq 40$ - Integer variable for the story points of user story $us$.
+    \item $DV5: a_w \in \mathbb{R}, 0.0 \leq a_w \leq 1.0$ - Continuous variable for the availability of worker $w$.
+    \item $DV6: budget_p \in \mathbb{R}, 0.0 \leq budget_p \leq 1,000,000.0$ - Continuous variable for the budget of project $p$.
+    \item $DV7: sev_b \in \{1, 2, 3, 4, 5\}$ - Integer variable for the severity score of blocker $b$.
+\end{itemize}
+
+\end{document}

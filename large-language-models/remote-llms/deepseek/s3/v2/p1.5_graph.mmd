@@ -1,0 +1,220 @@
+graph TD
+    %% Entity Nodes (Blue)
+    E0[Project]:::entity
+    E1[Team]:::entity
+    E2[Worker]:::entity
+    E3[Feature]:::entity
+    E4[Skill]:::entity
+    E5[Role]:::entity
+    E6[ProductOwner]:::entity
+    E7[ScrumMaster]:::entity
+    E8[ProductBacklog]:::entity
+    E9[Sprint]:::entity
+    E10[SprintPlanning]:::entity
+    E11[DailyScrum]:::entity
+    E12[SprintReview]:::entity
+    E13[SprintRetrospective]:::entity
+    E14[SprintBacklog]:::entity
+    E15[SprintGoal]:::entity
+    E16[Epic]:::entity
+    E17[UserStory]:::entity
+    E18[Task]:::entity
+    E19[DevelopmentSnapshot]:::entity
+    E20[Blocker]:::entity
+    E21[Stakeholder]:::entity
+    E22[Velocity]:::entity
+    E23[ReleasePlan]:::entity
+    E24[Roadmap]:::entity
+    E25[ScrumBoard]:::entity
+    E26[FeatureDocumentation]:::entity
+
+    %% Attribute Nodes (White)
+    A_E0_id[id]:::attribute
+    A_E0_name[name]:::attribute
+    A_E0_budget[budget]:::attribute
+    A_E0_status[status]:::attribute
+
+    A_E2_id[id]:::attribute
+    A_E2_name[name]:::attribute
+    A_E2_availability[availability]:::attribute
+
+    A_E3_id[id]:::attribute
+    A_E3_priority[priority]:::attribute
+    A_E3_status[status]:::attribute
+
+    A_E18_id[id]:::attribute
+    A_E18_effort[effort]:::attribute
+
+    A_E20_id[id]:::attribute
+    A_E20_severity[severity]:::attribute
+    A_E20_status[status]:::attribute
+
+    A_E22_avg_story_points[avg._story_points]:::attribute
+
+    A_E15_achievement_status[achievement_status]:::attribute
+
+    A_E12_attendees_count[attendees_count]:::attribute
+
+    A_E17_acceptance_criteria[acceptance_criteria]:::attribute
+
+    %% Relation Nodes (Orange)
+    R1[is_assigned_to_project]:::relation
+    R2[belongs_to_team]:::relation
+    R3[has_skill]:::relation
+    R4[takes_on_role]:::relation
+    R5[manages_backlog]:::relation
+    R6[is_supported_by]:::relation
+    R7[contains_feature]:::relation
+    R11[is_in_sprint_backlog]:::relation
+    R12[belongs_to_sprint]:::relation
+    R13[pursues_goal]:::relation
+    R14[contains_tasks]:::relation
+    R16[is_blocked_by]:::relation
+    R17[participates_in]:::relation
+    R19[refers_to_team]:::relation
+    R22[generates_snapshot]:::relation
+
+    %% Goal Nodes (Green)
+    G0[maximize_team_availability]:::goal
+    G1[minimize_project_budget]:::goal
+    G2[maximize_feature_priority]:::goal
+    G3[minimize_blocker_severity]:::goal
+    G4[maximize_team_velocity]:::goal
+    G5[maximize_sprint_goal_achievement]:::goal
+    G6[minimize_task_effort]:::goal
+    G7[maximize_stakeholder_satisfaction]:::goal
+
+    %% Condition Nodes (Red)
+    C0[project_budget_limit]:::condition
+    C1[worker_availability_min]:::condition
+    C2[team_has_scrum_master]:::condition
+    C3[sprint_duration_fixed]:::condition
+    C4[user_story_has_acceptance_criteria]:::condition
+    C5[blocker_must_be_resolved]:::condition
+    C6[task_effort_positive]:::condition
+    C7[feature_in_backlog]:::condition
+
+    %% Decision Variable Nodes (Purple)
+    DV0[assign_worker_to_task]:::decisionvariable
+    DV1[select_feature_for_sprint]:::decisionvariable
+    DV2[prioritize_feature]:::decisionvariable
+    DV3[allocate_budget_to_feature]:::decisionvariable
+    DV4[team_size]:::decisionvariable
+    DV5[sprint_velocity_target]:::decisionvariable
+    DV6[task_start_day]:::decisionvariable
+    DV7[worker_utilization]:::decisionvariable
+
+    %% Entity-Attribute Links
+    E0 --> A_E0_id
+    E0 --> A_E0_name
+    E0 --> A_E0_budget
+    E0 --> A_E0_status
+
+    E2 --> A_E2_id
+    E2 --> A_E2_name
+    E2 --> A_E2_availability
+
+    E3 --> A_E3_id
+    E3 --> A_E3_priority
+    E3 --> A_E3_status
+
+    E18 --> A_E18_id
+    E18 --> A_E18_effort
+
+    E20 --> A_E20_id
+    E20 --> A_E20_severity
+    E20 --> A_E20_status
+
+    E22 --> A_E22_avg_story_points
+    E15 --> A_E15_achievement_status
+    E12 --> A_E12_attendees_count
+    E17 --> A_E17_acceptance_criteria
+
+    %% Entity-Relation Links
+    E1 --> R1
+    R1 --> E0
+
+    E2 --> R2
+    R2 --> E1
+
+    E2 --> R3
+    R3 --> E4
+
+    E2 --> R4
+    R4 --> E5
+
+    E6 --> R5
+    R5 --> E8
+
+    E1 --> R6
+    R6 --> E7
+
+    E8 --> R7
+    R7 --> E3
+
+    E17 --> R11
+    R11 --> E14
+
+    E14 --> R12
+    R12 --> E9
+
+    E9 --> R13
+    R13 --> E15
+
+    E25 --> R14
+    R14 --> E18
+
+    E18 --> R16
+    R16 --> E20
+
+    E21 --> R17
+    R17 --> E12
+
+    E22 --> R19
+    R19 --> E1
+
+    E9 --> R22
+    R22 --> E19
+
+    %% Goal-Attribute Links
+    G0 -.-> A_E2_availability
+    G1 -.-> A_E0_budget
+    G2 -.-> A_E3_priority
+    G3 -.-> A_E20_severity
+    G4 -.-> A_E22_avg_story_points
+    G5 -.-> A_E15_achievement_status
+    G6 -.-> A_E18_effort
+    G7 -.-> A_E12_attendees_count
+
+    %% Condition-Attribute Links
+    C0 -.-> A_E0_budget
+    C1 -.-> A_E2_availability
+    C2 -.-> E1
+    C3 -.-> E9
+    C4 -.-> A_E17_acceptance_criteria
+    C5 -.-> A_E20_severity
+    C5 -.-> A_E20_status
+    C6 -.-> A_E18_effort
+    C7 -.-> A_E3_status
+    C7 -.-> E8
+
+    %% DecisionVariable-Entity Links
+    DV0 -.-> E2
+    DV0 -.-> E18
+    DV1 -.-> E3
+    DV1 -.-> E9
+    DV2 -.-> E3
+    DV3 -.-> E3
+    DV4 -.-> E1
+    DV5 -.-> E9
+    DV6 -.-> E18
+    DV6 -.-> E9
+    DV7 -.-> E2
+
+    %% Styling
+    classDef entity fill:#aaccff,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#ffffff,stroke:#333,stroke-width:1px;
+    classDef relation fill:#ffcc80,stroke:#333,stroke-width:2px;
+    classDef goal fill:#80ff80,stroke:#333,stroke-width:2px;
+    classDef condition fill:#ff9999,stroke:#333,stroke-width:2px;
+    classDef decisionvariable fill:#cc99ff,stroke:#333,stroke-width:2px;
