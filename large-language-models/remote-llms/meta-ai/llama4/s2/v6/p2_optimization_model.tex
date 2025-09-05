@@ -1,0 +1,234 @@
+\documentclass{article}
+\title{Optimization Model for Scrum-based Software Development}
+\author{Meta AI}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $P$ = Projects
+    \item $T$ = Teams
+    \item $W$ = Workers
+    \item $F$ = Features
+    \item $S$ = Skills
+    \item $R$ = Roles
+    \item $PO$ = Product Owners
+    \item $SM$ = Scrum Masters
+    \item $PB$ = Product Backlogs
+    \item $SP$ = Sprints
+    \item $SG$ = Sprint Goals
+    \item $US$ = User Stories
+    \item $TSK$ = Tasks
+    \item $DEV$ = Development Snapshots
+    \item $BL$ = Blockers
+    \item $SH$ = Stakeholders
+    \item $VEL$ = Velocity
+    \item $REP$ = Release Plans
+    \item $RM$ = Roadmaps
+    \item $SCB$ = Scrum Boards
+    \item $FED$ = Feature Documentations
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$
+    \item $t \in T$
+    \item $w \in W$
+    \item $f \in F$
+    \item $s \in S$
+    \item $r \in R$
+    \item $po \in PO$
+    \item $sm \in SM$
+    \item $pb \in PB$
+    \item $sp \in SP$
+    \item $sg \in SG$
+    \item $us \in US$
+    \item $tsk \in TSK$
+    \item $dev \in DEV$
+    \item $bl \in BL$
+    \item $sh \in SH$
+    \item $vel \in VEL$
+    \item $rep \in REP$
+    \item $rm \in RM$
+    \item $scb \in SCB$
+    \item $fed \in FED$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_project\_budget} \\
+    Maximize $\sum_{p \in P} budget_p$ \\
+    Mathematical representation: $\max \sum_{p \in P} budget_p$
+
+    \item \textbf{G1: minimize\_project\_duration} \\
+    Minimize $\sum_{p \in P} (project\_end_p - project\_start_p)$ \\
+    Mathematical representation: $\min \sum_{p \in P} (project\_end_p - project\_start_p)$
+
+    \item \textbf{G2: maximize\_team\_velocity} \\
+    Maximize $\sum_{vel \in VEL} avg\_story\_points_{vel}$ \\
+    Mathematical representation: $\max \sum_{vel \in VEL} avg\_story\_points_{vel}$
+
+    \item \textbf{G3: maximize\_sprint\_goal\_achievement} \\
+    Maximize $\sum_{sg \in SG} achievement\_status_{sg}$ \\
+    Mathematical representation: $\max \sum_{sg \in SG} achievement\_status_{sg}$
+
+    \item \textbf{G4: minimize\_blocker\_severity} \\
+    Minimize $\sum_{bl \in BL} severity_{bl}$ \\
+    Mathematical representation: $\min \sum_{bl \in BL} severity_{bl}$
+
+    \item \textbf{G5: maximize\_feature\_completion} \\
+    Maximize $\sum_{f \in F} status_f$ \\
+    Mathematical representation: $\max \sum_{f \in F} status_f$
+
+    \item \textbf{G6: minimize\_task\_effort} \\
+    Minimize $\sum_{tsk \in TSK} effort_{tsk}$ \\
+    Mathematical representation: $\min \sum_{tsk \in TSK} effort_{tsk}$
+
+    \item \textbf{G7: maximize\_stakeholder\_satisfaction} \\
+    Maximize $\sum_{sh \in SH} relevance\_to\_feature_{sh}$ \\
+    Mathematical representation: $\max \sum_{sh \in SH} relevance\_to\_feature_{sh}$
+
+    \item \textbf{G8: maximize\_sprint\_review\_feedback} \\
+    Maximize $\sum_{sp \in SP} feedback\_documentation_{sp}$ \\
+    Mathematical representation: $\max \sum_{sp \in SP} feedback\_documentation_{sp}$
+
+    \item \textbf{G9: minimize\_sprint\_retrospective\_improvement\_actions} \\
+    Minimize $\sum_{sp \in SP} improvement\_actions_{sp}$ \\
+    Mathematical representation: $\min \sum_{sp \in SP} improvement\_actions_{sp}$
+
+    \item \textbf{G10: maximize\_development\_snapshot\_quality} \\
+    Maximize $\sum_{dev \in DEV} test\_status_{dev}$ \\
+    Mathematical representation: $\max \sum_{dev \in DEV} test\_status_{dev}$
+
+    \item \textbf{G11: maximize\_product\_owner\_availability} \\
+    Maximize $\sum_{po \in PO} availability_{po}$ \\
+    Mathematical representation: $\max \sum_{po \in PO} availability_{po}$
+
+    \item \textbf{G12: minimize\_scrum\_master\_experience} \\
+    Minimize $\sum_{sm \in SM} experience_{sm}$ \\
+    Mathematical representation: $\min \sum_{sm \in SM} experience_{sm}$
+
+    \item \textbf{G13: maximize\_team\_size} \\
+    Maximize $\sum_{t \in T} team\_size_t$ \\
+    Mathematical representation: $\max \sum_{t \in T} team\_size_t$
+
+    \item \textbf{G14: maximize\_user\_story\_completion} \\
+    Maximize $\sum_{us \in US} status_{us}$ \\
+    Mathematical representation: $\max \sum_{us \in US} status_{us}$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: project\_status\_must\_be\_active} \\
+    $status_p = active, \forall p \in P$ \\
+    Mathematical representation: $status_p = 1, \forall p \in P$
+
+    \item \textbf{C1: team\_status\_must\_be\_active} \\
+    $team\_status_t = active, \forall t \in T$ \\
+    Mathematical representation: $team\_status_t = 1, \forall t \in T$
+
+    \item \textbf{C2: product\_owner\_availability\_must\_be\_high} \\
+    $availability_{po} \geq 0.8, \forall po \in PO$ \\
+    Mathematical representation: $availability_{po} \geq 0.8, \forall po \in PO$
+
+    \item \textbf{C3: scrum\_master\_experience\_must\_be\_high} \\
+    $experience_{sm} \geq 5, \forall sm \in SM$ \\
+    Mathematical representation: $experience_{sm} \geq 5, \forall sm \in SM$
+
+    \item \textbf{C4: feature\_priority\_must\_be\_high} \\
+    $priority_f \geq 4, \forall f \in F$ \\
+    Mathematical representation: $priority_f \geq 4, \forall f \in F$
+
+    \item \textbf{C5: user\_story\_priority\_must\_be\_high} \\
+    $priority_{us} \geq 4, \forall us \in US$ \\
+    Mathematical representation: $priority_{us} \geq 4, \forall us \in US$
+
+    \item \textbf{C6: task\_status\_must\_be\_in\_progress} \\
+    $status_{tsk} = in\_progress, \forall tsk \in TSK$ \\
+    Mathematical representation: $status_{tsk} = 1, \forall tsk \in TSK$
+
+    \item \textbf{C7: sprint\_goal\_must\_be\_achievable} \\
+    $achievement\_status_{sg} \geq 0.8, \forall sg \in SG$ \\
+    Mathematical representation: $achievement\_status_{sg} \geq 0.8, \forall sg \in SG$
+
+    \item \textbf{C8: blocker\_severity\_must\_be\_low} \\
+    $severity_{bl} \leq 2, \forall bl \in BL$ \\
+    Mathematical representation: $severity_{bl} \leq 2, \forall bl \in BL$
+
+    \item \textbf{C9: stakeholder\_relevance\_must\_be\_high} \\
+    $relevance\_to\_feature_{sh} \geq 4, \forall sh \in SH$ \\
+    Mathematical representation: $relevance\_to\_feature_{sh} \geq 4, \forall sh \in SH$
+
+    \item \textbf{C10: sprint\_review\_feedback\_must\_be\_positive} \\
+    $feedback\_documentation_{sp} = positive, \forall sp \in SP$ \\
+    Mathematical representation: $feedback\_documentation_{sp} = 1, \forall sp \in SP$
+
+    \item \textbf{C11: sprint\_retrospective\_improvement\_actions\_must\_be\_low} \\
+    $improvement\_actions_{sp} \leq 2, \forall sp \in SP$ \\
+    Mathematical representation: $improvement\_actions_{sp} \leq 2, \forall sp \in SP$
+
+    \item \textbf{C12: development\_snapshot\_quality\_must\_be\_high} \\
+    $test\_status_{dev} \geq 0.9, \forall dev \in DEV$ \\
+    Mathematical representation: $test\_status_{dev} \geq 0.9, \forall dev \in DEV$
+
+    \item \textbf{C13: team\_velocity\_must\_be\_high} \\
+    $avg\_story\_points_{vel} \geq 50, \forall vel \in VEL$ \\
+    Mathematical representation: $avg\_story\_points_{vel} \geq 50, \forall vel \in VEL$
+
+    \item \textbf{C14: product\_backlog\_status\_must\_be\_active} \\
+    $status_{pb} = active, \forall pb \in PB$ \\
+    Mathematical representation: $status_{pb} = 1, \forall pb \in PB$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item \textbf{D0: project\_start\_date} \\
+    $project\_start\_date_p \in \{2022-01-01, 2025-12-31\}, \forall p \in P$
+
+    \item \textbf{D1: team\_size} \\
+    $team\_size_t \in \{1, 2, ..., 10\}, \forall t \in T$
+
+    \item \textbf{D2: product\_owner\_availability} \\
+    $availability_{po} \in [0, 1], \forall po \in PO$
+
+    \item \textbf{D3: scrum\_master\_experience} \\
+    $experience_{sm} \in \{1, 2, ..., 10\}, \forall sm \in SM$
+
+    \item \textbf{D4: feature\_priority} \\
+    $priority_f \in \{1, 2, ..., 5\}, \forall f \in F$
+
+    \item \textbf{D5: user\_story\_priority} \\
+    $priority_{us} \in \{1, 2, ..., 5\}, \forall us \in US$
+
+    \item \textbf{D6: task\_status} \\
+    $status_{tsk} \in \{0, 1, 2\}, \forall tsk \in TSK$
+
+    \item \textbf{D7: sprint\_goal\_achievement} \\
+    $achievement\_status_{sg} \in [0, 1], \forall sg \in SG$
+
+    \item \textbf{D8: blocker\_severity} \\
+    $severity_{bl} \in \{1, 2, ..., 5\}, \forall bl \in BL$
+
+    \item \textbf{D9: stakeholder\_relevance} \\
+    $relevance\_to\_feature_{sh} \in \{1, 2, ..., 5\}, \forall sh \in SH$
+
+    \item \textbf{D10: sprint\_review\_feedback} \\
+    $feedback\_documentation_{sp} \in \{0, 1\}, \forall sp \in SP$
+
+    \item \textbf{D11: sprint\_retrospective\_improvement\_actions} \\
+    $improvement\_actions_{sp} \in \{0, 1, ..., 5\}, \forall sp \in SP$
+
+    \item \textbf{D12: development\_snapshot\_quality} \\
+    $test\_status_{dev} \in [0, 1], \forall dev \in DEV$
+
+    \item \textbf{D13: team\_velocity} \\
+    $avg\_story\_points_{vel} \in [0, 100], \forall vel \in VEL$
+
+    \item \textbf{D14: product\_backlog\_status} \\
+    $status_{pb} \in \{0, 1\}, \forall pb \in PB$
+\end{itemize}
+
+\end{document}

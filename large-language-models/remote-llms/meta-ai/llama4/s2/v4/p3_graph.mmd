@@ -1,0 +1,83 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#800080,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    P(Project):::entity
+    T(Team):::entity
+    W(Worker):::entity
+    F(Feature):::entity
+    S(Skill):::entity
+    R(Role):::entity
+    PO(ProductOwner):::entity
+    SM(ScrumMaster):::entity
+    PB(ProductBacklog):::entity
+    SP(Sprint):::entity
+    SG(SprintGoal):::entity
+    E(Epic):::entity
+    US(UserStory):::entity
+    TSK(Task):::entity
+    DEV(DevelopmentSnapshot):::entity
+    BL(Blocker):::entity
+    SH(Stakeholder):::entity
+    VEL(Velocity):::entity
+    REP(ReleasePlan):::entity
+    RM(Roadmap):::entity
+    SCB(ScrumBoard):::entity
+    FED(FeatureDocumentation):::entity
+
+    %% Attributes
+    id_P(id):::attribute --> P
+    name_P(name):::attribute --> P
+    project_start_P(project_start):::attribute --> P
+    project_end_P(project_end):::attribute --> P
+    description_P(description):::attribute --> P
+    budget_P(budget):::attribute --> P
+    status_P(status):::attribute --> P
+    target_audience_P(target_audience):::attribute --> P
+    priority_P(priority):::attribute --> P
+
+    id_T(id):::attribute --> T
+    name_T(name):::attribute --> T
+    team_size_T(team_size):::attribute --> T
+    team_start_T(team_start):::attribute --> T
+    team_status_T(team_status):::attribute --> T
+    location_T(location):::attribute --> T
+    team_type_T(team_type):::attribute --> T
+
+    %% ... (all attributes for all entities)
+
+    %% Relations
+    R1(is_assigned_to_project):::relation --> P
+    R1 --> T
+    R2(belongs_to_team):::relation --> T
+    R2 --> W
+    R3(has_skill):::relation --> W
+    R3 --> S
+    %% ... (all relations)
+
+    %% Goals
+    G0(maximize_team_velocity):::goal --> VEL
+    G0 --> avg_story_points_VEL(avg._story_points):::attribute
+    G1(minimize_blocker_severity):::goal --> BL
+    G1 --> severity_BL(severity):::attribute
+    %% ... (all goals)
+
+    %% Conditions
+    C0(team_must_have_scrum_master):::condition --> T
+    C0 --> SM
+    C1(product_owner_must_be_available):::condition --> PO
+    C1 --> availability_PO(availability):::attribute
+    %% ... (all conditions)
+
+    %% Decision Variables
+    D0(team_assignment):::decisionVariable --> T
+    D0 --> W
+    D1(task_priority):::decisionVariable --> TSK
+    D1 --> priority_TSK(priority):::attribute
+    %% ... (all decision variables)

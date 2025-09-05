@@ -1,0 +1,112 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#800080,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    P[Project]:::entity
+    T[Team]:::entity
+    W[Worker]:::entity
+    F[Feature]:::entity
+    S[Skill]:::entity
+    R[Role]:::entity
+    PO[Product Owner]:::entity
+    SM[Scrum Master]:::entity
+    PB[Product Backlog]:::entity
+    SP[Sprint]:::entity
+    SG[Sprint Goal]:::entity
+    US[User Story]:::entity
+    TSK[Task]:::entity
+    BL[Blocker]:::entity
+    SH[Stakeholder]:::entity
+    VEL[Velocity]:::entity
+    REP[Release Plan]:::entity
+    RM[Roadmap]:::entity
+    DEV[Development Snapshot]:::entity
+    SCB[Scrum Board]:::entity
+
+    %% Attributes
+    P_id[P.id]:::attribute
+    P_name[P.name]:::attribute
+    P_project_start[P.project_start]:::attribute
+    P_project_end[P.project_end]:::attribute
+    T_id[T.id]:::attribute
+    T_name[T.name]:::attribute
+    W_id[W.id]:::attribute
+    W_name[W.name]:::attribute
+    F_id[F.id]:::attribute
+    F_title[F.title]:::attribute
+    F_priority[F.priority]:::attribute
+
+    %% Entity-Attribute connections
+    P --> P_id
+    P --> P_name
+    P --> P_project_start
+    P --> P_project_end
+    T --> T_id
+    T --> T_name
+    W --> W_id
+    W --> W_name
+    F --> F_id
+    F --> F_title
+    F --> F_priority
+
+    %% Relations
+    R1[is_assigned_to_project]:::relation
+    R2[belongs_to_team]:::relation
+    R3[has_skill]:::relation
+    R4[takes_on_role]:::relation
+    R5[manages_backlog]:::relation
+    R6[is_supported_by]:::relation
+    R7[contains_feature]:::relation
+    R8[contains_epic]:::relation
+    R9[contains_user_story]:::relation
+    R10[consists_of_tasks]:::relation
+
+    %% Entity-Relation connections
+    T -->|R1| P
+    W -->|R2| T
+    W -->|R3| S
+    W -->|R4| R
+    PO -->|R5| PB
+    T -->|R6| SM
+    PB -->|R7| F
+    PB -->|R8| E
+    E -->|R9| US
+    US -->|R10| TSK
+
+    %% Goals
+    G0[maximize_team_velocity]:::goal
+    G1[minimize_blocker_severity]:::goal
+    G2[maximize_sprint_goal_achievement]:::goal
+
+    %% Goal-Entity connections
+    G0 --> VEL_avg_story_points
+    G1 --> BL_severity
+    G2 --> SG_achievement_status
+
+    %% Conditions
+    C0[team_must_have_scrum_master]:::condition
+    C1[product_owner_must_manage_backlog]:::condition
+    C2[sprint_must_have_goal]:::condition
+
+    %% Condition-Entity C3 connections
+    C0 --> T
+    C1 --> PO
+    C2 --> SP
+
+    %% Decision Variables
+    D0[team_assignment]:::decisionVariable
+    D1[worker_assignment]:::decisionVariable
+    D2[task_status]:::decisionVariable
+
+    %% Decision Variable-Entity connections
+    D0 --> T
+    D0 --> P
+    D1 --> W
+    D1 --> T
+    D2 --> TSK

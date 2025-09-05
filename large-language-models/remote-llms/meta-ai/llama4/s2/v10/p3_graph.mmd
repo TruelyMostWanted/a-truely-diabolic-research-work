@@ -1,0 +1,258 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#7A288A,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    P(Project):::entity
+    T(Team):::entity
+    W(Worker):::entity
+    F(Feature):::entity
+    S(Skill):::entity
+    R(Role):::entity
+    PO(ProductOwner):::entity
+    SM(ScrumMaster):::entity
+    PB(ProductBacklog):::entity
+    SP(Sprint):::entity
+    SG(SprintGoal):::entity
+    E(Epic):::entity
+    US(UserStory):::entity
+    TSK(Task):::entity
+    DEV(DevelopmentSnapshot):::entity
+    BL(Blocker):::entity
+    SH(Stakeholder):::entity
+    VEL(Velocity):::entity
+    REP(ReleasePlan):::entity
+    RM(Roadmap):::entity
+    SCB(ScrumBoard):::entity
+    FED(FeatureDocumentation):::entity
+
+    %% Attributes
+    P_id(P ID):::attribute
+    P_name(Project Name):::attribute
+    P_project_start(Project Start):::attribute
+    P_project_end(Project End):::attribute
+    P_description(Project Description):::attribute
+    P_budget(Project Budget):::attribute
+    P_status(Project Status):::attribute
+    P_target_audience(Target Audience):::attribute
+    P_priority(Project Priority):::attribute
+
+    T_id(Team ID):::attribute
+    T_name(Team Name):::attribute
+    T_team_size(Team Size):::attribute
+    T_team_start(Team Start):::attribute
+    T_team_status(Team Status):::attribute
+
+    %% Relations
+    R1(is_assigned_to_project):::relation
+    T -->|R1| P
+    R2(belongs_to_team):::relation
+    W -->|R2| T
+    R3(has_skill):::relation
+    W -->|R3| S
+    R4(takes_on_role):::relation
+    W -->|R4| R
+    R5(manages_backlog):::relation
+    PO -->|R5| PB
+    R6(is_supported_by):::relation
+    T -->|R6| SM
+    R7(contains_feature):::relation
+    PB -->|R7| F
+    R8(contains_epic):::relation
+    PB -->|R8| E
+    R9(contains_user_story):::relation
+    E -->|R9| US
+    R10(consists_of_tasks):::relation
+    US -->|R10| TSK
+
+    A1(project_id):::attribute
+    A2(project_name):::attribute
+    A3(project_start):::attribute
+    A4(project_end):::attribute
+    A5(project_description):::attribute
+    A6(project_budget):::attribute
+    A7(project_status):::attribute
+    A8(project_target_audience):::attribute
+    A9(project_priority):::attribute
+    P --- A1
+    P --- A2
+    P --- A3
+    P --- A4
+    P --- A5
+    P --- A6
+    P --- A7
+    P --- A8
+    P --- A9
+
+    %% Goals
+    G0(maximize_team_velocity):::goal
+    G1(minimize_blocker_severity):::goal
+    G2(maximize_sprint_goal_achievement):::goal
+    G0 -->|maximize| VEL
+    G1 -->|minimize| BL
+    G2 -->|maximize| SG
+
+    %% Conditions
+    C0(team_has_scrum_master):::condition
+    C1(product_owner_has_availability):::condition
+    C0 -->|condition| T
+    C0 -->|condition| SM
+    C1 -->|condition| PO
+
+    %% Decision Variables
+    D0(team_assignment):::decisionVariable
+    D1(product_owner_availability):::decisionVariable
+    D0 -->|decision| T
+    D1 -->|decision| PO
+
+    %% More connections...
+    T --- T_id
+    T --- T_name
+    T --- T_team_size
+    T --- T_team_start
+    T --- T_team_status
+    W --- W_id
+    W --- W_name
+    W --- W_first_name
+    W --- W_email
+    W --- W_start_date
+    W --- W_status
+    W --- W_availability
+    F --- F_id
+    F --- F_title
+    F --- F_description
+    F --- F_status
+    F --- F_priority
+    F --- F_estimated_effort
+    S --- S_id
+    S --- S_label
+    S --- S_description
+    S --- S_level
+    S --- S_certified
+    S --- S_category
+    R --- R_id
+    R --- R_role_name
+    R --- R_description
+    R --- R_area_of_responsibility
+    PO --- PO_id
+    PO --- PO_name
+    PO --- PO_email
+    PO --- PO_availability
+    SM --- SM_id
+    SM --- SM_name
+    SM --- SM_email
+    SM --- SM_experience
+    PB --- PB_id
+    PB --- PB_created_on
+    PB --- PB_last_updated
+    PB --- PB_number_of_entries
+    PB --- PB_status
+    SP --- SP_id
+    SP --- SP_sprint_number
+    SP --- SP_start_date
+    SP --- SP_end_date
+    SP --- SP_status
+    SG --- SG_id
+    SG --- SG_objective_description
+    SG --- SG_achievement_status
+    SG --- SG_benefit
+    E --- E_id
+    E --- E_title
+    E --- E_description
+    E --- E_priority
+    E --- E_status
+    E --- E_estimated_effort
+    US --- US_id
+    US --- US_title
+    US --- US_description
+    US --- US_acceptance_criteria
+    US --- US_priority
+    US --- US_story_points
+    US --- US_status
+    TSK --- TSK_id
+    TSK --- TSK_title
+    TSK --- TSK_description
+    TSK --- TSK_status
+    TSK --- TSK_effort
+    TSK --- TSK_type
+    DEV --- DEV_id
+    DEV --- DEV_version_number
+    DEV --- DEV_creation_date
+    DEV --- DEV_test_status
+    DEV --- DEV_deployment_target
+    DEV --- DEV_documentation
+    BL --- BL_id
+    BL --- BL_title
+    BL --- BL_description
+    BL --- BL_severity
+    BL --- BL_status
+    BL --- BL_detected_on
+    BL --- BL_resolved_on
+    SH --- SH_id
+    SH --- SH_name
+    SH --- SH_organization
+    SH --- SH_role
+    SH --- SH_email
+    SH --- SH_area_of_interest
+    SH --- SH_influence_level
+    SH --- SH_relevance_to_feature
+    VEL --- VEL_id
+    VEL --- VEL_number_of_sprints_used
+    VEL --- VEL_avg_story_points
+    VEL --- VEL_max_velocity
+    VEL --- VEL_min_velocity
+    VEL --- VEL_trend
+    REP --- REP_id
+    REP --- REP_version
+    REP --- REP_planned_date
+    REP --- REP_included_features
+    REP --- REP_status
+    RM --- RM_id
+    RM --- RM_start_date
+    RM --- RM_end_date
+    RM --- RM_milestones
+    RM --- RM_objectives
+    RM --- RM_versions
+    SCB --- SCB_id
+    SCB --- SCB_board_type
+    SCB --- SCB_columns
+    SCB --- SCB_number_of_cards
+    SCB --- SCB_last_updated
+    FED --- FED_id
+    FED --- FED_title
+    FED --- FED_description
+    FED --- FED_creation_date
+    FED --- FED_change_log
+    FED --- FED_linked_requirements
+    FED --- FED_author
+
+    %% More relations...
+    R11(is_in_sprint_backlog):::relation
+    US -->|R11| SP
+    R12(belongs_to_sprint):::relation
+    SP -->|R12| SG
+    R13(pursues_goal):::relation
+    SP -->|R13| SG
+    R14(contains_tasks):::relation
+    SCB -->|R14| TSK
+    R15(documents_feature):::relation
+    FED -->|R15| F
+    R16(is_blocked_by):::relation
+    TSK -->|R16| BL
+    R17(participates_in):::relation
+    SH -->|R17| SP
+    R18(moderates_retrospective):::relation
+    SM -->|R18| SP
+    R19(refers_to_team):::relation
+    VEL -->|R19| T
+    R20(plans_release):::relation
+    REP -->|R20| F
+    R21(is_part_of_roadmap):::relation
+    REP -->|R21| RM
+    R22(generates_snapshot):::relation
+    SP -->|R22| DEV

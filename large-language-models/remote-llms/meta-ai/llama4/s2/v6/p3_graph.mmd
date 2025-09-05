@@ -1,0 +1,156 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#800080,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    P(Project):::entity
+    T(Team):::entity
+    W(Worker):::entity
+    F(Feature):::entity
+    S(Skill):::entity
+    R(Role):::entity
+    PO(Product Owner):::entity
+    SM(Scrum Master):::entity
+    PB(Product Backlog):::entity
+    SP(Sprint):::entity
+    SG(Sprint Goal):::entity
+    US(User Story):::entity
+    TSK(Task):::entity
+    DEV(Development Snapshot):::entity
+    BL(Blocker):::entity
+    SH(Stakeholder):::entity
+    VEL(Velocity):::entity
+    REP(Release Plan):::entity
+    RM(Roadmap):::entity
+    SCB(Scrum Board):::entity
+    FED(Feature Documentation):::entity
+
+    %% Attributes
+    id_P(id):::attribute
+    name_P(name):::attribute
+    project_start_P(project_start):::attribute
+    project_end_P(project_end):::attribute
+    budget_P(budget):::attribute
+    id_T(id):::attribute
+    name_T(name):::attribute
+    team_size_T(team_size):::attribute
+
+    %% Entity-Attribute connections
+    P --> id_P
+    P --> name_P
+    P --> project_start_P
+    P --> project_end_P
+    P --> budget_P
+    T --> id_T
+    T --> name_T
+    T --> team_size_T
+    W --> id_W(id):::attribute
+    W --> name_W(name):::attribute
+    W --> first_name_W(first_name):::attribute
+    F --> id_F(id):::attribute
+    F --> title_F(title):::attribute
+    F --> description_F(description):::attribute
+
+    %% Relations
+    R1(is_assigned_to_project):::relation --> P
+    R1 --> T
+    R2(belongs_to_team):::relation --> T
+    R2 --> W
+    R3(has_skill):::relation --> W
+    R3 --> S
+    R4(takes_on_role):::relation --> W
+    R4 --> R
+
+    %% Goals
+    G0(maximize_project_budget):::goal --> budget_P
+    G1(minimize_project_duration):::goal --> project_start_P
+    G1 --> project_end_P
+    G2(maximize_team_velocity):::goal --> VEL
+    G3(maximize_sprint_goal_achievement):::goal --> SG
+
+    %% Conditions
+    C0(project_status_must_be_active):::condition --> P
+    C1(team_status_must_be_active):::condition --> T
+    C2(product_owner_availability_must_be_high):::condition --> PO
+
+    %% Decision Variables
+    D0(project_start_date):::decisionVariable --> P
+    D1(team_size):::decisionVariable --> T
+    D2(product_owner_availability):::decisionVariable --> PO
+
+    %% More Entity-Attribute connections
+    PO --> id_PO(id):::attribute
+    PO --> name_PO(name):::attribute
+    PO --> availability_PO(availability):::attribute
+    SM --> id_SM(id):::attribute
+    SM --> name_SM(name):::attribute
+    SM --> experience_SM(experience):::attribute
+    PB --> id_PB(id):::attribute
+    PB --> created_on_PB(created_on):::attribute
+    SP --> id_SP(id):::attribute
+    SP --> sprint_number_SP(sprint_number):::attribute
+    SG --> id_SG(id):::attribute
+    SG --> objective_description_SG(objective_description):::attribute
+    US --> id_US(id):::attribute
+    US --> title_US(title):::attribute
+    TSK --> id_TSK(id):::attribute
+    TSK --> title_TSK(title):::attribute
+    DEV --> id_DEV(id):::attribute
+    DEV --> version_number_DEV(version_number):::attribute
+    BL --> id_BL(id):::attribute
+    BL --> title_BL(title):::attribute
+    SH --> id_SH(id):::attribute
+    SH --> name_SH(name):::attribute
+    VEL --> id_VEL(id):::attribute
+    VEL --> avg_story_points_VEL(avg_story_points):::attribute
+    REP --> id_REP(id):::attribute
+    REP --> version_REP(version):::attribute
+    RM --> id_RM(id):::attribute
+    RM --> start_date_RM(start_date):::attribute
+    SCB --> id_SCB(id):::attribute
+    SCB --> board_type_SCB(board_type):::attribute
+    FED --> id_FED(id):::attribute
+    FED --> title_FED(title):::attribute
+
+    %% More Relations
+    R5(manages_backlog):::relation --> PO
+    R5 --> PBED --> PB
+    R6(is_supported_by):::relation --> T
+    R6 --> SM
+    R7(contains_feature):::relation --> PB
+    R7 --> F
+    R8(contains_epic):::relation --> PB
+    R8 --> E(Epic):::entity
+    R9(contains_user_story):::relation --> E
+    R9 --> US
+    R10(consists_of_tasks):::relation --> US
+    R10 --> TSK
+    R11(is_in_sprint_backlog):::relation --> US
+    R11 --> SP
+    R12(belongs_to_sprint):::relation --> SP
+    R12 --> SG
+    R13(pursues_goal):::relation --> SP
+    R13 --> SG
+    R14(contains_tasks):::relation --> SCB
+    R14 --> TSK
+    R15(documents_feature):::relation --> FED
+    R15 --> F
+    R16(is_blocked_by):::relation --> TSK
+    R16 --> BL
+    R17(participates_in):::relation --> SH
+    R17 --> SP
+    R18(moderates_retrospective):::relation --> SM
+    R18 --> SP
+    R19(refers_to_team):::relation --> VEL
+    R19 --> T
+    R20(plans_release):::relation --> REP
+    R20 --> F
+    R21(is_part_of_roadmap):::relation --> REP
+    R21 --> RM
+    R22(generates_snapshot):::relation --> SP
+    R22 --> DEV

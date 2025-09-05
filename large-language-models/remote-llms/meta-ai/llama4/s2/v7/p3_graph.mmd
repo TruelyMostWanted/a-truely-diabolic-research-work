@@ -1,0 +1,177 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#7A288A,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    P(Project):::entity
+    T(Team):::entity
+    W(Worker):::entity
+    F(Feature):::entity
+    S(Skill):::entity
+    R(Role):::entity
+    PO(ProductOwner):::entity
+    SM(ScrumMaster):::entity
+    PB(ProductBacklog):::entity
+    SP(Sprint):::entity
+    SG(SprintGoal):::entity
+    E(Epic):::entity
+    US(UserStory):::entity
+    TSK(Task):::entity
+    DEV(DevelopmentSnapshot):::entity
+    BL(Blocker):::entity
+    SH(Stakeholder):::entity
+    VEL(Velocity):::entity
+    REP(ReleasePlan):::entity
+    RM(Roadmap):::entity
+    SCB(ScrumBoard):::entity
+    FED(FeatureDocumentation):::entity
+
+    %% Attributes
+    id_P(id):::attribute
+    name_P(name):::attribute
+    project_start_P(project_start):::attribute
+    project_end_P(project_end):::attribute
+    description_P(description):::attribute
+    budget_P(budget):::attribute
+    status_P(status):::attribute
+    target_audience_P(target_audience):::attribute
+    priority_P(priority):::attribute
+
+    id_T(id):::attribute
+    name_T(name):::attribute
+    team_size_T(team_size):::attribute
+    team_start_T(team_start):::attribute
+    team_status_T(team_status):::attribute
+    location_T(location):::attribute
+    team_type_T(team_type):::attribute
+
+    %% ... (other attributes)
+
+    %% Entity-Attribute connections
+    P --> id_P
+    P --> name_P
+    P --> project_start_P
+    P --> project_end_P
+    P --> description_P
+    P --> budget_P
+    P --> status_P
+    P --> target_audience_P
+    P --> priority_P
+
+    T --> id_T
+    T --> name_T
+    T --> team_size_T
+    T --> team_start_T
+    T --> team_status_T
+    T --> location_T
+    T --> team_type_T
+
+    %% ... (other entity-attribute connections)
+
+    %% Relations
+    R1(is_assigned_to_project):::relation --> T
+    R1 --> P
+    R2(belongs_to_team):::relation --> W
+    R2 --> T
+    R3(has_skill):::relation --> W
+    R3 --> S
+    R4(takes_on_role):::relation --> W
+    R4 --> R
+    R5(manages_backlog):::relation --> PO
+    R5 --> PB
+    R6(is_supported_by):::relation --> T
+    R6 --> SM
+    R7(contains_feature):::relation --> PB
+    R7 --> F
+    R8(contains_epic):::relation --> PB
+    R8 --> E
+    R9(contains_user_story):::relation --> E
+    R9 --> US
+    R10(consists_of_tasks):::relation --> US
+    R10 --> TSK
+
+    %% Goals
+    G0(maximize_team_velocity):::goal
+    G0 --> VEL
+    G1(minimize_blocker_severity):::goal
+    G1 --> BL
+    G2(maximize_sprint_goal_achievement):::goal
+    G2 --> SG
+    G3(minimize_sprint_duration):::goal
+    G3 --> SP
+    G4(maximize_feature_completion):::goal
+    G4 --> F
+    G5(minimize_task_effort):::goal
+    G5 --> TSK
+    G6(maximize_stakeholder_satisfaction):::goal
+    G6 --> SH
+    G7(minimize_release_plan_delay):::goal
+    G7 --> REP
+    G8(maximize_product_backlog_quality):::goal
+    G8 --> PB
+    G9(minimize_development_snapshot_bugs):::goal
+    G9 --> DEV
+    G10(maximize_scrum_board_efficiency):::goal
+    G10 --> SCB
+    G11(maximize_worker_availability):::goal
+    G11 --> W
+    G12(minimize_project_cost):::goal
+    G12 --> P
+    G13(maximize_feature_documentation_quality):::goal
+    G13 --> FED
+    G14(minimize_task_blockers):::goal
+    G14 --> TSK
+
+    %% Conditions
+    C0(team_must_have_scrum_master):::condition
+    C0 --> T
+    C0 --> SM
+    C1(product_owner_must_manage_backlog):::condition
+    C1 --> PO
+    C1 --> PB
+    C2(sprint_must_have_goal):::condition
+    C2 --> SP
+    C2 --> SG
+    C3(task_must_have_effort):::condition
+    C3 --> TSK
+    C4(feature_must_have_priority):::condition
+    C4 --> F
+
+    %% Decision Variables
+    DV0(team_assignment):::decisionVariable
+    DV0 --> T
+    DV0 --> P
+    DV1(worker_skill_level):::decisionVariable
+    DV1 --> W
+    DV1 --> S
+    DV2(sprint_duration):::decisionVariable
+    DV2 --> SP
+    DV3(task_effort):::decisionVariable
+    DV3 --> TSK
+    DV4(feature_priority):::decisionVariable
+    DV4 --> F
+    DV5(worker_availability):::decisionVariable
+    DV5 --> W
+    DV6(project_budget):::decisionVariable
+    DV6 --> P
+    DV7(release_plan_delay):::decisionVariable
+    DV7 --> REP
+    DV8(scrum_board_efficiency):::decisionVariable
+    DV8 --> SCB
+    DV9(development_snapshot_quality):::decisionVariable
+    DV9 --> DEV
+    DV10(feature_documentation_quality):::decisionVariable
+    DV10 --> FED
+    DV11(blocker_severity):::decisionVariable
+    DV11 --> BL
+    DV12(sprint_goal_achievement):::decisionVariable
+    DV12 --> SG
+    DV13(task_blockers):::decisionVariable
+    DV13 --> TSK
+    DV14(project_cost):::decisionVariable
+    DV14 --> P

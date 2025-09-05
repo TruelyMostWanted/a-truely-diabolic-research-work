@@ -1,0 +1,227 @@
+graph TD
+    %% Entities
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#7A288A,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    P(Project):::entity
+    T(Team):::entity
+    W(Worker):::entity
+    F(Feature):::entity
+    S(Skill):::entity
+    R(Role):::entity
+    PO(ProductOwner):::entity
+    SM(ScrumMaster):::entity
+    PB(ProductBacklog):::entity
+    SP(Sprint):::entity
+    SPP(SprintPlanning):::entity
+    DS(DailyScrum):::entity
+    SR(SprintReview):::entity
+    SRE(SprintRetrospective):::entity
+    SBL(SprintBacklog):::entity
+    SG(SprintGoal):::entity
+    E(Epic):::entity
+    US(UserStory):::entity
+    TSK(Task):::entity
+    DEV(DevelopmentSnapshot):::entity
+    BL(Blocker):::entity
+    SH(Stakeholder):::entity
+    VEL(Velocity):::entity
+    REP(ReleasePlan):::entity
+    RM(Roadmap):::entity
+    SCB(ScrumBoard):::entity
+    FED(FeatureDocumentation):::entity
+
+    %% Attributes
+    id_P(Project ID):::attribute
+    name_P(Project Name):::attribute
+    project_start_P(Project Start):::attribute
+    project_end_P(Project End):::attribute
+    description_P(Project Description):::attribute
+    budget_P(Project Budget):::attribute
+    status_P(Project Status):::attribute
+    target_audience_P(Target Audience):::attribute
+    priority_P(Priority):::attribute
+
+    id_T(Team ID):::attribute
+    name_T(Team Name):::attribute
+    team_size_T(Team Size) #attribute
+    team_start_T(Team Start):::attribute
+    team_status_T(Team Status):::attribute
+    location_T(Location):::attribute
+    team_type_T(Team Type):::attribute
+
+    id_W(Worker ID):::attribute
+    name_W(Worker Name):::attribute
+    first_name_W(First Name):::attribute
+    email_W(Email):::attribute
+    start_date_W(Start Date):::attribute
+    status_W(Status):::attribute
+    availability_W(Availability):::attribute
+
+    %% Relations
+    R1(is_assigned_to_project):::relation
+    R2(belongs_to_team):::relation
+    R3(has_skill):::relation
+    R4(takes_on_role):::relation
+    R5(manages_backlog):::relation
+    R6(is_supported_by):::relation
+    R7(contains_feature):::relation
+    R8(contains_epic):::relation
+    R9(contains_user_story):::relation
+    R10(consists_of_tasks):::relation
+    R11(is_in_sprint_backlog):::relation
+    R12(belongs_to_sprint):::relation
+    R13(pursues_goal):::relation
+    R14(contains_tasks):::relation
+    R15(documents_feature):::relation
+    R16(is_blocked_by):::relation
+    R17(participates_in):::relation
+    R18(moderates_retrospective):::relation
+    R19(refers_to_team):::relation
+    R20(plans_release):::relation
+    R21(is_part_of_roadmap):::relation
+    R22(generates_snapshot):::relation
+
+    %% Goals
+    G0(maximize_team_velocity):::goal
+    G1(minimize_blocker_severity):::goal
+    G2(maximize_sprint_goal_achievement):::goal
+    G3(minimize_task_effort):::goal
+    G4(maximize_feature_priority):::goal
+    G5(minimize_sprint_retrospective_improvement_actions):::goal
+    G6(maximize_product_owner_availability):::goal
+    G7(minimize_task_blockers):::goal
+    G8(maximize_scrum_master_experience):::goal
+    G9(minimize_development_snapshot_bugs):::goal
+    G10(maximize_stakeholder_satisfaction):::goal
+    G11(minimize_release_plan_delay):::goal
+    G12(maximize_team_collaboration):::goal
+    G13(minimize_product_backlog_debt):::goal
+    G14(maximize_feature_documentation_quality):::goal
+
+    %% Conditions
+    C0(team_has_scrum_master):::condition
+    C1(product_owner_is_available):::condition
+    C2(sprint_goal_is_defined):::condition
+    C3(task_is_blocked):::condition
+    C4(feature_has_high_priority):::condition
+    C5(sprint_retrospective_improvement_actions_are_defined):::condition
+    C6(development_snapshot_is_tested):::condition
+    C7(stakeholder_is_satisfied):::condition
+    C8(release_plan_is_defined):::condition
+    C9(team_is_collaborative):::condition
+    C10(product_backlog_is_managed):::condition
+    C11(feature_documentation_is_available):::condition
+    C12(scrum_master_has_experience):::condition
+    C13(task_is_assigned_to_team):::condition
+    C14(sprint_backlog_is_defined):::condition
+
+    %% Decision Variables
+    D0(team_velocity):::decisionVariable
+    D1(blocker_severity):::decisionVariable
+    D2(sprint_goal_achievement):::decisionVariable
+    D3(task_effort):::decisionVariable
+    D4(feature_priority):::decisionVariable
+    D5(sprint_retrospective_improvement_actions):::decisionVariable
+    D6(product_owner_availability):::decisionVariable
+    D7(task_blockers):::decisionVariable
+    D8(scrum_master_experience):::decisionVariable
+    D9(development_snapshot_bugs):::decisionVariable
+    D10(stakeholder_satisfaction):::decisionVariable
+    D11(release_plan_delay):::decisionVariable
+    D12(team_collaboration):::decisionVariable
+    D13(product_backlog_debt):::decisionVariable
+    D14(feature_documentation_quality):::decisionVariable
+
+    %% Entity-Attribute connections
+    P --> id_P
+    P --> name_P
+    P --> project_start_P
+    P --> project_end_P
+    P --> description_P
+    P --> budget_P
+    P --> status_P
+    P --> target_audience_P
+    P --> priority_P
+
+    T --> id_T
+    T --> name_T
+    T --> team_size_T
+    T --> team_start_T
+    T --> team_status_T
+    T --> location_T
+    T --> team_type_T
+
+    W --> id_W
+    W --> name_W
+    W --> first_name_W
+    W --> email_W
+    W --> start_date_W
+    W --> status_W
+    W --> availability_W
+
+    %% Relation connections
+    T -->|R1| P
+    W -->|R2| T
+    W -->|R3| S
+    W -->|R4| R
+    PO -->|R5| PB
+    T -->|R6| SM
+    PB -->|R7| F
+    PB -->|R8| E
+    E -->|R9| US
+    US -->|R10| TSK
+    US -->|R11| SBL
+    SBL -->|R12| SP
+    SP -->|R13| SG
+    SCB -->|R14| TSK
+    FED -->|R15| F
+    TSK -->|R16| BL
+    SH -->|R17| SR
+    SM -->|R18| SRE
+    VEL -->|R19| T
+    REP -->|R20| F
+    REP -->|R21| RM
+    SP -->|R22| DEV
+
+    %% Goal connections
+    G0 --> VEL
+    G0 --> avg_story_points_VEL(avg story points):::attribute
+    G1 --> BL
+    G1 --> severity_BL(severity):::attribute
+    G2 --> SG
+    G2 --> achievement_status_SG(achievement status):::attribute
+    G3 --> TSK
+    G3 --> effort_TSK(effort):::attribute
+    G4 --> F
+    G4 --> priority_F(priority):::attribute
+
+    %% Condition connections
+    C0 --> T
+    C0 --> SM
+    C1 --> PO
+    C1 --> availability_PO(availability):::attribute
+    C2 --> SP
+    C2 --> objective_description_SP(objective description):::attribute
+
+    %% Decision Variable connections
+    D0 --> VEL
+    D1 --> BL
+    D2 --> SG
+    D3 --> TSK
+    D4 --> F
+    D5 --> SRE
+    D6 --> PO
+    D7 --> TSK
+    D8 --> SM
+    D9 --> DEV
+    D10 --> SH
+    D11 --> REP
+    D12 --> T
+    D13 --> PB
+    D14 --> FED
