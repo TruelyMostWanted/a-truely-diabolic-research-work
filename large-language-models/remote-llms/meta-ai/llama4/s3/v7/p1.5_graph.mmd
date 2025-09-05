@@ -1,0 +1,58 @@
+graph TD
+    %% Entities
+    Project[Project]:::blue
+    Team[Team]:::blue
+    Feature[Feature]:::blue
+    Blocker[Blocker]:::blue
+    SprintGoal[Sprint Goal]:::blue
+    Task[Task]:::blue
+    Stakeholder[Stakeholder]:::blue
+    ProductOwner[Product Owner]:::blue
+    
+    %% Attributes
+    project_budget[budget]:::white
+    team_size[team_size]:::white
+    feature_priority[priority]:::white
+    blocker_severity[severity]:::white
+    
+    %% Relationships
+    Project -->|has|> Feature:::orange
+    Team -->|works on|> Project:::orange
+    Feature -->|can be blocked by|> Blocker:::orange
+    SprintGoal -->|pursues|> Feature:::orange
+    
+    %% Goals
+    maximize_project_budget[maximize project budget]:::green
+    minimize_project_duration[minimize project duration]:::green
+    maximize_team_size[maximize team size]:::green
+    
+    %% Conditions
+    ensure_project_status[ensure project status]:::red
+    ensure_team_availability[ensure team availability]:::red
+    
+    %% Decision Variables
+    project_start_date[project start date]:::purple
+    team_assignment[team assignment]:::purple
+    
+    %% Connections
+    Project --> project_budget
+    Team --> team_size
+    Feature --> feature_priority
+    Blocker --> blocker_severity
+    
+    maximize_project_budget --> Project
+    minimize_project_duration --> Project
+    maximize_team_size --> Team
+    
+    ensure_project_status --> Project
+    ensure_team_availability --> Team
+    
+    project_start_date --> Project
+    team_assignment --> Team
+    
+    classDef blue fill:#ADD8E6;
+    classDef white fill:#FFFFFF;
+    classDef orange fill:#FFA07A;
+    classDef green fill:#98FB98;
+    classDef red fill:#FFC0CB;
+    classDef purple fill:#C7B8EA;

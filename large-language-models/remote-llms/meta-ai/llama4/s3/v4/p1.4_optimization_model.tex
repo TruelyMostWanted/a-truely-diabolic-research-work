@@ -1,0 +1,59 @@
+\documentclass{article}
+\title{Optimization Model for Scrum-based Software Development}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Projects
+    \item Teams
+    \item Workers
+    \item Features
+    \item Tasks
+    \item Sprint Goals
+    \item Blockers
+    \item Stakeholders
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$ (Projects)
+    \item $t \in T$ (Teams)
+    \item $w \in W$ (Workers)
+    \item $f \in F$ (Features)
+    \item $k \in K$ (Tasks)
+    \item $g \in G$ (Sprint Goals)
+    \item $b \in B$ (Blockers)
+    \item $s \in S$ (Stakeholders)
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: Maximize team velocity ($\max \sum_{t \in T} \text{avg.\_story\_points}_t$)
+    \item G1: Minimize blocker severity ($\min \sum_{b \in B} \text{severity}_b$)
+    \item G2: Maximize sprint goal achievement ($\max \sum_{g \in G} \text{achievement\_status}_g$)
+    \item G3: Minimize task effort ($\min \sum_{k \in K} \text{effort}_k$)
+    \item G4: Maximize feature priority ($\max \sum_{f \in F} \text{priority}_f$)
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: Ensure product owner availability ($\text{availability}_{po} \geq \text{threshold}$)
+    \item C1: Limit project duration ($\text{project\_end}_p \leq \text{limit}$)
+    \item C2: Prioritize features ($\text{priority}_f \geq \text{threshold}$)
+    \item C3: Ensure team velocity ($\text{avg.\_story\_points}_t \geq \text{threshold}$)
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item D0: Team assignment to projects ($x_{pt} \in \{0,1\}$)
+    \item D1: Task priority ($y_k \in \{1,2,3\}$)
+    \item D2: Sprint goal achievement ($z_g \in \{0,1\}$)
+    \item D3: Blocker resolution ($w_b \in \{0,1\}$)
+\end{itemize}
+
+\end{document}

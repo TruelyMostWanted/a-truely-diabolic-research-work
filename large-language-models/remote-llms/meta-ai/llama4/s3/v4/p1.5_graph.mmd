@@ -1,0 +1,70 @@
+graph TD
+    %% Entities
+    classDef entity fill:#ADD8E6,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#C6F4D6,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FFC0CB,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#C5CAE9,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    Project:::entity --> id_Project["id"]:::attribute
+    Project --> name_Project["name"]:::attribute
+    Project --> project_start_Project["project_start"]:::attribute
+    Project --> project_end_Project["project_end"]:::attribute
+    Team:::entity --> id_Team["id"]:::attribute
+    Team --> name_Team["name"]:::attribute
+    Worker:::entity --> id_Worker["id"]:::attribute
+    Worker --> name_Worker["name"]:::attribute
+
+    %% Relations
+    Team -.->|is_assigned_to_project| Project:::relation
+    Worker -.->|belongs_to_team| Team:::relation
+
+    %% Goals
+    G0:::goal --> Velocity:::entity
+    G0 --> avg._story_points_Velocity["avg._story_points"]:::attribute
+    G1:::goal --> Blocker:::entity
+    G1 --> severity_Blocker["severity"]:::attribute
+
+    %% Conditions
+    C0:::condition --> ProductOwner:::entity
+    C0 --> availability_ProductOwner["availability"]:::attribute
+    C1:::condition --> Project:::entity
+    C1 --> project_end_Project["project_end"]:::attribute
+
+    %% Decision Variables
+    D0:::decisionVariable --> Team:::entity
+    D0 --> Project:::entity
+    D1:::decisionVariable --> Task:::entity
+    D1 --> priority_Task["priority"]:::attribute
+
+    %% More Entities and Attributes
+    Feature:::entity --> id_Feature["id"]:::attribute
+    Feature --> title_Feature["title"]:::attribute
+    Feature --> priority_Feature["priority"]:::attribute
+    Task:::entity --> id_Task["id"]:::attribute
+    Task --> title_Task["title"]:::attribute
+    Task --> effort_Task["effort"]:::attribute
+
+    %% More Relations
+    Feature -.->|contains_feature| ProductBacklog:::relation
+    Task -.->|consists_of_tasks| UserStory:::relation
+
+    %% More Goals
+    G2:::goal --> SprintGoal:::entity
+    G2 --> achievement_status_SprintGoal["achievement_status"]:::attribute
+    G3:::goal --> Task:::entity
+    G3 --> effort_Task["effort"]:::attribute
+
+    %% More Conditions
+    C2:::condition --> Feature:::entity
+    C2 --> priority_Feature["priority"]:::attribute
+    C3:::condition --> Velocity:::entity
+    C3 --> avg._story_points_Velocity["avg._story_points"]:::attribute
+
+    %% More Decision Variables
+    D2:::decisionVariable --> SprintGoal:::entity
+    D2 --> achievement_status_SprintGoal["achievement_status"]:::attribute
+    D3:::decisionVariable --> Blocker:::entity
+    D3 --> resolution_status_Blocker["resolution_status"]:::attribute

@@ -1,0 +1,65 @@
+graph TD
+    %% Entities
+    Project["Project (P)"]:::blue
+    Team["Team (T)"]:::blue
+    Worker["Worker (W)"]:::blue
+    Feature["Feature (F)"]:::blue
+    Blocker["Blocker (B)"]:::blue
+    Sprint["Sprint (S)"]:::blue
+    Task["Task (TSK)"]:::blue
+    Stakeholder["Stakeholder (SH)"]:::blue
+    ProductOwner["Product Owner (PO)"]:::blue
+    ScrumMaster["Scrum Master (SM)"]:::blue
+    
+    %% Attributes
+    project_budget["budget"]:::white
+    team_size["team_size"]:::white
+    worker_availability["availability"]:::white
+    feature_priority["priority"]:::white
+    blocker_severity["severity"]:::white
+    
+    %% Relations
+    Project -->|assigned to|> Team:::orange
+    Team -->|consists of|> Worker:::orange
+    Worker -->|works on|> Task:::orange
+    Task -->|part of|> Sprint:::orange
+    Sprint -->|has|> SprintGoal:::orange
+    Feature -->|included in|> Sprint:::orange
+    Blocker -->|affects|> Task:::orange
+    
+    %% Goals
+    maximize_project_budget["Maximize project budget (G0)"]:::green
+    minimize_project_duration["Minimize project duration (G1)"]:::green
+    maximize_team_size["Maximize team size (G2)"]:::green
+    
+    %% Conditions
+    ensure_project_status["Ensure project status is active (C0)"]:::red
+    ensure_team_status["Ensure team status is active (C1)"]:::red
+    
+    %% Decision Variables
+    project_allocation["Project allocation (D0)"]:::purple
+    team_size_decision["Team size decision (D1)"]:::purple
+    
+    %% Connections
+    Project --> project_budget
+    Team --> team_size
+    Worker --> worker_availability
+    Feature --> feature_priority
+    Blocker --> blocker_severity
+    
+    maximize_project_budget --> Project
+    minimize_project_duration --> Project
+    maximize_team_size --> Team
+    
+    ensure_project_status --> Project
+    ensure_team_status --> Team
+    
+    project_allocation --> Project
+    team_size_decision --> Team
+    
+    classDef blue fill:#add8e6;
+    classDef white fill:#ffffff;
+    classDef orange fill:#ffa07a;
+    classDef green fill:#90ee90;
+    classDef red fill:#ffc0cb;
+    classDef purple fill:#c7b8ea;

@@ -1,0 +1,58 @@
+graph TD
+    classDef entity fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FF6347,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#7A288A,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    Project:::entity --> id:::attribute
+    Project --> name:::attribute
+    Project --> project_start:::attribute
+    Project --> project_end:::attribute
+    Team:::entity --> id:::attribute
+    Team --> name:::attribute
+    Worker:::entity --> id:::attribute
+    Worker --> name:::attribute
+
+    %% Relations
+    Team -.->|R1| Project:::entity
+    Worker -.->|R2| Team:::entity
+    ProductOwner:::entity -.->|R5| ProductBacklog:::entity
+
+    %% Goals
+    G0:::goal --> Velocity:::entity
+    G1:::goal --> Blocker:::entity
+    G2:::goal --> SprintGoal:::entity
+
+    %% Conditions
+    C0:::condition --> Project:::entity
+    C1:::condition --> Team:::entity
+    C2:::condition --> ProductOwner:::entity
+
+    %% Decision Variables
+    DV0:::decisionVariable --> Team:::entity
+    DV1:::decisionVariable --> Task:::entity
+
+    %% Entity-Attribute Connections
+    SprintGoal:::entity --> objective_description:::attribute
+    SprintGoal --> achievement_status:::attribute
+    Task:::entity --> effort:::attribute
+    Task --> status:::attribute
+    Blocker:::entity --> severity:::attribute
+    Blocker --> resolved_on:::attribute
+
+    %% Goal-Entity Connections
+    G0:::goal -.-> Velocity:::entity
+    G1:::goal -.-> Blocker:::entity
+    G2:::goal -.-> SprintGoal:::entity
+
+    %% Condition-Entity Connections
+    C0:::condition -.-> Project:::entity
+    C1:::condition -.-> Team:::entity
+    C2:::condition -.-> ProductOwner:::entity
+
+    %% DecisionVariable-Entity Connections
+    DV0:::decisionVariable -.-> Team:::entity
+    DV1:::decisionVariable -.-> Task:::entity

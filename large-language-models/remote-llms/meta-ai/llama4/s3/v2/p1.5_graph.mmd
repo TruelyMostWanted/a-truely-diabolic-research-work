@@ -1,0 +1,62 @@
+graph TD
+    %% Entities
+    Project[P<span style='fill:#87CEEB'>roject</span>] -->|has|> budget[<span style='fill:#FFFFFF'>budget</span>]
+    Project -->|has|> project_start[<span style='fill:#FFFFFF'>project_start</span>]
+    Project -->|has|> project_end[<span style='fill:#FFFFFF'>project_end</span>]
+    Team[T<span style='fill:#87CEEB'>eam</span>] -->|has|> team_status[<span style='fill:#FFFFFF'>team_status</span>]
+    Team -->|has|> team_size[<span style='fill:#FFFFFF'>team_size</span>]
+    Worker[W<span style='fill:#87CEEB'>orker</span>] -->|has|> availability[<span style='fill:#FFFFFF'>availability</span>]
+    Feature[F<span style='fill:#87CEEB'>eature</span>] -->|has|> priority[<span style='fill:#FFFFFF'>priority</span>]
+    Task[T<span style='fill:#87CEEB'>ask</span>] -->|has|> effort[<span style='fill:#FFFFFF'>effort</span>]
+    SprintGoal[S<span style='fill:#87CEEB'>print Goal</span>] -->|has|> achievement_status[<span style='fill:#FFFFFF'>achievement_status</span>]
+    Stakeholder[St<span style='fill:#87CEEB'>akeholder</span>] -->|has|> influence_level[<span style='fill:#FFFFFF'>influence_level</span>]
+    
+    %% Relations
+    Project -->|assigned to|> Team
+    Team -->|contains|> Worker
+    Worker -->|works on|> Task
+    Task -->|part of|> Feature
+    Feature -->|part of|> Project
+    SprintGoal -->|defines|> Sprint
+    Stakeholder -->|participates in|> SprintReview
+    
+    %% Goals
+    Maximize_Project_Budget[M<span style='fill:#32CD32'>aximize Project Budget</span>] -->|affects|> budget
+    Minimize_Project_Duration[M<span style='fill:#32CD32'>inimize Project Duration</span>] -->|affects|> project_end
+    Maximize_Team_Velocity[M<span style='fill:#32CD32'>aximize Team Velocity</span>] -->|affects|> Team
+    
+    %% Conditions
+    Ensure_Project_Status[E<span style='fill:#FF0000'>nsure Project Status</span>] -->|affects|> Project
+    Ensure_Team_Availability[E<span style='fill:#FF0000'>nsure Team Availability</span>] -->|affects|> Team
+    
+    %% Decision Variables
+    Project_Allocation[P<span style='fill:#7A288A'>roject Allocation</span>] -->|affects|> Project
+    Team_Assignment[T<span style='fill:#7A288A'>eam Assignment</span>] -->|affects|> Team
+    Worker_Availability[W<span style='fill:#7A288A'>orker Availability</span>] -->|affects|> Worker
+    Feature_Priority[F<span style='fill:#7A288A'>eature Priority</span>] -->|affects|> Feature
+    Task_Effort[T<span style='fill:#7A288A'>ask Effort</span>] -->|affects|> Task
+    Sprint_Goal_Achievement[S<span style='fill:#7A288A'>print Goal Achievement</span>] -->|affects|> SprintGoal
+    Stakeholder_Influence[St<span style='fill:#7A288A'>akeholder Influence</span>] -->|affects|> Stakeholder
+    
+    style Project fill:#87CEEB
+    style Team fill:#87CEEB
+    style Worker fill:#87CEEB
+    style Feature fill:#87CEEB
+    style Task fill:#87CEEB
+    style SprintGoal fill:#87CEEB
+    style Stakeholder fill:#87CEEB
+    style budget fill:#FFFFFF
+    style project_start fill:#FFFFFF
+    style project_end fill:#FFFFFF
+    style team_status fill:#FFFFFF
+    style Maximize_Project_Budget fill:#32CD32
+    style Minimize_Project_Duration fill:#32CD32
+    style Ensure_Project_Status fill:#FF0000
+    style Ensure_Team_Availability fill:#FF0000
+    style Project_Allocation fill:#7A288A
+    style Team_Assignment fill:#7A288A
+    style Worker_Availability fill:#7A288A
+    style Feature_Priority fill:#7A288A
+    style Task_Effort fill:#7A288A
+    style Sprint_Goal_Achievement fill:#7A288A
+    style Stakeholder_Influence fill:#7A288A

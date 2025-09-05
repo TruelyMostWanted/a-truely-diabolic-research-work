@@ -1,0 +1,86 @@
+graph TD
+    %% Entities
+    classDef entity fill:#ADD8E6,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#C6F4D6,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FFC0CB,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#C7B8EA,stroke:#333,stroke-width:2px;
+
+    Project:::entity -->|id|> id_Project:::attribute
+    Project:::entity -->|name|> name_Project:::attribute
+    Team:::entity -->|id|> id_Team:::attribute
+    Team:::entity -->|name|> name_Team:::attribute
+    Worker:::entity -->|id|> id_Worker:::attribute
+    Worker:::entity -->|name|> name_Worker:::attribute
+
+    %% Relations
+    Team:::entity -->|is_assigned_to_project|> Project:::entity:::relation
+    Worker:::entity -->|belongs_to_team|> Team:::entity:::relation
+
+    %% Goals
+    G0:::goal -->|maximize|> Velocity:::entity
+    G1:::goal -->|minimize|> Blocker:::entity
+    G2:::goal -->|maximize|> SprintGoal:::entity
+
+    %% Conditions
+    C0:::condition -->|ensure|> ProductOwner:::entity
+    C1:::condition -->|blocker_resolution|> Blocker:::entity
+
+    %% Decision Variables
+    DV0:::decisionVariable -->|team_assignment|> Team:::entity
+    DV1:::decisionVariable -->|worker_assignment|> Worker:::entity
+
+    %% Entities with attributes
+    Feature:::entity -->|id|> id_Feature:::attribute
+    Feature:::entity -->|title|> title_Feature:::attribute
+    Sprint:::entity -->|id|> id_Sprint:::attribute
+    Sprint:::entity -->|start_date|> start_date_Sprint:::attribute
+
+    %% Goals with entities/attributes
+    G0:::goal -->|maximize_team_velocity|> Velocity:::entity -->|avg._story_points|> avg_story_points_Velocity:::attribute
+    G1:::goal -->|minimize_blocker_severity|> Blocker:::entity -->|severity|> severity_Blocker:::attribute
+
+    %% Conditions with entities/attributes
+    C0:::condition -->|ensure_product_owner_availability|> ProductOwner:::entity -->|availability|> availability_ProductOwner:::attribute
+    C1:::condition -->|blocker_resolution|> Blocker:::entity -->|status|> status_Blocker:::attribute
+
+    %% Decision Variables with entities
+    DV2:::decisionVariable -->|sprint_goal_selection|> SprintGoal:::entity
+    DV3:::decisionVariable -->|feature_selection|> Feature:::entity
+
+    %% Colorize
+    class Project entity;
+    class Team entity;
+    class Worker entity;
+    class Feature entity;
+    class Sprint entity;
+    class SprintGoal entity;
+    class Blocker entity;
+    class ProductOwner entity;
+    class Velocity entity;
+    class G0 goal;
+    class G1 goal;
+    class G2 goal;
+    class C0 condition;
+    class C1 condition;
+    class DV0 decisionVariable;
+    class DV1 decisionVariable;
+    class DV2 decisionVariable;
+    class DV3 decisionVariable;
+    class id_Project attribute;
+    class name_Project attribute;
+    class id_Team attribute;
+    class name_Team attribute;
+    class id_Worker attribute;
+    class name_Worker attribute;
+    class is_assigned_to_project relation;
+    class belongs_to_team relation;
+    class maximize relation;
+    class minimize relation;
+    class ensure relation;
+    class blocker_resolution relation;
+    class team_assignment relation;
+    class worker_assignment relation;
+    class sprint_goal_selection relation;
+    class feature_selection relation;

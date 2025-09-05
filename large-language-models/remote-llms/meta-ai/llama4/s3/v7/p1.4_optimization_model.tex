@@ -1,0 +1,66 @@
+\documentclass{article}
+\title{Optimization Model for Scrum Development Process}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Projects
+    \item Teams
+    \item Features
+    \item Blockers
+    \item Sprint Goals
+    \item Tasks
+    \item Stakeholders
+    \item Product Owners
+    \item Sprint Retrospectives
+    \item Release Plans
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$ (Projects)
+    \item $t \in T$ (Teams)
+    \item $f \in F$ (Features)
+    \item $b \in B$ (Blockers)
+    \item $g \in G$ (Sprint Goals)
+    \item $k \in K$ (Tasks)
+    \item $s \in S$ (Stakeholders)
+    \item $po \in PO$ (Product Owners)
+    \item $r \in R$ (Sprint Retrospectives)
+    \item $rp \in RP$ (Release Plans)
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: Maximize project budget $\max \sum_{p \in P} budget_p$
+    \item G1: Minimize project duration $\min \sum_{p \in P} project\_end_p$
+    \item G2: Maximize team size $\max \sum_{t \in T} team\_size_t$
+    \item G3: Maximize feature priority $\max \sum_{f \in F} priority_f$
+    \item G4: Minimize blocker severity $\min \sum_{b \in B} severity_b$
+    \item G5: Maximize sprint velocity $\max \sum_{g \in G} avg\_story\_points_g$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: Ensure project status is active $\sum_{p \in P} status_p = 1$
+    \item C1: Ensure team availability $\sum_{t \in T} team\_status_t = 1$
+    \item C2: Ensure feature priority is high $\sum_{f \in F} priority_f \geq 2$
+    \item C3: Ensure blocker resolution $\sum_{b \in B} status_b = 1$
+    \item C4: Ensure sprint goal achievement $\sum_{g \in G} achievement\_status_g = 1$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item D0: Project start date $x_{p} \in \{0,1\}$
+    \item D1: Team assignment $y_{t} \in \{0,1\}$
+    \item D2: Feature priority $z_{f} \in \{1,2,3\}$
+    \item D3: Blocker resolution date $w_{b} \in \{0,1\}$
+    \item D4: Sprint goal status $v_{g} \in \{0,1\}$
+\end{itemize}
+
+\end{document}

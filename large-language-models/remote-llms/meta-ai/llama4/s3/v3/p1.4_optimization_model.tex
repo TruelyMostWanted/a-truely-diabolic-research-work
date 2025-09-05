@@ -1,0 +1,61 @@
+\documentclass{article}
+\title{Optimization Model for Scrum Software Development}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Project
+    \item Team
+    \item Worker
+    \item Feature
+    \item Skill
+    \item Role
+    \item ProductOwner
+    \item ScrumMaster
+    \item Sprint
+    \item Task
+    \item Stakeholder
+    \item ReleasePlan
+    \item DevelopmentSnapshot
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $i$: Team index
+    \item $j$: Sprint index
+    \item $k$: Feature index
+    \item $l$: Task index
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: Maximize team velocity ($\max \sum_{i} Velocity_{i} \cdot avg.\_story\_points_{i}$)
+    \item G1: Minimize blocker severity ($\min \sum_{l} Blocker_{l} \cdot severity_{l}$)
+    \item G2: Maximize sprint goal achievement ($\max \sum_{j} SprintGoal_{j} \cdot achievement\_status_{j}$)
+    \item G3: Minimize sprint backlog effort ($\min \sum_{j} SprintBacklog_{j} \cdot total\_effort_{j}$)
+    \item G4: Maximize feature priority ($\max \sum_{k} Feature_{k} \cdot priority_{k}$)
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: Ensure sprint goal alignment ($SprintGoal_{j} \cdot objective\_description_{j} \geq 0$)
+    \item C1: Require scrum master experience ($ScrumMaster_{i} \cdot experience_{i} \geq 1$)
+    \item C2: Ensure product owner availability ($ProductOwner_{i} \cdot availability_{i} \geq 1$)
+    \item C3: Limit blocker severity ($Blocker_{l} \cdot severity_{l} \leq 3$)
+    \item C4: Prioritize features ($Feature_{k} \cdot priority_{k} \geq 1$)
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $x_{ij}$: Team assignment (0 or 1)
+    \item $y_{jl}$: Task status (0, 1, or 2)
+    \item $z_{j}$: Sprint goal achievement (0 or 1)
+    \item $w_{l}$: Blocker resolution (0 or 1)
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,123 @@
+graph TD
+    %% Entities
+    subgraph Entities
+        Project[Project]:::blue
+        Team[Team]:::blue
+        Feature[Feature]:::blue
+        Task[Task]:::blue
+        Blocker[Blocker]:::blue
+        Sprint[Sprint]:::blue
+        ProductOwner[ProductOwner]:::blue
+        ScrumMaster[ScrumMaster]:::blue
+        DevelopmentSnapshot[DevelopmentSnapshot]:::blue
+        ReleasePlan[ReleasePlan]:::blue
+        Roadmap[Roadmap]:::blue
+        ScrumBoard[ScrumBoard]:::blue
+        Stakeholder[Stakeholder]:::blue
+        Velocity[Velocity]:::blue
+    end
+
+    %% Attributes
+    subgraph Attributes
+        project_budget[budget]:::white
+        project_start[project_start]:::white
+        team_size[team_size]:::white
+        feature_priority[priority]:::white
+        task_effort[effort]:::white
+        blocker_severity[severity]:::white
+        sprint_velocity[avg_story_points]:::white
+        product_owner_availability[availability]:::white
+        scrum_master_experience[experience]:::white
+        development_snapshot_test_status[test_status]:::white
+        release_plan_status[status]:::white
+        roadmap_milestones[milestones]:::white
+        scrum_board_columns[columns]:::white
+        stakeholder_influence[influence_level]:::white
+    end
+
+    %% Relations
+    subgraph Relations
+        project_team[is_assigned_to_project]:::orange
+        team_product_owner[has_product_owner]:::orange
+        team_scrum_master[has_scrum_master]:::orange
+        feature_task[consists_of_tasks]:::orange
+        task_blocker[is_blocked_by]:::orange
+        sprint_development_snapshot[generates_snapshot]:::orange
+        release_plan_roadmap[is_part_of_roadmap]:::orange
+    end
+
+    %% Goals
+    subgraph Goals
+        maximize_project_budget[maximize project budget]:::green
+        minimize_project_duration[minimize project duration]:::green
+        maximize_team_size[maximize team size]:::green
+        maximize_sprint_velocity[maximize sprint velocity]:::green
+        minimize_blocker_severity[minimize blocker severity]:::green
+    end
+
+    %% Conditions
+    subgraph Conditions
+        ensure_project_status[ensure project status]:::red
+        ensure_team_status[ensure team status]:::red
+        ensure_product_owner_availability[ensure product owner availability]:::red
+        ensure_scrum_master_experience[ensure scrum master experience]:::red
+        ensure_feature_priority[ensure feature priority]:::red
+    end
+
+    %% Decision Variables
+    subgraph Decision Variables
+        project_start_date[project start date]:::purple
+        team_size_variable[team size]:::purple
+        feature_priority_variable[feature priority]:::purple
+        task_effort_variable[task effort]:::purple
+        blocker_severity_variable[blocker severity]:::purple
+    end
+
+    %% Connections
+    Project --> project_budget
+    Project --> project_start
+    Team --> team_size
+    Feature --> feature_priority
+    Task --> task_effort
+    Blocker --> blocker_severity
+    Sprint --> sprint_velocity
+    ProductOwner --> product_owner_availability
+    ScrumMaster --> scrum_master_experience
+    DevelopmentSnapshot --> development_snapshot_test_status
+    ReleasePlan --> release_plan_status
+    Roadmap --> roadmap_milestones
+    ScrumBoard --> scrum_board_columns
+    Stakeholder --> stakeholder_influence
+
+    Team --> project_team --> Project
+    Team --> team_product_owner --> ProductOwner
+    Team --> team_scrum_master --> ScrumMaster
+    Feature --> feature_task --> Task
+    Task --> task_blocker --> Blocker
+    Sprint --> sprint_development_snapshot --> DevelopmentSnapshot
+    ReleasePlan --> release_plan_roadmap --> Roadmap
+
+    maximize_project_budget --> Project
+    minimize_project_duration --> Project
+    maximize_team_size --> Team
+    maximize_sprint_velocity --> Sprint
+    minimize_blocker_severity --> Blocker
+
+    ensure_project_status --> Project
+    ensure_team_status --> Team
+    ensure_product_owner_availability --> ProductOwner
+    ensure_scrum_master_experience --> ScrumMaster
+    ensure_feature_priority --> Feature
+
+    project_start_date --> Project
+    team_size_variable --> Team
+    feature_priority_variable --> Feature
+    task_effort_variable --> Task
+    blocker_severity_variable --> Blocker
+
+    classDef blue fill:#ADD8E6;
+    classDef white fill:#FFFFFF;
+    classDef orange fill:#FFA07A;
+    classDef green fill:#C6F4D6;
+    classDef red fill:#FFC0CB;
+    classDef purple fill:#C5C3C8;

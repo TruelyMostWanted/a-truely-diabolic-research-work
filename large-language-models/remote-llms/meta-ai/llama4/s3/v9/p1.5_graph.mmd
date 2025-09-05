@@ -1,0 +1,90 @@
+graph TD
+    %% Entities
+    Project[P]:::blue
+    Team[T]:::blue
+    Worker[W]:::blue
+    Sprint[S]:::blue
+    Feature[F]:::blue
+    ReleasePlan[R]:::blue
+    Roadmap[RM]:::blue
+    DevelopmentSnapshot[DS]:::blue
+    Blocker[B]:::blue
+    Stakeholder[SH]:::blue
+    ScrumBoard[SCB]:::blue
+    SprintGoal[SG]:::blue
+    SprintRetrospective[SRE]:::blue
+
+    %% Attributes
+    project_budget[budget]:::white
+    project_status[status]:::white
+    team_availability[team_status]:::white
+    worker_availability[availability]:::white
+    sprint_goal[objective_description]:::white
+    feature_priority[priority]:::white
+    release_plan_status[status]:::white
+    roadmap_objectives[objectives]:::white
+    development_snapshot_test_status[test_status]:::white
+    blocker_severity[severity]:::white
+    stakeholder_influence[influence_level]:::white
+    scrum_board_number_of_cards[number_of_cards]:::white
+
+    %% Relations
+    is_assigned_to_project:::orange --> Project
+    belongs_to_team:::orange --> Team
+    has_skill:::orange --> Worker
+    takes_on_role:::orange --> Worker
+    manages_backlog:::orange --> ProductOwner
+    supports_team:::orange --> ScrumMaster
+    contains_feature:::orange --> ProductBacklog
+    contains_epic:::orange --> ProductBacklog
+    contains_user_story:::orange --> Epic
+    consists_of_tasks:::orange --> UserStory
+    is_in_sprint_backlog:::orange --> SprintBacklog
+    belongs_to_sprint:::orange --> Sprint
+    pursues_goal:::orange --> SprintGoal
+    contains_tasks:::orange --> ScrumBoard
+    documents_feature:::orange --> FeatureDocumentation
+
+    %% Goals
+    maximize_project_budget:::green --> project_budget
+    minimize_project_duration:::green --> project_status
+    maximize_team_velocity:::green --> team_availability
+    minimize_blocker_severity:::green --> blocker_severity
+    maximize_sprint_goal_achievement:::green --> sprint_goal
+    minimize_task_effort:::green --> worker_availability
+    maximize_feature_priority:::green --> feature_priority
+    minimize_sprint_retrospective_improvement_actions:::green --> SprintRetrospective
+    maximize_stakeholder_influence:::green --> stakeholder_influence
+    minimize_development_snapshot_test_status:::green --> development_snapshot_test_status
+
+    %% Conditions
+    ensure_project_status:::red --> project_status
+    ensure_team_availability:::red --> team_availability
+    ensure_worker_availability:::red --> worker_availability
+    ensure_sprint_goal_alignment:::red --> sprint_goal
+    ensure_feature_priority_alignment:::red --> feature_priority
+    ensure_stakeholder_relevance:::red --> stakeholder_influence
+    ensure_release_plan_inclusion:::red --> release_plan_status
+    ensure_roadmap_alignment:::red --> roadmap_objectives
+    ensure_scrum_board_configuration:::red --> scrum_board_number_of_cards
+    ensure_development_snapshot_quality:::red --> development_snapshot_test_status
+    ensure_blocker_resolution:::red --> blocker_severity
+
+    %% Decision Variables
+    project_allocation:::purple --> Project
+    team_assignment:::purple --> Team
+    worker_allocation:::purple --> Worker
+    sprint_goal_selection:::purple --> SprintGoal
+    feature_inclusion:::purple --> Feature
+    release_plan_inclusion:::purple --> ReleasePlan
+    roadmap_objective_selection:::purple --> Roadmap
+    scrum_board_configuration:::purple --> ScrumBoard
+    development_snapshot_creation:::purple --> DevelopmentSnapshot
+    blocker_resolution:::purple --> Blocker
+
+    classDef blue fill:#87CEEB,stroke:#333,stroke-width:2px;
+    classDef white fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef orange fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef green fill:#32CD32,stroke:#333,stroke-width:2px;
+    classDef red fill:#FF0000,stroke:#333,stroke-width:2px;
+    classDef purple fill:#800080,stroke:#333,stroke-width:2px;

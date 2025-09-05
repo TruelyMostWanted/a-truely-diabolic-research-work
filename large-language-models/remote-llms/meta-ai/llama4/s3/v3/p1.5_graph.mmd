@@ -1,0 +1,66 @@
+graph TD
+    %% Entities
+    classDef entity fill:#ADD8E6,stroke:#333,stroke-width:2px;
+    classDef attribute fill:#FFFFFF,stroke:#333,stroke-width:2px;
+    classDef relation fill:#FFA07A,stroke:#333,stroke-width:2px;
+    classDef goal fill:#C6F4D6,stroke:#333,stroke-width:2px;
+    classDef condition fill:#FFC0CB,stroke:#333,stroke-width:2px;
+    classDef decisionVariable fill:#C5CAE9,stroke:#333,stroke-width:2px;
+
+    %% Entities
+    Project(Project):::entity
+    Team(Team):::entity
+    Worker(Worker):::entity
+    Feature(Feature):::entity
+    Skill(Skill):::entity
+    Role(Role):::entity
+    ProductOwner(ProductOwner):::entity
+    ScrumMaster(ScrumMaster):::entity
+    Sprint(Sprint):::entity
+    Task(Task):::entity
+    Stakeholder(Stakeholder):::entity
+    ReleasePlan(ReleasePlan):::entity
+    DevelopmentSnapshot(DevelopmentSnapshot):::entity
+
+    %% Attributes
+    Project_id(Project ID):::attribute
+    Project_name(Project Name):::attribute
+    Team_id(Team ID):::attribute
+    Team_name(Team Name):::attribute
+    Feature_priority(Feature Priority):::attribute
+    Task_status(Task Status):::attribute
+
+    %% Relations
+    Team -->|is_assigned_to_project|> Project:::relation
+    Worker -->|belongs_to_team|> Team:::relation
+    Feature -->|is_part_of_product_backlog|> ProductBacklog:::relation
+
+    %% Goals
+    G0(maximize_team_velocity):::goal
+    G0 -->|maximizes|> Team_velocity(Team Velocity):::attribute
+    G1(minimize_blocker_severity):::goal
+    G1 -->|minimizes|> Blocker_severity(Blocker Severity):::attribute
+
+    %% Conditions
+    C0(ensure_sprint_goal_alignment):::condition
+    C0 -->|ensures|> Sprint_goal_alignment(Sprint Goal Alignment):::attribute
+    C1(require_scrum_master_experience):::condition
+    C1 -->|requires|> Scrum_master_experience(Scrum Master Experience):::attribute
+
+    %% Decision Variables
+    team_assignment(Team Assignment):::decisionVariable
+    task_status(Task Status):::decisionVariable
+
+    %% Connections
+    Project --> Project_id
+    Project --> Project_name
+    Team --> Team_id
+    Team --> Team_name
+    Feature --> Feature_priority
+    Task --> Task_status
+    G0 --> Team
+    G1 --> Blocker
+    C0 --> SprintGoal
+    C1 --> ScrumMaster
+    team_assignment --> Team
+    task_status --> Task

@@ -1,0 +1,86 @@
+graph TD
+    %% Entities
+    Project[P(Project)]:::blue
+    Team[T(Team)]:::blue
+    Worker[W(Worker)]:::blue
+    Feature[F(Feature)]:::blue
+    Skill[S(Skill)]:::blue
+    Role[R(Role)]:::blue
+    ProductOwner[PO(Product Owner)]:::blue
+    ScrumMaster[SM(Scrum Master)]:::blue
+    ProductBacklog[PB(Product Backlog)]:::blue
+    Sprint[SP(Sprint)]:::blue
+    SprintGoal[SG(Sprint Goal)]:::blue
+    Task[TSK(Task)]:::blue
+    Blocker[BL(Blocker)]:::blue
+    Stakeholder[SH(Stakeholder)]:::blue
+    ReleasePlan[REP(Release Plan)]:::blue
+    Roadmap[RM(Roadmap)]:::blue
+    ScrumBoard[SCB(Scrum Board)]:::blue
+    DevelopmentSnapshot[DEV(Development Snapshot)]:::blue
+
+    %% Attributes
+    project_budget[budget]:::white
+    project_start[project_start]:::white
+    team_size[team_size]:::white
+    team_location[location]:::white
+    feature_priority[priority]:::white
+    task_status[status]:::white
+    blocker_severity[severity]:::white
+    stakeholder_influence[influence_level]:::white
+
+    %% Relations
+    Project -->|has|> Team:::orange
+    Team -->|has|> Worker:::orange
+    Worker -->|has|> Skill:::orange
+    ProductOwner -->|manages|> ProductBacklog:::orange
+    ScrumMaster -->|supports|> Team:::orange
+    Sprint -->|pursues|> SprintGoal:::orange
+    Task -->|is blocked by|> Blocker:::orange
+    Stakeholder -->|participates in|> Sprint:::orange
+
+    %% Goals
+    maximize_project_budget[maximize project budget]:::green
+    minimize_project_duration[minimize project duration]:::green
+    maximize_team_size[maximize team size]:::green
+    minimize_blocker_severity[minimize blocker severity]:::green
+
+    %% Conditions
+    ensure_project_start[ensure project start date is set]:::red
+    ensure_team_location[ensure team location is specified]:::red
+    blocker_resolution[blockers must be resolved]:::red
+
+    %% Decision Variables
+    project_start_date[project start date]:::purple
+    team_size_variable[team size]:::purple
+    blocker_resolution_time[blocker resolution time]:::purple
+
+    %% Connections
+    Project --> project_budget
+    Project --> project_start
+    Team --> team_size
+    Team --> team_location
+    Feature --> feature_priority
+    Task --> task_status
+    Blocker --> blocker_severity
+    Stakeholder --> stakeholder_influence
+
+    maximize_project_budget --> Project
+    minimize_project_duration --> Project
+    maximize_team_size --> Team
+    minimize_blocker_severity --> Blocker
+
+    ensure_project_start --> Project
+    ensure_team_location --> Team
+    blocker_resolution --> Blocker
+
+    project_start_date --> Project
+    team_size_variable --> Team
+    blocker_resolution_time --> Blocker
+
+    classDef blue fill:#87CEEB;
+    classDef white fill:#FFFFFF;
+    classDef orange fill:#FFA07A;
+    classDef green fill:#32CD32;
+    classDef red fill:#FF0000;
+    classDef purple fill:#800080;

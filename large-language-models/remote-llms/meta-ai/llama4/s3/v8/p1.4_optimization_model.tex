@@ -1,0 +1,69 @@
+\documentclass{article}
+\title{Optimization Model for Scrum-based Software Development}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Projects ($P$)
+    \item Teams ($T$)
+    \item Workers ($W$)
+    \item Features ($F$)
+    \item Blockers ($B$)
+    \item Sprints ($S$)
+    \item Tasks ($TSK$)
+    \item Stakeholders ($SH$)
+    \item Product Owners ($PO$)
+    \item Scrum Masters ($SM$)
+    \item Development Snapshots ($DEV$)
+    \item Release Plans ($REP$)
+    \item Roadmaps ($RM$)
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$ (Projects)
+    \item $t \in T$ (Teams)
+    \item $w \in W$ (Workers)
+    \item $f \in F$ (Features)
+    \item $b \in B$ (Blockers)
+    \item $s \in S$ (Sprints)
+    \item $tsk \in TSK$ (Tasks)
+    \item $sh \in SH$ (Stakeholders)
+    \item $po \in PO$ (Product Owners)
+    \item $sm \in SM$ (Scrum Masters)
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item Maximize project budget: $\max \sum_{p \in P} budget_p$ (G0)
+    \item Minimize project duration: $\min \sum_{p \in P} (project\_end_p - project\_start_p)$ (G1)
+    \item Maximize team size: $\max \sum_{t \in T} team\_size_t$ (G2)
+    \item Maximize worker availability: $\max \sum_{w \in W} availability_w$ (G3)
+    \item Minimize blocker severity: $\min \sum_{b \in B} severity_b$ (G4)
+    \item Maximize sprint velocity: $\max \sum_{s \in S} avg\_story\_points_s$ (G5)
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item Ensure project status is active: $status_p = Active, \forall p \in P$ (C0)
+    \item Ensure team status is active: $team\_status_t = Active, \forall t \in T$ (C1)
+    \item Ensure worker availability is above threshold: $availability_w \geq threshold, \forall w \in W$ (C2)
+    \item Ensure blockers are resolved: $status_b = Resolved, \forall b \in B$ (C3)
+    \item Ensure sprint goals are achieved: $achievement\_status_s = Achieved, \forall s \in S$ (C4)
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item Project allocation: $x_p \in \{0,1\}, \forall p \in P$ (D0)
+    \item Team size decision: $y_t \in \{5,10,15\}, \forall t \in T$ (D1)
+    \item Worker availability threshold: $z_w \in [0,1], \forall w \in W$ (D2)
+    \item Blocker resolution priority: $priority_b \in \{1,2,3\}, \forall b \in B$ (D3)
+    \item Sprint goal achievement target: $target_s \in [0,1], \forall s \in S$ (D4)
+\end{itemize}
+
+\end{document}

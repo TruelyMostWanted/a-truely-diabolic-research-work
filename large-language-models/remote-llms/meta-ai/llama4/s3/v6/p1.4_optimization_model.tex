@@ -1,0 +1,60 @@
+\documentclass{article}
+\title{Optimization Model for Scrum Framework}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Projects
+    \item Teams
+    \item Workers
+    \item Features
+    \item Tasks
+    \item Sprint Goals
+    \item Blockers
+    \item Stakeholders
+    \item Release Plans
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $i$: Projects
+    \item $j$: Teams
+    \item $k$: Workers
+    \item $l$: Features
+    \item $m$: Tasks
+    \item $n$: Sprint Goals
+    \item $o$: Blockers
+    \item $p$: Stakeholders
+    \item $q$: Release Plans
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: Maximize Team Velocity - $\max \sum_{j} Velocity_{j} \cdot avg.\_story\_points_{j}$
+    \item G1: Minimize Blocker Severity - $\min \sum_{o} Blocker_{o} \cdot severity_{o}$
+    \item G2: Maximize Sprint Goal Achievement - $\max \sum_{n} SprintGoal_{n} \cdot achievement\_status_{n}$
+    \item G3: Minimize Task Effort - $\min \sum_{m} Task_{m} \cdot effort_{m}$
+    \item G10: Maximize Sprint Review Feedback - $\max \sum SprintReview \cdot feedback\_documentation$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: Ensure Project Timeline - $Project_{i}.project\_start < Project_{i}.project\_end$
+    \item C1: Ensure Team Availability - $Team_{j}.team\_start \leq Project_{i}.project\_start$
+    \item C2: Ensure Product Owner Management - $ProductOwner.id = ProductBacklog.id$
+    \item C10: Ensure Release Planning - $ReleasePlan_{q}.included\_features \geq 1$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item DV0: Team Assignment - $team\_assignment_{ij} \in \{0,1\}$
+    \item DV1: Task Allocation - $task\_allocation_{jm} \in \{0,1\}$
+    \item DV2: Sprint Duration - $sprint\_duration \in \mathbb{Z}, 1 \leq sprint\_duration \leq 30$
+\end{itemize}
+
+\end{document}

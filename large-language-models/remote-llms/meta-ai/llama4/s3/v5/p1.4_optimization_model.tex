@@ -1,0 +1,57 @@
+\documentclass{article}
+\title{Optimization Model for Scrum-based Software Development}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Project
+    \item Team
+    \item Worker
+    \item Feature
+    \item Sprint
+    \item Sprint Goal
+    \item Task
+    \item Blocker
+    \item Release Plan
+    \item Development Snapshot
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $i$: Team index
+    \item $j$: Sprint index
+    \item $k$: Feature index
+    \item $l$: Task index
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: Maximize team velocity ($\max \sum_{i} \text{Velocity}_{i} \cdot \text{avg.\_story\_points}_{i}$)
+    \item G1: Minimize blocker severity ($\min \sum_{l} \text{Blocker}_{l} \cdot \text{severity}_{l}$)
+    \item G2: Maximize sprint goal achievement ($\max \sum_{j} \text{SprintGoal}_{j} \cdot \text{achievement\_status}_{j}$)
+    \item G3: Minimize sprint duration ($\min \sum_{j} \text{Sprint}_{j} \cdot \text{end\_date}_{j}$)
+    \item G4: Maximize feature completion ($\max \sum_{k} \text{Feature}_{k} \cdot \text{status}_{k}$)
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: Ensure product owner availability ($\text{ProductOwner}.\text{availability} \geq \text{threshold}$)
+    \item C1: Blocker resolution ($\text{Blocker}.\text{status} = \text{resolved}$)
+    \item C2: Sprint goal alignment ($\text{SprintGoal}.\text{objective\_description} \in \text{product goals}$)
+    \item C3: Team velocity threshold ($\sum_{i} \text{Velocity}_{i} \cdot \text{avg.\_story\_points}_{i} \geq \text{threshold}$)
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item DV0: Team assignment to projects ($x_{ij} \in \{0,1\}$)
+    \item DV1: Worker assignment to teams ($y_{il} \in \{0,1\}$)
+    \item DV2: Sprint goal selection ($z_{j} \in \{0,1\}$)
+    \item DV3: Feature selection for sprints ($w_{jk} \in \{0,1\}$)
+\end{itemize}
+
+\end{document}

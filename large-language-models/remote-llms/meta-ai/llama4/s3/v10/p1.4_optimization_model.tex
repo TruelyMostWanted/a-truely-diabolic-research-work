@@ -1,0 +1,103 @@
+\documentclass{article}
+\title{Optimization Model for Scrum Software Development}
+\author{Meta AI}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Project
+    \item Team
+    \item Feature
+    \item Task
+    \item Blocker
+    \item Sprint
+    \item ProductOwner
+    \item ScrumMaster
+    \item DevelopmentSnapshot
+    \item ReleasePlan
+    \item Roadmap
+    \item ScrumBoard
+    \item Stakeholder
+    \item Velocity
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$ (Projects)
+    \item $t \in T$ (Teams)
+    \item $f \in F$ (Features)
+    \item $k \in K$ (Tasks)
+    \item $b \in B$ (Blockers)
+    \item $s \in S$ (Sprints)
+    \item $po \in PO$ (ProductOwners)
+    \item $sm \in SM$ (ScrumMasters)
+    \item $ds \in DS$ (DevelopmentSnapshots)
+    \item $rp \in RP$ (ReleasePlans)
+    \item $rm \in RM$ (Roadmaps)
+    \item $sb \in SB$ (ScrumBoards)
+    \item $sh \in SH$ (Stakeholders)
+    \item $v \in V$ (Velocities)
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item G0: Maximize project budget: $\max \sum_{p \in P} budget_p$
+    \item G1: Minimize project duration: $\min \sum_{p \in P} project\_end_p$
+    \item G2: Maximize team size: $\max \sum_{t \in T} team\_size_t$
+    \item G3: Maximize sprint velocity: $\max \sum_{v \in V} avg\_story\_points_v$
+    \item G4: Minimize blocker severity: $\min \sum_{b \in B} severity_b$
+    \item G5: Maximize feature priority: $\max \sum_{f \in F} priority_f$
+    \item G6: Minimize task effort: $\min \sum_{k \in K} effort_k$
+    \item G7: Maximize stakeholder influence: $\max \sum_{sh \in SH} influence\_level_{sh}$
+    \item G8: Minimize sprint retrospective improvement actions: $\min \sum_{s \in S} improvement\_actions_s$
+    \item G9: Maximize product owner availability: $\max \sum_{po \in PO} availability_{po}$
+    \item G10: Minimize scrum master experience: $\min \sum_{sm \in SM} experience_{sm}$
+    \item G11: Maximize development snapshot test status: $\max \sum_{ds \in DS} test\_status_{ds}$
+    \item G12: Maximize release plan status: $\max \sum_{rp \in RP} status_{rp}$
+    \item G13: Minimize roadmap milestones: $\min \sum_{rm \in RM} milestones_{rm}$
+    \item G14: Maximize scrum board columns: $\max \sum_{sb \in SB} columns_{sb}$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item C0: Ensure project status is active: $\sum_{p \in P} status_p = 1$
+    \item C1: Ensure team status is active: $\sum_{t \in T} team\_status_t = 1$
+    \item C2: Ensure product owner availability is high: $\sum_{po \in PO} availability_{po} \geq 2$
+    \item C3: Ensure scrum master experience is high: $\sum_{sm \in SM} experience_{sm} \geq 2$
+    \item C4: Ensure feature priority is high: $\sum_{f \in F} priority_f \geq 2$
+    \item C5: Ensure task status is in progress: $\sum_{k \in K} status_k = 1$
+    \item C6: Ensure stakeholder influence is high: $\sum_{sh \in SH} influence\_level_{sh} \geq 2$
+    \item C7: Ensure sprint retrospective improvement actions are low: $\sum_{s \in S} improvement\_actions_s \leq 2$
+    \item C8: Ensure development snapshot test status is high: $\sum_{ds \in DS} test\_status_{ds} \geq 2$
+    \item C9: Ensure release plan status is high: $\sum_{rp \in RP} status_{rp} \geq 2$
+    \item C10: Ensure roadmap milestones are low: $\sum_{rm \in RM} milestones_{rm} \leq 2$
+    \item C11: Ensure scrum board columns are high: $\sum_{sb \in SB} columns_{sb} \geq 2$
+    \item C12: Ensure blocker severity is low: $\sum_{b \in B} severity_b \leq 2$
+    \item C13: Ensure sprint velocity is high: $\sum_{v \in V} avg\_story\_points_v \geq 2$
+    \item C14: Ensure project duration is low: $\sum_{p \in P} project\_end_p \leq 2$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item D0: Project start date: $project\_start\_date_p \in \{2023-01-01, 2024-01-01\}$
+    \item D1: Team size: $team\_size_t \in \{1, 2, 3, 4, 5\}$
+    \item D2: Feature priority: $priority_f \in \{1, 2, 3\}$
+    \item D3: Task effort: $effort_k \in \{1, 2, 3, 4, 5\}$
+    \item D4: Blocker severity: $severity_b \in \{1, 2, 3\}$
+    \item D5: Sprint velocity: $avg\_story\_points_v \in \{1, 2, 3, 4, 5\}$
+    \item D6: Product owner availability: $availability_{po} \in \{1, 2, 3\}$
+    \item D7: Scrum master experience: $experience_{sm} \in \{1, 2, 3\}$
+    \item D8: Development snapshot test status: $test\_status_{ds} \in \{1, 2, 3\}$
+    \item D9: Release plan status: $status_{rp} \in \{1, 2, 3\}$
+    \item D10: Roadmap milestones: $milestones_{rm} \in \{1, 2, 3\}$
+    \item D11: Scrum board columns: $columns_{sb} \in \{1, 2, 3\}$
+    \item D12: Project duration: $project\_end_p \in \{1, 2, 3, 4, 5\}$
+    \item D13: Stakeholder influence: $influence\_level_{sh} \in \{1, 2, 3\}$
+    \item D14: Sprint retrospective improvement actions: $improvement\_actions_s \in \{1, 2, 3\}$
+\end{itemize}
+
+\end{document}

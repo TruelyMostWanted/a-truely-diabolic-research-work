@@ -1,0 +1,103 @@
+\documentclass{article}
+\title{Optimization Model for Scrum Software Development}
+\author{Generated Model}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item Projects
+    \item Teams
+    \item Workers
+    \item Features
+    \item Tasks
+    \item Sprint Goals
+    \item Stakeholders
+    \item Development Snapshots
+    \item Release Plans
+    \item Roadmaps
+    \item Scrum Boards
+    \item Product Backlogs
+    \item User Stories
+    \item Blockers
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in P$: Projects
+    \item $t \in T$: Teams
+    \item $w \in W$: Workers
+    \item $f \in F$: Features
+    \item $k \in K$: Tasks
+    \item $g \in G$: Sprint Goals
+    \item $s \in S$: Stakeholders
+    \item $d \in D$: Development Snapshots
+    \item $r \in R$: Release Plans
+    \item $m \in M$: Roadmaps
+    \item $b \in B$: Scrum Boards
+    \item $pb \in PB$: Product Backlogs
+    \item $us \in US$: User Stories
+    \item $bl \in BL$: Blockers
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item $G_0$: Maximize project budget $\max \sum_{p \in P} budget_p$
+    \item $G_1$: Minimize project duration $\min \sum_{p \in P} project\_end_p$
+    \item $G_2$: Maximize team velocity $\max \sum_{t \in T} avg\_story\_points_t$
+    \item $G_3$: Minimize blocker severity $\min \sum_{bl \in BL} severity_{bl}$
+    \item $G_4$: Maximize feature priority $\max \sum_{f \in F} priority_f$
+    \item $G_5$: Minimize task effort $\min \sum_{k \in K} effort_k$
+    \item $G_6$: Maximize sprint goal achievement $\max \sum_{g \in G} achievement\_status_g$
+    \item $G_7$: Minimize sprint retrospective improvement actions $\min \sum_{g \in G} improvement\_actions_g$
+    \item $G_8$: Maximize stakeholder influence $\max \sum_{s \in S} influence\_level_s$
+    \item $G_9$: Minimize development snapshot test status $\min \sum_{d \in D} test\_status_d$
+    \item $G_{10}$: Maximize release plan status $\max \sum_{r \in R} status_r$
+    \item $G_{11}$: Minimize roadmap milestones $\min \sum_{m \in M} milestones_m$
+    \item $G_{12}$: Maximize scrum board columns $\max \sum_{b \in B} columns\_todo/done..._b$
+    \item $G_{13}$: Minimize user story story points $\min \sum_{us \in US} story\_points_{us}$
+    \item $G_{14}$: Maximize product backlog number of entries $\max \sum_{pb \in PB} number\_of\_entries_{pb}$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item $C_0$: Ensure project status is active $status_p = active$
+    \item $C_1$: Ensure team availability is high $team\_status_t \geq high$
+    \item $C_2$: Ensure worker availability is high $availability_w \geq high$
+    \item $C_3$: Ensure feature status is in progress $status_f = in\_progress$
+    \item $C_4$: Ensure task status is in progress $status_k = in\_progress$
+    \item $C_5$: Ensure sprint goal achievement status is achieved $achievement\_status_g = achieved$
+    \item $C_6$: Ensure stakeholder relevance is high $relevance\_to\_feature_s \geq high$
+    \item $C_7$: Ensure development snapshot deployment target is production $deployment\_target_d = production$
+    \item $C_8$: Ensure release plan included features are many $included\_features_r \geq many$
+    \item $C_9$: Ensure roadmap objectives are many $objectives_m \geq many$
+    \item $C_{10}$: Ensure scrum board last updated is recent $last\_updated_b = recent$
+    \item $C_{11}$: Ensure product backlog last updated is recent $last\_updated_{pb} = recent$
+    \item $C_{12}$: Ensure user story acceptance criteria are many $acceptance\_criteria_{us} \geq many$
+    \item $C_{13}$: Ensure task type is development $type_k = development$
+    \item $C_{14}$: Ensure blocker status is resolved $status_{bl} = resolved$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $x_p \in \{0,1\}$: Project allocation
+    \item $y_t \in \{0,1,2\}$: Team assignment
+    \item $z_w \in [0,1]$: Worker availability
+    \item $p_f \in [1,10]$: Feature priority
+    \item $e_k \in [1,100]$: Task effort
+    \item $a_g \in [0,1]$: Sprint goal achievement
+    \item $i_s \in [1,10]$: Stakeholder influence
+    \item $t_d \in [0,1]$: Development snapshot test status
+    \item $s_r \in [0,1]$: Release plan status
+    \item $m_m \in [1,10]$: Roadmap milestones
+    \item $c_b \in [1,10]$: Scrum board columns
+    \item $n_{pb} \in [1,100]$: Product backlog number of entries
+    \item $sp_{us} \in [1,10]$: User story story points
+    \item $type_k \in \{development, testing\}$: Task type
+    \item $severity_{bl} \in [1,10]$: Blocker severity
+\end{itemize}
+
+\end{document}
