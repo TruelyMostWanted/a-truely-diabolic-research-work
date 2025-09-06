@@ -1,0 +1,244 @@
+graph TD
+    %% Entities
+    P[Project]:::entity
+    T[Team]:::entity
+    W[Worker]:::entity
+    F[Feature]:::entity
+    S[Skill]:::entity
+    R[Role]:::entity
+    PO[ProductOwner]:::entity
+    SM[ScrumMaster]:::entity
+    PB[ProductBacklog]:::entity
+    SP[Sprint]:::entity
+    SPP[SprintPlanning]:::entity
+    DS[DailyScrum]:::entity
+    SR[SprintReview]:::entity
+    SRE[SprintRetrospective]:::entity
+    SBL[SprintBacklog]:::entity
+    SG[SprintGoal]:::entity
+    E[Epic]:::entity
+    US[UserStory]:::entity
+    TSK[Task]:::entity
+    DEV[DevelopmentSnapshot]:::entity
+    BL[Blocker]:::entity
+    SH[Stakeholder]:::entity
+    VEL[Velocity]:::entity
+    REP[ReleasePlan]:::entity
+    RM[Roadmap]:::entity
+    SCB[ScrumBoard]:::entity
+    FED[FeatureDocumentation]:::entity
+
+    %% Attributes
+    P_id[id]:::attr
+    P_name[name]:::attr
+    P_start[project_start]:::attr
+    P_end[project_end]:::attr
+    P_desc[description]:::attr
+    P_budget[budget]:::attr
+    P_status[status]:::attr
+    P_audience[target_audience]:::attr
+    P_priority[priority]:::attr
+
+    T_id[id]:::attr
+    T_name[name]:::attr
+    T_size[team_size]:::attr
+    T_start[team_start]:::attr
+    T_status[team_status]:::attr
+    T_location[location]:::attr
+    T_type[team_type]:::attr
+
+    W_id[id]:::attr
+    W_name[name]:::attr
+    W_first[first_name]:::attr
+    W_email[email]:::attr
+    W_start[start_date]:::attr
+    W_status[status]:::attr
+    W_avail[availability]:::attr
+
+    %% Relations
+    R1[is_assigned_to_project]:::relation
+    R2[belongs_to_team]:::relation
+    R3[has_skill]:::relation
+    R4[takes_on_role]:::relation
+    R5[manages_backlog]:::relation
+    R6[is_supported_by]:::relation
+    R7[contains_feature]:::relation
+    R8[contains_epic]:::relation
+    R9[contains_user_story]:::relation
+    R10[consists_of_tasks]:::relation
+    R11[is_in_sprint_backlog]:::relation
+    R12[belongs_to_sprint]:::relation
+    R13[pursues_goal]:::relation
+    R14[contains_tasks]:::relation
+    R15[documents_feature]:::relation
+    R16[is_blocked_by]:::relation
+    R17[participates_in]:::relation
+    R18[moderates_retrospective]:::relation
+    R19[refers_to_team]:::relation
+    R20[plans_release]:::relation
+    R21[is_part_of_roadmap]:::relation
+    R22[generates_snapshot]:::relation
+
+    %% Goals
+    G0[maximize_team_productivity]:::goal
+    G1[maximize_sprint_velocity]:::goal
+    G2[minimize_blockers]:::goal
+    G3[maximize_feature_completion]:::goal
+    G4[minimize_project_budget]:::goal
+    G5[maximize_team_satisfaction]:::goal
+    G6[maximize_stakeholder_influence]:::goal
+    G7[minimize_sprint_duration]:::goal
+    G8[maximize_skill_coverage]:::goal
+    G9[maximize_sprint_goal_achievement]:::goal
+    G10[minimize_task_effort]:::goal
+    G11[maximize_epic_priority]:::goal
+    G12[maximize_user_story_completion]:::goal
+    G13[minimize_development_snapshot_bugs]:::goal
+    G14[maximize_release_plan_features]:::goal
+
+    %% Conditions
+    C0[team_size_limit]:::condition
+    C1[project_budget_limit]:::condition
+    C2[sprint_duration_fixed]:::condition
+    C3[skill_requirement]:::condition
+    C4[blocker_severity]:::condition
+    C5[role_coverage]:::condition
+    C6[feature_priority]:::condition
+    C7[velocity_trend]:::condition
+    C8[task_effort_limit]:::condition
+    C9[stakeholder_relevance]:::condition
+    C10[sprint_goal_clarity]:::condition
+    C11[epic_status]:::condition
+    C12[user_story_acceptance]:::condition
+    C13[release_plan_status]:::condition
+    C14[scrum_board_columns]:::condition
+
+    %% Decision Variables
+    DV0[assign_worker_to_team]:::dv
+    DV1[select_feature_for_sprint]:::dv
+    DV2[allocate_budget_to_project]:::dv
+    DV3[set_sprint_duration]:::dv
+    DV4[assign_skill_to_worker]:::dv
+    DV5[resolve_blocker]:::dv
+    DV6[include_feature_in_release]:::dv
+    DV7[set_task_effort]:::dv
+    DV8[set_team_size]:::dv
+    DV9[set_stakeholder_influence]:::dv
+    DV10[set_velocity_avg]:::dv
+    DV11[set_sprint_goal_achievement]:::dv
+    DV12[set_user_story_priority]:::dv
+    DV13[set_epic_status]:::dv
+    DV14[set_development_snapshot_test_status]:::dv
+
+    %% Entity-Attribute Connections
+    P --> P_id
+    P --> P_name
+    P --> P_start
+    P --> P_end
+    P --> P_desc
+    P --> P_budget
+    P --> P_status
+    P --> P_audience
+    P --> P_priority
+
+    T --> T_id
+    T --> T_name
+    T --> T_size
+    T --> T_start
+    T --> T_status
+    T --> T_location
+    T --> T_type
+
+    W --> W_id
+    W --> W_name
+    W --> W_first
+    W --> W_email
+    W --> W_start
+    W --> W_status
+    W --> W_avail
+
+    %% Entity-Relation Connections
+    T -- R1 --> P
+    W -- R2 --> T
+    W -- R3 --> S
+    W -- R4 --> R
+    PO -- R5 --> PB
+    T -- R6 --> SM
+    PB -- R7 --> F
+    PB -- R8 --> E
+    E -- R9 --> US
+    US -- R10 --> TSK
+    US -- R11 --> SBL
+    SBL -- R12 --> SP
+    SP -- R13 --> SG
+    SCB -- R14 --> TSK
+    FED -- R15 --> F
+    TSK -- R16 --> BL
+    SH -- R17 --> SR
+    SM -- R18 --> SRE
+    VEL -- R19 --> T
+    REP -- R20 --> F
+    REP -- R21 --> RM
+    SP -- R22 --> DEV
+
+    %% Goal-Entity/Attribute Connections
+    G0 --> T_size
+    G1 --> VEL
+    G2 --> BL
+    G3 --> F
+    G4 --> P_budget
+    G5 --> SRE
+    G6 --> SH
+    G7 --> SP
+    G8 --> S
+    G9 --> SG
+    G10 --> TSK
+    G11 --> E
+    G12 --> US
+    G13 --> DEV
+    G14 --> REP
+
+    %% Condition-Entity/Attribute Connections
+    C0 --> T_size
+    C1 --> P_budget
+    C2 --> SP
+    C3 --> S
+    C4 --> BL
+    C5 --> R
+    C6 --> F
+    C7 --> VEL
+    C8 --> TSK
+    C9 --> SH
+    C10 --> SG
+    C11 --> E
+    C12 --> US
+    C13 --> REP
+    C14 --> SCB
+
+    %% Decision Variable-Entity Connections
+    DV0 --> W
+    DV0 --> T
+    DV1 --> F
+    DV1 --> SP
+    DV2 --> P
+    DV3 --> SP
+    DV4 --> W
+    DV4 --> S
+    DV5 --> BL
+    DV6 --> F
+    DV6 --> REP
+    DV7 --> TSK
+    DV8 --> T
+    DV9 --> SH
+    DV10 --> VEL
+    DV11 --> SG
+    DV12 --> US
+    DV13 --> E
+    DV14 --> DEV
+
+    classDef entity fill:#1E90FF,color:white,stroke:#000
+    classDef attr fill:#FFFFFF,color:black,stroke:#000
+    classDef relation fill:#FFA500,color:black,stroke:#000
+    classDef goal fill:#32CD32,color:black,stroke:#000
+    classDef condition fill:#FF0000,color:white,stroke:#000
+    classDef dv fill:#800080,color:white,stroke:#000

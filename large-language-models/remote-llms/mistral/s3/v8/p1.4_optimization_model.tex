@@ -1,0 +1,191 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\title{Scrum-Based Software Development Optimization Model}
+\author{Le Chat}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+This document formalizes the optimization model for a Scrum-based software development company, using the provided domain model.
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\mathcal{P}$: Set of Projects
+    \item $\mathcal{T}$: Set of Teams
+    \item $\mathcal{W}$: Set of Workers
+    \item $\mathcal{F}$: Set of Features
+    \item $\mathcal{S}$: Set of Skills
+    \item $\mathcal{R}$: Set of Roles
+    \item $\mathcal{PO}$: Set of Product Owners
+    \item $\mathcal{SM}$: Set of Scrum Masters
+    \item $\mathcal{PB}$: Set of Product Backlogs
+    \item $\mathcal{SP}$: Set of Sprints
+    \item $\mathcal{SPP}$: Set of Sprint Plannings
+    \item $\mathcal{DS}$: Set of Daily Scrums
+    \item $\mathcal{SR}$: Set of Sprint Reviews
+    \item $\mathcal{SRE}$: Set of Sprint Retrospectives
+    \item $\mathcal{SBL}$: Set of Sprint Backlogs
+    \item $\mathcal{SG}$: Set of Sprint Goals
+    \item $\mathcal{E}$: Set of Epics
+    \item $\mathcal{US}$: Set of User Stories
+    \item $\mathcal{TSK}$: Set of Tasks
+    \item $\mathcal{DEV}$: Set of Development Snapshots
+    \item $\mathcal{BL}$: Set of Blockers
+    \item $\mathcal{SH}$: Set of Stakeholders
+    \item $\mathcal{VEL}$: Set of Velocities
+    \item $\mathcal{REP}$: Set of Release Plans
+    \item $\mathcal{RM}$: Set of Roadmaps
+    \item $\mathcal{SCB}$: Set of Scrum Boards
+    \item $\mathcal{FED}$: Set of Feature Documentations
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in \mathcal{P}$
+    \item $t \in \mathcal{T}$
+    \item $w \in \mathcal{W}$
+    \item $f \in \mathcal{F}$
+    \item $s \in \mathcal{S}$
+    \item $r \in \mathcal{R}$
+    \item $po \in \mathcal{PO}$
+    \item $sm \in \mathcal{SM}$
+    \item $pb \in \mathcal{PB}$
+    \item $sp \in \mathcal{SP}$
+    \item $spp \in \mathcal{SPP}$
+    \item $ds \in \mathcal{DS}$
+    \item $sr \in \mathcal{SR}$
+    \item $sre \in \mathcal{SRE}$
+    \item $sbl \in \mathcal{SBL}$
+    \item $sg \in \mathcal{SG}$
+    \item $e \in \mathcal{E}$
+    \item $us \in \mathcal{US}$
+    \item $tsk \in \mathcal{TSK}$
+    \item $dev \in \mathcal{DEV}$
+    \item $bl \in \mathcal{BL}$
+    \item $sh \in \mathcal{SH}$
+    \item $vel \in \mathcal{VEL}$
+    \item $rep \in \mathcal{REP}$
+    \item $rm \in \mathcal{RM}$
+    \item $scb \in \mathcal{SCB}$
+    \item $fed \in \mathcal{FED}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0: maximize\_team\_velocity}
+    \[
+    \text{Maximize } \sum_{vel \in \mathcal{VEL}} vel.avg\_story\_points
+    \]
+    \item \textbf{G1: maximize\_sprint\_goal\_achievement}
+    \[
+    \text{Maximize } \sum_{sg \in \mathcal{SG}} sg.achievement\_status
+    \]
+    \item \textbf{G2: minimize\_blocker\_severity}
+    \[
+    \text{Minimize } \sum_{bl \in \mathcal{BL}} bl.severity
+    \]
+    \item \textbf{G3: maximize\_feature\_completion}
+    \[
+    \text{Maximize } \sum_{f \in \mathcal{F}} \mathbb{1}(f.status = "completed")
+    \]
+    \item \textbf{G4: maximize\_stakeholder\_satisfaction}
+    \[
+    \text{Maximize } \sum_{sh \in \mathcal{SH}} sh.relevance\_to\_feature
+    \]
+    \item \textbf{G5: minimize\_sprint\_backlog\_effort}
+    \[
+    \text{Minimize } \sum_{sbl \in \mathcal{SBL}} sbl.total\_effort
+    \]
+    \item \textbf{G6: maximize\_team\_satisfaction}
+    \[
+    \text{Maximize } \sum_{sre \in \mathcal{SRE}} sre.team\_satisfaction
+    \]
+    \item \textbf{G7: maximize\_user\_story\_completion}
+    \[
+    \text{Maximize } \sum_{us \in \mathcal{US}} \mathbb{1}(us.status = "completed")
+    \]
+    \item \textbf{G8: minimize\_project\_budget\_overrun}
+    \[
+    \text{Minimize } \sum_{p \in \mathcal{P}} \max(0, p.budget - \text{actual\_spend}_p)
+    \]
+    \item \textbf{G9: maximize\_skill\_level}
+    \[
+    \text{Maximize } \sum_{s \in \mathcal{S}} s.level
+    \]
+    \item \textbf{G10: maximize\_release\_plan\_completion}
+    \[
+    \text{Maximize } \sum_{rep \in \mathcal{REP}} \mathbb{1}(rep.status = "completed")
+    \]
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0: team\_size\_limit}
+    \[
+    \sum_{w \in \mathcal{W}} x_{w,t} \leq 9 \quad \forall t \in \mathcal{T}
+    \]
+    \item \textbf{C1: project\_budget\_limit}
+    \[
+    \sum_{p \in \mathcal{P}} p.budget \geq \text{actual\_spend}_p
+    \]
+    \item \textbf{C2: sprint\_duration\_limit}
+    \[
+    1 \leq sp.duration \leq 4 \quad \forall sp \in \mathcal{SP}
+    \]
+    \item \textbf{C3: worker\_availability}
+    \[
+    x_{w,t} \leq w.availability \quad \forall w \in \mathcal{W}, t \in \mathcal{T}
+    \]
+    \item \textbf{C4: feature\_priority}
+    \[
+    \sum_{f \in \mathcal{F}} x_{f,sbl} \cdot f.priority \geq 3 \quad \forall sbl \in \mathcal{SBL}
+    \]
+    \item \textbf{C5: blocker\_resolution}
+    \[
+    \sum_{bl \in \mathcal{BL}} \mathbb{1}(bl.status = "resolved") = |\mathcal{BL}|
+    \]
+    \item \textbf{C6: skill\_requirement}
+    \[
+    \sum_{s \in \mathcal{S}} y_{s,w,tsk} \geq 1 \quad \forall tsk \in \mathcal{TSK}, w \in \mathcal{W}
+    \]
+    \item \textbf{C7: velocity\_trend}
+    \[
+    vel.trend \geq 0 \quad \forall vel \in \mathcal{VEL}
+    \]
+    \item \textbf{C8: release\_plan\_feasibility}
+    \[
+    rep.planned\_date \leq rm.end\_date \quad \forall rep \in \mathcal{REP}, rm \in \mathcal{RM}
+    \]
+    \item \textbf{C9: scrum\_master\_experience}
+    \[
+    sm.experience \geq 2 \quad \forall sm \in \mathcal{SM}
+    \]
+    \item \textbf{C10: epic\_status}
+    \[
+    \sum_{e \in \mathcal{E}} \mathbb{1}(e.status = "active") \geq 1
+    \]
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $x_{w,t} \in \{0,1\}$: 1 if worker $w$ is assigned to team $t$, else 0
+    \item $y_{f,sbl} \in \{0,1\}$: 1 if feature $f$ is in sprint backlog $sbl$, else 0
+    \item $z_{sp} \in \{1,2,3,4\}$: Duration of sprint $sp$ in weeks
+    \item $b_p \in \mathbb{R}^+$: Budget allocated to project $p$
+    \item $s_{s,w} \in \{0,1\}$: 1 if skill $s$ is assigned to worker $w$, else 0
+    \item $e_{tsk} \in \{1,...,20\}$: Effort for task $tsk$ in story points
+    \item $u_{us,sbl} \in \{0,1\}$: 1 if user story $us$ is in sprint backlog $sbl$, else 0
+    \item $p_{bl} \in \{1,...,5\}$: Priority level of blocker $bl$
+    \item $m_{sm,t} \in \{0,1\}$: 1 if scrum master $sm$ is assigned to team $t$, else 0
+    \item $v_{vel} \in \{1,...,100\}$: Target velocity for team $vel$
+    \item $d_{rep} \in \text{Date}$: Planned release date for release plan $rep$
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,535 @@
+graph TD
+    %% Entities
+    Project[Project]:::entity
+    Team[Team]:::entity
+    Worker[Worker]:::entity
+    Feature[Feature]:::entity
+    Skill[Skill]:::entity
+    Role[Role]:::entity
+    ProductOwner[ProductOwner]:::entity
+    ScrumMaster[ScrumMaster]:::entity
+    ProductBacklog[ProductBacklog]:::entity
+    Sprint[Sprint]:::entity
+    SprintPlanning[SprintPlanning]:::entity
+    DailyScrum[DailyScrum]:::entity
+    SprintReview[SprintReview]:::entity
+    SprintRetrospective[SprintRetrospective]:::entity
+    SprintBacklog[SprintBacklog]:::entity
+    SprintGoal[SprintGoal]:::entity
+    Epic[Epic]:::entity
+    UserStory[UserStory]:::entity
+    Task[Task]:::entity
+    DevelopmentSnapshot[DevelopmentSnapshot]:::entity
+    Blocker[Blocker]:::entity
+    Stakeholder[Stakeholder]:::entity
+    Velocity[Velocity]:::entity
+    ReleasePlan[ReleasePlan]:::entity
+    Roadmap[Roadmap]:::entity
+    ScrumBoard[ScrumBoard]:::entity
+    FeatureDocumentation[FeatureDocumentation]:::entity
+
+    %% Attributes
+    Project_id[id]:::attr
+    Project_name[name]:::attr
+    Project_project_start[project_start]:::attr
+    Project_project_end[project_end]:::attr
+    Project_description[description]:::attr
+    Project_budget[budget]:::attr
+    Project_status[status]:::attr
+    Project_target_audience[target_audience]:::attr
+    Project_priority[priority]:::attr
+
+    Team_id[id]:::attr
+    Team_name[name]:::attr
+    Team_team_size[team_size]:::attr
+    Team_team_start[team_start]:::attr
+    Team_team_status[team_status]:::attr
+    Team_location[location]:::attr
+    Team_team_type[team_type]:::attr
+
+    Worker_id[id]:::attr
+    Worker_name[name]:::attr
+    Worker_first_name[first_name]:::attr
+    Worker_email[email]:::attr
+    Worker_start_date[start_date]:::attr
+    Worker_status[status]:::attr
+    Worker_availability[availability]:::attr
+
+    Feature_id[id]:::attr
+    Feature_title[title]:::attr
+    Feature_description[description]:::attr
+    Feature_status[status]:::attr
+    Feature_priority[priority]:::attr
+    Feature_estimated_effort[estimated_effort]:::attr
+
+    Skill_id[id]:::attr
+    Skill_label[label]:::attr
+    Skill_description[description]:::attr
+    Skill_level[level]:::attr
+    Skill_certified[certified]:::attr
+    Skill_category[category]:::attr
+
+    Role_id[id]:::attr
+    Role_role_name[role_name]:::attr
+    Role_description[description]:::attr
+    Role_area_of_responsibility[area_of_responsibility]:::attr
+
+    ProductOwner_id[id]:::attr
+    ProductOwner_name[name]:::attr
+    ProductOwner_email[email]:::attr
+    ProductOwner_availability[availability]:::attr
+
+    ScrumMaster_id[id]:::attr
+    ScrumMaster_name[name]:::attr
+    ScrumMaster_email[email]:::attr
+    ScrumMaster_experience[experience]:::attr
+
+    ProductBacklog_id[id]:::attr
+    ProductBacklog_created_on[created_on]:::attr
+    ProductBacklog_last_updated[last_updated]:::attr
+    ProductBacklog_number_of_entries[number_of_entries]:::attr
+    ProductBacklog_status[status]:::attr
+
+    Sprint_id[id]:::attr
+    Sprint_sprint_number[sprint_number]:::attr
+    Sprint_start_date[start_date]:::attr
+    Sprint_end_date[end_date]:::attr
+    Sprint_status[status]:::attr
+    Sprint_achievement_of_goal[achievement_of_goal]:::attr
+
+    SprintPlanning_id[id]:::attr
+    SprintPlanning_date[date]:::attr
+    SprintPlanning_duration_[duration (min)]:::attr
+    SprintPlanning_moderation[moderation]:::attr
+    SprintPlanning_outcome_documentation[outcome_documentation]:::attr
+
+    DailyScrum_id[id]:::attr
+    DailyScrum_date[date]:::attr
+    DailyScrum_time[time]:::attr
+    DailyScrum_duration[duration]:::attr
+    DailyScrum_moderation[moderation]:::attr
+
+    SprintReview_id[id]:::attr
+    SprintReview_date[date]:::attr
+    SprintReview_duration[duration]:::attr
+    SprintReview_feedback_documentation[feedback_documentation]:::attr
+    SprintReview_attendees_count[attendees_count]:::attr
+
+    SprintRetrospective_id[id]:::attr
+    SprintRetrospective_date[date]:::attr
+    SprintRetrospective_duration[duration]:::attr
+    SprintRetrospective_improvement_actions[improvement_actions]:::attr
+    SprintRetrospective_team_satisfaction[team_satisfaction]:::attr
+    SprintRetrospective_moderation[moderation]:::attr
+
+    SprintBacklog_id[id]:::attr
+    SprintBacklog_number_of_tasks[number_of_tasks]:::attr
+    SprintBacklog_last_updated[last_updated]:::attr
+    SprintBacklog_status[status]:::attr
+    SprintBacklog_total_effort[total_effort]:::attr
+
+    SprintGoal_id[id]:::attr
+    SprintGoal_objective_description[objective_description]:::attr
+    SprintGoal_achievement_status[achievement_status]:::attr
+    SprintGoal_benefit[benefit]:::attr
+
+    Epic_id[id]:::attr
+    Epic_title[title]:::attr
+    Epic_description[description]:::attr
+    Epic_priority[priority]:::attr
+    Epic_status[status]:::attr
+    Epic_estimated_effort[estimated_effort]:::attr
+
+    UserStory_id[id]:::attr
+    UserStory_title[title]:::attr
+    UserStory_description[description]:::attr
+    UserStory_acceptance_criteria[acceptance_criteria]:::attr
+    UserStory_priority[priority]:::attr
+    UserStory_story_points[story_points]:::attr
+    UserStory_status[status]:::attr
+
+    Task_id[id]:::attr
+    Task_title[title]:::attr
+    Task_description[description]:::attr
+    Task_status[status]:::attr
+    Task_effort[effort]:::attr
+    Task_type[type]:::attr
+
+    DevelopmentSnapshot_id[id]:::attr
+    DevelopmentSnapshot_version_number[version_number]:::attr
+    DevelopmentSnapshot_creation_date[creation_date]:::attr
+    DevelopmentSnapshot_test_status[test_status]:::attr
+    DevelopmentSnapshot_deployment_target[deployment_target]:::attr
+    DevelopmentSnapshot_documentation[documentation]:::attr
+
+    Blocker_id[id]:::attr
+    Blocker_title[title]:::attr
+    Blocker_description[description]:::attr
+    Blocker_severity[severity]:::attr
+    Blocker_status[status]:::attr
+    Blocker_detected_on[detected_on]:::attr
+    Blocker_resolved_on[resolved_on]:::attr
+
+    Stakeholder_id[id]:::attr
+    Stakeholder_name[name]:::attr
+    Stakeholder_organization[organization]:::attr
+    Stakeholder_role[role]:::attr
+    Stakeholder_email[email]:::attr
+    Stakeholder_area_of_interest[area_of_interest]:::attr
+    Stakeholder_influence_level[influence_level]:::attr
+    Stakeholder_relevance_to_feature[relevance_to_feature]:::attr
+
+    Velocity_id[id]:::attr
+    Velocity_number_of_sprints_used[number_of_sprints_used]:::attr
+    Velocity_avg._story_points[avg._story_points]:::attr
+    Velocity_max_velocity[max_velocity]:::attr
+    Velocity_min_velocity[min_velocity]:::attr
+    Velocity_trend[trend]:::attr
+
+    ReleasePlan_id[id]:::attr
+    ReleasePlan_version[version]:::attr
+    ReleasePlan_planned_date[planned_date]:::attr
+    ReleasePlan_included_features[included_features]:::attr
+    ReleasePlan_status[status]:::attr
+
+    Roadmap_id[id]:::attr
+    Roadmap_start_date[start_date]:::attr
+    Roadmap_end_date[end_date]:::attr
+    Roadmap_milestones[milestones]:::attr
+    Roadmap_objectives[objectives]:::attr
+    Roadmap_versions[versions]:::attr
+
+    ScrumBoard_id[id]:::attr
+    ScrumBoard_board_type[board_type]:::attr
+    ScrumBoard_columns_[columns (todo/done...)]:::attr
+    ScrumBoard_number_of_cards[number_of_cards]:::attr
+    ScrumBoard_last_updated[last_updated]:::attr
+
+    FeatureDocumentation_id[id]:::attr
+    FeatureDocumentation_title[title]:::attr
+    FeatureDocumentation_description[description]:::attr
+    FeatureDocumentation_creation_date[creation_date]:::attr
+    FeatureDocumentation_change_log[change_log]:::attr
+    FeatureDocumentation_linked_requirements[linked_requirements]:::attr
+    FeatureDocumentation_author[author]:::attr
+
+    %% Relations
+    R1[is_assigned_to_project]:::relation
+    R2[belongs_to_team]:::relation
+    R3[has_skill]:::relation
+    R4[takes_on_role]:::relation
+    R5[manages_backlog]:::relation
+    R6[is_supported_by]:::relation
+    R7[contains_feature]:::relation
+    R8[contains_epic]:::relation
+    R9[contains_user_story]:::relation
+    R10[consists_of_tasks]:::relation
+    R11[is_in_sprint_backlog]:::relation
+    R12[belongs_to_sprint]:::relation
+    R13[pursues_goal]:::relation
+    R14[contains_tasks]:::relation
+    R15[documents_feature]:::relation
+    R16[is_blocked_by]:::relation
+    R17[participates_in]:::relation
+    R18[moderates_retrospective]:::relation
+    R19[refers_to_team]:::relation
+    R20[plans_release]:::relation
+    R21[is_part_of_roadmap]:::relation
+    R22[generates_snapshot]:::relation
+
+    %% Goals
+    G0[maximize_team_productivity]:::goal
+    G1[maximize_sprint_velocity]:::goal
+    G2[minimize_blocker_severity]:::goal
+    G3[maximize_feature_completion]:::goal
+    G4[maximize_stakeholder_satisfaction]:::goal
+    G5[minimize_sprint_overrun]:::goal
+    G6[maximize_team_skills]:::goal
+    G7[maximize_sprint_goal_achievement]:::goal
+    G8[minimize_task_effort]:::goal
+    G9[maximize_user_story_completion]:::goal
+    G10[maximize_development_snapshot_quality]:::goal
+
+    %% Conditions
+    C0[team_size_limit]:::condition
+    C1[project_budget_limit]:::condition
+    C2[sprint_duration_fixed]:::condition
+    C3[skill_requirement]:::condition
+    C4[blocker_resolution_time]:::condition
+    C5[velocity_trend_positive]:::condition
+    C6[release_plan_feasibility]:::condition
+    C7[scrum_master_experience]:::condition
+    C8[product_backlog_priority]:::condition
+    C9[daily_scrum_attendance]:::condition
+    C10[sprint_goal_achievable]:::condition
+
+    %% Decision Variables
+    DV0[assign_worker_to_team]:::dv
+    DV1[assign_task_to_sprint]:::dv
+    DV2[set_sprint_duration]:::dv
+    DV3[set_task_effort]:::dv
+    DV4[set_blocker_severity]:::dv
+    DV5[set_feature_priority]:::dv
+    DV6[set_worker_availability]:::dv
+    DV7[set_sprint_goal_achievement]:::dv
+    DV8[set_velocity_trend]:::dv
+    DV9[set_stakeholder_satisfaction]:::dv
+    DV10[set_team_skill_level]:::dv
+
+    %% Entity-Attribute Connections
+    Project --> Project_id
+    Project --> Project_name
+    Project --> Project_project_start
+    Project --> Project_project_end
+    Project --> Project_description
+    Project --> Project_budget
+    Project --> Project_status
+    Project --> Project_target_audience
+    Project --> Project_priority
+
+    Team --> Team_id
+    Team --> Team_name
+    Team --> Team_team_size
+    Team --> Team_team_start
+    Team --> Team_team_status
+    Team --> Team_location
+    Team --> Team_team_type
+
+    Worker --> Worker_id
+    Worker --> Worker_name
+    Worker --> Worker_first_name
+    Worker --> Worker_email
+    Worker --> Worker_start_date
+    Worker --> Worker_status
+    Worker --> Worker_availability
+
+    Feature --> Feature_id
+    Feature --> Feature_title
+    Feature --> Feature_description
+    Feature --> Feature_status
+    Feature --> Feature_priority
+    Feature --> Feature_estimated_effort
+
+    Skill --> Skill_id
+    Skill --> Skill_label
+    Skill --> Skill_description
+    Skill --> Skill_level
+    Skill --> Skill_certified
+    Skill --> Skill_category
+
+    Role --> Role_id
+    Role --> Role_role_name
+    Role --> Role_description
+    Role --> Role_area_of_responsibility
+
+    ProductOwner --> ProductOwner_id
+    ProductOwner --> ProductOwner_name
+    ProductOwner --> ProductOwner_email
+    ProductOwner --> ProductOwner_availability
+
+    ScrumMaster --> ScrumMaster_id
+    ScrumMaster --> ScrumMaster_name
+    ScrumMaster --> ScrumMaster_email
+    ScrumMaster --> ScrumMaster_experience
+
+    ProductBacklog --> ProductBacklog_id
+    ProductBacklog --> ProductBacklog_created_on
+    ProductBacklog --> ProductBacklog_last_updated
+    ProductBacklog --> ProductBacklog_number_of_entries
+    ProductBacklog --> ProductBacklog_status
+
+    Sprint --> Sprint_id
+    Sprint --> Sprint_sprint_number
+    Sprint --> Sprint_start_date
+    Sprint --> Sprint_end_date
+    Sprint --> Sprint_status
+    Sprint --> Sprint_achievement_of_goal
+
+    SprintPlanning --> SprintPlanning_id
+    SprintPlanning --> SprintPlanning_date
+    SprintPlanning --> SprintPlanning_duration_
+    SprintPlanning --> SprintPlanning_moderation
+    SprintPlanning --> SprintPlanning_outcome_documentation
+
+    DailyScrum --> DailyScrum_id
+    DailyScrum --> DailyScrum_date
+    DailyScrum --> DailyScrum_time
+    DailyScrum --> DailyScrum_duration
+    DailyScrum --> DailyScrum_moderation
+
+    SprintReview --> SprintReview_id
+    SprintReview --> SprintReview_date
+    SprintReview --> SprintReview_duration
+    SprintReview --> SprintReview_feedback_documentation
+    SprintReview --> SprintReview_attendees_count
+
+    SprintRetrospective --> SprintRetrospective_id
+    SprintRetrospective --> SprintRetrospective_date
+    SprintRetrospective --> SprintRetrospective_duration
+    SprintRetrospective --> SprintRetrospective_improvement_actions
+    SprintRetrospective --> SprintRetrospective_team_satisfaction
+    SprintRetrospective --> SprintRetrospective_moderation
+
+    SprintBacklog --> SprintBacklog_id
+    SprintBacklog --> SprintBacklog_number_of_tasks
+    SprintBacklog --> SprintBacklog_last_updated
+    SprintBacklog --> SprintBacklog_status
+    SprintBacklog --> SprintBacklog_total_effort
+
+    SprintGoal --> SprintGoal_id
+    SprintGoal --> SprintGoal_objective_description
+    SprintGoal --> SprintGoal_achievement_status
+    SprintGoal --> SprintGoal_benefit
+
+    Epic --> Epic_id
+    Epic --> Epic_title
+    Epic --> Epic_description
+    Epic --> Epic_priority
+    Epic --> Epic_status
+    Epic --> Epic_estimated_effort
+
+    UserStory --> UserStory_id
+    UserStory --> UserStory_title
+    UserStory --> UserStory_description
+    UserStory --> UserStory_acceptance_criteria
+    UserStory --> UserStory_priority
+    UserStory --> UserStory_story_points
+    UserStory --> UserStory_status
+
+    Task --> Task_id
+    Task --> Task_title
+    Task --> Task_description
+    Task --> Task_status
+    Task --> Task_effort
+    Task --> Task_type
+
+    DevelopmentSnapshot --> DevelopmentSnapshot_id
+    DevelopmentSnapshot --> DevelopmentSnapshot_version_number
+    DevelopmentSnapshot --> DevelopmentSnapshot_creation_date
+    DevelopmentSnapshot --> DevelopmentSnapshot_test_status
+    DevelopmentSnapshot --> DevelopmentSnapshot_deployment_target
+    DevelopmentSnapshot --> DevelopmentSnapshot_documentation
+
+    Blocker --> Blocker_id
+    Blocker --> Blocker_title
+    Blocker --> Blocker_description
+    Blocker --> Blocker_severity
+    Blocker --> Blocker_status
+    Blocker --> Blocker_detected_on
+    Blocker --> Blocker_resolved_on
+
+    Stakeholder --> Stakeholder_id
+    Stakeholder --> Stakeholder_name
+    Stakeholder --> Stakeholder_organization
+    Stakeholder --> Stakeholder_role
+    Stakeholder --> Stakeholder_email
+    Stakeholder --> Stakeholder_area_of_interest
+    Stakeholder --> Stakeholder_influence_level
+    Stakeholder --> Stakeholder_relevance_to_feature
+
+    Velocity --> Velocity_id
+    Velocity --> Velocity_number_of_sprints_used
+    Velocity --> Velocity_avg._story_points
+    Velocity --> Velocity_max_velocity
+    Velocity --> Velocity_min_velocity
+    Velocity --> Velocity_trend
+
+    ReleasePlan --> ReleasePlan_id
+    ReleasePlan --> ReleasePlan_version
+    ReleasePlan --> ReleasePlan_planned_date
+    ReleasePlan --> ReleasePlan_included_features
+    ReleasePlan --> ReleasePlan_status
+
+    Roadmap --> Roadmap_id
+    Roadmap --> Roadmap_start_date
+    Roadmap --> Roadmap_end_date
+    Roadmap --> Roadmap_milestones
+    Roadmap --> Roadmap_objectives
+    Roadmap --> Roadmap_versions
+
+    ScrumBoard --> ScrumBoard_id
+    ScrumBoard --> ScrumBoard_board_type
+    ScrumBoard --> ScrumBoard_columns_
+    ScrumBoard --> ScrumBoard_number_of_cards
+    ScrumBoard --> ScrumBoard_last_updated
+
+    FeatureDocumentation --> FeatureDocumentation_id
+    FeatureDocumentation --> FeatureDocumentation_title
+    FeatureDocumentation --> FeatureDocumentation_description
+    FeatureDocumentation --> FeatureDocumentation_creation_date
+    FeatureDocumentation --> FeatureDocumentation_change_log
+    FeatureDocumentation --> FeatureDocumentation_linked_requirements
+    FeatureDocumentation --> FeatureDocumentation_author
+
+    %% Entity-Relation Connections
+    Team -->|R1| Project
+    Worker -->|R2| Team
+    Worker -->|R3| Skill
+    Worker -->|R4| Role
+    ProductOwner -->|R5| ProductBacklog
+    Team -->|R6| ScrumMaster
+    ProductBacklog -->|R7| Feature
+    ProductBacklog -->|R8| Epic
+    Epic -->|R9| UserStory
+    UserStory -->|R10| Task
+    UserStory -->|R11| SprintBacklog
+    SprintBacklog -->|R12| Sprint
+    Sprint -->|R13| SprintGoal
+    ScrumBoard -->|R14| Task
+    FeatureDocumentation -->|R15| Feature
+    Task -->|R16| Blocker
+    Stakeholder -->|R17| SprintReview
+    ScrumMaster -->|R18| SprintRetrospective
+    Velocity -->|R19| Team
+    ReleasePlan -->|R20| Feature
+    ReleasePlan -->|R21| Roadmap
+    Sprint -->|R22| DevelopmentSnapshot
+
+    %% Goal-Entity/Attribute Connections
+    G0 --> Team_team_size
+    G1 --> Velocity_avg._story_points
+    G2 --> Blocker_severity
+    G3 --> Feature_status
+    G4 --> SprintReview_feedback_documentation
+    G5 --> Sprint_end_date
+    G6 --> Skill_certified
+    G7 --> SprintGoal_achievement_status
+    G8 --> Task_effort
+    G9 --> UserStory_status
+    G10 --> DevelopmentSnapshot_test_status
+
+    %% Condition-Entity/Attribute Connections
+    C0 --> Team_team_size
+    C1 --> Project_budget
+    C2 --> Sprint_end_date
+    C3 --> Skill_certified
+    C4 --> Blocker_resolved_on
+    C5 --> Velocity_trend
+    C6 --> ReleasePlan_status
+    C7 --> ScrumMaster_experience
+    C8 --> ProductBacklog_number_of_entries
+    C9 --> DailyScrum_time
+    C10 --> SprintGoal_achievement_status
+
+    %% DecisionVariable-Entity Connections
+    DV0 --> Worker
+    DV0 --> Team
+    DV1 --> Task
+    DV1 --> Sprint
+    DV2 --> Sprint
+    DV3 --> Task
+    DV4 --> Blocker
+    DV5 --> Feature
+    DV6 --> Worker
+    DV7 --> SprintGoal
+    DV8 --> Velocity
+    DV9 --> Stakeholder
+    DV10 --> Worker
+    DV10 --> Skill
+
+    classDef entity fill:#1f77b4,color:white,stroke:#1f77b4,stroke-width:2px;
+    classDef attr fill:#ffffff,color:black,stroke:#7f7f7f,stroke-width:1px;
+    classDef relation fill:#ff7f0e,color:white,stroke:#ff7f0e,stroke-width:2px;
+    classDef goal fill:#2ca02c,color:white,stroke:#2ca02c,stroke-width:2px;
+    classDef condition fill:#d62728,color:white,stroke:#d62728,stroke-width:2px;
+    classDef dv fill:#9467bd,color:white,stroke:#9467bd,stroke-width:2px;

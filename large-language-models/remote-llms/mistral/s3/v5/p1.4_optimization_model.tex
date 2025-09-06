@@ -1,0 +1,134 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\title{Scrum-Based Software Development Optimization Model}
+\author{Le Chat}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Sets (Entities)}
+\begin{itemize}
+    \item $\mathcal{P}$: Set of Projects
+    \item $\mathcal{T}$: Set of Teams
+    \item $\mathcal{W}$: Set of Workers
+    \item $\mathcal{F}$: Set of Features
+    \item $\mathcal{S}$: Set of Skills
+    \item $\mathcal{R}$: Set of Roles
+    \item $\mathcal{PO}$: Set of Product Owners
+    \item $\mathcal{SM}$: Set of Scrum Masters
+    \item $\mathcal{PB}$: Set of Product Backlogs
+    \item $\mathcal{SP}$: Set of Sprints
+    \item $\mathcal{SPP}$: Set of Sprint Plannings
+    \item $\mathcal{DS}$: Set of Daily Scrums
+    \item $\mathcal{SR}$: Set of Sprint Reviews
+    \item $\mathcal{SRE}$: Set of Sprint Retrospectives
+    \item $\mathcal{SBL}$: Set of Sprint Backlogs
+    \item $\mathcal{SG}$: Set of Sprint Goals
+    \item $\mathcal{E}$: Set of Epics
+    \item $\mathcal{US}$: Set of User Stories
+    \item $\mathcal{TSK}$: Set of Tasks
+    \item $\mathcal{DEV}$: Set of Development Snapshots
+    \item $\mathcal{BL}$: Set of Blockers
+    \item $\mathcal{SH}$: Set of Stakeholders
+    \item $\mathcal{VEL}$: Set of Velocities
+    \item $\mathcal{REP}$: Set of Release Plans
+    \item $\mathcal{RM}$: Set of Roadmaps
+    \item $\mathcal{SCB}$: Set of Scrum Boards
+    \item $\mathcal{FED}$: Set of Feature Documentations
+\end{itemize}
+
+\section{Indices}
+\begin{itemize}
+    \item $p \in \mathcal{P}$
+    \item $t \in \mathcal{T}$
+    \item $w \in \mathcal{W}$
+    \item $f \in \mathcal{F}$
+    \item $s \in \mathcal{S}$
+    \item $r \in \mathcal{R}$
+    \item $po \in \mathcal{PO}$
+    \item $sm \in \mathcal{SM}$
+    \item $pb \in \mathcal{PB}$
+    \item $sp \in \mathcal{SP}$
+    \item $spp \in \mathcal{SPP}$
+    \item $ds \in \mathcal{DS}$
+    \item $sr \in \mathcal{SR}$
+    \item $sre \in \mathcal{SRE}$
+    \item $sbl \in \mathcal{SBL}$
+    \item $sg \in \mathcal{SG}$
+    \item $e \in \mathcal{E}$
+    \item $us \in \mathcal{US}$
+    \item $tsk \in \mathcal{TSK}$
+    \item $dev \in \mathcal{DEV}$
+    \item $bl \in \mathcal{BL}$
+    \item $sh \in \mathcal{SH}$
+    \item $vel \in \mathcal{VEL}$
+    \item $rep \in \mathcal{REP}$
+    \item $rm \in \mathcal{RM}$
+    \item $scb \in \mathcal{SCB}$
+    \item $fed \in \mathcal{FED}$
+\end{itemize}
+
+\section{Goals}
+\begin{itemize}
+    \item \textbf{G0 (maximize\_team\_productivity):} $\max \sum_{t \in \mathcal{T}} \text{team\_size}_t$
+    \item \textbf{G1 (maximize\_sprint\_velocity):} $\max \sum_{vel \in \mathcal{VEL}} \text{avg.\_story\_points}_{vel}$
+    \item \textbf{G2 (minimize\_blocker\_severity):} $\min \sum_{bl \in \mathcal{BL}} \text{severity}_{bl}$
+    \item \textbf{G3 (maximize\_feature\_completion):} $\max \sum_{f \in \mathcal{F}} \mathbb{I}(\text{status}_f = \text{completed})$
+    \item \textbf{G4 (maximize\_team\_satisfaction):} $\max \sum_{sre \in \mathcal{SRE}} \text{team\_satisfaction}_{sre}$
+    \item \textbf{G5 (minimize\_project\_budget\_overrun):} $\min \sum_{p \in \mathcal{P}} (\text{budget}_p - \text{planned\_budget}_p)$
+    \item \textbf{G6 (maximize\_stakeholder\_satisfaction):} $\max \sum_{sh \in \mathcal{SH}} \text{relevance\_to\_feature}_{sh}$
+    \item \textbf{G7 (maximize\_sprint\_goal\_achievement):} $\max \sum_{sg \in \mathcal{SG}} \text{achievement\_status}_{sg}$
+    \item \textbf{G8 (minimize\_task\_effort):} $\min \sum_{tsk \in \mathcal{TSK}} \text{effort}_{tsk}$
+    \item \textbf{G9 (maximize\_skill\_coverage):} $\max \sum_{w \in \mathcal{W}} \text{availability}_w$
+    \item \textbf{G10 (minimize\_sprint\_duration):} $\min \sum_{sp \in \mathcal{SP}} \text{duration}_{sp}$
+    \item \textbf{G11 (maximize\_epic\_priority):} $\max \sum_{e \in \mathcal{E}} \text{priority}_e$
+    \item \textbf{G12 (maximize\_user\_story\_completion):} $\max \sum_{us \in \mathcal{US}} \mathbb{I}(\text{status}_{us} = \text{completed})$
+    \item \textbf{G13 (minimize\_team\_location\_distance):} $\min \sum_{t \in \mathcal{T}} \text{distance}(\text{location}_t)$
+    \item \textbf{G14 (maximize\_documentation\_quality):} $\max \sum_{fed \in \mathcal{FED}} \text{change\_log}_{fed}$
+\end{itemize}
+
+\section{Conditions}
+\begin{itemize}
+    \item \textbf{C0 (team\_size\_limit):} $\text{team\_size}_t \leq 9, \forall t \in \mathcal{T}$
+    \item \textbf{C1 (sprint\_duration\_fixed):} $\text{duration}_{sp} = 14, \forall sp \in \mathcal{SP}$
+    \item \textbf{C2 (blocker\_resolution\_time):} $\text{resolved\_on}_{bl} - \text{detected\_on}_{bl} \leq 2, \forall bl \in \mathcal{BL}$
+    \item \textbf{C3 (budget\_constraint):} $\text{budget}_p \leq \text{planned\_budget}_p, \forall p \in \mathcal{P}$
+    \item \textbf{C4 (skill\_requirement):} $\sum_{w \in \mathcal{W}} \text{has\_skill}_{w,s} \geq 1, \forall s \in \mathcal{S}$
+    \item \textbf{C5 (role\_assignment):} $\sum_{sm \in \mathcal{SM}} \text{is\_supported\_by}_{t,sm} = 1 \land \sum_{po \in \mathcal{PO}} \text{manages\_backlog}_{po,pb} = 1, \forall t \in \mathcal{T}, pb \in \mathcal{PB}$
+    \item \textbf{C6 (feature\_priority\_threshold):} $\text{priority}_f \geq 3, \forall f \in \mathcal{F}$
+    \item \textbf{C7 (velocity\_trend\_positive):} $\text{trend}_{vel} \geq 0, \forall vel \in \mathcal{VEL}$
+    \item \textbf{C8 (story\_points\_per\_sprint):} $\sum_{us \in \mathcal{US}} \text{story\_points}_{us} \leq \text{avg.\_story\_points}_{vel}, \forall vel \in \mathcal{VEL}$
+    \item \textbf{C9 (release\_date\_deadline):} $\text{planned\_date}_{rep} \leq \text{deadline}_{rep}, \forall rep \in \mathcal{REP}$
+    \item \textbf{C10 (roadmap\_milestone):} $\text{milestones}_{rm} = \text{planned\_milestones}_{rm}, \forall rm \in \mathcal{RM}$
+    \item \textbf{C11 (scrum\_board\_columns):} $|\text{columns}_{scb}| \geq 3, \forall scb \in \mathcal{SCB}$
+    \item \textbf{C12 (worker\_availability):} $\text{availability}_w = 1, \forall w \in \mathcal{W}$
+    \item \textbf{C13 (acceptance\_criteria\_met):} $\text{acceptance\_criteria}_{us} = \text{met}, \forall us \in \mathcal{US}$
+    \item \textbf{C14 (retrospective\_attendance):} $\text{attendees\_count}_{sre} = |\mathcal{T}|, \forall sre \in \mathcal{SRE}$
+\end{itemize}
+
+\section{Decision Variables}
+\begin{itemize}
+    \item $x_{w,tsk} \in \{0,1\}$: \textbf{DV0 (assign\_worker\_to\_task)}
+    \item $y_{f,rep} \in \{0,1\}$: \textbf{DV1 (select\_feature\_for\_release)}
+    \item $d_{sp} \in \mathbb{Z}^+$: \textbf{DV2 (set\_sprint\_duration)}
+    \item $b_p \in \mathbb{R}^+$: \textbf{DV3 (allocate\_budget\_to\_project)}
+    \item $z_{w,s} \in \{0,1\}$: \textbf{DV4 (assign\_skill\_to\_worker)}
+    \item $e_{tsk} \in \mathbb{Z}^+$: \textbf{DV5 (set\_task\_effort)}
+    \item $a_{sg} \in \{0,1\}$: \textbf{DV6 (set\_sprint\_goal\_achievement)}
+    \item $v_{bl} \in \{1,2,3\}$: \textbf{DV7 (set\_blocker\_severity)}
+    \item $l_t \in \{\text{remote, onsite, hybrid}\}$: \textbf{DV8 (set\_team\_location)}
+    \item $r_{sh} \in \{1,2,3,4,5\}$: \textbf{DV9 (set\_stakeholder\_relevance)}
+    \item $q_{fed} \in \{1,2,3,4,5\}$: \textbf{DV10 (set\_documentation\_quality)}
+    \item $t_{vel} \in \{-1,0,1\}$: \textbf{DV11 (set\_velocity\_trend)}
+    \item $p_{us} \in \{1,2,3,4,5\}$: \textbf{DV12 (set\_user\_story\_priority)}
+    \item $s_{sre} \in \{1,2,3,4,5\}$: \textbf{DV13 (set\_team\_satisfaction)}
+    \item $p_e \in \{1,2,3,4,5\}$: \textbf{DV14 (set\_epic\_priority)}
+\end{itemize}
+
+\end{document}

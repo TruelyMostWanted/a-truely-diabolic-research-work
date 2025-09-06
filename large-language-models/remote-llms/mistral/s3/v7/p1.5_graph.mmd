@@ -1,0 +1,530 @@
+graph TD
+    %% Entities
+    P[Project]:::entity
+    T[Team]:::entity
+    W[Worker]:::entity
+    F[Feature]:::entity
+    S[Skill]:::entity
+    R[Role]:::entity
+    PO[ProductOwner]:::entity
+    SM[ScrumMaster]:::entity
+    PB[ProductBacklog]:::entity
+    SP[Sprint]:::entity
+    SPP[SprintPlanning]:::entity
+    DS[DailyScrum]:::entity
+    SR[SprintReview]:::entity
+    SRE[SprintRetrospective]:::entity
+    SBL[SprintBacklog]:::entity
+    SG[SprintGoal]:::entity
+    E[Epic]:::entity
+    US[UserStory]:::entity
+    TSK[Task]:::entity
+    DEV[DevelopmentSnapshot]:::entity
+    BL[Blocker]:::entity
+    SH[Stakeholder]:::entity
+    VEL[Velocity]:::entity
+    REP[ReleasePlan]:::entity
+    RM[Roadmap]:::entity
+    SCB[ScrumBoard]:::entity
+    FED[FeatureDocumentation]:::entity
+
+    %% Attributes
+    P_id[id]:::attr
+    P_name[name]:::attr
+    P_project_start[project_start]:::attr
+    P_project_end[project_end]:::attr
+    P_description[description]:::attr
+    P_budget[budget]:::attr
+    P_status[status]:::attr
+    P_target_audience[target_audience]:::attr
+    P_priority[priority]:::attr
+
+    T_id[id]:::attr
+    T_name[name]:::attr
+    T_team_size[team_size]:::attr
+    T_team_start[team_start]:::attr
+    T_team_status[team_status]:::attr
+    T_location[location]:::attr
+    T_team_type[team_type]:::attr
+
+    W_id[id]:::attr
+    W_name[name]:::attr
+    W_first_name[first_name]:::attr
+    W_email[email]:::attr
+    W_start_date[start_date]:::attr
+    W_status[status]:::attr
+    W_availability[availability]:::attr
+
+    F_id[id]:::attr
+    F_title[title]:::attr
+    F_description[description]:::attr
+    F_status[status]:::attr
+    F_priority[priority]:::attr
+    F_estimated_effort[estimated_effort]:::attr
+
+    S_id[id]:::attr
+    S_label[label]:::attr
+    S_description[description]:::attr
+    S_level[level]:::attr
+    S_certified[certified]:::attr
+    S_category[category]:::attr
+
+    R_id[id]:::attr
+    R_role_name[role_name]:::attr
+    R_description[description]:::attr
+    R_area_of_responsibility[area_of_responsibility]:::attr
+
+    PO_id[id]:::attr
+    PO_name[name]:::attr
+    PO_email[email]:::attr
+    PO_availability[availability]:::attr
+
+    SM_id[id]:::attr
+    SM_name[name]:::attr
+    SM_email[email]:::attr
+    SM_experience[experience]:::attr
+
+    PB_id[id]:::attr
+    PB_created_on[created_on]:::attr
+    PB_last_updated[last_updated]:::attr
+    PB_number_of_entries[number_of_entries]:::attr
+    PB_status[status]:::attr
+
+    SP_id[id]:::attr
+    SP_sprint_number[sprint_number]:::attr
+    SP_start_date[start_date]:::attr
+    SP_end_date[end_date]:::attr
+    SP_status[status]:::attr
+    SP_achievement_of_goal[achievement_of_goal]:::attr
+
+    SPP_id[id]:::attr
+    SPP_date[date]:::attr
+    SPP_duration[duration]:::attr
+    SPP_moderation[moderation]:::attr
+    SPP_outcome_documentation[outcome_documentation]:::attr
+
+    DS_id[id]:::attr
+    DS_date[date]:::attr
+    DS_time[time]:::attr
+    DS_duration[duration]:::attr
+    DS_moderation[moderation]:::attr
+
+    SR_id[id]:::attr
+    SR_date[date]:::attr
+    SR_duration[duration]:::attr
+    SR_feedback_documentation[feedback_documentation]:::attr
+    SR_attendees_count[attendees_count]:::attr
+
+    SRE_id[id]:::attr
+    SRE_date[date]:::attr
+    SRE_duration[duration]:::attr
+    SRE_improvement_actions[improvement_actions]:::attr
+    SRE_team_satisfaction[team_satisfaction]:::attr
+    SRE_moderation[moderation]:::attr
+
+    SBL_id[id]:::attr
+    SBL_number_of_tasks[number_of_tasks]:::attr
+    SBL_last_updated[last_updated]:::attr
+    SBL_status[status]:::attr
+    SBL_total_effort[total_effort]:::attr
+
+    SG_id[id]:::attr
+    SG_objective_description[objective_description]:::attr
+    SG_achievement_status[achievement_status]:::attr
+    SG_benefit[benefit]:::attr
+
+    E_id[id]:::attr
+    E_title[title]:::attr
+    E_description[description]:::attr
+    E_priority[priority]:::attr
+    E_status[status]:::attr
+    E_estimated_effort[estimated_effort]:::attr
+
+    US_id[id]:::attr
+    US_title[title]:::attr
+    US_description[description]:::attr
+    US_acceptance_criteria[acceptance_criteria]:::attr
+    US_priority[priority]:::attr
+    US_story_points[story_points]:::attr
+    US_status[status]:::attr
+
+    TSK_id[id]:::attr
+    TSK_title[title]:::attr
+    TSK_description[description]:::attr
+    TSK_status[status]:::attr
+    TSK_effort[effort]:::attr
+    TSK_type[type]:::attr
+
+    DEV_id[id]:::attr
+    DEV_version_number[version_number]:::attr
+    DEV_creation_date[creation_date]:::attr
+    DEV_test_status[test_status]:::attr
+    DEV_deployment_target[deployment_target]:::attr
+    DEV_documentation[documentation]:::attr
+
+    BL_id[id]:::attr
+    BL_title[title]:::attr
+    BL_description[description]:::attr
+    BL_severity[severity]:::attr
+    BL_status[status]:::attr
+    BL_detected_on[detected_on]:::attr
+    BL_resolved_on[resolved_on]:::attr
+
+    SH_id[id]:::attr
+    SH_name[name]:::attr
+    SH_organization[organization]:::attr
+    SH_role[role]:::attr
+    SH_email[email]:::attr
+    SH_area_of_interest[area_of_interest]:::attr
+    SH_influence_level[influence_level]:::attr
+    SH_relevance_to_feature[relevance_to_feature]:::attr
+
+    VEL_id[id]:::attr
+    VEL_number_of_sprints_used[number_of_sprints_used]:::attr
+    VEL_avg_story_points[avg._story_points]:::attr
+    VEL_max_velocity[max_velocity]:::attr
+    VEL_min_velocity[min_velocity]:::attr
+    VEL_trend[trend]:::attr
+
+    REP_id[id]:::attr
+    REP_version[version]:::attr
+    REP_planned_date[planned_date]:::attr
+    REP_included_features[included_features]:::attr
+    REP_status[status]:::attr
+
+    RM_id[id]:::attr
+    RM_start_date[start_date]:::attr
+    RM_end_date[end_date]:::attr
+    RM_milestones[milestones]:::attr
+    RM_objectives[objectives]:::attr
+    RM_versions[versions]:::attr
+
+    SCB_id[id]:::attr
+    SCB_board_type[board_type]:::attr
+    SCB_columns[columns]:::attr
+    SCB_number_of_cards[number_of_cards]:::attr
+    SCB_last_updated[last_updated]:::attr
+
+    FED_id[id]:::attr
+    FED_title[title]:::attr
+    FED_description[description]:::attr
+    FED_creation_date[creation_date]:::attr
+    FED_change_log[change_log]:::attr
+    FED_linked_requirements[linked_requirements]:::attr
+    FED_author[author]:::attr
+
+    %% Entity-Attribute Connections
+    P --> P_id
+    P --> P_name
+    P --> P_project_start
+    P --> P_project_end
+    P --> P_description
+    P --> P_budget
+    P --> P_status
+    P --> P_target_audience
+    P --> P_priority
+
+    T --> T_id
+    T --> T_name
+    T --> T_team_size
+    T --> T_team_start
+    T --> T_team_status
+    T --> T_location
+    T --> T_team_type
+
+    W --> W_id
+    W --> W_name
+    W --> W_first_name
+    W --> W_email
+    W --> W_start_date
+    W --> W_status
+    W --> W_availability
+
+    F --> F_id
+    F --> F_title
+    F --> F_description
+    F --> F_status
+    F --> F_priority
+    F --> F_estimated_effort
+
+    S --> S_id
+    S --> S_label
+    S --> S_description
+    S --> S_level
+    S --> S_certified
+    S --> S_category
+
+    R --> R_id
+    R --> R_role_name
+    R --> R_description
+    R --> R_area_of_responsibility
+
+    PO --> PO_id
+    PO --> PO_name
+    PO --> PO_email
+    PO --> PO_availability
+
+    SM --> SM_id
+    SM --> SM_name
+    SM --> SM_email
+    SM --> SM_experience
+
+    PB --> PB_id
+    PB --> PB_created_on
+    PB --> PB_last_updated
+    PB --> PB_number_of_entries
+    PB --> PB_status
+
+    SP --> SP_id
+    SP --> SP_sprint_number
+    SP --> SP_start_date
+    SP --> SP_end_date
+    SP --> SP_status
+    SP --> SP_achievement_of_goal
+
+    SPP --> SPP_id
+    SPP --> SPP_date
+    SPP --> SPP_duration
+    SPP --> SPP_moderation
+    SPP --> SPP_outcome_documentation
+
+    DS --> DS_id
+    DS --> DS_date
+    DS --> DS_time
+    DS --> DS_duration
+    DS --> DS_moderation
+
+    SR --> SR_id
+    SR --> SR_date
+    SR --> SR_duration
+    SR --> SR_feedback_documentation
+    SR --> SR_attendees_count
+
+    SRE --> SRE_id
+    SRE --> SRE_date
+    SRE --> SRE_duration
+    SRE --> SRE_improvement_actions
+    SRE --> SRE_team_satisfaction
+    SRE --> SRE_moderation
+
+    SBL --> SBL_id
+    SBL --> SBL_number_of_tasks
+    SBL --> SBL_last_updated
+    SBL --> SBL_status
+    SBL --> SBL_total_effort
+
+    SG --> SG_id
+    SG --> SG_objective_description
+    SG --> SG_achievement_status
+    SG --> SG_benefit
+
+    E --> E_id
+    E --> E_title
+    E --> E_description
+    E --> E_priority
+    E --> E_status
+    E --> E_estimated_effort
+
+    US --> US_id
+    US --> US_title
+    US --> US_description
+    US --> US_acceptance_criteria
+    US --> US_priority
+    US --> US_story_points
+    US --> US_status
+
+    TSK --> TSK_id
+    TSK --> TSK_title
+    TSK --> TSK_description
+    TSK --> TSK_status
+    TSK --> TSK_effort
+    TSK --> TSK_type
+
+    DEV --> DEV_id
+    DEV --> DEV_version_number
+    DEV --> DEV_creation_date
+    DEV --> DEV_test_status
+    DEV --> DEV_deployment_target
+    DEV --> DEV_documentation
+
+    BL --> BL_id
+    BL --> BL_title
+    BL --> BL_description
+    BL --> BL_severity
+    BL --> BL_status
+    BL --> BL_detected_on
+    BL --> BL_resolved_on
+
+    SH --> SH_id
+    SH --> SH_name
+    SH --> SH_organization
+    SH --> SH_role
+    SH --> SH_email
+    SH --> SH_area_of_interest
+    SH --> SH_influence_level
+    SH --> SH_relevance_to_feature
+
+    VEL --> VEL_id
+    VEL --> VEL_number_of_sprints_used
+    VEL --> VEL_avg_story_points
+    VEL --> VEL_max_velocity
+    VEL --> VEL_min_velocity
+    VEL --> VEL_trend
+
+    REP --> REP_id
+    REP --> REP_version
+    REP --> REP_planned_date
+    REP --> REP_included_features
+    REP --> REP_status
+
+    RM --> RM_id
+    RM --> RM_start_date
+    RM --> RM_end_date
+    RM --> RM_milestones
+    RM --> RM_objectives
+    RM --> RM_versions
+
+    SCB --> SCB_id
+    SCB --> SCB_board_type
+    SCB --> SCB_columns
+    SCB --> SCB_number_of_cards
+    SCB --> SCB_last_updated
+
+    FED --> FED_id
+    FED --> FED_title
+    FED --> FED_description
+    FED --> FED_creation_date
+    FED --> FED_change_log
+    FED --> FED_linked_requirements
+    FED --> FED_author
+
+    %% Relationships
+    R1[is_assigned_to_project]:::relation
+    R2[belongs_to_team]:::relation
+    R3[has_skill]:::relation
+    R4[takes_on_role]:::relation
+    R5[manages_backlog]:::relation
+    R6[is_supported_by]:::relation
+    R7[contains_feature]:::relation
+    R8[contains_epic]:::relation
+    R9[contains_user_story]:::relation
+    R10[consists_of_tasks]:::relation
+    R11[is_in_sprint_backlog]:::relation
+    R12[belongs_to_sprint]:::relation
+    R13[pursues_goal]:::relation
+    R14[contains_tasks]:::relation
+    R15[documents_feature]:::relation
+    R16[is_blocked_by]:::relation
+    R17[participates_in]:::relation
+    R18[moderates_retrospective]:::relation
+    R19[refers_to_team]:::relation
+    R20[plans_release]:::relation
+    R21[is_part_of_roadmap]:::relation
+    R22[generates_snapshot]:::relation
+
+    T -- R1 --> P
+    W -- R2 --> T
+    W -- R3 --> S
+    W -- R4 --> R
+    PO -- R5 --> PB
+    T -- R6 --> SM
+    PB -- R7 --> F
+    PB -- R8 --> E
+    E -- R9 --> US
+    US -- R10 --> TSK
+    US -- R11 --> SBL
+    SBL -- R12 --> SP
+    SP -- R13 --> SG
+    SCB -- R14 --> TSK
+    FED -- R15 --> F
+    TSK -- R16 --> BL
+    SH -- R17 --> SR
+    SM -- R18 --> SRE
+    VEL -- R19 --> T
+    REP -- R20 --> F
+    REP -- R21 --> RM
+    SP -- R22 --> DEV
+
+    %% Goals
+    G0[maximize_team_velocity]:::goal
+    G1[maximize_sprint_goal_achievement]:::goal
+    G2[minimize_blocker_severity]:::goal
+    G3[maximize_feature_completion]:::goal
+    G4[maximize_stakeholder_satisfaction]:::goal
+    G5[minimize_sprint_overrun]:::goal
+    G6[maximize_team_satisfaction]:::goal
+    G7[maximize_user_story_completion]:::goal
+    G8[minimize_task_effort]:::goal
+    G9[maximize_roadmap_objectives]:::goal
+    G10[maximize_product_backlog_entries]:::goal
+
+    G0 --> VEL
+    G1 --> SG
+    G2 --> BL
+    G3 --> F
+    G4 --> SH
+    G5 --> SP
+    G6 --> SRE
+    G7 --> US
+    G8 --> TSK
+    G9 --> RM
+    G10 --> PB
+
+    %% Conditions
+    C0[team_size_limit]:::condition
+    C1[project_budget_limit]:::condition
+    C2[sprint_duration_fixed]:::condition
+    C3[worker_availability]:::condition
+    C4[feature_priority]:::condition
+    C5[blocker_resolution]:::condition
+    C6[velocity_trend_positive]:::condition
+    C7[release_plan_status]:::condition
+    C8[scrum_master_experience]:::condition
+    C9[epic_status]:::condition
+    C10[user_story_points_limit]:::condition
+
+    C0 --> T
+    C1 --> P
+    C2 --> SP
+    C3 --> W
+    C4 --> F
+    C5 --> BL
+    C6 --> VEL
+    C7 --> REP
+    C8 --> SM
+    C9 --> E
+    C10 --> US
+
+    %% Decision Variables
+    DV0[assign_worker_to_task]:::dv
+    DV1[select_feature_for_sprint]:::dv
+    DV2[set_sprint_goal_achievement]:::dv
+    DV3[allocate_budget_to_project]:::dv
+    DV4[set_task_effort]:::dv
+    DV5[set_blocker_severity]:::dv
+    DV6[set_team_size]:::dv
+    DV7[set_velocity_trend]:::dv
+    DV8[set_user_story_priority]:::dv
+    DV9[set_sprint_duration]:::dv
+    DV10[set_worker_availability]:::dv
+
+    DV0 --> W
+    DV0 --> TSK
+    DV1 --> F
+    DV2 --> SG
+    DV3 --> P
+    DV4 --> TSK
+    DV5 --> BL
+    DV6 --> T
+    DV7 --> VEL
+    DV8 --> US
+    DV9 --> SP
+    DV10 --> W
+
+    %% Styling
+    classDef entity fill:#1e90ff,color:white,stroke:#1e3a8a,stroke-width:2px;
+    classDef attr fill:white,color:black,stroke:#ccc,stroke-width:1px;
+    classDef relation fill:#ffa500,color:black,stroke:#cc6600,stroke-width:2px;
+    classDef goal fill:#228b22,color:white,stroke:#006400,stroke-width:2px;
+    classDef condition fill:#dc143c,color:white,stroke:#8b0000,stroke-width:2px;
+    classDef dv fill:#9932cc,color:white,stroke:#4b0082,stroke-width:2px;
