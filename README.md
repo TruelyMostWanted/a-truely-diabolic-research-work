@@ -1,15 +1,28 @@
 # a-truely-diabolic-research-work
 University Project / FoPra
 
-# Naming-Convention
+In this repository are all of the work-in-progress and finalized results of our research work.
+It contains created results from the LLMs as well as analysis and github actions performing semi automated analytics.
 
-## Folder Structure
+# Contents
+
+## Input Data
+Inside the /input folder are all of our prompting strategies and extracted keywords from the literatures 
+
+## Large Language Models Data
+Inside the /large-language-models are all of the /remote-llms and /local-llms where test were run to create results
+
+### Folder Naming Convention
 local-llms/gemma3/27b/s1/v1
 remote-llms/chatgpt/4o/s1/v1
 
-## Local-LLMs 
+### Chats from Local-LLMs :
 The chat history will always be named: 
 chat.json
+
+# Strategies 
+
+Here are the strategies. All output files have matching prefixes according to the prompt id (see prompts in /input folder) 
 
 ## Strategy 1 (s1): 9-Prompts Input
 All output files of the LLMs are named as follow:
@@ -33,6 +46,14 @@ All output files of the LLMs are named as follows:
 - p2_optimization_model.tex
 - p3_graph.mmd
 
+## Strategy 3: 1-Prompt Input
+All output files of the LLMs are named as follows:
+- p1.1_goals.csv
+- p1.2_conditions.csv
+- p1.3_decision_variables.csv
+- p1.4_optimization_model.tex
+- p1.5_graph.mmd
+
 
 # LLM Keyword Analyse & Vergleich
 
@@ -41,7 +62,7 @@ hinsichtlich ihrer **Keyword-Abdeckung** und **Prompt-Performance**.
 
 ---
 
-## Ordnerstruktur
+## Folder Hierachy
 
 ```
 a-truely-diabolic-research-work/
